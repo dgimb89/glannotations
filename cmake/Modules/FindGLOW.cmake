@@ -1,0 +1,46 @@
+# Locate GLOW
+# This module defines
+# GLOW_LIBRARIES
+# GLOW_FOUND, if false, do not try to link to GLOW
+# GLOW_INCLUDE_DIR, where to find the headers
+
+FIND_PATH( GLOW_INCLUDE_DIR 
+	NAMES
+		glow/glow.h
+	HINTS
+		$ENV{GLOW_HOME}
+		${GLOW_HOME}
+	PATH_SUFFIXES include
+	PATHS
+		$ENV{GLOW_HOME}
+)
+
+FIND_LIBRARY( GLOW_LIBRARIES 
+	NAMES glow glowutils glowwindow
+	PATHS
+	$ENV{GLOW_HOME}/lib
+	${GLOW_HOME}/lib
+)
+
+FIND_LIBRARY( GLOW_LIBRARY_DEBUG
+	NAMES glowd glowutils glowwindow
+	PATHS
+	$ENV{GLOW_HOME}/lib
+	${GLOW_HOME}/lib
+)
+
+SET( GLOW_FOUND FALSE )
+
+IF(GLOW_LIBRARIES AND GLOW_INCLUDE_DIR)
+	SET(GLOW_FOUND TRUE)
+	MESSAGE(STATUS "GLOW library found: ${GLOW_LIBRARIES}")
+	MESSAGE(STATUS "GLOW include dir found: ${GLOW_INCLUDE_DIR}")
+	IF(NOT GLOW_LIBRARY_DEBUG)
+		MESSAGE(WARNING "-- Debug GLOW not found.")
+	ELSE(NOT GLOW_LIBRARY_DEBUG)
+		MESSAGE(STATUS "GLOW library debug found: ${GLOW_LIBRARY_DEBUG}")
+		SET(GLOW_LIBRARIES debug ${GLOW_LIBRARY_DEBUG} optimized ${GLOW_LIBRARIES})
+	ENDIF(NOT GLOW_LIBRARY_DEBUG)
+ELSE()
+    message(WARNING "Note: Environment variable GLOW_HOME assists this script to locate glow")
+ENDIF(GLOW_LIBRARIES AND GLOW_INCLUDE_DIR)
