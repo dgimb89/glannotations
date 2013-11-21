@@ -56,6 +56,10 @@ add_subdirectory(src)
 
 # EXAMPLES
 if(OPTION_BUILD_EXAMPLES)
+	find_package(GLM REQUIRED)
+	find_package(GLEW REQUIRED)
+	find_package(GLFW REQUIRED glfw3)
+	SET(GLAT_EXAMPLES_FOLDER ${CMAKE_CURRENT_BINARY_DIR}/examples/)
     add_subdirectory(examples)
 endif()
 

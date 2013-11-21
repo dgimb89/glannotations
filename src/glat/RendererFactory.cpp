@@ -1,15 +1,16 @@
-#include <glat/RenderMethodFactory.h>
+#include <glat/RendererFactory.h>
 #define NOMINMAX
 #include <Windows.h>
 #include <gl/GL.h>
 #include "config.h"
-#include <glat/DistanceFieldMapping.h>
+#include <glat/DistanceFieldRenderer.h>
 #ifdef OPTION_USE_NVPR
-#include <glat/NVPathRendering.h>
+#include <glat/NVPRFontRenderer.h>
 #endif
 
-bool glat::RenderMethodFactory::isExtensionSupported(const char *extension)
+bool glat::RendererFactory::isExtensionSupported(const char *extension)
 {
+	return true;
 	const GLubyte *extensions = nullptr;
 	const GLubyte *start;
 	GLubyte *where, *terminator;
@@ -34,24 +35,24 @@ bool glat::RenderMethodFactory::isExtensionSupported(const char *extension)
 	return false;
 }
 
-bool glat::RenderMethodFactory::usesNVpr() {
+bool glat::RendererFactory::usesNVpr() {
 	return m_useNVpr;
 }
 
-void glat::RenderMethodFactory::useNVpr(bool useNVpr) {
+void glat::RendererFactory::useNVpr(bool useNVpr) {
 	m_useNVpr = useNVpr;
 }
 
-glat::RenderMethodFactory::RenderMethodFactory() : m_useNVpr(true) {}
+glat::RendererFactory::RendererFactory() : m_useNVpr(true) {}
 
-glat::AbstractRenderMethod* glat::RenderMethodFactory::createRenderer() {
+glat::AbstractRenderer* glat::RendererFactory::createRenderer() {
 #ifdef OPTION_USE_NVPR
-	if (usesNVpr() && isExtensionSupported("GL_NV_path_rendering") && isExtensionSupported("GL_EXT_direct_state_access")) {
-		return new glat::NVPathRendering();
+	if (usesNVpr() && isExtensionSupported("GL_NV_path_rendering")) {
+		return new glat::NVPRFontRenderer();
 	}
  else 
 #endif
 	{
-		return new glat::DistanceFieldMapping();
+		return new glat::DistanceFieldRenderer();
 	}
 }

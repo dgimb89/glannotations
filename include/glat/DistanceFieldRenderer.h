@@ -1,10 +1,10 @@
 #ifndef DISTANCE_FIELD_MAPPING_H
 #define DISTANCE_FIELD_MAPPING_H
 
-#include <glat/AbstractRenderMethod.h>
+#include <glat/AbstractRenderer.h>
 
 namespace glat {
-	class DistanceFieldMapping : public AbstractRenderMethod {
+	class DistanceFieldRenderer : public AbstractRenderer {
 	public:
 		virtual void render(glat::AbstractAnnotation* annotation);
 	};

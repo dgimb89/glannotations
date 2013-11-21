@@ -18,6 +18,7 @@ build.release
 build.debug
 debug_build
 release_build
+install
 /_configure.bat
 /_open-project.bat
 /_start-cmake-gui.bat

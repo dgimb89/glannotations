@@ -21,3 +21,6 @@ If distance field maps have to be generated (e.g. NV_Path_Rendering n/a) additio
 * pdf lib
 
 For best performance and quality the OpenGL Extension "NV_Path_Rendering" (released with NVIDIA v275 drivers) should be present.
+
+### License
+This software contains source code provided by NVIDIA Corporation: https://developer.nvidia.com/nv-path-rendering 

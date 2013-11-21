@@ -5,15 +5,15 @@ set(header_path "${GLAT_DIR}/include/glat")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(header
-	${header_path}/AbstractRenderMethod.h
-	${header_path}/NVPathRendering.h
-	${header_path}/DistanceFieldMapping.h
+	${header_path}/AbstractRenderer.h
+	${header_path}/NVPRFontRenderer.h
+	${header_path}/DistanceFieldRenderer.h
 	${header_path}/AbstractState.h
 	${header_path}/AbstractAnnotation.h
 	${header_path}/FontAnnotation.h
 	${header_path}/SVGAnnotation.h
 	${header_path}/PDFAnnotation.h
-	${header_path}/RenderMethodFactory.h
+	${header_path}/RendererFactory.h
 	${header_path}/Styling.h
 )
 
@@ -23,10 +23,11 @@ set(sources
 	${source_path}/SVGAnnotation.cpp
 	${source_path}/PDFAnnotation.cpp
 	${source_path}/Styling.cpp
-	${source_path}/RenderMethodFactory.cpp
-	${source_path}/AbstractRenderMethod.cpp
-	${source_path}/NVPathRendering.cpp
-	${source_path}/DistanceFieldMapping.cpp
+	${source_path}/RendererFactory.cpp
+	${source_path}/AbstractRenderer.cpp
+	${source_path}/NVPRFontRenderer.cpp
+	${source_path}/DistanceFieldRenderer.cpp
+	${source_path}/nvpr_init.hpp
 )
 
 # Group source files
