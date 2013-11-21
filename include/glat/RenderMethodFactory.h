@@ -6,9 +6,14 @@
 namespace glat {
 	class RenderMethodFactory {
 	public:
+		RenderMethodFactory();
 		glat::AbstractRenderMethod* createRenderer();
+		void useNVpr(bool useNVpr);
+		bool usesNVpr();
+
 	protected:
 		static bool isExtensionSupported(const char *extension);
+		bool m_useNVpr;
 	};
 }
 
