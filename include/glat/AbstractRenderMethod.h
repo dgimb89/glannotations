@@ -1,7 +1,13 @@
 #ifndef ABSTRACT_RENDER_METHOD_H
 #define ABSTRACT_RENDER_METHOD_H
-namespace glat {
 
+#include <glat/AbstractAnnotation.h>
+
+namespace glat {
+	class AbstractRenderMethod {
+	public:
+		virtual void render(glat::AbstractAnnotation annotation) = 0;
+	};
 }
 
 #endif

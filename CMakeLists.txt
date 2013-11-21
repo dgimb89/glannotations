@@ -13,6 +13,7 @@ project(${META_PROJECT_NAME})
 
 
 # OPTIONS
+option(OPTION_USE_NVPR "Use NV Path Rendering" ON)
 option(OPTION_BUILD_EXAMPLES "Build examples" OFF)
 option(OPTION_BUILD_STATIC "Build static" OFF)
 
