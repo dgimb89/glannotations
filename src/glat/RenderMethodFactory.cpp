@@ -1,7 +1,6 @@
 #include <glat/RenderMethodFactory.h>
 #define NOMINMAX
 #include <Windows.h>
-
 #include <gl/GL.h>
 #include "config.h"
 #include <glat/DistanceFieldMapping.h>

@@ -5,7 +5,8 @@
 
 namespace glat {
 	class DistanceFieldMapping : public AbstractRenderMethod {
-
+	public:
+		virtual void render(glat::AbstractAnnotation* annotation);
 	};
 }
 

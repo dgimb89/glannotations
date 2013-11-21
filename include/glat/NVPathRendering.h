@@ -5,7 +5,8 @@
 
 namespace glat{
 	class NVPathRendering : public AbstractRenderMethod {
-
+	public:
+		virtual void render(glat::AbstractAnnotation* annotation);
 	};
 }
 

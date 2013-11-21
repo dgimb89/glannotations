@@ -10,12 +10,18 @@ set(header
 	${header_path}/DistanceFieldMapping.h
 	${header_path}/AbstractState.h
 	${header_path}/AbstractAnnotation.h
+	${header_path}/FontAnnotation.h
+	${header_path}/SVGAnnotation.h
+	${header_path}/PDFAnnotation.h
 	${header_path}/RenderMethodFactory.h
 	${header_path}/Styling.h
 )
 
 set(sources
 	${source_path}/AbstractAnnotation.cpp
+	${source_path}/FontAnnotation.cpp
+	${source_path}/SVGAnnotation.cpp
+	${source_path}/PDFAnnotation.cpp
 	${source_path}/Styling.cpp
 	${source_path}/RenderMethodFactory.cpp
 	${source_path}/AbstractRenderMethod.cpp

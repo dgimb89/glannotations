@@ -1,9 +1,11 @@
 #ifndef RENDER_METHOD_FACTORY_H
 #define RENDER_METHOD_FACTORY_H
 
-#include <glat/AbstractRenderMethod.h>
-
 namespace glat {
+
+	// we don't care about the interface - forward declaration 
+	class AbstractRenderMethod;
+
 	class RenderMethodFactory {
 	public:
 		RenderMethodFactory();

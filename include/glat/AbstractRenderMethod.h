@@ -6,7 +6,7 @@
 namespace glat {
 	class AbstractRenderMethod {
 	public:
-		virtual void render(glat::AbstractAnnotation annotation) = 0;
+		virtual void render(glat::AbstractAnnotation* annotation) = 0;
 	};
 }
 
