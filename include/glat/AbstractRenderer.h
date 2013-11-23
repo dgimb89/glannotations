@@ -1,5 +1,5 @@
-#ifndef ABSTRACT_RENDERER_H
-#define ABSTRACT_RENDERER_H
+#ifndef GLAT_ABSTRACT_RENDERER_H
+#define GLAT_ABSTRACT_RENDERER_H
 
 namespace glat {
 
@@ -8,7 +8,7 @@ namespace glat {
 
 	class AbstractRenderer {
 	public:
-		virtual void render(glat::AbstractAnnotation* annotation) = 0;
+		virtual void draw(glat::AbstractAnnotation* annotation) = 0;
 	protected:
 		inline void setupViewportRendering();
 	};

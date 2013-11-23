@@ -1,5 +1,5 @@
-#ifndef RENDERER_H
-#define RENDERER_H
+#ifndef GLAT_RENDERER_H
+#define GLAT_RENDERER_H
 
 namespace glat {
 

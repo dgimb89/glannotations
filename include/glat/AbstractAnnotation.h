@@ -1,5 +1,5 @@
-#ifndef ABSTRACT_ANNOTATION_H
-#define ABSTRACT_ANNOTATION_H
+#ifndef GLAT_ABSTRACT_ANNOTATION_H
+#define GLAT_ABSTRACT_ANNOTATION_H
 
 #include <glat/AbstractRenderer.h>
 #include <glat/RendererFactory.h>
@@ -12,7 +12,7 @@ namespace glat {
 class AbstractAnnotation {
 public:
 	AbstractAnnotation(glat::RendererFactory* factory);
-	void render();
+	void draw();
 	bool isDirty();
 	void setDirty(bool dirty);
 	void setState(float statePhase);

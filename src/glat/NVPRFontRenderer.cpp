@@ -4,17 +4,17 @@
 
 const char *message = "OpenGL Annotations Toolkit! - NV_Path_Rendering";
 
-void glat::NVPRFontRenderer::render(glat::AbstractAnnotation* annotation) {
+void glat::NVPRFontRenderer::draw(glat::AbstractAnnotation* annotation) {
 	if (annotation->isDirty()) {
 		glClearStencil(0);
-		glStencilFunc(GL_NOTEQUAL, 0, 0x1F);
+		glClear(GL_STENCIL_BUFFER_BIT);
+		glStencilFunc(GL_NOTEQUAL, 0, ~0);
 		glStencilOp(GL_KEEP, GL_KEEP, GL_ZERO);
 		initializeFont();
 		annotation->setDirty(false);
 	}
 	// disable depth test and back face culling
 	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
 
 	// enable stencil test as needed by nvpr
 	glEnable(GL_STENCIL_TEST);
@@ -26,19 +26,19 @@ void glat::NVPRFontRenderer::render(glat::AbstractAnnotation* annotation) {
 	// hard coded 2d viewport rendering as of yet
 	int viewport[4];
 	glGetIntegerv(GL_VIEWPORT, viewport);
-	glOrtho(viewport[0], viewport[2], viewport[3], viewport[1], -1.0, 10.0);
+	glOrtho(0, viewport[2], 0, viewport[3], -1, 1);
 
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	glLoadIdentity();
 	glColor3f(1, 0, 0);
 
-	// render annotations here
+	// draw annotations here
 	glStencilFillPathInstancedNV((GLsizei)messageLen,
 		GL_UNSIGNED_BYTE, message, m_glyphBase,
 		GL_PATH_FILL_MODE_NV, ~0,  /* Use all stencil bits */
 		GL_TRANSLATE_2D_NV, xtranslate);
-	glColor3ub(192, 192, 192);  // gray
+	glColor3ub(255, 0, 0);  // gray
 	glCoverFillPathInstancedNV((GLsizei)messageLen,
 		GL_UNSIGNED_BYTE, message, m_glyphBase,
 		GL_BOUNDING_BOX_OF_BOUNDING_BOXES_NV,
@@ -54,7 +54,6 @@ void glat::NVPRFontRenderer::render(glat::AbstractAnnotation* annotation) {
 }
 
 void glat::NVPRFontRenderer::initializeFont() {
-	const unsigned char *message_ub = (const unsigned char*)"OpenGL Annotations Toolkit!";
 	float font_data[4];
 	const int numChars = 256;  // ISO/IEC 8859-1 8-bit character range
 	GLfloat horizontalAdvance[256];
@@ -63,7 +62,7 @@ void glat::NVPRFontRenderer::initializeFont() {
 
 	m_pathTemplate = ~0;
 	glPathCommandsNV(m_pathTemplate, 0, NULL, 0, GL_FLOAT, NULL);
-	glPathParameterfNV(m_pathTemplate, GL_PATH_STROKE_WIDTH_NV, emScale*0.1f);
+	glPathParameterfNV(m_pathTemplate, GL_PATH_STROKE_WIDTH_NV, emScale*0.01f);
 	glPathParameteriNV(m_pathTemplate, GL_PATH_JOIN_STYLE_NV, GL_MITER_TRUNCATE_NV);
 	glPathParameterfNV(m_pathTemplate, GL_PATH_MITER_LIMIT_NV, 1.0);
 
@@ -122,12 +121,8 @@ void glat::NVPRFontRenderer::initializeFont() {
 	/* Total advance is accumulated spacing plus horizontal advance of
 	the last glyph */
 	totalAdvance = xtranslate[2 * (messageLen - 1)] +
-		horizontalAdvance[message_ub[messageLen - 1]];
+		horizontalAdvance[message[messageLen - 1]];
 	initialShift = totalAdvance / messageLen;
-
-	glEnable(GL_STENCIL_TEST);
-	glStencilFunc(GL_NOTEQUAL, 0, ~0);
-	glStencilOp(GL_KEEP, GL_KEEP, GL_ZERO);
 }
 
 glat::NVPRFontRenderer::NVPRFontRenderer()

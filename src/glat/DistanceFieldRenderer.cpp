@@ -1,5 +1,5 @@
 #include <glat/DistanceFieldRenderer.h>
 
-void glat::DistanceFieldRenderer::render(glat::AbstractAnnotation* annotation) {
+void glat::DistanceFieldRenderer::draw(glat::AbstractAnnotation* annotation) {
 	// todo
 }

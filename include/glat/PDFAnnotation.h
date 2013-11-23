@@ -1,5 +1,5 @@
-#ifndef PDF_ANNOTATION_H
-#define PDF_ANNOTATION_H
+#ifndef GLAT_PDF_ANNOTATION_H
+#define GLAT_PDF_ANNOTATION_H
 
 #include <glat/AbstractAnnotation.h>
 

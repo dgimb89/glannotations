@@ -1,5 +1,5 @@
-#ifndef FONT_ANNOTATION_H
-#define FONT_ANNOTATION_H
+#ifndef GLAT_FONT_ANNOTATION_H
+#define GLAT_FONT_ANNOTATION_H
 
 #include <glat/AbstractAnnotation.h>
 

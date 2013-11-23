@@ -23,6 +23,6 @@ void glat::AbstractAnnotation::addState(glat::AbstractState* state) {
 	setDirty(true);
 }
 
-void glat::AbstractAnnotation::render() {
-	m_renderer->render(this);
+void glat::AbstractAnnotation::draw() {
+	m_renderer->draw(this);
 }

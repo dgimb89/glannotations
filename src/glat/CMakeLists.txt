@@ -15,6 +15,7 @@ set(header
 	${header_path}/PDFAnnotation.h
 	${header_path}/RendererFactory.h
 	${header_path}/Styling.h
+	${header_path}/Quad.h
 )
 
 set(sources
@@ -27,6 +28,7 @@ set(sources
 	${source_path}/AbstractRenderer.cpp
 	${source_path}/NVPRFontRenderer.cpp
 	${source_path}/DistanceFieldRenderer.cpp
+	${source_path}/Quad.cpp
 	${source_path}/nvpr_init.hpp
 )
 

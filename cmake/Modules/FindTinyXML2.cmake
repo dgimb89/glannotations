@@ -25,7 +25,7 @@ if(TINYXML2_LIBRARY AND TINYXML2_INCLUDE_DIR)
 	set(TINYXML2_FOUND TRUE)
 else(TINYXML2_LIBRARY AND TINYXML2_INCLUDE_DIR)
 	set(TINYXML2_FOUND FALSE)
-	message(WARNING "Note: Environment variable GLOW_HOME assists this script to locate glow")
+	message(WARNING "Note: Environment variable TINYXML2_HOME assists this script to locate tinyxml2")
 endif(TINYXML2_LIBRARY AND TINYXML2_INCLUDE_DIR)
 
 mark_as_advanced(TINYXML2_INCLUDE_DIR)

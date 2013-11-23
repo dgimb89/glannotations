@@ -1,5 +1,5 @@
-#ifndef SVG_ANNOTATION_H
-#define SVG_ANNOTATION_H
+#ifndef GLAT_SVG_ANNOTATION_H
+#define GLAT_SVG_ANNOTATION_H
 
 #include <glat/AbstractAnnotation.h>
 

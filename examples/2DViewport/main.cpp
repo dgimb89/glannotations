@@ -27,6 +27,7 @@
 #include <glowutils/WorldInHandNavigation.h>
 #include <glowutils/FileRegistry.h>
 #include <glowutils/File.h>
+#include <glowutils/ScreenAlignedQuad.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
@@ -96,12 +97,12 @@ public:
         m_agrid->update();
         m_sphere->setUniform("transform", m_camera.viewProjection());
 
-        m_sphere->use();
+		m_sphere->use();
         m_icosahedron->draw();
         m_sphere->release();
 
         m_agrid->draw();
-		m_annotation->render();
+		m_annotation->draw();
     }
 
     virtual void idle(Window & window) override
@@ -218,8 +219,8 @@ protected:
 int main(int argc, char** argv)
 {
     ContextFormat format;
-    format.setVersion(4, 0);
-    format.setProfile(ContextFormat::CoreProfile);
+    format.setVersion(3, 2);
+    format.setProfile(ContextFormat::CompatibilityProfile);
     format.setDepthBufferSize(16);
 
     Window window;
