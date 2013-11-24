@@ -5,11 +5,13 @@
 #include <glat/RendererFactory.h>
 #include <glat/AbstractState.h>
 
-#include <memory>
+#include <glow/Referenced.h>
+#include <glow/ref_ptr.h>
 #include <vector>
+#include <memory>
 
 namespace glat {
-class AbstractAnnotation {
+class AbstractAnnotation : glow::Referenced {
 public:
 	AbstractAnnotation(glat::RendererFactory* factory);
 	void draw();

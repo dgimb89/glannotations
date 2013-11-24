@@ -19,7 +19,7 @@ void glat::AbstractAnnotation::setState(float statePhase) {
 }
 
 void glat::AbstractAnnotation::addState(glat::AbstractState* state) {
-	m_states.push_back(std::shared_ptr<AbstractState>(state));
+	m_states.push_back(std::shared_ptr<glat::AbstractState>(state));
 	setDirty(true);
 }
 

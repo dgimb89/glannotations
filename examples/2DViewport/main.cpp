@@ -56,6 +56,7 @@ public:
 
     virtual ~EventHandler()
     {
+		delete m_annotation;
     }
 
     void createAndSetupTexture();
@@ -116,6 +117,9 @@ public:
 
         switch (event.key())
         {
+			case GLFW_KEY_SPACE:
+				break;
+
             case GLFW_KEY_F5:
                 glow::FileRegistry::instance().reloadAll();
                 break;
@@ -219,14 +223,17 @@ protected:
 int main(int argc, char** argv)
 {
     ContextFormat format;
-    format.setVersion(3, 2);
+    format.setVersion(4, 0);
     format.setProfile(ContextFormat::CompatibilityProfile);
     format.setDepthBufferSize(16);
+	format.setStencilBufferSize(4);
+	format.setSamples(24);
 
     Window window;
-    window.setEventHandler(new EventHandler());
+	window.setEventHandler(new EventHandler());
 
     window.create(format, "Navigations Example");
+	window.fullScreen();
     window.context()->setSwapInterval(Context::VerticalSyncronization);
     window.show();
 

@@ -2,13 +2,13 @@
 #include "nvpr_init.hpp"
 #include <glat/AbstractAnnotation.h>
 
-const char *message = "OpenGL Annotations Toolkit! - NV_Path_Rendering";
+const char *message = "OpenGL Annotations Toolkit - NVPR";
 
 void glat::NVPRFontRenderer::draw(glat::AbstractAnnotation* annotation) {
 	if (annotation->isDirty()) {
-		glClearStencil(0);
+		glClearStencil(1);
 		glClear(GL_STENCIL_BUFFER_BIT);
-		glStencilFunc(GL_NOTEQUAL, 0, ~0);
+		glStencilFunc(GL_NOTEQUAL, 0, 0x1F);
 		glStencilOp(GL_KEEP, GL_KEEP, GL_ZERO);
 		initializeFont();
 		annotation->setDirty(false);
@@ -26,7 +26,12 @@ void glat::NVPRFontRenderer::draw(glat::AbstractAnnotation* annotation) {
 	// hard coded 2d viewport rendering as of yet
 	int viewport[4];
 	glGetIntegerv(GL_VIEWPORT, viewport);
-	glOrtho(0, viewport[2], 0, viewport[3], -1, 1);
+	float aspect_ratio = viewport[2] / viewport[3];
+	glOrtho(-initialShift*5, 
+		totalAdvance + initialShift*5, 
+		-0.4*totalAdvance*aspect_ratio + (yMax + yMin) / 2, 
+		0.4*totalAdvance*aspect_ratio + (yMax + yMin) / 2, 
+		-1, 1);
 
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
@@ -38,7 +43,7 @@ void glat::NVPRFontRenderer::draw(glat::AbstractAnnotation* annotation) {
 		GL_UNSIGNED_BYTE, message, m_glyphBase,
 		GL_PATH_FILL_MODE_NV, ~0,  /* Use all stencil bits */
 		GL_TRANSLATE_2D_NV, xtranslate);
-	glColor3ub(255, 0, 0);  // gray
+	glColor3ub(20, 20, 20);  // dark gray
 	glCoverFillPathInstancedNV((GLsizei)messageLen,
 		GL_UNSIGNED_BYTE, message, m_glyphBase,
 		GL_BOUNDING_BOX_OF_BOUNDING_BOXES_NV,
@@ -72,7 +77,7 @@ void glat::NVPRFontRenderer::initializeFont() {
 	neither font is available as a system font, settle for the "Sans" standard
 	(built-in) font. */
 	glPathGlyphRangeNV(m_glyphBase,
-		GL_SYSTEM_FONT_NAME_NV, "Verdana", GL_BOLD_BIT_NV,
+		GL_SYSTEM_FONT_NAME_NV, "Calibri", GL_BOLD_BIT_NV,
 		0, numChars,
 		GL_USE_MISSING_GLYPH_NV, m_pathTemplate,
 		emScale);
