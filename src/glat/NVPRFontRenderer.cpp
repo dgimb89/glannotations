@@ -27,10 +27,11 @@ void glat::NVPRFontRenderer::draw(glat::AbstractAnnotation* annotation) {
 	int viewport[4];
 	glGetIntegerv(GL_VIEWPORT, viewport);
 	float aspect_ratio = viewport[2] / viewport[3];
-	glOrtho(-initialShift*5, 
-		totalAdvance + initialShift*5, 
-		-0.4*totalAdvance*aspect_ratio + (yMax + yMin) / 2, 
-		0.4*totalAdvance*aspect_ratio + (yMax + yMin) / 2, 
+	float scale = 1.f;
+	glOrtho((-initialShift*5)*scale, 
+		(totalAdvance + initialShift*5)*scale, 
+		(-0.4*totalAdvance*aspect_ratio + (yMax + yMin) / 2)*scale, 
+		(0.4*totalAdvance*aspect_ratio + (yMax + yMin) / 2)*scale, 
 		-1, 1);
 
 	glMatrixMode(GL_MODELVIEW);

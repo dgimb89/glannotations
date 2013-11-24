@@ -2,7 +2,7 @@
 #include <iostream>
 #include <math.h>
 
-using namespace PREPROCESSOR;
+using namespace glat::preprocessor;
 
 SVGLoader::SVGLoader() {
 
