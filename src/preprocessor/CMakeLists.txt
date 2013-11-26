@@ -39,7 +39,10 @@ include_directories(
 # Build executable
 add_executable(${TARGET} ${header} ${sources})
 
+add_subdirectory(libsvg)
+
 target_link_libraries(${TARGET}
 	${OPENGL_LIBRARIES}
 	${TINYXML2_LIBRARY}
+	libsvg
 )
