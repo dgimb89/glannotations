@@ -6,13 +6,13 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(header
 	${header_path}/SVGLoader.h
-	${header_path}/DistanceFieldGenerator.h
+	#${header_path}/DistanceFieldGenerator.h
 )
 
 set(sources
 	${source_path}/main.cpp
 	${source_path}/SVGLoader.cpp
-	${source_path}/DistanceFieldGenerator.cpp
+	#${source_path}/DistanceFieldGenerator.cpp
 )
 
 # Group source files
@@ -39,10 +39,10 @@ include_directories(
 # Build executable
 add_executable(${TARGET} ${header} ${sources})
 
-add_subdirectory(libsvg)
+#add_subdirectory(libsvg)
 
 target_link_libraries(${TARGET}
 	${OPENGL_LIBRARIES}
 	${TINYXML2_LIBRARY}
-	libsvg
+	#libsvg
 )
