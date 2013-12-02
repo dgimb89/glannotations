@@ -53,4 +53,5 @@ endif()
 target_link_libraries(${TARGET}
 	${OPENGL_LIBRARIES}
 	${GLOW_LIBRARIES}
+	${LIBPNG_LIBRARY}
 )

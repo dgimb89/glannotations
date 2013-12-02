@@ -44,12 +44,14 @@ include(cmake/common.cmake)
 # Find externals
 find_package(OpenGL REQUIRED)
 find_package(GLOW REQUIRED)
+find_package(Libpng REQUIRED)
 
 # Include directories
 include_directories(
     ${GLAT_DIR}/include
     ${OPENGL_INCLUDE_DIR}
-    ${GLOW_INCLUDE_DIR})
+    ${GLOW_INCLUDE_DIR}
+    ${LIBPNG_INCLUDE_DIR})
 
 # LIBRARIES
 add_subdirectory(src)
