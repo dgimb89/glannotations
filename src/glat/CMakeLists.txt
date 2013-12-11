@@ -51,6 +51,7 @@ else()
 endif()
 
 target_link_libraries(${TARGET}
+	${GLEW_LIBRARY}
 	${OPENGL_LIBRARIES}
 	${GLOW_LIBRARIES}
 	${LIBPNG_LIBRARY}

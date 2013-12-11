@@ -16,6 +16,7 @@ find_path(	LIBPNG_INCLUDE_DIR
 find_library( LIBPNG_LIBRARY 
 	NAMES 
 		libpng
+		libpngd
 	PATHS
 		$ENV{LIBPNG_HOME}/lib
 )

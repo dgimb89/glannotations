@@ -6,8 +6,11 @@
 namespace glat {
 	class Quad : public glow::ScreenAlignedQuad {
 	public:
-		Quad(glow::Shader* fragmentShader);
+		Quad(glow::Texture* distanceField);
 		void draw();
+	private:
+		const char * m_vertexShaderSource;
+		const char * m_fragmentShaderSource;
 	};
 }
 #endif // !GLAT_QUAD_H

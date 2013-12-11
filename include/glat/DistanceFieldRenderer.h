@@ -1,11 +1,14 @@
 #ifndef GLAT_DISTANCE_FIELD_MAPPING_H
 #define GLAT_DISTANCE_FIELD_MAPPING_H
 
-#include <windows.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
-
+#include <glat/Quad.h>
 #include <glat/AbstractRenderer.h>
+
+#include <glow/Texture.h>
+#include <glow/ref_ptr.h>
+#include <glowutils/ScreenAlignedQuad.h>
+
+
 
 namespace glat {
 	class DistanceFieldRenderer : public AbstractRenderer {
@@ -14,9 +17,10 @@ namespace glat {
 
 	private:
 		char* loadDistanceField(const char* path);
-		GLuint createRGBATexture(const char* image);
+		glow::ref_ptr<glow::Texture> createRGBATexture(const char* image);
 		int m_width;
 		int m_height;
+		glow::ScreenAlignedQuad* m_quad;
 	};
 }
 

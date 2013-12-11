@@ -45,11 +45,15 @@ include(cmake/common.cmake)
 find_package(OpenGL REQUIRED)
 find_package(GLOW REQUIRED)
 find_package(Libpng REQUIRED)
+find_package(GLEW REQUIRED)
+find_package(GLM REQUIRED)
 
 # Include directories
 include_directories(
+	${GLEW_INCLUDE_DIR}
     ${GLAT_DIR}/include
     ${OPENGL_INCLUDE_DIR}
+    ${GLM_INCLUDE_DIR}
     ${GLOW_INCLUDE_DIR}
     ${LIBPNG_INCLUDE_DIR})
 
@@ -58,8 +62,7 @@ add_subdirectory(src)
 
 # EXAMPLES
 if(OPTION_BUILD_EXAMPLES)
-	find_package(GLM REQUIRED)
-	find_package(GLEW REQUIRED)
+	
 	find_package(GLFW REQUIRED glfw3)
 	SET(GLAT_EXAMPLES_FOLDER ${CMAKE_CURRENT_BINARY_DIR}/examples/)
     add_subdirectory(examples)

@@ -1,7 +1,6 @@
 #include <glat/RendererFactory.h>
 #define NOMINMAX
-#include <Windows.h>
-#include <gl/GL.h>
+#include <GL/glew.h>
 #include "config.h"
 #include <glat/DistanceFieldRenderer.h>
 #ifdef OPTION_USE_NVPR
@@ -43,15 +42,15 @@ void glat::RendererFactory::useNVpr(bool useNVpr) {
 	m_useNVpr = useNVpr;
 }
 
-glat::RendererFactory::RendererFactory() : m_useNVpr(true) {}
+glat::RendererFactory::RendererFactory() : m_useNVpr(false) {}
 
 glat::AbstractRenderer* glat::RendererFactory::createRenderer() {
-#ifdef OPTION_USE_NVPR
+//#ifdef OPTION_USE_NVPR
 	if (usesNVpr() && isExtensionSupported("GL_NV_path_rendering")) {
 		return new glat::NVPRFontRenderer();
 	}
  else 
-#endif
+//#endif
 	{
 		return new glat::DistanceFieldRenderer();
 	}
