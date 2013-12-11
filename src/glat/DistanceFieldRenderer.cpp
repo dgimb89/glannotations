@@ -1,7 +1,6 @@
 #include <glat/DistanceFieldRenderer.h>
 #include <glat/AbstractAnnotation.h>
 
-#include <GL/glew.h>
 #include <png.h>
 #include <iostream>
 
@@ -15,13 +14,14 @@ void DistanceFieldRenderer::draw(AbstractAnnotation* annotation) {
 		glow::ref_ptr<glow::Texture> texture = createRGBATexture(image);
 
 		m_quad = new glat::Quad(texture);
-		m_quad->setSamplerUniform(0);
-
+		
 		annotation->setDirty(false);
 	}
 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	m_quad->draw();
-	
+	glDisable(GL_BLEND);
 }
 
 
