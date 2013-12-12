@@ -3,7 +3,7 @@
 #include <glow/Shader.h>
 #include <glow/Program.h>
 
-glat::Quad::Quad(glow::Texture* distanceField) : glow::ScreenAlignedQuad(distanceField) {
+glat::Quad::Quad(glow::Texture* distanceField) : glowutils::ScreenAlignedQuad(distanceField) {
 	m_vertexShaderSource = R"(
 		#version 330
 
@@ -52,5 +52,5 @@ glat::Quad::Quad(glow::Texture* distanceField) : glow::ScreenAlignedQuad(distanc
 }
 
 void glat::Quad::draw() {
-	glow::ScreenAlignedQuad::draw();
+	glowutils::ScreenAlignedQuad::draw();
 }

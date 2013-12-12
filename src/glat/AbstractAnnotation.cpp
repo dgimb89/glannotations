@@ -1,7 +1,7 @@
 #include <glat/AbstractAnnotation.h>
 
-glat::AbstractAnnotation::AbstractAnnotation(glat::RendererFactory* factory) :
-	m_renderer(factory->createRenderer()),
+glat::AbstractAnnotation::AbstractAnnotation(const glat::RendererFactory& factory) :
+	m_renderer(factory.createRenderer()),
 	m_dirty(true) {
 }
 

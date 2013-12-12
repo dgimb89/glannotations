@@ -11,9 +11,9 @@
 #include <memory>
 
 namespace glat {
-class AbstractAnnotation : glow::Referenced {
+class AbstractAnnotation : public glow::Referenced {
 public:
-	AbstractAnnotation(glat::RendererFactory* factory);
+	AbstractAnnotation(const glat::RendererFactory& factory = RendererFactory());
 	void draw();
 	bool isDirty();
 	void setDirty(bool dirty);
