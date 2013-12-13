@@ -1,6 +1,7 @@
 #include <glat/NVPRFontRenderer.h>
 #include "nvpr_init.hpp"
 #include <glat/FontAnnotation.h>
+#include <iostream>
 
 void glat::NVPRFontRenderer::draw(glat::AbstractAnnotation* annotation) {
 	glat::FontAnnotation* currentAnnotation = dynamic_cast<glat::FontAnnotation*>(annotation);
@@ -23,14 +24,19 @@ void glat::NVPRFontRenderer::draw(glat::AbstractAnnotation* annotation) {
 	glLoadIdentity();
 
 	// hard coded 2d viewport rendering as of yet
-	int viewport[4];
+	/*int viewport[4];
 	glGetIntegerv(GL_VIEWPORT, viewport);
 	float aspect_ratio = viewport[2] / viewport[3];
 	float scale = 1.f;
 	glOrtho((-initialShift*5)*scale, 
 		(totalAdvance + initialShift*5)*scale, 
-		(-0.4*totalAdvance*aspect_ratio + (yMax + yMin) / 2)*scale, 
-		(0.4*totalAdvance*aspect_ratio + (yMax + yMin) / 2)*scale, 
+		(-0.1*totalAdvance*aspect_ratio + (yMax + yMin) / 2)*scale, 
+		(0.1*totalAdvance*aspect_ratio + (yMax + yMin) / 2)*scale, 
+		-1, 1);*/
+	glOrtho(0, 
+		totalAdvance, 
+		yMin, 
+		2*yMax, 
 		-1, 1);
 
 	glMatrixMode(GL_MODELVIEW);

@@ -21,8 +21,8 @@ public:
 	void addState(glat::AbstractState* state);
 
 protected:
-	std::shared_ptr<glat::AbstractRenderer> m_renderer;
-	std::vector<std::shared_ptr<glat::AbstractState>> m_states;
+	glow::ref_ptr<glat::AbstractRenderer> m_renderer;
+	std::vector<glow::ref_ptr<glat::AbstractState>> m_states;
 	bool m_dirty;
 	float m_statePhase;
 };
