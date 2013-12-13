@@ -36,7 +36,7 @@ void glat::NVPRFontRenderer::draw(glat::AbstractAnnotation* annotation) {
 	glOrtho(0, 
 		totalAdvance, 
 		yMin, 
-		2*yMax, 
+		yMax, 
 		-1, 1);
 
 	glMatrixMode(GL_MODELVIEW);

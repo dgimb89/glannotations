@@ -1,6 +1,6 @@
 #include <glat/ViewportState.h>
 
-glat::ViewportState::ViewportState(glat::SpatialExtends2D position)
+glat::ViewportState::ViewportState()
 	: glat::AbstractState() {
 	
 }

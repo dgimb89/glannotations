@@ -5,13 +5,9 @@
 
 namespace glat {
 
-	typedef struct SpatialExtends2D {
-		float left, top;
-	} SpatialExtends2D;
-
 	class ViewportState : public glat::AbstractState {
 	public:
-		ViewportState(glat::SpatialExtends2D extends);
+		ViewportState();
 	};
 }
 
