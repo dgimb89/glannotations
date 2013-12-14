@@ -17,7 +17,7 @@ namespace glat {
 		const glm::vec2& getURB() const;
 
 	protected:
-		virtual void draw(AbstractRenderer& renderer) const;
+		virtual void draw(const AbstractRenderer& renderer) const;
 		glm::vec2 m_llf, m_urb;
 	};
 }

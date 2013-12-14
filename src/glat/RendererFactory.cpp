@@ -47,8 +47,7 @@ glat::AbstractRenderer* glat::RendererFactory::createRenderer() const {
 //#ifdef OPTION_USE_NVPR
 	if (usesNVpr() && isExtensionSupported("GL_NV_path_rendering")) {
 		return new glat::NVPRFontRenderer();
-	}
- else 
+	} else 
 //#endif
 	{
 		return new glat::DistanceFieldRenderer();

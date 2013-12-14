@@ -14,7 +14,7 @@ namespace glat {
 		virtual void draw(glat::AbstractAnnotation* annotation);
 
 	protected:
-		virtual void drawSetupState(const glat::ViewportState& state);
+		virtual void drawSetupState(const glat::ViewportState& state) const;
 		char* loadDistanceField(const char* path);
 		glow::ref_ptr<glow::Texture> createRGBATexture(const char* image);
 		int m_width;

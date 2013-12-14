@@ -1,8 +1,9 @@
 #include <glat/AbstractAnnotation.h>
 
-glat::AbstractAnnotation::AbstractAnnotation(const glat::RendererFactory& factory) :
+glat::AbstractAnnotation::AbstractAnnotation(glat::AbstractState* initialState, const glat::RendererFactory& factory) :
 	m_renderer(factory.createRenderer()),
 	m_dirty(true) {
+	addState(initialState);
 }
 
 bool glat::AbstractAnnotation::isDirty() {
@@ -14,13 +15,13 @@ void glat::AbstractAnnotation::setDirty(bool dirty) {
 }
 
 void glat::AbstractAnnotation::setState(float statePhase) {
-	m_statePhase = statePhase;
 	setDirty(true);
+	m_statePhase = statePhase;
 }
 
 void glat::AbstractAnnotation::addState(glat::AbstractState* state) {
-	m_states.push_back(state);
 	setDirty(true);
+	m_states.push_back(state);
 }
 
 void glat::AbstractAnnotation::draw() {

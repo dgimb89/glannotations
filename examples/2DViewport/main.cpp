@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <random>
 #include <cassert>
+#include <ctime>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -36,6 +37,7 @@
 #include <glowwindow/WindowEventHandler.h>
 
 #include <glat/FontAnnotation.h>
+#include <glat/ViewportState.h>
 
 using namespace glowwindow;
 using namespace glm;
@@ -82,8 +84,8 @@ public:
 
 		m_icosahedron = new glowutils::Icosahedron(2);
 		m_agrid = new glowutils::AdaptiveGrid(16U);
-		m_annotation = new glat::FontAnnotation();
-		m_annotation->setText("K  ntur");
+		m_annotation = new glat::FontAnnotation(new glat::ViewportState());
+		m_annotation->setText("0");
 
 		m_camera.setZNear(0.1f);
 		m_camera.setZFar(1024.f);
@@ -118,6 +120,9 @@ public:
 		m_sphere->release();
 
 		m_agrid->draw();
+		char clockBuffer[50];
+		sprintf(clockBuffer, "%d", clock() / CLOCKS_PER_SEC);
+		m_annotation->setText(clockBuffer);
 		m_annotation->draw();
 	}
 

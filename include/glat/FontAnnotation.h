@@ -6,8 +6,8 @@
 namespace glat {
 	class FontAnnotation : public AbstractAnnotation {
 	public:
-		FontAnnotation();
-		FontAnnotation(std::string text);
+		FontAnnotation(glat::AbstractState* initialState);
+		FontAnnotation(glat::AbstractState* initialState, std::string text);
 		void setText(std::string text);
 		const std::string& getText();
 		void setFontName(std::string fontName);

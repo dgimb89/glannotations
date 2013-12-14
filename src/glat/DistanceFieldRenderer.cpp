@@ -24,7 +24,7 @@ void DistanceFieldRenderer::draw(AbstractAnnotation* annotation) {
 	glDisable(GL_BLEND);
 }
 
-void glat::DistanceFieldRenderer::drawSetupState(const glat::ViewportState& state) {
+void glat::DistanceFieldRenderer::drawSetupState(const glat::ViewportState& state) const {
 
 }
 

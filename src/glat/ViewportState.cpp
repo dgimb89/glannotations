@@ -25,6 +25,6 @@ const glm::vec2& glat::ViewportState::getURB() const {
 	return m_urb;
 }
 
-void glat::ViewportState::draw(AbstractRenderer& renderer) const {
+void glat::ViewportState::draw(const AbstractRenderer& renderer) const {
 	renderer.drawSetupState(*this);
 }

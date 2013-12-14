@@ -1,7 +1,6 @@
 #include <glat/FontAnnotation.h>
 
 void glat::FontAnnotation::setText(std::string text) {
-	setDirty(true);
 	m_text = text;
 }
 
@@ -19,12 +18,13 @@ const std::string& glat::FontAnnotation::getFontName() {
 	return m_fontName;
 }
 
-glat::FontAnnotation::FontAnnotation(std::string text) {
+glat::FontAnnotation::FontAnnotation(glat::AbstractState* initialState, std::string text) 
+	: AbstractAnnotation(initialState) {
 	setText(text);
 }
 
-glat::FontAnnotation::FontAnnotation() : AbstractAnnotation()
-{
+glat::FontAnnotation::FontAnnotation(glat::AbstractState* initialState) 
+	: AbstractAnnotation(initialState) {
 
 }
 

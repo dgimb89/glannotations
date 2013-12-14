@@ -13,7 +13,7 @@
 namespace glat {
 class AbstractAnnotation : public glow::Referenced {
 public:
-	AbstractAnnotation(const glat::RendererFactory& factory = RendererFactory());
+	AbstractAnnotation(glat::AbstractState* initialState, const glat::RendererFactory& factory = RendererFactory());
 	void draw();
 	bool isDirty();
 	void setDirty(bool dirty);

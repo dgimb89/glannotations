@@ -15,7 +15,7 @@ namespace glat {
 		virtual void draw(glat::AbstractAnnotation* annotation) = 0;
 
 	protected:
-		virtual void drawSetupState(const glat::ViewportState& state) = 0;
+		virtual void drawSetupState(const glat::ViewportState& state) const = 0;
 	};
 }
 

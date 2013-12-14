@@ -18,7 +18,7 @@ namespace glat {
 	}
 
 	class AbstractState : public glow::Referenced {
-		friend class AbstractRenderer;
+		friend class NVPRFontRenderer;
 	public:
 		void setStyling(glat::Styling* style);
 		const StylingList& getStylings();
