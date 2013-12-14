@@ -2,6 +2,7 @@
 #include "nvpr_init.hpp"
 #include <glat/FontAnnotation.h>
 #include <iostream>
+#include <glat/ViewportState.h>
 
 void glat::NVPRFontRenderer::draw(glat::AbstractAnnotation* annotation) {
 	glat::FontAnnotation* currentAnnotation = dynamic_cast<glat::FontAnnotation*>(annotation);
@@ -75,6 +76,10 @@ void glat::NVPRFontRenderer::draw(glat::AbstractAnnotation* annotation) {
 
 	// disable stencil test when finished
 	glDisable(GL_STENCIL_TEST);
+}
+
+void glat::NVPRFontRenderer::drawSetupState(const glat::ViewportState& state) {
+	
 }
 
 void glat::NVPRFontRenderer::initializeFont(glat::FontAnnotation* annotation) {

@@ -26,7 +26,6 @@ set(sources
 	${source_path}/PDFAnnotation.cpp
 	${source_path}/Styling.cpp
 	${source_path}/RendererFactory.cpp
-	${source_path}/AbstractRenderer.cpp
 	${source_path}/NVPRFontRenderer.cpp
 	${source_path}/DistanceFieldRenderer.cpp
 	${source_path}/AbstractState.cpp

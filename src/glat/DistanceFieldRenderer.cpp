@@ -24,6 +24,10 @@ void DistanceFieldRenderer::draw(AbstractAnnotation* annotation) {
 	glDisable(GL_BLEND);
 }
 
+void glat::DistanceFieldRenderer::drawSetupState(const glat::ViewportState& state) {
+
+}
+
 
 glow::ref_ptr<glow::Texture> DistanceFieldRenderer::createRGBATexture(const char* image) {
 	glow::ref_ptr<glow::Texture> texture = new glow::Texture(GL_TEXTURE_2D);

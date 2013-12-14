@@ -7,6 +7,9 @@
 #include <vector>
 
 namespace glat {
+
+	class AbstractRenderer;
+
 	typedef std::vector<glow::ref_ptr<glat::Styling>> StylingList;
 
 	namespace State {
@@ -15,6 +18,7 @@ namespace glat {
 	}
 
 	class AbstractState : public glow::Referenced {
+		friend class AbstractRenderer;
 	public:
 		void setStyling(glat::Styling* style);
 		const StylingList& getStylings();
@@ -23,6 +27,7 @@ namespace glat {
 		void setAutoExtend(State::AutoExtend extensionBehaviour);
 
 	protected:
+		virtual void draw(const AbstractRenderer& renderer) const = 0;
 		AbstractState();
 		StylingList m_stylings;
 		State::PositionAnchor m_anchor;

@@ -1,6 +1,5 @@
 #include <glat/AbstractState.h>
 
-
 void glat::AbstractState::setStyling(glat::Styling* style) {
 	m_stylings.push_back(style);
 }
@@ -19,4 +18,8 @@ void glat::AbstractState::setAnchor(State::PositionAnchor anchor) {
 
 void glat::AbstractState::setAutoExtend(State::AutoExtend extendBehaviour) {
 	m_autoExtend = extendBehaviour;
+}
+
+glat::AbstractState::AbstractState() {
+
 }

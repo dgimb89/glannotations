@@ -14,6 +14,7 @@ namespace glat{
 		NVPRFontRenderer();
 		virtual void draw(glat::AbstractAnnotation* annotation);
 	protected:
+		virtual void drawSetupState(const glat::ViewportState& state);
 		void initializeFont(glat::FontAnnotation* annotation);
 		GLuint m_glyphBase, m_pathTemplate;
 		GLfloat yMin, yMax;
