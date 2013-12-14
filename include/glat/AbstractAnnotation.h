@@ -19,6 +19,7 @@ public:
 	void setDirty(bool dirty);
 	void setState(float statePhase);
 	void addState(glat::AbstractState* state);
+	glat::AbstractState* getState(unsigned statePosition = 0);
 
 protected:
 	glow::ref_ptr<glat::AbstractRenderer> m_renderer;

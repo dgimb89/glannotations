@@ -1,7 +1,7 @@
 #include <glat/AbstractState.h>
 
 
-void glat::AbstractState::addStyling(glat::Styling* style) {
+void glat::AbstractState::setStyling(glat::Styling* style) {
 	m_stylings.push_back(style);
 }
 

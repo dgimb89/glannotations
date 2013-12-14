@@ -12,7 +12,6 @@ namespace glat {
 	public:
 		virtual void draw(glat::AbstractAnnotation* annotation) = 0;
 	protected:
-		inline void setupViewportRendering();
 	};
 }
 

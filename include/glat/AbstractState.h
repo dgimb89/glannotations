@@ -16,7 +16,7 @@ namespace glat {
 
 	class AbstractState : public glow::Referenced {
 	public:
-		void addStyling(glat::Styling* style);
+		void setStyling(glat::Styling* style);
 		const StylingList& getStylings();
 		bool isValid();
 		void setAnchor(State::PositionAnchor anchor);

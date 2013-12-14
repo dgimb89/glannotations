@@ -33,8 +33,8 @@ void glat::NVPRFontRenderer::draw(glat::AbstractAnnotation* annotation) {
 		(-0.1*totalAdvance*aspect_ratio + (yMax + yMin) / 2)*scale, 
 		(0.1*totalAdvance*aspect_ratio + (yMax + yMin) / 2)*scale, 
 		-1, 1);*/
-	glOrtho(0, 
-		totalAdvance, 
+	glOrtho(-100, 
+		totalAdvance+100, 
 		yMin, 
 		yMax, 
 		-1, 1);
@@ -47,12 +47,22 @@ void glat::NVPRFontRenderer::draw(glat::AbstractAnnotation* annotation) {
 	const char* text = currentAnnotation->getText().c_str();
 	size_t messageLen = strlen(text);
 
+	glStencilStrokePathInstancedNV((GLsizei)messageLen,
+		GL_UNSIGNED_BYTE, text, m_glyphBase,
+		1, ~0,  /* Use all stencil bits */
+		GL_TRANSLATE_2D_NV, xtranslate);
+	glColor3ub(20, 20, 20);  // light yellow
+	glCoverStrokePathInstancedNV((GLsizei)messageLen,
+		GL_UNSIGNED_BYTE, text, m_glyphBase,
+		GL_BOUNDING_BOX_OF_BOUNDING_BOXES_NV,
+		GL_TRANSLATE_2D_NV, xtranslate);
+
 	// draw annotations here
 	glStencilFillPathInstancedNV((GLsizei)messageLen,
 		GL_UNSIGNED_BYTE, text, m_glyphBase,
 		GL_PATH_FILL_MODE_NV, ~0,  /* Use all stencil bits */
 		GL_TRANSLATE_2D_NV, xtranslate);
-	glColor3ub(20, 20, 20);  // dark gray
+	glColor3ub(192, 192, 192);  // dark gray
 	glCoverFillPathInstancedNV((GLsizei)messageLen,
 		GL_UNSIGNED_BYTE, text, m_glyphBase,
 		GL_BOUNDING_BOX_OF_BOUNDING_BOXES_NV,
@@ -138,7 +148,6 @@ void glat::NVPRFontRenderer::initializeFont(glat::FontAnnotation* annotation) {
 	initialShift = totalAdvance / messageLen;
 }
 
-glat::NVPRFontRenderer::NVPRFontRenderer()
-{
+glat::NVPRFontRenderer::NVPRFontRenderer() {
 	initializeNVPR();
 }

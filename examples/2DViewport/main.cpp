@@ -83,7 +83,7 @@ public:
 		m_icosahedron = new glowutils::Icosahedron(2);
 		m_agrid = new glowutils::AdaptiveGrid(16U);
 		m_annotation = new glat::FontAnnotation();
-		m_annotation->setText("GLAT");
+		m_annotation->setText("K  ntur");
 
 		m_camera.setZNear(0.1f);
 		m_camera.setZFar(1024.f);
