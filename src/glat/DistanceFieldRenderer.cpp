@@ -53,6 +53,7 @@ char* DistanceFieldRenderer::loadDistanceField(const char* path) {
 	}
 
 	fread(header, 1, 8, file);
+
 	/* initialize stuff */
 	png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 	if (!png_ptr) {
@@ -60,7 +61,8 @@ char* DistanceFieldRenderer::loadDistanceField(const char* path) {
 	}
 
 	png_infop info_ptr = png_create_info_struct(png_ptr);
-	if (!info_ptr) {
+	png_infop end_info_ptr = png_create_info_struct(png_ptr);
+	if (!info_ptr || !end_info_ptr) {
 		std::cerr << "File " << path << ": creating infostruct failed";
 	}
 
@@ -70,47 +72,36 @@ char* DistanceFieldRenderer::loadDistanceField(const char* path) {
 		 
 	png_init_io(png_ptr, file);
 	png_set_sig_bytes(png_ptr, 8);
-
 	png_read_info(png_ptr, info_ptr);
 
-	//this->m_width = info_ptr->width;
-	//this->m_height = info_ptr->height;
-	//int color_type = info_ptr->color_type;
-	//int bit_depth = info_ptr->bit_depth;
+	png_uint_32 width;
+	png_uint_32 height;
+	int color_type;
+	int bit_depth;
 
-	//number_of_passes = png_set_interlace_handling(png_ptr);
-	png_read_update_info(png_ptr, info_ptr);
+	png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type, NULL, NULL, NULL);
+	m_width = width;
+	m_height = height;
 
+	png_bytep row_pointer = (png_bytep)png_malloc(png_ptr, png_get_rowbytes(png_ptr, info_ptr));
 
-	/* read file */
-	if (setjmp(png_jmpbuf(png_ptr))) std::cerr << "File " << path << ": Error during read_image";
-
-	png_bytep *row_pointers = (png_bytep*)malloc(sizeof(png_bytep)* m_height);
-	for (int y = 0; y < m_height; y++)
-	{
-		//row_pointers[y] = (png_byte*)malloc(info_ptr->rowbytes);
-	}
-
-	png_read_image(png_ptr, row_pointers);
-
-	// create data pointer
 	char* data = new char[m_width * m_height * 4];
 
-	//this->m_pixels[0] = 1.0f;
-	//this->m_pixels[3] = 2.0f;
-
-	for (int y = 0; y < m_height; y++) {
-		png_byte* row = row_pointers[y];
-
+	for (int y = 0; y < height; y++)
+	{
+		png_read_rows(png_ptr, (png_bytepp)&row_pointer, NULL, 1);
 		for (int x = 0; x < this->m_width; x++) {
-			png_byte* col = &(row[x * 4]);
+			png_bytep col = &row_pointer[x * 4];
 			int idx = 4 * (m_width * (m_height - 1 - y) + x);
-			data[idx    ] = static_cast<char>(col[0]);
+			data[idx] = static_cast<char>(col[0]);
 			data[idx + 1] = static_cast<char>(col[1]);
 			data[idx + 2] = static_cast<char>(col[2]);
 			data[idx + 3] = static_cast<char>(col[3]);
 		}
 	}
+	png_read_end(png_ptr, end_info_ptr);
+
+	png_destroy_read_struct(&png_ptr, &info_ptr, &end_info_ptr);
 
 	fclose(file);
 	return data;

@@ -44,11 +44,11 @@ void glat::RendererFactory::useNVpr(bool useNVpr) {
 glat::RendererFactory::RendererFactory() : m_useNVpr(true) {}
 
 glat::AbstractRenderer* glat::RendererFactory::createRenderer() const {
-//#ifdef OPTION_USE_NVPR
+#ifdef OPTION_USE_NVPR
 	if (usesNVpr() && isExtensionSupported("GL_NV_path_rendering")) {
 		return new glat::NVPRFontRenderer();
 	} else 
-//#endif
+#endif
 	{
 		return new glat::DistanceFieldRenderer();
 	}
