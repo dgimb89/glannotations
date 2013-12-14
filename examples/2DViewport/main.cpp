@@ -25,217 +25,318 @@
 #include <glowutils/AdaptiveGrid.h>
 #include <glowutils/AbstractCoordinateProvider.h>
 #include <glowutils/WorldInHandNavigation.h>
+#include <glowutils/FlightNavigation.h>
 #include <glowutils/FileRegistry.h>
 #include <glowutils/File.h>
-#include <glowutils/ScreenAlignedQuad.h>
+#include <glow/Timer.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
 #include <glowwindow/Window.h>
 #include <glowwindow/WindowEventHandler.h>
 
-#include <glat/AbstractAnnotation.h>
+#include <glat/FontAnnotation.h>
 
-using namespace glow;
+using namespace glowwindow;
 using namespace glm;
 
 
-class EventHandler : public WindowEventHandler, AbstractCoordinateProvider
+class EventHandler : public WindowEventHandler, glowutils::AbstractCoordinateProvider
 {
 public:
-    EventHandler()
-    : m_camera(vec3(0.f, 1.f, 4.0f))
-    {
-        m_aabb.extend(vec3(-8.f, -1.f, -8.f));
-        m_aabb.extend(vec3(8.f, 1.f, 8.f));
+	EventHandler()
+		: m_camera(vec3(0.f, 1.f, 4.0f))
+		, m_flightEnabled(false)
+	{
+		m_aabb.extend(vec3(-8.f, -1.f, -8.f));
+		m_aabb.extend(vec3(8.f, 1.f, 8.f));
 
-        m_nav.setCamera(&m_camera);
-        m_nav.setCoordinateProvider(this);
-        m_nav.setBoundaryHint(m_aabb);
-    }
+		m_nav.setCamera(&m_camera);
+		m_nav.setCoordinateProvider(this);
+		m_nav.setBoundaryHint(m_aabb);
 
-    virtual ~EventHandler()
-    {
-		delete m_annotation;
-    }
+		m_flightNav.setCamera(&m_camera);
 
-    void createAndSetupTexture();
-    void createAndSetupShaders();
+		m_timer.start();
+	}
+
+	virtual ~EventHandler()
+	{
+	}
+
+	void createAndSetupTexture();
+	void createAndSetupShaders();
 	void createAndSetupGeometry();
 
-    virtual void initialize(Window & window) override
-    {
-        DebugMessageOutput::enable();
+	virtual void initialize(Window & window) override
+	{
+		glow::DebugMessageOutput::enable();
 
-        glClearColor(1.0f, 1.0f, 1.0f, 0.f);
+		glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
 
-        m_sphere = new Program();
-        m_sphere->attach(
-            createShaderFromFile(GL_VERTEX_SHADER,   "data/adaptive-grid/sphere.vert")
-        ,   createShaderFromFile(GL_FRAGMENT_SHADER, "data/adaptive-grid/sphere.frag"));
+		m_sphere = new glow::Program();
+		m_sphere->attach(
+			glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/adaptive-grid/sphere.vert")
+			, glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/adaptive-grid/sphere.frag"));
 
-        m_icosahedron = new Icosahedron(2);
-        m_agrid = new AdaptiveGrid(16U);
+		m_icosahedron = new glowutils::Icosahedron(2);
+		m_agrid = new glowutils::AdaptiveGrid(16U);
+		m_annotation = new glat::FontAnnotation();
+		m_annotation->setText("K  ntur");
 
-        m_camera.setZNear(0.1f);
-        m_camera.setZFar(1024.f);
+		m_camera.setZNear(0.1f);
+		m_camera.setZFar(1024.f);
 
-        m_agrid->setCamera(&m_camera);
-		m_annotation = new glat::AbstractAnnotation(new glat::RendererFactory());
-    }    
+		m_agrid->setCamera(&m_camera);
 
-    virtual void framebufferResizeEvent(ResizeEvent & event) override
-    {
-        glViewport(0, 0, event.width(), event.height());
-        m_camera.setViewport(event.width(), event.height());
-    }
+		window.addTimer(0, 0, false);
+	}
+	virtual void finalize(Window &) override
+	{
+		m_sphere = nullptr;
+		m_icosahedron = nullptr;
+		m_agrid = nullptr;
+		m_annotation = nullptr;
+	}
 
-    virtual void paintEvent(PaintEvent &) override
-    {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	virtual void framebufferResizeEvent(ResizeEvent & event) override
+	{
+		glViewport(0, 0, event.width(), event.height());
+		m_camera.setViewport(event.width(), event.height());
+	}
 
-        m_agrid->update();
-        m_sphere->setUniform("transform", m_camera.viewProjection());
+	virtual void paintEvent(PaintEvent &) override
+	{
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		m_agrid->update();
+		m_sphere->setUniform("transform", m_camera.viewProjection());
 
 		m_sphere->use();
-        m_icosahedron->draw();
-        m_sphere->release();
+		m_icosahedron->draw();
+		m_sphere->release();
 
-        m_agrid->draw();
+		m_agrid->draw();
 		m_annotation->draw();
-    }
+	}
 
-    virtual void idle(Window & window) override
-    {
-        window.repaint();
-    }
+	virtual void timerEvent(TimerEvent & event) override
+	{
+		float delta = static_cast<float>(m_timer.elapsed() / 1000.0 / 1000.0 / 1000.0);
+		m_timer.reset();
+		m_flightNav.move(delta);
 
-    virtual void keyPressEvent(KeyEvent & event)
-    {
-        const float d = 0.08f;
+		event.window()->repaint();
+	}
 
-        switch (event.key())
-        {
-			case GLFW_KEY_SPACE:
-				break;
+	virtual void keyPressEvent(KeyEvent & event) override
+	{
+		switch (event.key())
+		{
+		case GLFW_KEY_F5:
+			glowutils::FileRegistry::instance().reloadAll();
+			break;
+		case GLFW_KEY_1:
+			m_flightEnabled = !m_flightEnabled;
+			if (!m_flightEnabled)
+				m_flightNav.stopMovement(glowutils::FlightNavigation::All);
+			event.window()->setInputMode(GLFW_CURSOR, m_flightEnabled ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
+			break;
+		case GLFW_KEY_SPACE:
+			m_camera.setCenter(vec3());
+			m_camera.setEye(vec3(0.f, 1.f, 4.0f));
+			m_camera.setUp(vec3(0, 1, 0));
+			break;
+		case GLFW_KEY_F11:
+			event.window()->toggleMode();
+			break;
+		}
 
-            case GLFW_KEY_F5:
-                glow::FileRegistry::instance().reloadAll();
-                break;
-        }
-    }
+		if (!m_flightEnabled)
+			return;
+		switch (event.key())
+		{
+		case GLFW_KEY_W:
+		case GLFW_KEY_UP:
+			m_flightNav.startMovement(glowutils::FlightNavigation::Forward);
+			break;
+		case GLFW_KEY_A:
+		case GLFW_KEY_LEFT:
+			m_flightNav.startMovement(glowutils::FlightNavigation::Left);
+			break;
+		case GLFW_KEY_S:
+		case GLFW_KEY_DOWN:
+			m_flightNav.startMovement(glowutils::FlightNavigation::Backward);
+			break;
+		case GLFW_KEY_D:
+		case GLFW_KEY_RIGHT:
+			m_flightNav.startMovement(glowutils::FlightNavigation::Right);
+			break;
+		}
+	}
+	virtual void keyReleaseEvent(KeyEvent & event) override
+	{
+		if (!m_flightEnabled)
+			return;
+		switch (event.key())
+		{
+		case GLFW_KEY_W:
+		case GLFW_KEY_UP:
+			m_flightNav.stopMovement(glowutils::FlightNavigation::Forward);
+			break;
+		case GLFW_KEY_A:
+		case GLFW_KEY_LEFT:
+			m_flightNav.stopMovement(glowutils::FlightNavigation::Left);
+			break;
+		case GLFW_KEY_S:
+		case GLFW_KEY_DOWN:
+			m_flightNav.stopMovement(glowutils::FlightNavigation::Backward);
+			break;
+		case GLFW_KEY_D:
+		case GLFW_KEY_RIGHT:
+			m_flightNav.stopMovement(glowutils::FlightNavigation::Right);
+			break;
+		}
+	}
 
-    virtual void mousePressEvent(MouseEvent & event) override
-    {
-        switch (event.button())
-        {
-            case GLFW_MOUSE_BUTTON_LEFT:
-                m_nav.panBegin(event.pos());
-                event.accept();
-                break;
+	virtual void mousePressEvent(MouseEvent & event) override
+	{
+		if (m_flightEnabled)
+			return;
 
-            case GLFW_MOUSE_BUTTON_RIGHT:
-                m_nav.rotateBegin(event.pos());
-                event.accept();
-                break;
-        }
-    }
-    virtual void mouseMoveEvent(MouseEvent & event) override
-    {
-        switch (m_nav.mode())
-        {
-            case WorldInHandNavigation::PanInteraction:
-                m_nav.panProcess(event.pos());
-                event.accept();
-                break;
+		switch (event.button())
+		{
+		case GLFW_MOUSE_BUTTON_LEFT:
+			m_nav.panBegin(event.pos());
+			event.accept();
+			break;
 
-            case WorldInHandNavigation::RotateInteraction:
-                m_nav.rotateProcess(event.pos());
-                event.accept();
-        }
-    }
-    virtual void mouseReleaseEvent(MouseEvent & event) override
-    {
-        switch (event.button())
-        {
-            case GLFW_MOUSE_BUTTON_LEFT:
-                m_nav.panEnd();
-                event.accept();
-                break;
+		case GLFW_MOUSE_BUTTON_RIGHT:
+			m_nav.rotateBegin(event.pos());
+			event.accept();
+			break;
+		}
+	}
+	virtual void mouseMoveEvent(MouseEvent & event) override
+	{
+		if (m_flightEnabled)
+		{
+			m_flightNav.mouseMove((event.pos() - m_lastMousePos));
+			m_lastMousePos = event.pos();
+			event.accept();
+			return;
+		}
 
-            case GLFW_MOUSE_BUTTON_RIGHT:
-                m_nav.rotateEnd();
-                event.accept();
-                break;
-        }
-    }
+		switch (m_nav.mode())
+		{
+		case glowutils::WorldInHandNavigation::PanInteraction:
+			m_nav.panProcess(event.pos());
+			event.accept();
+			break;
 
-    void scrollEvent(ScrollEvent & event) override
-    {
-        if (WorldInHandNavigation::NoInteraction != m_nav.mode())
-            return;
+		case glowutils::WorldInHandNavigation::RotateInteraction:
+			m_nav.rotateProcess(event.pos());
+			event.accept();
+		}
+	}
+	virtual void mouseReleaseEvent(MouseEvent & event) override
+	{
+		if (m_flightEnabled)
+			return;
 
-        m_nav.scaleAtMouse(event.pos(), -event.offset().y * 0.1f);
-        event.accept();
-    }
+		switch (event.button())
+		{
+		case GLFW_MOUSE_BUTTON_LEFT:
+			m_nav.panEnd();
+			event.accept();
+			break;
 
-    virtual const float depthAt(const ivec2 & windowCoordinates)
-    {
-        return AbstractCoordinateProvider::depthAt(m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
-    }
+		case GLFW_MOUSE_BUTTON_RIGHT:
+			m_nav.rotateEnd();
+			event.accept();
+			break;
+		}
+	}
 
-    virtual const vec3 objAt(const ivec2 & windowCoordinates)
-    {
-        return unproject(m_camera, static_cast<GLenum>(GL_DEPTH_COMPONENT), windowCoordinates);
-    }
+	void scrollEvent(ScrollEvent & event) override
+	{
+		if (m_flightEnabled)
+			return;
 
-    virtual const vec3 objAt(const ivec2 & windowCoordinates, const float depth)
-    {
-        return unproject(m_camera, depth, windowCoordinates);
-    }
+		if (glowutils::WorldInHandNavigation::NoInteraction != m_nav.mode())
+			return;
 
-    virtual const glm::vec3 objAt(
-        const ivec2 & windowCoordinates
-    ,   const float depth
-    ,   const mat4 & viewProjectionInverted)
-    {
-        return unproject(m_camera, viewProjectionInverted, depth, windowCoordinates);
-    }
+		m_nav.scaleAtMouse(event.pos(), -event.offset().y * 0.1f);
+		event.accept();
+	}
+
+	virtual const float depthAt(const ivec2 & windowCoordinates) override
+	{
+		return AbstractCoordinateProvider::depthAt(m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
+	}
+
+	virtual const vec3 objAt(const ivec2 & windowCoordinates) override
+	{
+		return unproject(m_camera, static_cast<GLenum>(GL_DEPTH_COMPONENT), windowCoordinates);
+	}
+
+	virtual const vec3 objAt(const ivec2 & windowCoordinates, const float depth) override
+	{
+		return unproject(m_camera, depth, windowCoordinates);
+	}
+
+	virtual const glm::vec3 objAt(
+		const ivec2 & windowCoordinates
+		, const float depth
+		, const mat4 & viewProjectionInverted) override
+	{
+		return unproject(m_camera, viewProjectionInverted, depth, windowCoordinates);
+	}
 
 protected:
 
-    ref_ptr<Program> m_sphere;
-	glat::AbstractAnnotation* m_annotation;
+	glow::ref_ptr<glow::Program> m_sphere;
 
-    ref_ptr<Icosahedron> m_icosahedron;
-    ref_ptr<AdaptiveGrid> m_agrid;
+	glow::ref_ptr<glowutils::Icosahedron> m_icosahedron;
+	glow::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
+	glow::ref_ptr<glat::FontAnnotation> m_annotation;
 
-    Camera m_camera;
-    WorldInHandNavigation m_nav;
+	glowutils::Camera m_camera;
+	glowutils::WorldInHandNavigation m_nav;
+	glowutils::FlightNavigation m_flightNav;
+	glm::ivec2 m_lastMousePos;
+	bool m_flightEnabled;
+	glow::Timer m_timer;
 
-    AxisAlignedBoundingBox m_aabb;
+	glowutils::AxisAlignedBoundingBox m_aabb;
 };
 
 
 /** This example shows ... .
 */
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
-    ContextFormat format;
-    format.setVersion(4, 0);
-    format.setProfile(ContextFormat::CompatibilityProfile);
-    format.setDepthBufferSize(16);
+	ContextFormat format;
+	format.setVersion(4, 0);
+	format.setProfile(ContextFormat::CompatibilityProfile);
 	format.setStencilBufferSize(4);
 	format.setSamples(24);
 
-    Window window;
+	Window window;
+
 	window.setEventHandler(new EventHandler());
 
-    window.create(format, "Navigations Example");
-	window.fullScreen();
-    window.context()->setSwapInterval(Context::VerticalSyncronization);
-    window.show();
+	if (window.create(format, "Navigations Example"))
+	{
+		window.context()->setSwapInterval(Context::VerticalSyncronization);
 
-    return MainLoop::run();
+		window.show();
+
+		return MainLoop::run();
+	}
+	else
+	{
+		return 1;
+	}
 }

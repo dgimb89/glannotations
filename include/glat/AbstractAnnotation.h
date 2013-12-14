@@ -11,18 +11,19 @@
 #include <memory>
 
 namespace glat {
-class AbstractAnnotation : glow::Referenced {
+class AbstractAnnotation : public glow::Referenced {
 public:
-	AbstractAnnotation(glat::RendererFactory* factory);
+	AbstractAnnotation(const glat::RendererFactory& factory = RendererFactory());
 	void draw();
 	bool isDirty();
 	void setDirty(bool dirty);
 	void setState(float statePhase);
 	void addState(glat::AbstractState* state);
+	glat::AbstractState* getState(unsigned statePosition = 0);
 
 protected:
-	std::shared_ptr<glat::AbstractRenderer> m_renderer;
-	std::vector<std::shared_ptr<glat::AbstractState>> m_states;
+	glow::ref_ptr<glat::AbstractRenderer> m_renderer;
+	std::vector<glow::ref_ptr<glat::AbstractState>> m_states;
 	bool m_dirty;
 	float m_statePhase;
 };

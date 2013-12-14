@@ -4,7 +4,7 @@
 #include <glowutils/ScreenAlignedQuad.h>
 
 namespace glat {
-	class Quad : public glow::ScreenAlignedQuad {
+	class Quad : public glowutils::ScreenAlignedQuad {
 	public:
 		Quad(glow::Texture* distanceField);
 		void draw();

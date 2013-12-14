@@ -9,9 +9,9 @@ namespace glat {
 	class RendererFactory {
 	public:
 		RendererFactory();
-		glat::AbstractRenderer* createRenderer();
+		glat::AbstractRenderer* createRenderer() const;
 		void useNVpr(bool useNVpr);
-		bool usesNVpr();
+		bool usesNVpr() const;
 
 	protected:
 		static bool isExtensionSupported(const char *extension);

@@ -8,11 +8,10 @@ namespace glat {
 	// forward declaration 
 	class AbstractAnnotation;
 
-	class AbstractRenderer : glow::Referenced {
+	class AbstractRenderer : public glow::Referenced {
 	public:
 		virtual void draw(glat::AbstractAnnotation* annotation) = 0;
 	protected:
-		inline void setupViewportRendering();
 	};
 }
 

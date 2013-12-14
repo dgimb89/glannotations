@@ -1,17 +1,17 @@
 #include <glat/NVPRFontRenderer.h>
 #include "nvpr_init.hpp"
-#include <glat/AbstractAnnotation.h>
-
-const char *message = "OpenGL Annotations Toolkit - NVPR";
+#include <glat/FontAnnotation.h>
+#include <iostream>
 
 void glat::NVPRFontRenderer::draw(glat::AbstractAnnotation* annotation) {
-	if (annotation->isDirty()) {
+	glat::FontAnnotation* currentAnnotation = dynamic_cast<glat::FontAnnotation*>(annotation);
+	if (currentAnnotation->isDirty()) {
 		glClearStencil(1);
 		glClear(GL_STENCIL_BUFFER_BIT);
 		glStencilFunc(GL_NOTEQUAL, 0, 0x1F);
 		glStencilOp(GL_KEEP, GL_KEEP, GL_ZERO);
-		initializeFont();
-		annotation->setDirty(false);
+		initializeFont(currentAnnotation);
+		currentAnnotation->setDirty(false);
 	}
 	// disable depth test and back face culling
 	glDisable(GL_DEPTH_TEST);
@@ -24,14 +24,19 @@ void glat::NVPRFontRenderer::draw(glat::AbstractAnnotation* annotation) {
 	glLoadIdentity();
 
 	// hard coded 2d viewport rendering as of yet
-	int viewport[4];
+	/*int viewport[4];
 	glGetIntegerv(GL_VIEWPORT, viewport);
 	float aspect_ratio = viewport[2] / viewport[3];
 	float scale = 1.f;
 	glOrtho((-initialShift*5)*scale, 
 		(totalAdvance + initialShift*5)*scale, 
-		(-0.4*totalAdvance*aspect_ratio + (yMax + yMin) / 2)*scale, 
-		(0.4*totalAdvance*aspect_ratio + (yMax + yMin) / 2)*scale, 
+		(-0.1*totalAdvance*aspect_ratio + (yMax + yMin) / 2)*scale, 
+		(0.1*totalAdvance*aspect_ratio + (yMax + yMin) / 2)*scale, 
+		-1, 1);*/
+	glOrtho(-100, 
+		totalAdvance+100, 
+		yMin, 
+		yMax, 
 		-1, 1);
 
 	glMatrixMode(GL_MODELVIEW);
@@ -39,14 +44,27 @@ void glat::NVPRFontRenderer::draw(glat::AbstractAnnotation* annotation) {
 	glLoadIdentity();
 	glColor3f(1, 0, 0);
 
+	const char* text = currentAnnotation->getText().c_str();
+	size_t messageLen = strlen(text);
+
+	glStencilStrokePathInstancedNV((GLsizei)messageLen,
+		GL_UNSIGNED_BYTE, text, m_glyphBase,
+		1, ~0,  /* Use all stencil bits */
+		GL_TRANSLATE_2D_NV, xtranslate);
+	glColor3ub(20, 20, 20);  // light yellow
+	glCoverStrokePathInstancedNV((GLsizei)messageLen,
+		GL_UNSIGNED_BYTE, text, m_glyphBase,
+		GL_BOUNDING_BOX_OF_BOUNDING_BOXES_NV,
+		GL_TRANSLATE_2D_NV, xtranslate);
+
 	// draw annotations here
 	glStencilFillPathInstancedNV((GLsizei)messageLen,
-		GL_UNSIGNED_BYTE, message, m_glyphBase,
+		GL_UNSIGNED_BYTE, text, m_glyphBase,
 		GL_PATH_FILL_MODE_NV, ~0,  /* Use all stencil bits */
 		GL_TRANSLATE_2D_NV, xtranslate);
-	glColor3ub(20, 20, 20);  // dark gray
+	glColor3ub(192, 192, 192);  // dark gray
 	glCoverFillPathInstancedNV((GLsizei)messageLen,
-		GL_UNSIGNED_BYTE, message, m_glyphBase,
+		GL_UNSIGNED_BYTE, text, m_glyphBase,
 		GL_BOUNDING_BOX_OF_BOUNDING_BOXES_NV,
 		GL_TRANSLATE_2D_NV, xtranslate);
 
@@ -59,12 +77,10 @@ void glat::NVPRFontRenderer::draw(glat::AbstractAnnotation* annotation) {
 	glDisable(GL_STENCIL_TEST);
 }
 
-void glat::NVPRFontRenderer::initializeFont() {
+void glat::NVPRFontRenderer::initializeFont(glat::FontAnnotation* annotation) {
 	float font_data[4];
 	const int numChars = 256;  // ISO/IEC 8859-1 8-bit character range
 	GLfloat horizontalAdvance[256];
-
-	//glDeletePathsNV(m_glyphBase, numChars);
 
 	m_pathTemplate = ~0;
 	glPathCommandsNV(m_pathTemplate, 0, NULL, 0, GL_FLOAT, NULL);
@@ -110,7 +126,8 @@ void glat::NVPRFontRenderer::initializeFont() {
 		horizontalAdvance);
 
 	/* Query spacing information for example's message. */
-	messageLen = strlen(message);
+	const char* text = annotation->getText().c_str();
+	size_t messageLen = strlen(text);
 	free(xtranslate);
 	xtranslate = (GLfloat*)malloc(2 * sizeof(GLfloat)*messageLen);
 	if (!xtranslate) {
@@ -119,7 +136,7 @@ void glat::NVPRFontRenderer::initializeFont() {
 	xtranslate[0] = 0;
 	xtranslate[1] = 0;
 	glGetPathSpacingNV(GL_ACCUM_ADJACENT_PAIRS_NV,
-		(GLsizei)messageLen, GL_UNSIGNED_BYTE, message,
+		(GLsizei)messageLen, GL_UNSIGNED_BYTE, text,
 		m_glyphBase,
 		1.1, 1.0, GL_TRANSLATE_2D_NV,
 		xtranslate + 2);
@@ -127,11 +144,10 @@ void glat::NVPRFontRenderer::initializeFont() {
 	/* Total advance is accumulated spacing plus horizontal advance of
 	the last glyph */
 	totalAdvance = xtranslate[2 * (messageLen - 1)] +
-		horizontalAdvance[message[messageLen - 1]];
+		horizontalAdvance[text[messageLen - 1]];
 	initialShift = totalAdvance / messageLen;
 }
 
-glat::NVPRFontRenderer::NVPRFontRenderer()
-{
+glat::NVPRFontRenderer::NVPRFontRenderer() {
 	initializeNVPR();
 }

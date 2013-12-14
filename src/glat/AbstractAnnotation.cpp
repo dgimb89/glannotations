@@ -1,7 +1,7 @@
 #include <glat/AbstractAnnotation.h>
 
-glat::AbstractAnnotation::AbstractAnnotation(glat::RendererFactory* factory) :
-	m_renderer(factory->createRenderer()),
+glat::AbstractAnnotation::AbstractAnnotation(const glat::RendererFactory& factory) :
+	m_renderer(factory.createRenderer()),
 	m_dirty(true) {
 }
 
@@ -19,10 +19,14 @@ void glat::AbstractAnnotation::setState(float statePhase) {
 }
 
 void glat::AbstractAnnotation::addState(glat::AbstractState* state) {
-	m_states.push_back(std::shared_ptr<glat::AbstractState>(state));
+	m_states.push_back(state);
 	setDirty(true);
 }
 
 void glat::AbstractAnnotation::draw() {
 	m_renderer->draw(this);
+}
+
+glat::AbstractState* glat::AbstractAnnotation::getState(unsigned statePosition /*= 0*/) {
+	return m_states.at(statePosition);
 }

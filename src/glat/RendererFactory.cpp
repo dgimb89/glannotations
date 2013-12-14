@@ -7,8 +7,7 @@
 #include <glat/NVPRFontRenderer.h>
 #endif
 
-bool glat::RendererFactory::isExtensionSupported(const char *extension)
-{
+bool glat::RendererFactory::isExtensionSupported(const char *extension) {
 	return true;
 	const GLubyte *extensions = nullptr;
 	const GLubyte *start;
@@ -34,7 +33,7 @@ bool glat::RendererFactory::isExtensionSupported(const char *extension)
 	return false;
 }
 
-bool glat::RendererFactory::usesNVpr() {
+bool glat::RendererFactory::usesNVpr() const {
 	return m_useNVpr;
 }
 
@@ -42,9 +41,9 @@ void glat::RendererFactory::useNVpr(bool useNVpr) {
 	m_useNVpr = useNVpr;
 }
 
-glat::RendererFactory::RendererFactory() : m_useNVpr(false) {}
+glat::RendererFactory::RendererFactory() : m_useNVpr(true) {}
 
-glat::AbstractRenderer* glat::RendererFactory::createRenderer() {
+glat::AbstractRenderer* glat::RendererFactory::createRenderer() const {
 //#ifdef OPTION_USE_NVPR
 	if (usesNVpr() && isExtensionSupported("GL_NV_path_rendering")) {
 		return new glat::NVPRFontRenderer();

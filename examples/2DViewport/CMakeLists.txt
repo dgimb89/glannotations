@@ -6,7 +6,8 @@ add_executable(${target}
     main.cpp
 )
 
-target_link_libraries(${target}     
+target_link_libraries(${target}
+	${GLOW_LIBRARIES}     
     ${GLEW_LIBRARY}
     glat
 )

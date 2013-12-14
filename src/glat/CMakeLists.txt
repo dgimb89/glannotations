@@ -9,6 +9,7 @@ set(header
 	${header_path}/NVPRFontRenderer.h
 	${header_path}/DistanceFieldRenderer.h
 	${header_path}/AbstractState.h
+	${header_path}/ViewportState.h
 	${header_path}/AbstractAnnotation.h
 	${header_path}/FontAnnotation.h
 	${header_path}/SVGAnnotation.h
@@ -28,6 +29,8 @@ set(sources
 	${source_path}/AbstractRenderer.cpp
 	${source_path}/NVPRFontRenderer.cpp
 	${source_path}/DistanceFieldRenderer.cpp
+	${source_path}/AbstractState.cpp
+	${source_path}/ViewportState.cpp	
 	${source_path}/Quad.cpp
 	${source_path}/nvpr_init.hpp
 )

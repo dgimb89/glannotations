@@ -69,8 +69,8 @@ char* DistanceFieldRenderer::loadDistanceField(const char* path) {
 
 	png_read_info(png_ptr, info_ptr);
 
-	this->m_width = info_ptr->width;
-	this->m_height = info_ptr->height;
+	//this->m_width = info_ptr->width;
+	//this->m_height = info_ptr->height;
 	//int color_type = info_ptr->color_type;
 	//int bit_depth = info_ptr->bit_depth;
 
@@ -84,7 +84,7 @@ char* DistanceFieldRenderer::loadDistanceField(const char* path) {
 	png_bytep *row_pointers = (png_bytep*)malloc(sizeof(png_bytep)* m_height);
 	for (int y = 0; y < m_height; y++)
 	{
-		row_pointers[y] = (png_byte*)malloc(info_ptr->rowbytes);
+		//row_pointers[y] = (png_byte*)malloc(info_ptr->rowbytes);
 	}
 
 	png_read_image(png_ptr, row_pointers);
