@@ -1,11 +1,6 @@
 #include <glat/ViewportState.h>
 #include <glat/AbstractRenderer.h>
 
-glat::ViewportState::ViewportState() {
-	m_llf.x = .0f; m_llf.y = .0f;
-	m_urb.x = .0f; m_urb.y = .0f;
-}
-
 glat::ViewportState::ViewportState(glm::vec2 llf, glm::vec2 urb) {
 	setExtends(llf, urb);
 }

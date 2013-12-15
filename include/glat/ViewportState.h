@@ -8,7 +8,6 @@ namespace glat {
 
 	class ViewportState : public glat::AbstractState {
 	public:
-		ViewportState();
 		ViewportState(glm::vec2 llf, glm::vec2 urb);
 
 		// Extends in screen space coordinates
