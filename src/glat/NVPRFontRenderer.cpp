@@ -3,6 +3,7 @@
 #include <glat/FontAnnotation.h>
 #include <iostream>
 #include <glat/ViewportState.h>
+#include <glat/Outline.h>
 
 void glat::NVPRFontRenderer::draw(glat::AbstractAnnotation* annotation) {
 	glat::FontAnnotation* currentAnnotation = dynamic_cast<glat::FontAnnotation*>(annotation);
@@ -26,7 +27,7 @@ void glat::NVPRFontRenderer::draw(glat::AbstractAnnotation* annotation) {
 	// disable stencil test when finished
 	glDisable(GL_STENCIL_TEST);
 	// enable depth test again
-	//glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 }
 
 void glat::NVPRFontRenderer::drawSetupState(const glat::ViewportState& state) const {
@@ -103,17 +104,21 @@ void glat::NVPRFontRenderer::drawSetupState(const glat::ViewportState& state) co
 	glLoadIdentity();
 	glColor3f(1, 0, 0);
 
-	glStencilStrokePathInstancedNV((GLsizei)messageLen,
-		GL_UNSIGNED_BYTE, m_currentText, m_glyphBase,
-		1, ~0,  /* Use all stencil bits */
-		GL_TRANSLATE_2D_NV, xtranslate);
-	glColor3ub(20, 20, 20);  // light yellow
-	glCoverStrokePathInstancedNV((GLsizei)messageLen,
-		GL_UNSIGNED_BYTE, m_currentText, m_glyphBase,
-		GL_BOUNDING_BOX_OF_BOUNDING_BOXES_NV,
-		GL_TRANSLATE_2D_NV, xtranslate);
+	//outline 
+	if (m_drawOutline) {
+		glStencilStrokePathInstancedNV((GLsizei)messageLen,
+			GL_UNSIGNED_BYTE, m_currentText, m_glyphBase,
+			1, ~0,
+			GL_TRANSLATE_2D_NV, xtranslate);
+		glm::vec3 outlineColor = reinterpret_cast<glat::Style::Outline*>(state.getStyling("Outline").get())->getColor();
+		glColor3ub(static_cast<GLubyte>(outlineColor.r * 255), static_cast<GLubyte>(outlineColor.g * 255), static_cast<GLubyte>(outlineColor.b * 255));
+		glCoverStrokePathInstancedNV((GLsizei)messageLen,
+			GL_UNSIGNED_BYTE, m_currentText, m_glyphBase,
+			GL_BOUNDING_BOX_OF_BOUNDING_BOXES_NV,
+			GL_TRANSLATE_2D_NV, xtranslate);
+	}
 
-	// draw annotations here
+	// fill
 	glStencilFillPathInstancedNV((GLsizei)messageLen,
 		GL_UNSIGNED_BYTE, m_currentText, m_glyphBase,
 		GL_PATH_FILL_MODE_NV, ~0,  /* Use all stencil bits */
@@ -133,9 +138,9 @@ void glat::NVPRFontRenderer::drawSetupState(const glat::ViewportState& state) co
 void glat::NVPRFontRenderer::initializeFont(glat::FontAnnotation* annotation) {
 	m_pathTemplate = ~0;
 	glPathCommandsNV(m_pathTemplate, 0, NULL, 0, GL_FLOAT, NULL);
-	glPathParameterfNV(m_pathTemplate, GL_PATH_STROKE_WIDTH_NV, emScale*0.01f);
 	glPathParameteriNV(m_pathTemplate, GL_PATH_JOIN_STYLE_NV, GL_MITER_TRUNCATE_NV);
 	glPathParameterfNV(m_pathTemplate, GL_PATH_MITER_LIMIT_NV, 1.0);
+	setupOutline(annotation->getState()->getStyling("Outline"));
 
 	/* Create a range of path objects corresponding to Latin-1 character codes. */
 	m_glyphBase = glGenPathsNV(numChars);
@@ -161,4 +166,12 @@ void glat::NVPRFontRenderer::initializeFont(glat::FontAnnotation* annotation) {
 
 glat::NVPRFontRenderer::NVPRFontRenderer() {
 	initializeNVPR();
+}
+
+void glat::NVPRFontRenderer::setupOutline(glat::Styling* outline) {
+	m_drawOutline = false;
+	if (outline == nullptr) return;
+	m_drawOutline = true;
+	glat::Style::Outline* outlineStyle = reinterpret_cast<glat::Style::Outline*>(outline);
+	glPathParameterfNV(m_pathTemplate, GL_PATH_STROKE_WIDTH_NV, emScale*0.01f*outlineStyle->getWidth());
 }
