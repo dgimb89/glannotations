@@ -19,7 +19,7 @@ namespace glat {
 		glow::ref_ptr<glow::Texture> createRGBATexture(const char* image);
 		int m_width;
 		int m_height;
-		glowutils::ScreenAlignedQuad* m_quad;
+		glat::Quad* m_quad;
 	};
 }
 

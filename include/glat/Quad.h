@@ -2,15 +2,15 @@
 #define GLAT_QUAD_H
 
 #include <glowutils/ScreenAlignedQuad.h>
+#include <glm/glm.hpp>
 
 namespace glat {
 	class Quad : public glowutils::ScreenAlignedQuad {
 	public:
 		Quad(glow::Texture* distanceField);
 		void draw();
-	private:
-		const char * m_vertexShaderSource;
-		const char * m_fragmentShaderSource;
+		void setScale(glm::vec2 scale);
+		void setOffset(glm::vec2 offset);
 	};
 }
 #endif // !GLAT_QUAD_H

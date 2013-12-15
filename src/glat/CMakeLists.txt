@@ -42,6 +42,7 @@ set(sources
 	${source_path}/Quad.cpp
 
 	${source_path}/nvpr_init.hpp
+	${source_path}/ShaderSources.hpp
 )
 
 # Group source files

@@ -1,5 +1,6 @@
 #include <glat/DistanceFieldRenderer.h>
-#include <glat/AbstractAnnotation.h>
+#include <glat/ViewportState.h>
+#include <glat/FontAnnotation.h>
 
 #include <png.h>
 #include <iostream>
@@ -9,23 +10,27 @@ using namespace glat;
 
 
 void DistanceFieldRenderer::draw(AbstractAnnotation* annotation) {
-	if (annotation->isDirty()) {
-		char* image = loadDistanceField(path);
-		glow::ref_ptr<glow::Texture> texture = createRGBATexture(image);
-
-		m_quad = new glat::Quad(texture);
-		
-		annotation->setDirty(false);
-	}
+	glat::FontAnnotation* currentAnnotation = dynamic_cast<glat::FontAnnotation*>(annotation);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	m_quad->draw();
+
+	if (currentAnnotation->isDirty()) {
+		char* image = loadDistanceField(path);
+		glow::ref_ptr<glow::Texture> texture = createRGBATexture(image);
+		m_quad = new glat::Quad(texture);	
+		currentAnnotation->setDirty(false);
+	}
+
+	annotation->getState()->draw(*this);
+
 	glDisable(GL_BLEND);
 }
 
 void glat::DistanceFieldRenderer::drawSetupState(const glat::ViewportState& state) const {
-
+	//m_quad->setScale(glm::vec2(4.0f, 4.5f));
+	//m_quad->setOffset(glm::vec2(0.2f, 0.2f));
+	m_quad->draw();
 }
 
 
