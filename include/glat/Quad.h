@@ -11,6 +11,7 @@ namespace glat {
 		void draw();
 		void setScale(glm::vec2 scale);
 		void setOffset(glm::vec2 offset);
+		void setOutline(float size, glm::vec3 color);
 	};
 }
 #endif // !GLAT_QUAD_H

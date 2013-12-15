@@ -19,6 +19,9 @@ namespace glat {
 				#version 330
 
 				uniform sampler2D source;
+				uniform vec3 outlineColor;
+				uniform float outlineSize;
+				uniform int style;
 
 				layout (location = 0) out vec4 fragColor;
 
@@ -26,8 +29,6 @@ namespace glat {
 
 				vec4 getText() {
 					vec3 textColor = vec3(0f, 0f, 0f);
-					vec3 white = vec3(1f, 1f, 1f);
-
 					float d = texture2D(source, v_uv).x - 0.48;	
 
 					if (d > 0.0) {
@@ -38,26 +39,21 @@ namespace glat {
 					}
 				}
 
-				vec4 getWithOutlineText() {
-					vec3 outlineColor = vec3(0.2, 0.7, 0.898);
-					vec3 textColor = vec3(1.0, 0.733, 0.2);
-					vec4 color = texture2D(source, v_uv);
-
-					float d = color.x - 0.48;	
-
-					float a = smoothstep(-0.02, 0.00 , d);
+				vec4 getTextWithOutline() {
+					vec3 textColor =  vec3(0f, 0f, 0f);
+					float d = texture2D(source, v_uv).x - 0.48;	
 
 					// Interpolations Faktor zwischen outline und Welt
-					float ao = smoothstep(-0.2, -0.00 , d);
+					float d_outline = smoothstep(-outlineSize, -0.00 , d);
 
 					if (d > 0.0) {
 						return vec4(textColor, 1.0);
 					}
-					else if (a > 0.0) {
-						return vec4(outlineColor * (1.0 - a) + textColor * a, 1.0);
+					else if (d_outline > 0.0) {
+						return vec4(outlineColor, 1.0);
 					}
 					else {
-						return vec4(outlineColor, ao);
+						return vec4(0f, 0f, 0f, 0f);
 					}
 				}
 
@@ -76,13 +72,17 @@ namespace glat {
 
 					float angle = dot(n, lightSource);
 
-					vec4 diffuse = getWithOutlineText() * angle;
+					vec4 diffuse = getTextWithOutline() * angle;
 					return diffuse;
 				}
 
 				void main()
 				{
-					fragColor = getText();
+					if (style == 1) {
+						fragColor = getTextWithOutline();
+					} else {
+						fragColor = getText();
+					}
 				}
 				)";
 	}; // Shader

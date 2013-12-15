@@ -34,3 +34,9 @@ void Quad::setScale(glm::vec2 scale) {
 void Quad::setOffset(glm::vec2 offset) {
 	m_program->setUniform("offset", offset);
 }
+
+void Quad::setOutline(float size, glm::vec3 color) {
+	m_program->setUniform("outlineSize", size);
+	m_program->setUniform("outlineColor", color);
+	m_program->setUniform("style", 1);
+}

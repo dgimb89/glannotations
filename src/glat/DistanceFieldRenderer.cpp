@@ -1,16 +1,17 @@
 #include <glat/DistanceFieldRenderer.h>
 #include <glat/ViewportState.h>
 #include <glat/FontAnnotation.h>
+#include <glat/Outline.h>
 
 #include <png.h>
 #include <iostream>
 
 const char* path = "./distanceFieldCB.png";
+
 using namespace glat;
 
-
 void DistanceFieldRenderer::draw(AbstractAnnotation* annotation) {
-	glat::FontAnnotation* currentAnnotation = dynamic_cast<glat::FontAnnotation*>(annotation);
+	FontAnnotation* currentAnnotation = dynamic_cast<FontAnnotation*>(annotation);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -18,7 +19,11 @@ void DistanceFieldRenderer::draw(AbstractAnnotation* annotation) {
 	if (currentAnnotation->isDirty()) {
 		char* image = loadDistanceField(path);
 		glow::ref_ptr<glow::Texture> texture = createRGBATexture(image);
-		m_quad = new glat::Quad(texture);	
+		m_quad = new Quad(texture);
+		//m_quad->setScale(glm::vec2(4.0f, 4.5f));
+		//m_quad->setOffset(glm::vec2(0.2f, 0.2f));
+		
+		setupOutline(annotation->getState()->getStyling("Outline"));
 		currentAnnotation->setDirty(false);
 	}
 
@@ -27,9 +32,7 @@ void DistanceFieldRenderer::draw(AbstractAnnotation* annotation) {
 	glDisable(GL_BLEND);
 }
 
-void glat::DistanceFieldRenderer::drawSetupState(const glat::ViewportState& state) const {
-	//m_quad->setScale(glm::vec2(4.0f, 4.5f));
-	//m_quad->setOffset(glm::vec2(0.2f, 0.2f));
+void DistanceFieldRenderer::drawSetupState(const ViewportState& state) const {
 	m_quad->draw();
 }
 
@@ -110,4 +113,11 @@ char* DistanceFieldRenderer::loadDistanceField(const char* path) {
 
 	fclose(file);
 	return data;
+}
+
+
+void DistanceFieldRenderer::setupOutline(Styling* outline) {
+	if (outline == nullptr) return;
+	Style::Outline* outlineStyle = reinterpret_cast<Style::Outline*>(outline);
+	m_quad->setOutline(outlineStyle->getWidth()*0.01f, outlineStyle->getColor());
 }

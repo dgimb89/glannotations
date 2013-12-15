@@ -3,6 +3,7 @@
 
 #include <glat/Quad.h>
 #include <glat/AbstractRenderer.h>
+#include <glat/Styling.h>
 
 #include <glow/Texture.h>
 #include <glow/ref_ptr.h>
@@ -17,6 +18,7 @@ namespace glat {
 		virtual void drawSetupState(const glat::ViewportState& state) const;
 		char* loadDistanceField(const char* path);
 		glow::ref_ptr<glow::Texture> createRGBATexture(const char* image);
+		void setupOutline(glat::Styling* outline);
 		int m_width;
 		int m_height;
 		glat::Quad* m_quad;
