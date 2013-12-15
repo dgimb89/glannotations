@@ -5,32 +5,42 @@ set(header_path "${GLAT_DIR}/include/glat")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(header
+	${header_path}/Object.h
+	${header_path}/AbstractAnnotation.h
+	${header_path}/FontAnnotation.h
+	${header_path}/SVGAnnotation.h
+	${header_path}/PDFAnnotation.h
+
+	${header_path}/Styling.h
+	${header_path}/Outline.h
+
+	${header_path}/RendererFactory.h
 	${header_path}/AbstractRenderer.h
 	${header_path}/NVPRFontRenderer.h
 	${header_path}/DistanceFieldRenderer.h
 	${header_path}/AbstractState.h
 	${header_path}/ViewportState.h
-	${header_path}/AbstractAnnotation.h
-	${header_path}/FontAnnotation.h
-	${header_path}/SVGAnnotation.h
-	${header_path}/PDFAnnotation.h
-	${header_path}/RendererFactory.h
-	${header_path}/Styling.h
+	
 	${header_path}/Quad.h
 )
 
 set(sources
+	${source_path}/Object.cpp
 	${source_path}/AbstractAnnotation.cpp
 	${source_path}/FontAnnotation.cpp
 	${source_path}/SVGAnnotation.cpp
 	${source_path}/PDFAnnotation.cpp
+
 	${source_path}/Styling.cpp
+	${source_path}/Outline.cpp
+
 	${source_path}/RendererFactory.cpp
 	${source_path}/NVPRFontRenderer.cpp
 	${source_path}/DistanceFieldRenderer.cpp
 	${source_path}/AbstractState.cpp
-	${source_path}/ViewportState.cpp	
+	${source_path}/ViewportState.cpp
 	${source_path}/Quad.cpp
+
 	${source_path}/nvpr_init.hpp
 )
 

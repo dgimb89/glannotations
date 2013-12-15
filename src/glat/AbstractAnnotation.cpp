@@ -1,17 +1,8 @@
 #include <glat/AbstractAnnotation.h>
 
-glat::AbstractAnnotation::AbstractAnnotation(glat::AbstractState* initialState, const glat::RendererFactory& factory) :
-	m_renderer(factory.createRenderer()),
-	m_dirty(true) {
+glat::AbstractAnnotation::AbstractAnnotation(glat::AbstractState* initialState, const glat::RendererFactory& factory) 
+	: m_renderer(factory.createRenderer()) {
 	addState(initialState);
-}
-
-bool glat::AbstractAnnotation::isDirty() {
-	return m_dirty;
-}
-
-void glat::AbstractAnnotation::setDirty(bool dirty) {
-	m_dirty = dirty;
 }
 
 void glat::AbstractAnnotation::setState(float statePhase) {

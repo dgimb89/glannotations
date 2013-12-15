@@ -1,11 +1,16 @@
 #ifndef GLAT_STYLING_H
 #define GLAT_STYLING_H
 
-#include <glow/Referenced.h>
+#include <glat/Object.h>
+#include <string>
 
 namespace glat {
-	class Styling : public glow::Referenced {
+	class Styling : public glat::Object {
+	public:
+		std::string getID();
 
+	protected:
+		Styling();
 	};
 }
 

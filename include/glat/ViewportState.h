@@ -16,6 +16,8 @@ namespace glat {
 		const glm::vec2& getLLF() const;
 		const glm::vec2& getURB() const;
 
+		virtual bool isValid();
+
 	protected:
 		virtual void draw(const AbstractRenderer& renderer) const;
 		glm::vec2 m_llf, m_urb;

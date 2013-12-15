@@ -38,6 +38,7 @@
 
 #include <glat/FontAnnotation.h>
 #include <glat/ViewportState.h>
+#include <glat/Outline.h>
 
 using namespace glowwindow;
 using namespace glm;
@@ -85,6 +86,7 @@ public:
 		m_icosahedron = new glowutils::Icosahedron(2);
 		m_agrid = new glowutils::AdaptiveGrid(16U);
 		m_annotation = new glat::FontAnnotation(new glat::ViewportState());
+		m_annotation->getState()->setStyling(new glat::Style::Outline(1.f, glm::vec4(.1f, .1f, .1f, 1.f)));
 		m_annotation->setText("0");
 
 		m_camera.setZNear(0.1f);
@@ -120,7 +122,8 @@ public:
 		m_sphere->release();
 
 		m_agrid->draw();
-		char clockBuffer[50];
+
+		char clockBuffer[10];
 		sprintf(clockBuffer, "%d", clock() / CLOCKS_PER_SEC);
 		m_annotation->setText(clockBuffer);
 		m_annotation->draw();
@@ -334,7 +337,7 @@ int main(int argc, char* argv[])
 
 	if (window.create(format, "Navigations Example"))
 	{
-		window.context()->setSwapInterval(Context::VerticalSyncronization);
+		window.context()->setSwapInterval(Context::NoVerticalSyncronization);
 
 		window.show();
 

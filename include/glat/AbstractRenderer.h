@@ -1,7 +1,7 @@
 #ifndef GLAT_ABSTRACT_RENDERER_H
 #define GLAT_ABSTRACT_RENDERER_H
 
-#include <glow/Referenced.h>
+#include <glat/Object.h>
 
 namespace glat {
 
@@ -9,7 +9,7 @@ namespace glat {
 	class AbstractAnnotation;
 	class ViewportState;
 
-	class AbstractRenderer : public glow::Referenced {
+	class AbstractRenderer : public glat::Object {
 		friend class ViewportState;
 	public:
 		virtual void draw(glat::AbstractAnnotation* annotation) = 0;

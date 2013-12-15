@@ -1,25 +1,27 @@
 #include <glat/AbstractState.h>
 
 void glat::AbstractState::setStyling(glat::Styling* style) {
-	m_stylings.push_back(style);
+	setDirty(true);
+	m_stylings[style->getID()] = style;
 }
 
-const glat::StylingList& glat::AbstractState::getStylings() {
-	return m_stylings;
-}
+glow::ref_ptr<glat::Styling> glat::AbstractState::getStyling(std::string ID) {
+	auto itr = m_stylings.find(ID);
+	if (itr == m_stylings.end()) 
+		return nullptr;
 
-bool glat::AbstractState::isValid() {
-	return !m_stylings.empty();
+	return itr->second;
 }
 
 void glat::AbstractState::setAnchor(State::PositionAnchor anchor) {
+	setDirty(true);
 	m_anchor = anchor;
 }
 
 void glat::AbstractState::setAutoExtend(State::AutoExtend extendBehaviour) {
+	setDirty(true);
 	m_autoExtend = extendBehaviour;
 }
 
 glat::AbstractState::AbstractState() {
-
 }
