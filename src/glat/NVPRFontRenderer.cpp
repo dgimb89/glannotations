@@ -86,10 +86,16 @@ void glat::NVPRFontRenderer::drawSetupState(const glat::ViewportState& state) co
 	(-0.1*totalAdvance*aspect_ratio + (yMax + yMin) / 2)*scale,
 	(0.1*totalAdvance*aspect_ratio + (yMax + yMin) / 2)*scale,
 	-1, 1);*/
-	glOrtho(-100,
-		totalAdvance + 100,
-		yMin,
-		yMax,
+
+	// width and height mapped to (0 , 2]
+	float width = state.getURB().x - state.getLLF().x;
+	float height = (state.getURB().y - state.getLLF().y);
+	float emHeight = yMax - yMin;
+
+	glOrtho((state.getLLF().x + 1) / width * (-totalAdvance),
+		totalAdvance + (1 - state.getURB().x) / width * totalAdvance,
+		yMin - emHeight * (state.getLLF().y + 1) / height,
+		yMax + emHeight * (1 - state.getURB().y) / height,
 		-1, 1);
 
 	glMatrixMode(GL_MODELVIEW);

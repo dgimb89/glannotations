@@ -22,6 +22,8 @@ namespace glat {
 		friend class NVPRFontRenderer;
 	public:
 		void setStyling(glat::Styling* style);
+
+		// returns nullptr if style does not exist
 		glow::ref_ptr<glat::Styling> getStyling(std::string ID);
 		virtual bool isValid() = 0;
 		void setAnchor(State::PositionAnchor anchor);
