@@ -20,6 +20,7 @@ namespace glat {
 
 	class AbstractState : public glat::Object {
 		friend class NVPRFontRenderer;
+		friend class DistanceFieldRenderer;
 	public:
 		void setStyling(glat::Styling* style);
 		glow::ref_ptr<glat::Styling> getStyling(std::string ID);
