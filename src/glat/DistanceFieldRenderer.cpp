@@ -2,6 +2,7 @@
 #include <glat/ViewportState.h>
 #include <glat/FontAnnotation.h>
 #include <glat/Outline.h>
+#include <glat/BumpMap.h>
 
 #include <png.h>
 #include <iostream>
@@ -24,6 +25,7 @@ void DistanceFieldRenderer::draw(AbstractAnnotation* annotation) {
 		//m_quad->setOffset(glm::vec2(0.2f, 0.2f));
 		
 		setupOutline(annotation->getState()->getStyling("Outline"));
+		setupBumpMap(annotation->getState()->getStyling("BumpMap"));
 		currentAnnotation->setDirty(false);
 	}
 
@@ -120,4 +122,10 @@ void DistanceFieldRenderer::setupOutline(Styling* outline) {
 	if (outline == nullptr) return;
 	Style::Outline* outlineStyle = reinterpret_cast<Style::Outline*>(outline);
 	m_quad->setOutline(outlineStyle->getWidth()*0.01f, outlineStyle->getColor());
+}
+
+void DistanceFieldRenderer::setupBumpMap(Styling* bumpMap) {
+	if (bumpMap == nullptr) return;
+	Style::BumpMap* bumpMapStyle = reinterpret_cast<Style::BumpMap*>(bumpMap);
+	m_quad->setBumpMap(bumpMapStyle->getIntensity());
 }

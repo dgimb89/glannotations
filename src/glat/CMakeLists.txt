@@ -13,6 +13,7 @@ set(header
 
 	${header_path}/Styling.h
 	${header_path}/Outline.h
+	${header_path}/BumpMap.h
 
 	${header_path}/RendererFactory.h
 	${header_path}/AbstractRenderer.h
@@ -33,6 +34,7 @@ set(sources
 
 	${source_path}/Styling.cpp
 	${source_path}/Outline.cpp
+	${source_path}/BumpMap.cpp
 
 	${source_path}/RendererFactory.cpp
 	${source_path}/NVPRFontRenderer.cpp

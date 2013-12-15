@@ -19,6 +19,7 @@ namespace glat {
 		char* loadDistanceField(const char* path);
 		glow::ref_ptr<glow::Texture> createRGBATexture(const char* image);
 		void setupOutline(glat::Styling* outline);
+		void setupBumpMap(glat::Styling* bumpMap);
 		int m_width;
 		int m_height;
 		glat::Quad* m_quad;

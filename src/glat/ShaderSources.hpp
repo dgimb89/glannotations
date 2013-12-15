@@ -22,13 +22,14 @@ namespace glat {
 				uniform vec3 outlineColor;
 				uniform float outlineSize;
 				uniform int style;
+				uniform float bumpIntensity;
 
 				layout (location = 0) out vec4 fragColor;
 
 				in vec2 v_uv;
 
 				vec4 getText() {
-					vec3 textColor = vec3(0f, 0f, 0f);
+					vec3 textColor = vec3(1.0, 0.733, 0.2);//vec3(0f, 0f, 0f);
 					float d = texture2D(source, v_uv).x - 0.48;	
 
 					if (d > 0.0) {
@@ -40,7 +41,7 @@ namespace glat {
 				}
 
 				vec4 getTextWithOutline() {
-					vec3 textColor =  vec3(0f, 0f, 0f);
+					vec3 textColor = vec3(1.0, 0.733, 0.2);
 					float d = texture2D(source, v_uv).x - 0.48;	
 
 					// Interpolations Faktor zwischen outline und Welt
@@ -57,30 +58,35 @@ namespace glat {
 					}
 				}
 
-				vec4 get3DText() {
-					float dx = dFdx(texture2D(source, v_uv).x) * 3.0; 
-					float dy = dFdy(texture2D(source, v_uv).x) * 3.0;
+				float getBumpMapEffect() {
+					float dx = dFdx(texture2D(source, v_uv).x) * 45.0 * bumpIntensity;
+					float dy = dFdy(texture2D(source, v_uv).x) * 50.0 * bumpIntensity;
 
 					vec3 vx = vec3(1.0, 0.0, dx);
 					vec3 vy = vec3(0.0, 1.0, dy);
 
 					vec3 n = cross(vx, vy);
-					vec3 lightSource = vec3(0.0, 0.5, 1.0);
+					vec3 lightSource = vec3(1.5, 1.5, 3.0);
 
 					n = normalize(n);
 					lightSource = normalize(lightSource);
 
-					float angle = dot(n, lightSource);
-
-					vec4 diffuse = getTextWithOutline() * angle;
-					return diffuse;
+					//vec4 diffuse = vec4(getTextWithOutline().rgb * angle, getTextWithOutline().a);
+					//vec4 diffuse = getTextWithOutline() * angle;
+					return dot(n, lightSource);
 				}
 
 				void main()
 				{
 					if (style == 1) {
 						fragColor = getTextWithOutline();
-					} else {
+					} else if (style == 2) {
+						vec4 textColor = getText();
+						fragColor = vec4(textColor.rgb * getBumpMapEffect(), textColor.a);
+					}  else if (style == 3) {
+						vec4 textColor = getTextWithOutline();
+						fragColor = vec4(textColor.rgb * getBumpMapEffect(), textColor.a);
+					}else {
 						fragColor = getText();
 					}
 				}

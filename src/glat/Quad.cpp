@@ -7,7 +7,7 @@
 using namespace glat;
 
 Quad::Quad(glow::Texture* distanceField) : glowutils::ScreenAlignedQuad(distanceField) {
-
+	m_style = 0;
 	m_vertexShader = glow::Shader::fromString(GL_VERTEX_SHADER, ShaderSource::vertexShaderSource);
 	m_fragmentShader = glow::Shader::fromString(GL_FRAGMENT_SHADER, ShaderSource::fragmentShaderSource);
 
@@ -36,7 +36,14 @@ void Quad::setOffset(glm::vec2 offset) {
 }
 
 void Quad::setOutline(float size, glm::vec3 color) {
+	m_style |= 1;
 	m_program->setUniform("outlineSize", size);
 	m_program->setUniform("outlineColor", color);
-	m_program->setUniform("style", 1);
+	m_program->setUniform("style", m_style);
+}
+
+void Quad::setBumpMap(float intensity) {
+	m_style |= 2;
+	m_program->setUniform("bumpIntensity", intensity);
+	m_program->setUniform("style", m_style);
 }

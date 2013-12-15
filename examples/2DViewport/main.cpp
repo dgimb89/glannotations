@@ -39,6 +39,7 @@
 #include <glat/FontAnnotation.h>
 #include <glat/ViewportState.h>
 #include <glat/Outline.h>
+#include <glat/BumpMap.h>
 
 using namespace glowwindow;
 using namespace glm;
@@ -87,6 +88,7 @@ public:
 		m_agrid = new glowutils::AdaptiveGrid(16U);
 		m_annotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(.8f, -1.f), glm::vec2(1.f, 0.f)));
 		m_annotation->getState()->setStyling(new glat::Style::Outline(3.f, glm::vec3(.3f, .3f, .3f)));
+		m_annotation->getState()->setStyling(new glat::Style::BumpMap(1.0f));
 		m_annotation->setText("0");
 
 		m_camera.setZNear(0.1f);
