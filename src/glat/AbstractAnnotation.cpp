@@ -1,7 +1,6 @@
 #include <glat/AbstractAnnotation.h>
 
-glat::AbstractAnnotation::AbstractAnnotation(glat::AbstractState* initialState, const glat::RendererFactory& factory) 
-	: m_renderer(factory.createRenderer()) {
+glat::AbstractAnnotation::AbstractAnnotation(glat::AbstractState* initialState) {
 	addState(initialState);
 }
 

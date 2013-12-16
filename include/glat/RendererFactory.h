@@ -5,11 +5,16 @@ namespace glat {
 
 	// forward declaration 
 	class AbstractRenderer;
+	class AbstractAnnotation;
+	class FontAnnotation;
+	class SVGAnnotation;
 
 	class RendererFactory {
 	public:
 		RendererFactory();
-		glat::AbstractRenderer* createRenderer() const;
+		glat::AbstractRenderer* createRenderer(const glat::AbstractAnnotation& annotation) const;
+		glat::AbstractRenderer* createRenderer(const glat::FontAnnotation& annotation) const;
+		glat::AbstractRenderer* createRenderer(const glat::SVGAnnotation& annotation) const;
 		void useNVpr(bool useNVpr);
 		bool usesNVpr() const;
 

@@ -37,6 +37,7 @@
 #include <glowwindow/WindowEventHandler.h>
 
 #include <glat/FontAnnotation.h>
+#include <glat/SVGAnnotation.h>
 #include <glat/ViewportState.h>
 #include <glat/Outline.h>
 #include <glat/BumpMap.h>
@@ -86,10 +87,13 @@ public:
 
 		m_icosahedron = new glowutils::Icosahedron(2);
 		m_agrid = new glowutils::AdaptiveGrid(16U);
-		m_annotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(.8f, -1.f), glm::vec2(1.f, 0.f)));
-		m_annotation->getState()->setStyling(new glat::Style::Outline(3.f, glm::vec3(.3f, .3f, .3f)));
-		m_annotation->getState()->setStyling(new glat::Style::BumpMap(1.0f));
-		m_annotation->setText("0");
+		m_fontAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(.8f, -1.f), glm::vec2(1.f, 0.f)));
+		m_fontAnnotation->getState()->setStyling(new glat::Style::Outline(3.f, glm::vec3(.3f, .3f, .3f)));
+		m_fontAnnotation->getState()->setStyling(new glat::Style::BumpMap(1.0f));
+		m_fontAnnotation->setText("0");
+
+		m_svgAnnotation = new glat::SVGAnnotation(new glat::ViewportState(glm::vec2(-1.f, -1.f), glm::vec2(1.f, 1.f)));
+		m_svgAnnotation->setPathString("M100,180 L40,10 L190,120 L10,120 L160,10 z");
 
 		m_camera.setZNear(0.1f);
 		m_camera.setZFar(1024.f);
@@ -103,7 +107,7 @@ public:
 		m_sphere = nullptr;
 		m_icosahedron = nullptr;
 		m_agrid = nullptr;
-		m_annotation = nullptr;
+		m_fontAnnotation = nullptr;
 	}
 
 	virtual void framebufferResizeEvent(ResizeEvent & event) override
@@ -127,8 +131,10 @@ public:
 
 		char clockBuffer[10];
 		sprintf(clockBuffer, "%d", clock() / CLOCKS_PER_SEC);
-		m_annotation->setText(clockBuffer);
-		m_annotation->draw();
+		m_fontAnnotation->setText(clockBuffer);
+		m_fontAnnotation->draw();
+
+		m_svgAnnotation->draw();
 	}
 
 	virtual void timerEvent(TimerEvent & event) override
@@ -310,7 +316,8 @@ protected:
 
 	glow::ref_ptr<glowutils::Icosahedron> m_icosahedron;
 	glow::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
-	glow::ref_ptr<glat::FontAnnotation> m_annotation;
+	glow::ref_ptr<glat::FontAnnotation> m_fontAnnotation;
+	glow::ref_ptr<glat::SVGAnnotation> m_svgAnnotation;
 
 	glowutils::Camera m_camera;
 	glowutils::WorldInHandNavigation m_nav;

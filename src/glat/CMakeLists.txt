@@ -17,8 +17,13 @@ set(header
 
 	${header_path}/RendererFactory.h
 	${header_path}/AbstractRenderer.h
+
+	${header_path}/NVPRRenderer.h
 	${header_path}/NVPRFontRenderer.h
+	${header_path}/NVPRSvgRenderer.h
+
 	${header_path}/DistanceFieldRenderer.h
+
 	${header_path}/AbstractState.h
 	${header_path}/ViewportState.h
 	
@@ -37,13 +42,20 @@ set(sources
 	${source_path}/BumpMap.cpp
 
 	${source_path}/RendererFactory.cpp
+
+	${source_path}/NVPRRenderer.cpp
 	${source_path}/NVPRFontRenderer.cpp
+	${source_path}/NVPRSvgRenderer.cpp
+
 	${source_path}/DistanceFieldRenderer.cpp
+
 	${source_path}/AbstractState.cpp
 	${source_path}/ViewportState.cpp
 	${source_path}/Quad.cpp
 
-	${source_path}/nvpr_init.hpp
+	${source_path}/nvpr_init.h
+	${source_path}/nvpr_init.c
+	
 	${source_path}/ShaderSources.hpp
 )
 

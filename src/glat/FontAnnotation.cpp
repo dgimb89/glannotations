@@ -18,13 +18,12 @@ const std::string& glat::FontAnnotation::getFontName() {
 	return m_fontName;
 }
 
-glat::FontAnnotation::FontAnnotation(glat::AbstractState* initialState, std::string text) 
-	: AbstractAnnotation(initialState) {
+glat::FontAnnotation::FontAnnotation(glat::AbstractState* initialState, std::string text, const glat::RendererFactory& factory)
+	: FontAnnotation(initialState, factory) {
 	setText(text);
 }
 
-glat::FontAnnotation::FontAnnotation(glat::AbstractState* initialState) 
+glat::FontAnnotation::FontAnnotation(glat::AbstractState* initialState, const glat::RendererFactory& factory)
 	: AbstractAnnotation(initialState) {
-
+	m_renderer = factory.createRenderer(*this);
 }
-

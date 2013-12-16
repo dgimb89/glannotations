@@ -1,19 +1,16 @@
-#ifndef GLAT_NV_PATH_RENDERING_H
-#define GLAT_NV_PATH_RENDERING_H
+#ifndef GLAT_NVPR_FONT_RENDERER_H
+#define GLAT_NVPR_FONT_RENDERER_H
 
-#include <glat/AbstractRenderer.h>
+#include <glat/NVPRRenderer.h>
 #include <glat/Styling.h>
 
-#include <windows.h>
-#include <GL/GL.h>
 #include <glm/glm.hpp>
 
 namespace glat{
 	class FontAnnotation;
 
-	class NVPRFontRenderer : public AbstractRenderer {
+	class NVPRFontRenderer : public NVPRRenderer {
 	public:
-		NVPRFontRenderer();
 		virtual void draw(glat::AbstractAnnotation* annotation);
 	protected:
 		virtual void drawSetupState(const glat::ViewportState& state) const;

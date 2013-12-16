@@ -19,7 +19,7 @@ namespace glat {
 	}
 
 	class AbstractState : public glat::Object {
-		friend class NVPRFontRenderer;
+		friend class NVPRRenderer;
 		friend class DistanceFieldRenderer;
 	public:
 		void setStyling(glat::Styling* style);

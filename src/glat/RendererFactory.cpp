@@ -2,9 +2,11 @@
 #define NOMINMAX
 #include <GL/glew.h>
 #include "config.h"
+#include <glat/SVGAnnotation.h>
 #include <glat/DistanceFieldRenderer.h>
 #ifdef OPTION_USE_NVPR
 #include <glat/NVPRFontRenderer.h>
+#include <glat/NVPRSvgRenderer.h>
 #endif
 
 bool glat::RendererFactory::isExtensionSupported(const char *extension) {
@@ -34,7 +36,7 @@ bool glat::RendererFactory::isExtensionSupported(const char *extension) {
 }
 
 bool glat::RendererFactory::usesNVpr() const {
-	return m_useNVpr;
+	return m_useNVpr && isExtensionSupported("GL_NV_path_rendering");
 }
 
 void glat::RendererFactory::useNVpr(bool useNVpr) {
@@ -43,13 +45,30 @@ void glat::RendererFactory::useNVpr(bool useNVpr) {
 
 glat::RendererFactory::RendererFactory() : m_useNVpr(true) {}
 
-glat::AbstractRenderer* glat::RendererFactory::createRenderer() const {
+glat::AbstractRenderer* glat::RendererFactory::createRenderer(const glat::FontAnnotation& annotation) const {
 #ifdef OPTION_USE_NVPR
-	if (usesNVpr() && isExtensionSupported("GL_NV_path_rendering")) {
+	if (usesNVpr()) {
 		return new glat::NVPRFontRenderer();
-	} else 
+	}
+	else
 #endif
 	{
 		return new glat::DistanceFieldRenderer();
 	}
+}
+
+glat::AbstractRenderer* glat::RendererFactory::createRenderer(const glat::SVGAnnotation& annotation) const {
+#ifdef OPTION_USE_NVPR
+	if (usesNVpr()) {
+		return new glat::NVPRSvgRenderer();
+	}
+	else
+#endif
+	{
+		return new glat::DistanceFieldRenderer();
+	}
+}
+
+glat::AbstractRenderer* glat::RendererFactory::createRenderer(const glat::AbstractAnnotation& annotation) const {
+	return nullptr;
 }

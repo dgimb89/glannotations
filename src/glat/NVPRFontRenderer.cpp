@@ -1,33 +1,19 @@
 #include <glat/NVPRFontRenderer.h>
-#include "nvpr_init.hpp"
 #include <glat/FontAnnotation.h>
-#include <iostream>
 #include <glat/ViewportState.h>
 #include <glat/Outline.h>
 
 void glat::NVPRFontRenderer::draw(glat::AbstractAnnotation* annotation) {
-	glat::FontAnnotation* currentAnnotation = dynamic_cast<glat::FontAnnotation*>(annotation);
+	glat::FontAnnotation* currentAnnotation = reinterpret_cast<glat::FontAnnotation*>(annotation);
 	if (currentAnnotation->isDirty()) {
-		glClearStencil(1);
-		//glClear(GL_STENCIL_BUFFER_BIT);
+		clearStencilBuffer();
 		glStencilFunc(GL_NOTEQUAL, 0, 0x1F);
 		glStencilOp(GL_KEEP, GL_KEEP, GL_ZERO);
 		initializeFont(currentAnnotation);
 		currentAnnotation->setDirty(false);
 	}
-	// disable depth test and back face culling
-	glDisable(GL_DEPTH_TEST);
-	// enable stencil test as needed by nvpr
-	glEnable(GL_STENCIL_TEST);
-
-	// double dispatch to draw specific state
 	m_currentText = currentAnnotation->getText().c_str();
-	annotation->getState()->draw(*this);
-
-	// disable stencil test when finished
-	glDisable(GL_STENCIL_TEST);
-	// enable depth test again
-	glEnable(GL_DEPTH_TEST);
+	glat::NVPRRenderer::draw(annotation);
 }
 
 void glat::NVPRFontRenderer::drawSetupState(const glat::ViewportState& state) const {
@@ -162,10 +148,6 @@ void glat::NVPRFontRenderer::initializeFont(glat::FontAnnotation* annotation) {
 		0, numChars,
 		GL_USE_MISSING_GLYPH_NV, m_pathTemplate,
 		emScale);
-}
-
-glat::NVPRFontRenderer::NVPRFontRenderer() {
-	initializeNVPR();
 }
 
 void glat::NVPRFontRenderer::setupOutline(glat::Styling* outline) {
