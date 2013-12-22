@@ -5,9 +5,11 @@ glat::SVGAnnotation::SVGAnnotation(glat::AbstractState* initialState, const glat
 	m_renderer = factory.createRenderer(*this);
 }
 
-glat::SVGAnnotation::SVGAnnotation(glat::AbstractState* initialState, std::string svgPathString, const glat::RendererFactory& factory /*= RendererFactory()*/)
+glat::SVGAnnotation::SVGAnnotation(glat::AbstractState* initialState, std::string svgPathString, unsigned width, unsigned height, const glat::RendererFactory& factory /*= RendererFactory()*/)
 	: SVGAnnotation(initialState, factory) {
 	setPathString(svgPathString);
+	setWidth(width);
+	setHeight(height);
 }
 
 void glat::SVGAnnotation::setPathString(std::string svgPathString) {
@@ -15,6 +17,24 @@ void glat::SVGAnnotation::setPathString(std::string svgPathString) {
 	m_svgPathString = svgPathString;
 }
 
-const std::string& glat::SVGAnnotation::getPathString() {
+const std::string& glat::SVGAnnotation::getPathString() const {
 	return m_svgPathString;
+}
+
+unsigned glat::SVGAnnotation::getHeight() const {
+	return m_height;
+}
+
+unsigned glat::SVGAnnotation::getWidth() const {
+	return m_width;
+}
+
+void glat::SVGAnnotation::setWidth(unsigned width) {
+	setDirty(true);
+	m_width = width;
+}
+
+void glat::SVGAnnotation::setHeight(unsigned height) {
+	setDirty(true);
+	m_height = height;
 }

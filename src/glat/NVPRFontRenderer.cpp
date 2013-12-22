@@ -74,16 +74,7 @@ void glat::NVPRFontRenderer::drawSetupState(const glat::ViewportState& state) co
 	(0.1*totalAdvance*aspect_ratio + (yMax + yMin) / 2)*scale,
 	-1, 1);*/
 
-	// width and height mapped to (0 , 2]
-	float width = state.getURB().x - state.getLLF().x;
-	float height = (state.getURB().y - state.getLLF().y);
-	float emHeight = yMax - yMin;
-
-	glOrtho((state.getLLF().x + 1) / width * (-totalAdvance),
-		totalAdvance + (1 - state.getURB().x) / width * totalAdvance,
-		yMin - emHeight * (state.getLLF().y + 1) / height,
-		yMax + emHeight * (1 - state.getURB().y) / height,
-		-1, 1);
+	setupOrthoProjection(state.getLLF(), state.getURB(), totalAdvance, yMax - yMin, yMin);
 
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
@@ -122,11 +113,11 @@ void glat::NVPRFontRenderer::drawSetupState(const glat::ViewportState& state) co
 }
 
 void glat::NVPRFontRenderer::initializeFont(glat::FontAnnotation* annotation) {
-	m_pathTemplate = ~0;
-	glPathCommandsNV(m_pathTemplate, 0, NULL, 0, GL_FLOAT, NULL);
-	glPathParameteriNV(m_pathTemplate, GL_PATH_JOIN_STYLE_NV, GL_MITER_TRUNCATE_NV);
-	glPathParameterfNV(m_pathTemplate, GL_PATH_MITER_LIMIT_NV, 1.0);
-	setupOutline(annotation->getState()->getStyling("Outline"));
+	m_pathSettings = ~0;
+	glPathCommandsNV(m_pathSettings, 0, NULL, 0, GL_FLOAT, NULL);
+	glPathParameteriNV(m_pathSettings, GL_PATH_JOIN_STYLE_NV, GL_MITER_TRUNCATE_NV);
+	glPathParameterfNV(m_pathSettings, GL_PATH_MITER_LIMIT_NV, 1.0);
+	setupOutline(annotation->getState()->getStyling("Outline"), emScale*0.01f);
 
 	/* Create a range of path objects corresponding to Latin-1 character codes. */
 	m_glyphBase = glGenPathsNV(numChars);
@@ -136,24 +127,16 @@ void glat::NVPRFontRenderer::initializeFont(glat::FontAnnotation* annotation) {
 	glPathGlyphRangeNV(m_glyphBase,
 		GL_SYSTEM_FONT_NAME_NV, "Calibri", GL_BOLD_BIT_NV,
 		0, numChars,
-		GL_USE_MISSING_GLYPH_NV, m_pathTemplate,
+		GL_USE_MISSING_GLYPH_NV, m_pathSettings,
 		emScale);
 	glPathGlyphRangeNV(m_glyphBase,
 		GL_SYSTEM_FONT_NAME_NV, "Arial", GL_BOLD_BIT_NV,
 		0, numChars,
-		GL_USE_MISSING_GLYPH_NV, m_pathTemplate,
+		GL_USE_MISSING_GLYPH_NV, m_pathSettings,
 		emScale);
 	glPathGlyphRangeNV(m_glyphBase,
 		GL_STANDARD_FONT_NAME_NV, "Sans", GL_BOLD_BIT_NV,
 		0, numChars,
-		GL_USE_MISSING_GLYPH_NV, m_pathTemplate,
+		GL_USE_MISSING_GLYPH_NV, m_pathSettings,
 		emScale);
-}
-
-void glat::NVPRFontRenderer::setupOutline(glat::Styling* outline) {
-	m_drawOutline = false;
-	if (outline == nullptr) return;
-	m_drawOutline = true;
-	glat::Style::Outline* outlineStyle = reinterpret_cast<glat::Style::Outline*>(outline);
-	glPathParameterfNV(m_pathTemplate, GL_PATH_STROKE_WIDTH_NV, emScale*0.01f*outlineStyle->getWidth());
 }

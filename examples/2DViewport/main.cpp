@@ -93,8 +93,11 @@ public:
 		m_fontAnnotation->getState()->setStyling(new glat::Style::BumpMap(1.0f));
 		m_fontAnnotation->setText("0");
 
-		m_svgAnnotation = new glat::SVGAnnotation(new glat::ViewportState(glm::vec2(-1.f, -1.f), glm::vec2(1.f, 1.f)));
+		m_svgAnnotation = new glat::SVGAnnotation(new glat::ViewportState(glm::vec2(-1.f, -1.f), glm::vec2(-0.3f, 0.f)));
+		m_svgAnnotation->getState()->setStyling(new glat::Style::Outline(2.f, glm::vec3(.3f, .3f, .3f)));
 		m_svgAnnotation->setPathString("M100,180 L40,10 L190,120 L10,120 L160,10 z");
+		m_svgAnnotation->setHeight(190);
+		m_svgAnnotation->setWidth(200);
 
 		m_camera.setZNear(0.1f);
 		m_camera.setZFar(1024.f);

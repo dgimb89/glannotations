@@ -8,7 +8,7 @@ namespace glat {
 	public:
 		Object();
 		virtual bool isDirty();
-		virtual void setDirty(bool);
+		inline virtual void setDirty(bool);
 
 	protected: 
 		bool m_dirty;
