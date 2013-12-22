@@ -87,7 +87,8 @@ public:
 
 		m_icosahedron = new glowutils::Icosahedron(2);
 		m_agrid = new glowutils::AdaptiveGrid(16U);
-		m_fontAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(.8f, -1.f), glm::vec2(1.f, 0.f)));
+
+		m_fontAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(0.8f, -1.f), glm::vec2(1.f, 0.f)));
 		m_fontAnnotation->getState()->setStyling(new glat::Style::Outline(3.f, glm::vec3(.3f, .3f, .3f)));
 		m_fontAnnotation->getState()->setStyling(new glat::Style::BumpMap(1.0f));
 		m_fontAnnotation->setText("0");

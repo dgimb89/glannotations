@@ -9,6 +9,7 @@ void glat::NVPRSvgRenderer::draw(glat::AbstractAnnotation* annotation) {
 		glPathStringNV(m_pathObj, GL_PATH_FORMAT_SVG_NV, (GLsizei)strlen(currentAnnotation->getPathString().c_str()), currentAnnotation->getPathString().c_str());
 		glPathParameteriNV(m_pathObj, GL_PATH_JOIN_STYLE_NV, GL_ROUND_NV);
 		glPathParameterfNV(m_pathObj, GL_PATH_STROKE_WIDTH_NV, 2.f);
+		annotation->setDirty(false);
 	}
 	glat::NVPRRenderer::draw(annotation);
 }
@@ -27,7 +28,7 @@ void glat::NVPRSvgRenderer::drawSetupState(const glat::ViewportState& state) con
 	glStencilFillPathNV(m_pathObj, GL_COUNT_UP_NV, 0x1);
 	glStencilFunc(GL_NOTEQUAL, 0, 0x1);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_ZERO);
-	glColor3f(0.75f, 0.75f, 0.75f); // green
+	glColor3f(0.4f, 0.6f, 1.0f); // green
 	glCoverFillPathNV(m_pathObj, GL_BOUNDING_BOX_NV);
 
 	//outline
