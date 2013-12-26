@@ -17,6 +17,8 @@ find_library( LIBPNG_LIBRARY
 	NAMES 
 		libpng
 		libpngd
+		libpng16
+		libpng16d
 	PATHS
 		$ENV{LIBPNG_HOME}/lib
 )
