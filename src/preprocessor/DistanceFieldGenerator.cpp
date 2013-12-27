@@ -5,7 +5,7 @@ const glat::preprocessor::DistanceFieldGenerator::Image& distanceTransform() {
 	const int hresW = picture.getWidth();
 	const int hresH = picture.getHeight();
 
-	//	TODO: Breite und Höhe des Distanzfeldes berechnen:
+	//	Breite und Höhe des Distanzfeldes berechnen:
 	const int lresW = std::max(minimalSideLength * hresW / hresH, minimalSideLength);
 	const int lresH = std::max(minimalSideLength * hresH / hresW, minimalSideLength);
 
