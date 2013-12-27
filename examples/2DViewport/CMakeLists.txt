@@ -7,7 +7,11 @@ add_executable(${target}
 )
 
 target_link_libraries(${target}
-	${GLOW_LIBRARIES}     
-    ${GLEW_LIBRARY}
-    glat
+	general
+		${GLEW_LIBRARY}
+    	glat
+	debug
+		${GLOW_LIBRARIES_DEBUG}
+	optimized
+		${GLOW_LIBRARIES}
 )

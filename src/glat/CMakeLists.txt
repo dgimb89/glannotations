@@ -78,8 +78,12 @@ else()
 endif()
 
 target_link_libraries(${TARGET}
-	${GLEW_LIBRARY}
-	${OPENGL_LIBRARIES}
-	${GLOW_LIBRARIES}
-	${LIBPNG_LIBRARY}
+	general
+		${GLEW_LIBRARY}
+		${OPENGL_LIBRARIES}
+		${LIBPNG_LIBRARY}
+	optimized
+		${GLOW_LIBRARIES}
+	debug
+		${GLOW_LIBRARIES_DEBUG}
 )
