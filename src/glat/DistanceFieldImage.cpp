@@ -11,7 +11,7 @@ glat::DistanceFieldImage::DistanceFieldImage(unsigned width, unsigned height) {
 }
 
 glat::DistanceFieldImage::DistanceFieldImage(std::string distanceFieldFile) {
-	loadImage(distanceFieldFile);
+	loadImage(distanceFieldFile, 1);
 }
 
 glat::DistanceFieldImage::DistanceFieldImage(std::string pngSrcFile, std::string destDistanceFieldFile) {
@@ -31,12 +31,12 @@ bool glat::DistanceFieldImage::generateFromPNG(std::string fileName, unsigned mi
 	if(!loadImage(fileName)) return false;
 	const int hresW = m_width;
 	const int hresH = m_height;
-	const unsigned kernelSize = 16;
 
 	// calculate new lower res df image
 	const int lresW = std::max(minimalSideLength * hresW / hresH, minimalSideLength);
 	const int lresH = std::max(minimalSideLength * hresH / hresW, minimalSideLength);
 	const int scale = hresW / lresW;
+	const unsigned kernelSize = 128;
 
 	DistanceField dfImage = new DistanceFieldValue[lresH * lresW];
 	int middleX, middleY;
@@ -70,7 +70,7 @@ bool glat::DistanceFieldImage::generateFromPNG(std::string fileName, unsigned mi
 	return true;
 }
 
-bool glat::DistanceFieldImage::loadImage(std::string fileName) {
+bool glat::DistanceFieldImage::loadImage(std::string fileName, unsigned numComponents /* = 4 */) {
 	char header[8];	// 8 is the maximum size that can be checked
 
 	/* open file */
@@ -106,7 +106,7 @@ bool glat::DistanceFieldImage::loadImage(std::string fileName) {
 	{
 		png_read_rows(png_ptr, (png_bytepp)&row_pointer, NULL, 1);
 		for (int x = 0; x < this->m_width; x++) {
-			setDistance(x, y, static_cast<DistanceFieldValue>(row_pointer[x]));
+			setDistance(x, y, static_cast<DistanceFieldValue>(row_pointer[x*numComponents]));
 		}
 	}
 

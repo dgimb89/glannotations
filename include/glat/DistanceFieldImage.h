@@ -24,7 +24,7 @@ namespace glat {
 		~DistanceFieldImage();
 
 		bool generateFromPNG(std::string fileName, unsigned minimalSideLength = 40);
-		bool loadImage(std::string fileName);
+		bool loadImage(std::string fileName, unsigned numComponents = 4);
 		bool saveImage(std::string fileName) const;
 		void setDistance(unsigned x, unsigned y, DistanceFieldValue distance);
 

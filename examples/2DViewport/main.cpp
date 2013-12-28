@@ -87,6 +87,11 @@ public:
 		m_icosahedron = new glowutils::Icosahedron(2);
 		m_agrid = new glowutils::AdaptiveGrid(16U);
 
+		glat::RendererFactory dfFactory;
+		dfFactory.useNVpr(false);
+		m_dfAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(-0.5f, 0.8f), glm::vec2(0.5f, 1.0f)), dfFactory);
+		m_dfAnnotation->setText("x");
+
 		m_fontAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(0.8f, -1.f), glm::vec2(1.f, 0.f)));
 		m_fontAnnotation->getState()->setStyling(new glat::Style::Outline(3.f, glm::vec3(.3f, .3f, .3f)));
 		m_fontAnnotation->getState()->setStyling(new glat::Style::BumpMap(1.0f));
@@ -136,6 +141,8 @@ public:
 		sprintf(clockBuffer, "%d", clock() / CLOCKS_PER_SEC);
 		m_fontAnnotation->setText(clockBuffer);
 		m_fontAnnotation->draw();
+
+		m_dfAnnotation->draw();
 
 		m_svgAnnotation->draw();
 	}
@@ -320,6 +327,7 @@ protected:
 	glow::ref_ptr<glowutils::Icosahedron> m_icosahedron;
 	glow::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
 	glow::ref_ptr<glat::FontAnnotation> m_fontAnnotation;
+	glow::ref_ptr<glat::FontAnnotation> m_dfAnnotation;
 	glow::ref_ptr<glat::SVGAnnotation> m_svgAnnotation;
 
 	glowutils::Camera m_camera;

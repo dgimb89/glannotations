@@ -3,6 +3,7 @@
 #include <glat/FontAnnotation.h>
 #include <glat/Outline.h>
 #include <glat/BumpMap.h>
+#include <glat/DistanceFieldImage.h>
 
 #include <png.h>
 #include <iostream>
@@ -18,9 +19,8 @@ void DistanceFieldRenderer::draw(AbstractAnnotation* annotation) {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	if (currentAnnotation->isDirty()) {
-		char* image = loadDistanceField(path);
-		glow::ref_ptr<glow::Texture> texture = createRGBATexture(image);
-		m_quad = new Quad(texture);
+		
+		m_quad = new Quad(createRGBATexture(path));
 		//m_quad->setScale(glm::vec2(4.0f, 4.5f));
 		//m_quad->setOffset(glm::vec2(0.2f, 0.2f));
 		
@@ -39,7 +39,7 @@ void DistanceFieldRenderer::drawSetupState(const ViewportState& state) const {
 }
 
 
-glow::ref_ptr<glow::Texture> DistanceFieldRenderer::createRGBATexture(const char* image) {
+glow::ref_ptr<glow::Texture> DistanceFieldRenderer::createRGBATexture(std::string distanceFieldFile) {
 	glow::ref_ptr<glow::Texture> texture = new glow::Texture(GL_TEXTURE_2D);
 	texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -48,7 +48,8 @@ glow::ref_ptr<glow::Texture> DistanceFieldRenderer::createRGBATexture(const char
 	texture->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	texture->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-	texture->image2D(0, GL_R8, m_width, m_height, 0, GL_RED, GL_UNSIGNED_BYTE, image);
+	glat::DistanceFieldImage dfImage(distanceFieldFile);
+	texture->image2D(0, GL_RED, dfImage.getWidth(), dfImage.getHeight(), 0, GL_RED, GL_UNSIGNED_BYTE, dfImage.getDistanceField());
 	return texture;
 }
 
