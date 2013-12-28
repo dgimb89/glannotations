@@ -4,3 +4,4 @@ include_directories(
 	${GLFW_INCLUDE_DIR}
 )
 add_subdirectory(2DViewport)
+add_subdirectory(DFPreprocessing)

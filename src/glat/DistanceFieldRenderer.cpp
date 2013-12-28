@@ -48,7 +48,7 @@ glow::ref_ptr<glow::Texture> DistanceFieldRenderer::createRGBATexture(const char
 	texture->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	texture->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-	texture->image2D(0, GL_RGBA8, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+	texture->image2D(0, GL_R8, m_width, m_height, 0, GL_RED, GL_UNSIGNED_BYTE, image);
 	return texture;
 }
 

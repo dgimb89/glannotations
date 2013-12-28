@@ -7,11 +7,11 @@ namespace glat {
 	class Object : public glow::Referenced {
 	public:
 		Object();
-		virtual bool isDirty();
-		inline virtual void setDirty(bool);
+		virtual bool isDirty() const;
+		inline virtual void setDirty(bool) const;
 
 	protected: 
-		bool m_dirty;
+		mutable bool m_dirty;
 	};
 }
 

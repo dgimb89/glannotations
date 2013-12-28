@@ -3,24 +3,43 @@
 
 #include <string>
 #include <glm/glm.hpp>
+#include <glow/ref_ptr.h>
+#include <glow/Texture.h>
+
+#include <glat/Object.h>
 
 namespace glat {
-	class DistanceFieldImage {
+	class DistanceFieldImage : public glat::Object {
 	public:
-		DistanceFieldImage(std::string fileName, unsigned width, unsigned height);
+		typedef GLchar DistanceFieldValue;
+		typedef DistanceFieldValue* DistanceField;
+
+		// creates a blank Image
+		DistanceFieldImage(unsigned width, unsigned height);
+
+		// does not transforms given Image
+		DistanceFieldImage(std::string distanceFieldFile);
+
+		// transforms given src if dest does not exist
+		DistanceFieldImage(std::string pngSrcFile, std::string destDistanceFieldFile);
+
 		~DistanceFieldImage();
-		void loadImage(std::string fileName);
-		void saveImage() const;
-		void setDistance(unsigned x, unsigned y, float distance);
-		float getDistance(unsigned x, unsigned y) const;
+
+		bool generateFromPNG(std::string fileName);
+		bool loadImage(std::string fileName);
+		bool saveImage(std::string fileName) const;
+		void setDistance(unsigned x, unsigned y, DistanceFieldValue distance);
+
+		unsigned getWidth() const;
+		unsigned getHeight() const;
+
+		DistanceFieldValue getDistance(unsigned x, unsigned y) const;
+		const DistanceField getDistanceField() const;
 
 	protected:
-		void createImage();
-		void setWidth(unsigned width);
-		void setHeight(unsigned height);
+		inline void createImage();
 
-		typedef DistanceField glm::vec2;
-		DistanceField* m_image;
+		DistanceField m_image = nullptr;
 		unsigned m_width = 0, m_height = 0;
 
 	};
