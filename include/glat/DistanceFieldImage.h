@@ -3,15 +3,13 @@
 
 #include <string>
 #include <glm/glm.hpp>
-#include <glow/ref_ptr.h>
-#include <glow/Texture.h>
 
 #include <glat/Object.h>
 
 namespace glat {
 	class DistanceFieldImage : public glat::Object {
 	public:
-		typedef GLchar DistanceFieldValue;
+		typedef char DistanceFieldValue;
 		typedef DistanceFieldValue* DistanceField;
 
 		// creates a blank Image
@@ -25,7 +23,7 @@ namespace glat {
 
 		~DistanceFieldImage();
 
-		bool generateFromPNG(std::string fileName);
+		bool generateFromPNG(std::string fileName, unsigned minimalSideLength = 40);
 		bool loadImage(std::string fileName);
 		bool saveImage(std::string fileName) const;
 		void setDistance(unsigned x, unsigned y, DistanceFieldValue distance);
