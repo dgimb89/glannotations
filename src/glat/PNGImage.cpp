@@ -191,7 +191,7 @@ bool glat::PNGImage::saveDistanceField(std::string fileName) const {
 	return true;
 }
 
-bool glat::PNGImage::isColored(unsigned x, unsigned y) {
+bool glat::PNGImage::isColored(unsigned x, unsigned y) const {
 	unsigned result = 0;
 	for (unsigned colorChan = 0; colorChan < 3 && colorChan < m_imageComponents; ++colorChan) {
 		result += imageValue(x, y, colorChan);

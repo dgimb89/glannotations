@@ -1,50 +1,40 @@
 #include <glat/preprocessor/DistanceFieldGenerator.h>
+#include <algorithm>
 
-const glat::preprocessor::DistanceFieldGenerator::Image& distanceTransform() {
+const float kernel[] = {0.f,	1.f,		2.f,
+						1.f,	1.4f,		2.1969f,
+						2.f,	2.1969f,	2.8f};
 
-	const int hresW = picture.getWidth();
-	const int hresH = picture.getHeight();
-
-	//	Breite und Höhe des Distanzfeldes berechnen:
-	const int lresW = std::max(minimalSideLength * hresW / hresH, minimalSideLength);
-	const int lresH = std::max(minimalSideLength * hresH / hresW, minimalSideLength);
-
-	const int scale = hresW / lresW;
-
-	Picture * distanceField = new Picture(lresW, lresH);
-	int middleX, middleY;
-
-	for (int actualX = 0; actualX < lresW; actualX++) {
-		for (int actualY = 0; actualY < lresH; actualY++) {
-			middleX = scale * actualX;
-			middleY = scale * actualY;
-			bool isBlack = picture.getColor(middleX, middleY).isBlack();	// distance sign
-			float distance = sqrtf(powf(kernelSize / 2.0f, 2) + powf(kernelSize / 2.0f, 2));
-
-			for (int kernelX = std::max(middleX - (int)(kernelSize / 2.0f), 0); kernelX <= std::min(middleX + (int)(kernelSize / 2.0f), hresW - 1); kernelX++) {
-				for (int kernelY = std::max(middleY - (int)(kernelSize / 2.0f), 0); kernelY <= std::min(middleY + (int)(kernelSize / 2.0f), hresH - 1); kernelY++) {
-					if (isBlack != picture.getColor(kernelX, kernelY).isBlack()) {
-						distance = std::min(distance, std::sqrtf(std::powf(kernelX - middleX, 2.0f) + std::powf(kernelY - middleY, 2.0f)));
-					}
-				}
+glow::ref_ptr<glat::PNGImage> glat::preprocessor::DistanceFieldGenerator::distanceTransform(const glat::PNGImage& original, unsigned minSideLength = 0) {
+	float* topdownPass = new float[original.getHeight() * original.getWidth()];
+	float* bottomupPass = new float[original.getHeight() * original.getWidth()];
+	// top-left to bottom-right
+	for (unsigned y = 0; y < original.getHeight; ++y) {
+		for (unsigned x = 0; x < original.getWidth(); ++x) {
+			if (original.isColored(x, y)) {
+				// apply kernel
+				// to do : prevent memory violation
+				topdownPass[y * original.getWidth() + x] = kernel[0];
+				topdownPass[y * original.getWidth() + x + 1] = kernel[1];
+				topdownPass[y * original.getWidth() + x + 2] = kernel[2];
+				topdownPass[(y + 1) * original.getWidth() + x] = kernel[3];
+				topdownPass[(y + 1) * original.getWidth() + x + 1] = kernel[4];
+				topdownPass[(y + 1) * original.getWidth() + x + 2] = kernel[5];
+				topdownPass[(y + 2) * original.getWidth() + x] = kernel[6];
+				topdownPass[(y + 2) * original.getWidth() + x + 1] = kernel[7];
+				topdownPass[(y + 2) * original.getWidth() + x + 2] = kernel[8];
 			}
-			distance /= sqrtf(powf(kernelSize / 2.0f, 2) + powf(kernelSize / 2.0f, 2));
-			distance = 1 - distance;
-			distance /= 2.0f;
-			if (!isBlack)
-				distance += 0.3f;
-
-			distanceField->setColor(actualX, actualY, ColorRGBA(distance, distance, distance, 1));
 		}
 	}
+	// bottom-right to top-left
+	// normalize distances
+	// transform float distances
 
+	glow::ref_ptr<glat::PNGImage> distanceField = new glat::PNGImage(original.getWidth(), original.getHeight(), 1);
 	return distanceField;
 }
 
-bool glat::preprocessor::DistanceFieldGenerator::isDirty() {
-	return m_dirty;
-}
-
-bool glat::preprocessor::DistanceFieldGenerator::setDirty(bool dirty) {
-	m_dirty = dirty;
+glat::PNGImage::image_t glat::preprocessor::DistanceFieldGenerator::colorValueFromFloat(float val) {
+	float clampedVal = std::max(0.f, std::min(1.f, val));
+	return static_cast<glat::PNGImage::image_t>(floorf(clampedVal == 1.f ? 255 : clampedVal * 256.0));
 }

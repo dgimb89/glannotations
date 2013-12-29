@@ -1,27 +1,17 @@
 #ifndef GLAT_PREPROCESSOR_DISTANCE_FIELD_GENERATOR_H
 #define GLAT_PREPROCESSOR_DISTANCE_FIELD_GENERATOR_H
 
-#include <string>
+#include <glat/PNGImage.h>
+#include <glow/ref_ptr.h>
 
 namespace glat {
 	namespace preprocessor {
 		class DistanceFieldGenerator
 		{
 		public:
-			typedef int Image;
-			DistanceFieldGenerator();
-			DistanceFieldGenerator(Image image);
-			DistanceFieldGenerator(std::string fileName);
-			void LoadImage(std::string fileName);
-			void LoadImage(Image image);
-			const Image& distanceTransform();
-			void saveDistanceTransform(std::string fileName);
-
-		protected:
-			inline bool isDirty();
-			inline bool setDirty(bool dirty);
-			bool m_dirty;
-
+			// set minSideLength to 0 to not downscale given png
+			static glow::ref_ptr<glat::PNGImage> distanceTransform(const glat::PNGImage& original, unsigned minSideLength = 0);
+			static glat::PNGImage::image_t colorValueFromFloat(float val);
 		};
 	}
 }

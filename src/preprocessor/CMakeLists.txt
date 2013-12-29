@@ -6,13 +6,13 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(header
 	${header_path}/SVGLoader.h
-	#${header_path}/DistanceFieldGenerator.h
+	${header_path}/DistanceFieldGenerator.h
 )
 
 set(sources
 	${source_path}/main.cpp
 	${source_path}/SVGLoader.cpp
-	#${source_path}/DistanceFieldGenerator.cpp
+	${source_path}/DistanceFieldGenerator.cpp
 )
 
 # Group source files

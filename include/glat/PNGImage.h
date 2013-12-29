@@ -9,7 +9,7 @@
 namespace glat {
 	class PNGImage : public glat::Object {
 	public:
-		typedef char image_t;
+		typedef unsigned char image_t;
 		typedef image_t* image_p;
 
 		// creates a blank Image
@@ -29,7 +29,7 @@ namespace glat {
 
 		void setImageValue(unsigned x, unsigned y, unsigned numComponent, image_t value);
 		image_t getImageValue(unsigned x, unsigned y, unsigned numComponent) const;
-		bool isColored(unsigned x, unsigned y);
+		bool isColored(unsigned x, unsigned y) const;
 		const image_p getImage() const;
 
 		unsigned getWidth() const;
