@@ -3,12 +3,12 @@
 #include <glat/FontAnnotation.h>
 #include <glat/Outline.h>
 #include <glat/BumpMap.h>
-#include <glat/DistanceFieldImage.h>
+#include <glat/PNGImage.h>
 
 #include <png.h>
 #include <iostream>
 
-const char* path = "./distanceFieldCB.png";
+const char* path = "./testdf.png";
 
 using namespace glat;
 
@@ -48,8 +48,8 @@ glow::ref_ptr<glow::Texture> DistanceFieldRenderer::createRGBATexture(std::strin
 	texture->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	texture->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-	glat::DistanceFieldImage dfImage(distanceFieldFile);
-	texture->image2D(0, GL_RED, dfImage.getWidth(), dfImage.getHeight(), 0, GL_RED, GL_UNSIGNED_BYTE, dfImage.getDistanceField());
+	glat::PNGImage dfImage(distanceFieldFile);
+	texture->image2D(0, GL_RED, dfImage.getWidth(), dfImage.getHeight(), 0, GL_RED, GL_UNSIGNED_BYTE, dfImage.getImage());
 	return texture;
 }
 
