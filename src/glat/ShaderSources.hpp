@@ -11,7 +11,7 @@ namespace glat {
 				void main()
 				{
 					v_uv = vec2(position.x * scale.x, position.y * scale.y) * 0.5 + 0.5;
-					gl_Position = position + vec4(offset.x, offset.y, 0f, 0f);
+					gl_Position = position + vec4(offset.x, offset.y, 0.0, 0.0);
 				}
 				)";
 
@@ -29,14 +29,14 @@ namespace glat {
 				in vec2 v_uv;
 
 				vec4 getText() {
-					vec3 textColor = vec3(1.0, 0.733, 0.2);//vec3(0f, 0f, 0f);
-					float d = texture2D(source, v_uv).x - 0.48;	
+					vec3 textColor = vec3(1.0, 0.733, 0.2);//vec3(0.0, 0.0, 0.0);
+					float d = texture2D(source, v_uv).x - 0.48f;	
 
-					if (d > 0.0) {
-						return vec4(textColor, 1f);
+					if (d < 0.0) {
+						return vec4(textColor, 1.0);
 					} 
 					else {
-						return vec4(textColor, 0f);
+						return vec4(textColor, 0.0);
 					}
 				}
 
@@ -45,16 +45,16 @@ namespace glat {
 					float d = texture2D(source, v_uv).x - 0.48;	
 
 					// Interpolations Faktor zwischen outline und Welt
-					float d_outline = smoothstep(-outlineSize, -0.00 , d);
+					float d_outline = smoothstep(outlineSize, 0.0, d);
 
-					if (d > 0.0) {
+					if (d < 0.0) {
 						return vec4(textColor, 1.0);
 					}
 					else if (d_outline > 0.0) {
 						return vec4(outlineColor, 1.0);
 					}
 					else {
-						return vec4(0f, 0f, 0f, 0f);
+						return vec4(0.0, 0.0, 0.0, 0.0);
 					}
 				}
 

@@ -8,7 +8,7 @@
 #include <png.h>
 #include <iostream>
 
-const char* path = "./distanceFieldCB.png";
+const char* path = "./testdf.png";
 
 using namespace glat;
 
