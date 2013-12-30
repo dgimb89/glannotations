@@ -9,10 +9,14 @@ set(header
 	${header_path}/DistanceFieldGenerator.h
 )
 
-set(sources
-	${source_path}/main.cpp
+set(libsources
 	${source_path}/SVGLoader.cpp
 	${source_path}/DistanceFieldGenerator.cpp
+)
+
+set(sources
+	${source_path}/main.cpp
+	${source_path}
 )
 
 # Group source files
@@ -35,9 +39,15 @@ find_package(TinyXML2 REQUIRED)
 include_directories(	
 		${TINYXML2_INCLUDE_DIR}
 )
+# build library
+if(OPTION_BUILD_STATIC)
+    add_library(${TARGET} ${header} ${libsources})
+else()
+    add_library(${TARGET} SHARED ${header} ${libsources})
+endif()
 
 # Build executable
-add_executable(${TARGET} ${header} ${sources})
+#add_executable(${TARGET} ${header} ${sources})
 
 #add_subdirectory(libsvg)
 

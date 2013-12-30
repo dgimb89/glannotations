@@ -3,6 +3,18 @@
 #include <png.h>
 #include <algorithm>
 
+#include <glat/preprocessor/DistanceFieldGenerator.h>
+
+// internal data wrapper
+glat::PNGImage::image_t::image_t(unsigned size) {
+	data = new unsigned char[size];
+}
+
+glat::PNGImage::image_t::~image_t() {
+	delete[] data;
+}
+// ----------------------
+
 glat::PNGImage::PNGImage(unsigned width, unsigned height, unsigned numComponents /* = 4 */) {
 	m_width = width;
 	m_height = height;
@@ -20,56 +32,18 @@ glat::PNGImage::PNGImage(std::string pngSrcFile, std::string destDistanceFieldFi
 			saveDistanceField(destDistanceFieldFile);
 }
 
-glat::PNGImage::~PNGImage() {
-	delete[] m_image;
-}
-
 bool glat::PNGImage::distanceTransformFromPNG(std::string fileName, unsigned minimalSideLength /* = 30 */) {
 	setDirty(true);
 
 	// load source image
 	if(!loadImage(fileName)) return false;
-	const int hresW = m_width;
-	const int hresH = m_height;
-
-	// calculate new lower res df image
-	const int lresW = std::max(minimalSideLength * hresW / hresH, minimalSideLength);
-	const int lresH = std::max(minimalSideLength * hresH / hresW, minimalSideLength);
-	const int scale = hresW / lresW;
-	const unsigned kernelSize = 128;
-
-	image_p dfImage = new image_t[lresH * lresW];
-	int middleX, middleY;
-
-	for (int actualX = 0; actualX < lresW; actualX++) {
-		for (int actualY = 0; actualY < lresH; actualY++) {
-			middleX = scale * actualX;
-			middleY = scale * actualY;
-			bool isBlack = isColored(middleX, middleY);	// distance sign
-			float distance = sqrtf(powf(kernelSize / 2.0f, 2.f) + powf(kernelSize / 2.0f, 2.f));
-
-			for (int kernelX = std::max(middleX - (int)(kernelSize / 2.0f), 0); kernelX <= std::min(middleX + (int)(kernelSize / 2.0f), hresW - 1); kernelX++) {
-				for (int kernelY = std::max(middleY - (int)(kernelSize / 2.0f), 0); kernelY <= std::min(middleY + (int)(kernelSize / 2.0f), hresH - 1); kernelY++) {
-					if (isBlack != isColored(kernelX, kernelY)) {
-						distance = std::min(distance, std::sqrtf(std::powf(kernelX - middleX, 2.0f) + std::powf(kernelY - middleY, 2.0f)));
-					}
-				}
-			}
-			distance /= sqrtf(powf(kernelSize / 2.0f, 2) + powf(kernelSize / 2.0f, 2));
-			distance = 1 - distance;
-			distance /= 2.0f;
-			if (!isBlack)
-				distance += 0.3f;
-			dfImage[lresW * actualY + actualX] = static_cast<image_t>(std::floor(distance * 255));
-		}
-	}
-	delete[] m_image;
+	glow::ref_ptr<glat::PNGImage> distanceTransform = glat::preprocessor::DistanceFieldGenerator::distanceTransform(*this);
 
 	// set new image info data
-	m_width = lresW;
-	m_height = lresH;
+	m_width = distanceTransform->getWidth();
+	m_height = distanceTransform->getHeight();
 	m_imageComponents = 1;
-	m_image = dfImage;
+	m_image = distanceTransform->getImage();
 	return true;
 }
 
@@ -122,9 +96,6 @@ bool glat::PNGImage::loadImage(std::string fileName) {
 
 	png_bytep row_pointer = (png_bytep)png_malloc(png_ptr, png_get_rowbytes(png_ptr, info_ptr));
 
-	if (m_image != nullptr) {
-		delete[] m_image;
-	}
 	createImage();
 
 	for (unsigned y = 0; y < m_height; y++) {
@@ -132,7 +103,7 @@ bool glat::PNGImage::loadImage(std::string fileName) {
 		for (unsigned x = 0; x < this->m_width; x++) {
 			// set all components
 			for (unsigned numComponent = 0; numComponent < m_imageComponents; ++numComponent) {
-				setImageValue(x, y, numComponent, static_cast<image_t>(row_pointer[x*m_imageComponents + numComponent]));
+				setImageValue(x, y, numComponent, static_cast<colorVal_t>(row_pointer[x*m_imageComponents + numComponent]));
 			}
 		}
 	}
@@ -174,7 +145,7 @@ bool glat::PNGImage::saveDistanceField(std::string fileName) const {
 	png_bytepp row_pointers = new png_bytep[m_height];
 	for (unsigned h = 0; h < m_height; ++h) {
 		// we can ignore number of image components as it should be 1 anyway
-		row_pointers[h] = reinterpret_cast<png_bytep>(&m_image[h * m_width]);
+		row_pointers[h] = reinterpret_cast<png_bytep>(&m_image->data[h * m_width]);
 	}
 	png_write_image(png_ptr, row_pointers);
 	
@@ -203,24 +174,24 @@ bool glat::PNGImage::isColored(unsigned x, unsigned y) const {
 	return result > 0;
 }
 
-void glat::PNGImage::setImageValue(unsigned x, unsigned y, unsigned numComponent, image_t value) {
+void glat::PNGImage::setImageValue(unsigned x, unsigned y, unsigned numComponent, colorVal_t value) {
 	imageValue(x, y, numComponent) = value;
 }
 
-glat::PNGImage::image_t glat::PNGImage::getImageValue(unsigned x, unsigned y, unsigned numComponent /* = 1 */) const {
+glat::PNGImage::colorVal_t glat::PNGImage::getImageValue(unsigned x, unsigned y, unsigned numComponent /* = 1 */) const {
 	return imageValue(x, y, numComponent);
 }
 
-glat::PNGImage::image_t& glat::PNGImage::imageValue(unsigned x, unsigned y, unsigned numComponent) const {
-	return m_image[(m_width * y + x) * m_imageComponents + numComponent];
+glat::PNGImage::colorVal_t& glat::PNGImage::imageValue(unsigned x, unsigned y, unsigned numComponent) const {
+	return m_image->data[(m_width * y + x) * m_imageComponents + numComponent];
 }
 
-const glat::PNGImage::image_p glat::PNGImage::getImage() const {
+const glow::ref_ptr<glat::PNGImage::image_t> glat::PNGImage::getImage() const {
 	return m_image;
 }
 
 void glat::PNGImage::createImage() {
-	m_image = new image_t[m_height * m_width * m_imageComponents];
+	m_image = new image_t(m_height * m_width * m_imageComponents);
 }
 
 unsigned glat::PNGImage::getWidth() const {

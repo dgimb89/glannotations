@@ -82,8 +82,10 @@ endif()
 target_link_libraries(${TARGET}
 	general
 		${GLEW_LIBRARY}
+		preprocessor
 		${OPENGL_LIBRARIES}
 		${LIBPNG_LIBRARY}
+
 	optimized
 		${GLOW_LIBRARIES}
 	debug
