@@ -1,11 +1,12 @@
 #include <glat/preprocessor/DistanceFieldGenerator.h>
 #include <algorithm>
 
-const float kernel[] = {0.f,	1.f,		2.f,
-						1.f,	1.4f,		2.1969f,
-						2.f,	2.1969f,	2.8f};
+const float kernel[] = {0.f, 	1.f, 		2.f,
+						1.f, 	1.4f, 		2.1969f,
+						2.f, 	2.1969f, 	2.8f };
 
-#define SWAPIFLOWER(y,x,swapVal) if((x) >= 0 && (x) < original.getWidth() && (y) >= 0 && (y) < original.getHeight()) distances[(y)*original.getWidth() + (x)] = std::min(distances[(y)*original.getWidth() + (x)], swapVal)
+#define SWAPIFLOWER(y,x,swapVal) if((x) >= 0 && (x) < original.getWidth() && (y) >= 0 && (y) < original.getHeight()) \
+	distances[(y)*original.getWidth() + (x)] = (original.isColored(x, y) ? -1.f : 1.f) * std::min(std::abs(distances[(y)*original.getWidth() + (x)]), std::abs(swapVal))
 
 glow::ref_ptr<glat::PNGImage> glat::preprocessor::DistanceFieldGenerator::distanceTransform(const glat::PNGImage& original, unsigned minSideLength /* = 0 */) {
 	float* distances = new float[original.getHeight() * original.getWidth()];
@@ -13,7 +14,7 @@ glow::ref_ptr<glat::PNGImage> glat::preprocessor::DistanceFieldGenerator::distan
 	// top-left to bottom-right
 	for (unsigned y = 0; y < original.getHeight(); ++y) {
 		for (unsigned x = 0; x < original.getWidth(); ++x) {
-			if (original.isColored(x, y)) {
+			if (original.isColored(x, y) && distances[y * original.getWidth() + x] > 0.f) {
 				distances[y * original.getWidth() + x] = kernel[0];
 			}
 			// apply kernel
@@ -48,6 +49,16 @@ glow::ref_ptr<glat::PNGImage> glat::preprocessor::DistanceFieldGenerator::distan
 		}
 	}
 	// normalize distances
+	float maxDistance = INFINITY;
+
+	// image has no colored pixel if any distance is still infinity
+	if (distances[0] != INFINITY) {
+		for (unsigned i = original.getHeight() * original.getWidth(); i > 0; --i) {
+			maxDistance = std::max(maxDistance, distances[i - 1]);
+		}
+
+	}
+
 	// transform float distances to color values
 
 	glow::ref_ptr<glat::PNGImage> distanceField = new glat::PNGImage(original.getWidth(), original.getHeight(), 1);
