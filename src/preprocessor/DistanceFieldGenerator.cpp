@@ -6,19 +6,25 @@ const float kernel[] = {0.f, 	1.f, 		2.f,
 						2.f, 	2.1969f, 	2.8f };
 
 #define SWAPIFLOWER(y,x,swapVal) if((x) >= 0 && (x) < original.getWidth() && (y) >= 0 && (y) < original.getHeight()) \
-	distances[(y)*original.getWidth() + (x)] = (original.isColored(x, y) ? -1.f : 1.f) * std::min(std::abs(distances[(y)*original.getWidth() + (x)]), std::abs(swapVal))
+	distances[(y)*original.getWidth() + (x)] = (original.isColored(x, y) ? -1.0 : 1.0) * std::min(std::abs(distances[(y)*original.getWidth() + (x)]), std::abs(swapVal))
+
+bool glat::preprocessor::DistanceFieldGenerator::selfColoredNeighborsNot(const glat::PNGImage& original, unsigned x, unsigned y, unsigned maxX, unsigned maxY) {
+	return original.isColored(x, y) && 
+		((x > 0 ? !original.isColored(x - 1, y) : true) || (y > 0 ? !original.isColored(x, y - 1) : true) || 
+		(x < maxX ? !original.isColored(x + 1, y) : true) || (y < maxY ? !original.isColored(x, y + 1) : true));
+}
 
 glow::ref_ptr<glat::PNGImage> glat::preprocessor::DistanceFieldGenerator::distanceTransform(const glat::PNGImage& original, unsigned minSideLength /* = 0 */) {
-	float* distances = new float[original.getHeight() * original.getWidth()];
+	double* distances = new double[original.getHeight() * original.getWidth()];
 	std::fill_n(distances, original.getHeight() * original.getWidth(), INFINITY);
 	// top-left to bottom-right
 	for (unsigned y = 0; y < original.getHeight(); ++y) {
 		for (unsigned x = 0; x < original.getWidth(); ++x) {
-			if (original.isColored(x, y) && distances[y * original.getWidth() + x] > 0.f) {
+			if (selfColoredNeighborsNot(original, x, y, original.getWidth() - 1, original.getHeight() - 1)) {
 				distances[y * original.getWidth() + x] = kernel[0];
 			}
 			// apply kernel
-			float currentVal = distances[y * original.getWidth() + x];
+			double currentVal = std::abs(distances[y * original.getWidth() + x]);
 			if (currentVal == INFINITY) continue;
 			SWAPIFLOWER(y,		x + 1,	currentVal + kernel[1]);
 			SWAPIFLOWER(y,		x + 2,	currentVal + kernel[2]);
@@ -33,11 +39,11 @@ glow::ref_ptr<glat::PNGImage> glat::preprocessor::DistanceFieldGenerator::distan
 	// bottom-right to top-left
 	for (unsigned y = original.getHeight(); y > 0; --y) {
 		for (unsigned x = original.getWidth(); x > 0; --x) {
-			if (original.isColored(x - 1, y - 1)) {
+			if (selfColoredNeighborsNot(original, x - 1, y - 1, original.getWidth() - 1, original.getHeight() - 1)) {
 				distances[(y - 1) * original.getWidth() + (x - 1)] = kernel[0];
 			}
 			// apply kernel
-			float currentVal = distances[(y - 1) * original.getWidth() + (x - 1)];
+			double currentVal = std::abs(distances[(y - 1) * original.getWidth() + (x - 1)]);
 			SWAPIFLOWER(y - 1,	x - 2,	currentVal + kernel[1]);
 			SWAPIFLOWER(y - 1,	x - 3,	currentVal + kernel[2]);
 			SWAPIFLOWER(y - 2,	x - 1,	currentVal + kernel[3]);
@@ -49,23 +55,31 @@ glow::ref_ptr<glat::PNGImage> glat::preprocessor::DistanceFieldGenerator::distan
 		}
 	}
 	// normalize distances
-	float maxDistance = INFINITY;
+	double maxDistance = 0.f;
 
 	// image has no colored pixel if any distance is still infinity
 	if (distances[0] != INFINITY) {
 		for (unsigned i = original.getHeight() * original.getWidth(); i > 0; --i) {
-			maxDistance = std::max(maxDistance, distances[i - 1]);
+			maxDistance = std::max(maxDistance, std::abs(distances[i - 1]));
 		}
-
+		for (unsigned i = original.getHeight() * original.getWidth(); i > 0; --i) {
+			distances[i - 1] /= maxDistance;
+		}
 	}
 
 	// transform float distances to color values
 
 	glow::ref_ptr<glat::PNGImage> distanceField = new glat::PNGImage(original.getWidth(), original.getHeight(), 1);
+	for (unsigned y = 0; y < original.getHeight(); ++y) {
+		for (unsigned x = 0; x < original.getWidth(); ++x) {
+			distanceField->setImageValue(x, y, 0, colorValueFromFloat(distances[y * original.getWidth() + x]));
+		}
+	}
 	return distanceField;
 }
 
-glat::PNGImage::colorVal_t glat::preprocessor::DistanceFieldGenerator::colorValueFromFloat(float val) {
-	float clampedVal = std::max(0.f, std::min(1.f, val));
-	return static_cast<glat::PNGImage::colorVal_t>(floorf(clampedVal == 1.f ? 255.f : clampedVal * 256.f));
+glat::PNGImage::colorVal_t glat::preprocessor::DistanceFieldGenerator::colorValueFromFloat(double val) {
+	double clampedVal = std::max(-1.0, std::min(1.0, val)); // clamp to [-1 | 1]
+	// increase precision near contour by taking sqrt of distance
+	return static_cast<glat::PNGImage::colorVal_t>(std::floor(clampedVal == 1.0 ? 255.0 : 127.0 + (std::sqrt(std::abs(clampedVal)) * 128.0 * (clampedVal < 0.0 ? -1.0 : 1.0)))); // map to [0 | 255]
 }
