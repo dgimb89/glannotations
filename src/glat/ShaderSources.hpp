@@ -30,7 +30,7 @@ namespace glat {
 
 				vec4 getText() {
 					vec3 textColor = vec3(1.0, 0.733, 0.2);//vec3(0.0, 0.0, 0.0);
-					float d = texture2D(source, v_uv).x - 0.48f;	
+					float d = texture2D(source, v_uv).x - 0.48;	
 
 					if (d < 0.0) {
 						return vec4(textColor, 1.0);
@@ -45,7 +45,7 @@ namespace glat {
 					float d = texture2D(source, v_uv).x - 0.48;	
 
 					// Interpolations Faktor zwischen outline und Welt
-					float d_outline = smoothstep(outlineSize, 0.0, d);
+					float d_outline = smoothstep(outlineSize, 0.00 , d);
 
 					if (d < 0.0) {
 						return vec4(textColor, 1.0);

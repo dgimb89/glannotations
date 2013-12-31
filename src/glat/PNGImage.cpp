@@ -40,10 +40,10 @@ bool glat::PNGImage::distanceTransformFromPNG(std::string fileName, unsigned min
 	glow::ref_ptr<glat::PNGImage> distanceTransform = glat::preprocessor::DistanceFieldGenerator::distanceTransform(*this);
 
 	// set new image info data
+	m_image = distanceTransform->getImage();
 	m_width = distanceTransform->getWidth();
 	m_height = distanceTransform->getHeight();
 	m_imageComponents = 1;
-	m_image = distanceTransform->getImage();
 	return true;
 }
 
@@ -135,7 +135,7 @@ bool glat::PNGImage::saveDistanceField(std::string fileName) const {
 	if (setjmp(png_jmpbuf(png_ptr))) return false;
 
 	png_set_IHDR(png_ptr, info_ptr, m_width, m_height,
-		sizeof(image_t)*8, PNG_COLOR_TYPE_GRAY, PNG_INTERLACE_NONE,
+		sizeof(colorVal_t)*8, PNG_COLOR_TYPE_GRAY, PNG_INTERLACE_NONE,
 		PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
 
 	png_write_info(png_ptr, info_ptr);
@@ -144,6 +144,7 @@ bool glat::PNGImage::saveDistanceField(std::string fileName) const {
 	if (setjmp(png_jmpbuf(png_ptr))) return false;
 	png_bytepp row_pointers = new png_bytep[m_height];
 	for (unsigned h = 0; h < m_height; ++h) {
+		colorVal_t* test = m_image->data;
 		// we can ignore number of image components as it should be 1 anyway
 		row_pointers[h] = reinterpret_cast<png_bytep>(&m_image->data[h * m_width]);
 	}
