@@ -17,6 +17,7 @@ namespace glat{
 
 		GLuint m_glyphBase;
 		const char* m_currentText;
+		glm::vec4 m_textColor;
 		const float emScale = 2048;
 		const int numChars = 256;  // ISO/IEC 8859-1 8-bit character range
 	};

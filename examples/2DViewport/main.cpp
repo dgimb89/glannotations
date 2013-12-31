@@ -95,6 +95,7 @@ public:
 		m_fontAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(0.8f, -1.f), glm::vec2(1.f, 0.f)));
 		m_fontAnnotation->getState()->setStyling(new glat::Style::Outline(3.f, glm::vec3(.3f, .3f, .3f)));
 		m_fontAnnotation->getState()->setStyling(new glat::Style::BumpMap(1.0f));
+		m_fontAnnotation->setColor(glm::vec4(0.75, 0.75, 0.75, 1.0));
 		m_fontAnnotation->setText("0");
 
 		m_svgAnnotation = new glat::SVGAnnotation(new glat::ViewportState(glm::vec2(-1.f, -1.f), glm::vec2(-0.3f, 0.f)));

@@ -19,6 +19,7 @@ namespace glat {
 				#version 330
 
 				uniform sampler2D source;
+				uniform vec4 textColor;
 				uniform vec3 outlineColor;
 				uniform float outlineSize;
 				uniform int style;
@@ -29,26 +30,26 @@ namespace glat {
 				in vec2 v_uv;
 
 				vec4 getText() {
-					vec3 textColor = vec3(1.0, 0.733, 0.2);//vec3(0.0, 0.0, 0.0);
+					//vec3 textColor = vec3(1.0, 0.733, 0.2);//vec3(0.0, 0.0, 0.0);
 					float d = texture2D(source, v_uv).x - 0.48;	
 
 					if (d < 0.0) {
-						return vec4(textColor, 1.0);
+						return textColor;
 					} 
 					else {
-						return vec4(textColor, 0.0);
+						return vec4(0.0, 0.0, 0.0, 0.0);
 					}
 				}
 
 				vec4 getTextWithOutline() {
-					vec3 textColor = vec3(1.0, 0.733, 0.2);
+					//vec3 textColor = vec3(1.0, 0.733, 0.2);
 					float d = texture2D(source, v_uv).x - 0.48;	
 
 					// Interpolations Faktor zwischen outline und Welt
 					float d_outline = smoothstep(outlineSize, 0.00 , d);
 
 					if (d < 0.0) {
-						return vec4(textColor, 1.0);
+						return textColor;
 					}
 					else if (d_outline > 0.0) {
 						return vec4(outlineColor, 1.0);
@@ -81,11 +82,11 @@ namespace glat {
 					if (style == 1) {
 						fragColor = getTextWithOutline();
 					} else if (style == 2) {
-						vec4 textColor = getText();
-						fragColor = vec4(textColor.rgb * getBumpMapEffect(), textColor.a);
+						vec4 text = getText();
+						fragColor = vec4(text.rgb * getBumpMapEffect(), text.a);
 					}  else if (style == 3) {
-						vec4 textColor = getTextWithOutline();
-						fragColor = vec4(textColor.rgb * getBumpMapEffect(), textColor.a);
+						vec4 text = getTextWithOutline();
+						fragColor = vec4(text.rgb * getBumpMapEffect(), text.a);
 					}else {
 						fragColor = getText();
 					}

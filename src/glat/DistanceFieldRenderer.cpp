@@ -29,6 +29,7 @@ void DistanceFieldRenderer::draw(AbstractAnnotation* annotation) {
 		currentAnnotation->setDirty(false);
 	}
 
+	m_quad->setTextColor(currentAnnotation->getColor());
 	annotation->getState()->draw(*this);
 
 	glDisable(GL_BLEND);

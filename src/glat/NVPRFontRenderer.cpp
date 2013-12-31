@@ -13,6 +13,7 @@ void glat::NVPRFontRenderer::draw(glat::AbstractAnnotation* annotation) {
 		currentAnnotation->setDirty(false);
 	}
 	m_currentText = currentAnnotation->getText().c_str();
+	m_textColor = currentAnnotation->getColor();
 	glat::NVPRRenderer::draw(annotation);
 }
 
@@ -100,7 +101,8 @@ void glat::NVPRFontRenderer::drawSetupState(const glat::ViewportState& state) co
 		GL_UNSIGNED_BYTE, m_currentText, m_glyphBase,
 		GL_PATH_FILL_MODE_NV, ~0,  /* Use all stencil bits */
 		GL_TRANSLATE_2D_NV, xtranslate);
-	glColor3ub(192, 192, 192);  // dark gray
+	//glColor3ub(192, 192, 192);  // dark gray
+	glColor4f(m_textColor.r, m_textColor.g, m_textColor.b, m_textColor.a);
 	glCoverFillPathInstancedNV((GLsizei)messageLen,
 		GL_UNSIGNED_BYTE, m_currentText, m_glyphBase,
 		GL_BOUNDING_BOX_OF_BOUNDING_BOXES_NV,
