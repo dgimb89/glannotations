@@ -47,3 +47,7 @@ void Quad::setBumpMap(float intensity) {
 	m_program->setUniform("bumpIntensity", intensity);
 	m_program->setUniform("style", m_style);
 }
+
+void Quad::setTextColor(glm::vec4 color) {
+	m_program->setUniform("textColor", color);
+}

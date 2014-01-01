@@ -13,6 +13,7 @@ namespace glat {
 		void setOffset(glm::vec2 offset);
 		void setOutline(float size, glm::vec3 color);
 		void setBumpMap(float intensity);
+		void setTextColor(glm::vec4 color);
 	private:
 		int m_style;
 	};

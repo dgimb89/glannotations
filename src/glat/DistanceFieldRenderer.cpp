@@ -8,7 +8,7 @@
 #include <png.h>
 #include <iostream>
 
-const char* path = "./test_df.png";
+const char* path = "./testdf.png";
 
 using namespace glat;
 
@@ -29,6 +29,7 @@ void DistanceFieldRenderer::draw(AbstractAnnotation* annotation) {
 		currentAnnotation->setDirty(false);
 	}
 
+	m_quad->setTextColor(currentAnnotation->getColor());
 	annotation->getState()->draw(*this);
 
 	glDisable(GL_BLEND);
