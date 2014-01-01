@@ -36,7 +36,9 @@ void DistanceFieldRenderer::draw(AbstractAnnotation* annotation) {
 }
 
 void DistanceFieldRenderer::drawSetupState(const ViewportState& state) const {
+	glDisable(GL_DEPTH_TEST);
 	m_quad->draw();
+	glEnable(GL_DEPTH_TEST);
 }
 
 
