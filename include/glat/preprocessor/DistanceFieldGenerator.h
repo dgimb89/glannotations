@@ -10,7 +10,10 @@ namespace glat {
 		{
 		public:
 			// set minSideLength to 0 to not downscale given png
-			static glow::ref_ptr<glat::PNGImage> distanceTransform(const glat::PNGImage& original, unsigned minSideLength = 0);
+			static glow::ref_ptr<glat::PNGImage> distanceTransform(const glat::PNGImage& original);
+			static glow::ref_ptr<glat::PNGImage> distanceTransform(const glat::PNGImage& original, float scalingFactor);
+			static glow::ref_ptr<glat::PNGImage> distanceTransform(const glat::PNGImage& original, unsigned minSideLength);
+			static glow::ref_ptr<glat::PNGImage> distanceTransform(const glat::PNGImage& original, unsigned scaledWidth, unsigned scaledHeight);
 			static glat::PNGImage::colorVal_t colorValueFromFloat(double val);
 		protected:
 			static inline bool selfColoredNeighborsNot(const glat::PNGImage& original, unsigned x, unsigned y, unsigned maxX, unsigned maxY);

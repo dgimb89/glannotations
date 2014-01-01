@@ -32,12 +32,12 @@ glat::PNGImage::PNGImage(std::string pngSrcFile, std::string destDistanceFieldFi
 			saveDistanceField(destDistanceFieldFile);
 }
 
-bool glat::PNGImage::distanceTransformFromPNG(std::string fileName, unsigned minimalSideLength /* = 30 */) {
+bool glat::PNGImage::distanceTransformFromPNG(std::string fileName, unsigned minimalSideLength /* = 500 */) {
 	setDirty(true);
 
 	// load source image
 	if(!loadImage(fileName)) return false;
-	glow::ref_ptr<glat::PNGImage> distanceTransform = glat::preprocessor::DistanceFieldGenerator::distanceTransform(*this);
+	glow::ref_ptr<glat::PNGImage> distanceTransform = glat::preprocessor::DistanceFieldGenerator::distanceTransform(*this, minimalSideLength);
 
 	// set new image info data
 	m_image = distanceTransform->getImage();
@@ -180,6 +180,7 @@ void glat::PNGImage::setImageValue(unsigned x, unsigned y, unsigned numComponent
 }
 
 glat::PNGImage::colorVal_t glat::PNGImage::getImageValue(unsigned x, unsigned y, unsigned numComponent /* = 1 */) const {
+	if (x > getWidth() || y > getHeight()) return 0;
 	return imageValue(x, y, numComponent);
 }
 
@@ -201,4 +202,8 @@ unsigned glat::PNGImage::getWidth() const {
 
 unsigned glat::PNGImage::getHeight() const {
 	return m_height;
+}
+
+unsigned glat::PNGImage::getNumComponents() const {
+	return m_imageComponents;
 }

@@ -14,7 +14,44 @@ bool glat::preprocessor::DistanceFieldGenerator::selfColoredNeighborsNot(const g
 		(x < maxX ? !original.isColored(x + 1, y) : true) || (y < maxY ? !original.isColored(x, y + 1) : true));
 }
 
-glow::ref_ptr<glat::PNGImage> glat::preprocessor::DistanceFieldGenerator::distanceTransform(const glat::PNGImage& original, unsigned minSideLength /* = 0 */) {
+// bilinear interpolation
+glow::ref_ptr<glat::PNGImage> bilinearResize(const glat::PNGImage& inImage, unsigned scaledWidth, unsigned scaledHeight) {
+	glow::ref_ptr<glat::PNGImage> scaledResult = new glat::PNGImage(scaledWidth, scaledHeight, inImage.getNumComponents());
+
+	const double tx = double(inImage.getWidth()) / scaledWidth;
+	const double ty = double(inImage.getHeight()) / scaledHeight;
+	const unsigned channels = inImage.getNumComponents();
+
+	for (unsigned y = 0; y < scaledHeight; ++y){
+		for (unsigned x = 0; x < scaledWidth; ++x) {
+			double xPart = (x * tx) - std::floor(x * tx);
+			double yPart = (y * ty) - std::floor(y * ty);
+			double R_1 = ((1.0 - xPart) * inImage.getImageValue(std::floor(x * tx), std::floor(y * ty), 1)) + (xPart * inImage.getImageValue(std::ceil(x * tx), std::floor(y * ty), 1));
+			double R_2 = ((1.0 - xPart) * inImage.getImageValue(std::floor(x * tx), std::ceil(y * ty), 1)) + (xPart * inImage.getImageValue(std::ceil(x * tx), std::ceil(y * ty), 1));
+
+			scaledResult->setImageValue(x, y, 0, static_cast<glat::PNGImage::colorVal_t>((1.0 - yPart) * R_1 + (yPart * R_2)));
+		}
+	}
+
+	return scaledResult;
+}
+// ---
+
+glow::ref_ptr<glat::PNGImage> glat::preprocessor::DistanceFieldGenerator::distanceTransform(const glat::PNGImage& original, float scalingFactor) {
+	return bilinearResize(*distanceTransform(original), original.getWidth() * scalingFactor, original.getHeight() * scalingFactor);
+}
+
+glow::ref_ptr<glat::PNGImage> glat::preprocessor::DistanceFieldGenerator::distanceTransform(const glat::PNGImage& original, unsigned minSideLength) {
+	return (original.getHeight() > original.getWidth()) ? 
+		bilinearResize(*distanceTransform(original), minSideLength, original.getHeight() / original.getWidth() * minSideLength) :
+		bilinearResize(*distanceTransform(original), original.getWidth() * minSideLength / original.getHeight(), minSideLength);
+}
+
+glow::ref_ptr<glat::PNGImage> glat::preprocessor::DistanceFieldGenerator::distanceTransform(const glat::PNGImage& original, unsigned scaledWidth, unsigned scaledHeight) {
+	return bilinearResize(*distanceTransform(original), scaledWidth, scaledHeight);
+}
+
+glow::ref_ptr<glat::PNGImage> glat::preprocessor::DistanceFieldGenerator::distanceTransform(const glat::PNGImage& original) {
 	double* distances = new double[original.getHeight() * original.getWidth()];
 	std::fill_n(distances, original.getHeight() * original.getWidth(), INFINITY);
 	// top-left to bottom-right

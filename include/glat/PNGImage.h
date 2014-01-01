@@ -27,7 +27,7 @@ namespace glat {
 		// transforms given src if dest does not exist
 		PNGImage(std::string pngSrcFile, std::string destDistanceFieldFile);
 
-		bool distanceTransformFromPNG(std::string fileName, unsigned minimalSideLength = 40);
+		bool distanceTransformFromPNG(std::string fileName, unsigned minimalSideLength = 500);
 		bool saveDistanceField(std::string fileName) const;
 		bool loadImage(std::string fileName);
 
@@ -38,6 +38,7 @@ namespace glat {
 
 		unsigned getWidth() const;
 		unsigned getHeight() const;
+		unsigned getNumComponents() const;
 
 
 	protected:
