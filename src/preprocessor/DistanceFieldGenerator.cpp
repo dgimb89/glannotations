@@ -14,8 +14,7 @@ bool glat::preprocessor::DistanceFieldGenerator::selfColoredNeighborsNot(const g
 		(x < maxX ? !original.isColored(x + 1, y) : true) || (y < maxY ? !original.isColored(x, y + 1) : true));
 }
 
-// bilinear interpolation
-glow::ref_ptr<glat::PNGImage> bilinearResize(const glat::PNGImage& inImage, unsigned scaledWidth, unsigned scaledHeight) {
+glow::ref_ptr<glat::PNGImage> glat::preprocessor::DistanceFieldGenerator::bilinearResize(const glat::PNGImage& inImage, unsigned scaledWidth, unsigned scaledHeight) {
 	glow::ref_ptr<glat::PNGImage> scaledResult = new glat::PNGImage(scaledWidth, scaledHeight, inImage.getNumComponents());
 
 	const double tx = double(inImage.getWidth()) / scaledWidth;
@@ -24,18 +23,48 @@ glow::ref_ptr<glat::PNGImage> bilinearResize(const glat::PNGImage& inImage, unsi
 
 	for (unsigned y = 0; y < scaledHeight; ++y){
 		for (unsigned x = 0; x < scaledWidth; ++x) {
-			double xPart = (x * tx) - std::floor(x * tx);
-			double yPart = (y * ty) - std::floor(y * ty);
-			double R_1 = ((1.0 - xPart) * inImage.getImageValue(std::floor(x * tx), std::floor(y * ty), 1)) + (xPart * inImage.getImageValue(std::ceil(x * tx), std::floor(y * ty), 1));
-			double R_2 = ((1.0 - xPart) * inImage.getImageValue(std::floor(x * tx), std::ceil(y * ty), 1)) + (xPart * inImage.getImageValue(std::ceil(x * tx), std::ceil(y * ty), 1));
+			for (unsigned c = 0; c < channels; ++c) {
+				double xPart = (x * tx) - std::floor(x * tx);
+				double yPart = (y * ty) - std::floor(y * ty);
+				double R_1 = ((1.0 - xPart) * inImage.getImageValue(std::floor(x * tx), std::floor(y * ty), c)) + (xPart * inImage.getImageValue(std::ceil(x * tx), std::floor(y * ty), c));
+				double R_2 = ((1.0 - xPart) * inImage.getImageValue(std::floor(x * tx), std::ceil(y * ty), c)) + (xPart * inImage.getImageValue(std::ceil(x * tx), std::ceil(y * ty), c));
 
-			scaledResult->setImageValue(x, y, 0, static_cast<glat::PNGImage::colorVal_t>((1.0 - yPart) * R_1 + (yPart * R_2)));
+				scaledResult->setImageValue(x, y, c, static_cast<glat::PNGImage::colorVal_t>((1.0 - yPart) * R_1 + (yPart * R_2)));
+			}
 		}
 	}
 
 	return scaledResult;
 }
-// ---
+
+inline double cubicInterpolate(double p, double cur, double n1, double n2, double frac) {
+	return cur + 0.5 * frac *(n1 - p + frac*(2.0*p - 5.0*cur + 4.0*n1 - n2 + frac*(3.0*(cur - n1) + n2 - p)));
+}
+
+glow::ref_ptr<glat::PNGImage> glat::preprocessor::DistanceFieldGenerator::bicubicResize(const glat::PNGImage& inImage, unsigned scaledWidth, unsigned scaledHeight) {
+	glow::ref_ptr<glat::PNGImage> scaledResult = new glat::PNGImage(scaledWidth, scaledHeight, inImage.getNumComponents());
+
+	const double tx = double(inImage.getWidth()) / scaledWidth;
+	const double ty = double(inImage.getHeight()) / scaledHeight;
+	const unsigned channels = inImage.getNumComponents();
+
+	for (unsigned y = 0; y < scaledHeight; ++y){
+		for (unsigned x = 0; x < scaledWidth; ++x) {
+			for (unsigned c = 0; c < channels; ++c) {
+				double yFrac = ty * y - std::floor(ty * y);
+				signed long lowestX = static_cast<signed long>(std::floor(tx * x) - 1.0);
+				signed long lowestY = static_cast<signed long>(std::floor(ty * y) - 1.0);
+				double p0 = cubicInterpolate(inImage.getImageValue(lowestX, lowestY, c), inImage.getImageValue(lowestX, lowestY + 1, c), inImage.getImageValue(lowestX, lowestY + 2, c), inImage.getImageValue(lowestX, lowestY + 3, c), yFrac);
+				double p1 = cubicInterpolate(inImage.getImageValue(lowestX + 1, lowestY, c), inImage.getImageValue(lowestX + 1, lowestY + 1, c), inImage.getImageValue(lowestX + 1, lowestY + 2, c), inImage.getImageValue(lowestX + 1, lowestY + 3, c), yFrac);
+				double p2 = cubicInterpolate(inImage.getImageValue(lowestX + 2, lowestY, c), inImage.getImageValue(lowestX + 2, lowestY + 1, c), inImage.getImageValue(lowestX + 2, lowestY + 2, c), inImage.getImageValue(lowestX + 2, lowestY + 3, c), yFrac);
+				double p3 = cubicInterpolate(inImage.getImageValue(lowestX + 3, lowestY, c), inImage.getImageValue(lowestX + 3, lowestY + 1, c), inImage.getImageValue(lowestX + 3, lowestY + 2, c), inImage.getImageValue(lowestX + 3, lowestY + 3, c), yFrac);
+				double result = cubicInterpolate(p0, p1, p2, p3, (tx * x) - std::floor(tx * x));
+				scaledResult->setImageValue(x, y, c, static_cast<glat::PNGImage::colorVal_t>(std::round(result)));
+			}
+		}
+	}
+	return scaledResult;
+}
 
 glow::ref_ptr<glat::PNGImage> glat::preprocessor::DistanceFieldGenerator::distanceTransform(const glat::PNGImage& original, float scalingFactor) {
 	return bilinearResize(*distanceTransform(original), original.getWidth() * scalingFactor, original.getHeight() * scalingFactor);

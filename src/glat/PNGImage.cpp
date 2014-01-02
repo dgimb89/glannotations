@@ -22,21 +22,21 @@ glat::PNGImage::PNGImage(unsigned width, unsigned height, unsigned numComponents
 	createImage();
 }
 
-glat::PNGImage::PNGImage(std::string distanceFieldFile) {
-	loadImage(distanceFieldFile);
+glat::PNGImage::PNGImage(std::string pngFileName) {
+	loadImage(pngFileName);
 }
 
-glat::PNGImage::PNGImage(std::string pngSrcFile, std::string destDistanceFieldFile) {
+glat::PNGImage::PNGImage(std::string pngFileName, std::string destDistanceFieldFile) {
 	if (!loadImage(destDistanceFieldFile))
-		if (distanceTransformFromPNG(pngSrcFile))
+		if (distanceTransformFromPNG(pngFileName))
 			saveDistanceField(destDistanceFieldFile);
 }
 
-bool glat::PNGImage::distanceTransformFromPNG(std::string fileName, unsigned minimalSideLength /* = 500 */) {
+bool glat::PNGImage::distanceTransformFromPNG(std::string pngFileName, unsigned minimalSideLength /* = 500 */) {
 	setDirty(true);
 
 	// load source image
-	if(!loadImage(fileName)) return false;
+	if (!loadImage(pngFileName)) return false;
 	glow::ref_ptr<glat::PNGImage> distanceTransform = glat::preprocessor::DistanceFieldGenerator::distanceTransform(*this, minimalSideLength);
 
 	// set new image info data
@@ -47,12 +47,26 @@ bool glat::PNGImage::distanceTransformFromPNG(std::string fileName, unsigned min
 	return true;
 }
 
-bool glat::PNGImage::loadImage(std::string fileName) {
+bool glat::PNGImage::distanceTransform(unsigned minimalSideLength /* = 500 */) {
+	// load source image
+	if (isDirty()) return false;
+	setDirty(true);
+	glow::ref_ptr<glat::PNGImage> distanceTransform = glat::preprocessor::DistanceFieldGenerator::distanceTransform(*this, minimalSideLength);
+
+	// set new image info data
+	m_image = distanceTransform->getImage();
+	m_width = distanceTransform->getWidth();
+	m_height = distanceTransform->getHeight();
+	m_imageComponents = 1;
+	return true;
+}
+
+bool glat::PNGImage::loadImage(std::string pngFileName) {
 	char header[8];	// 8 is the maximum size that can be checked
 
 	/* open file */
 	FILE* pFile = NULL;
-	pFile = fopen(fileName.c_str(), "rb");
+	pFile = fopen(pngFileName.c_str(), "rb");
 	if (pFile == NULL) return false;
 
 	fread(header, 1, 8, pFile);
@@ -72,6 +86,7 @@ bool glat::PNGImage::loadImage(std::string fileName) {
 	m_width = png_get_image_width(png_ptr, info_ptr);
 	m_height = png_get_image_height(png_ptr, info_ptr);
 	png_byte colorType = png_get_color_type(png_ptr, info_ptr);
+
 	switch (colorType) {
 	case PNG_COLOR_TYPE_RGB:
 		// handle background color as transparent
@@ -113,12 +128,12 @@ bool glat::PNGImage::loadImage(std::string fileName) {
 	return true;
 }
 
-bool glat::PNGImage::saveDistanceField(std::string fileName) const {
+bool glat::PNGImage::saveDistanceField(std::string pngFileName) const {
 	if (m_imageComponents != 1) {
 		return false;
 	}
 
-	FILE *fp = fopen(fileName.c_str(), "wb");
+	FILE *fp = fopen(pngFileName.c_str(), "wb");
 	if (!fp) return false;
 
 	/* initialize stuff */
@@ -164,23 +179,15 @@ bool glat::PNGImage::saveDistanceField(std::string fileName) const {
 }
 
 bool glat::PNGImage::isColored(unsigned x, unsigned y) const {
-	unsigned result = 0;
-	for (unsigned colorChan = 0; colorChan < 3 && colorChan < m_imageComponents; ++colorChan) {
-		result += imageValue(x, y, colorChan);
-	}
-
-	if (m_imageComponents == 4) 
-		result *= imageValue(x, y, 3);
-
-	return result > 0;
+	return imageValue(x, y, 3) > 200;
 }
 
 void glat::PNGImage::setImageValue(unsigned x, unsigned y, unsigned numComponent, colorVal_t value) {
 	imageValue(x, y, numComponent) = value;
 }
 
-glat::PNGImage::colorVal_t glat::PNGImage::getImageValue(unsigned x, unsigned y, unsigned numComponent /* = 1 */) const {
-	if (x > getWidth() || y > getHeight()) return 0;
+glat::PNGImage::colorVal_t glat::PNGImage::getImageValue(signed long x, signed long y, signed long numComponent) const {
+	if (x < 0 || y < 0 || x > getWidth() || y > getHeight()) return 0;
 	return imageValue(x, y, numComponent);
 }
 

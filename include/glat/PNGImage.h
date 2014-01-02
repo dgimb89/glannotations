@@ -21,18 +21,19 @@ namespace glat {
 		// creates a blank Image
 		PNGImage(unsigned width, unsigned height, unsigned numComponents = 4);
 
-		// does not transforms given Image
-		PNGImage(std::string distanceFieldFile);
+		// load given png image
+		PNGImage(std::string pngFileName);
 
 		// transforms given src if dest does not exist
-		PNGImage(std::string pngSrcFile, std::string destDistanceFieldFile);
+		PNGImage(std::string pngFileName, std::string destDistanceFieldFile);
 
-		bool distanceTransformFromPNG(std::string fileName, unsigned minimalSideLength = 500);
-		bool saveDistanceField(std::string fileName) const;
-		bool loadImage(std::string fileName);
+		bool distanceTransformFromPNG(std::string pngFileName, unsigned minimalSideLength = 500);
+		bool distanceTransform(unsigned minimalSideLength = 500);
+		bool saveDistanceField(std::string pngFileName) const;
+		bool loadImage(std::string pngFileName);
 
 		void setImageValue(unsigned x, unsigned y, unsigned numComponent, colorVal_t value);
-		colorVal_t getImageValue(unsigned x, unsigned y, unsigned numComponent) const;
+		colorVal_t getImageValue(signed long x, signed long y, signed long numComponent) const;
 		bool isColored(unsigned x, unsigned y) const;
 		const glow::ref_ptr<image_t> getImage() const;
 

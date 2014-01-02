@@ -52,7 +52,7 @@ namespace glat {
 						return textColor;
 					}
 					else if (d_outline > 0.0) {
-						return vec4(outlineColor, 1.0);
+						return vec4(outlineColor, d_outline);
 					}
 					else {
 						return vec4(0.0, 0.0, 0.0, 0.0);

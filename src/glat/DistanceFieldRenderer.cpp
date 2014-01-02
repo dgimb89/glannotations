@@ -8,7 +8,7 @@
 #include <png.h>
 #include <iostream>
 
-const char* path = "./testdf.png";
+const char* path = "./test.png";
 
 using namespace glat;
 
@@ -52,6 +52,7 @@ glow::ref_ptr<glow::Texture> DistanceFieldRenderer::createRGBATexture(std::strin
 	texture->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 	glat::PNGImage dfImage(distanceFieldFile);
+	dfImage.distanceTransform(400);
 	texture->image2D(0, GL_RED, dfImage.getWidth(), dfImage.getHeight(), 0, GL_RED, GL_UNSIGNED_BYTE, dfImage.getImage()->data);
 	return texture;
 }
