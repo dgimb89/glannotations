@@ -91,7 +91,7 @@ public:
 		dfFactory.useNVpr(false);
 		m_dfAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(-0.5f, 0.8f), glm::vec2(0.5f, 1.0f)), dfFactory);
 		m_dfAnnotation->setText("x");
-		m_dfAnnotation->getState()->setStyling(new glat::Style::Outline(3.f, glm::vec3(0.f, 0.f, 0.f)));
+		m_dfAnnotation->getState()->setStyling(new glat::Style::Outline(2.f, glm::vec3(1.f, 1.f, 1.f)));
 
 		m_fontAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(0.8f, -1.f), glm::vec2(1.f, 0.f)));
 		m_fontAnnotation->getState()->setStyling(new glat::Style::Outline(3.f, glm::vec3(.3f, .3f, .3f)));

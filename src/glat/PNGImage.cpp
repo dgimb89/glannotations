@@ -49,7 +49,6 @@ bool glat::PNGImage::distanceTransformFromPNG(std::string pngFileName, unsigned 
 
 bool glat::PNGImage::distanceTransform(unsigned minimalSideLength /* = 500 */) {
 	// load source image
-	if (isDirty()) return false;
 	setDirty(true);
 	glow::ref_ptr<glat::PNGImage> distanceTransform = glat::preprocessor::DistanceFieldGenerator::distanceTransform(*this, minimalSideLength);
 
@@ -98,15 +97,22 @@ bool glat::PNGImage::loadImage(std::string pngFileName) {
 		m_imageComponents = 4;
 		break;
 
+	case PNG_COLOR_TYPE_GRAY_ALPHA:
 	case PNG_COLOR_TYPE_GRAY:
 		// typical distance field format
+		// check for 8 bit depth - expand if necessary
+		if (png_get_bit_depth(png_ptr, info_ptr) < 8) png_set_expand(png_ptr);
 		m_imageComponents = 1;
 		break;
 
 	default:
-		// we don't support other color types - break it
-		fclose(pFile);
-		return false;
+		// try expanding other formats to rgba
+		if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS)) {
+			png_set_expand(png_ptr);
+		} else {
+			fclose(pFile);
+			return false;
+		}
 	}
 
 	png_bytep row_pointer = (png_bytep)png_malloc(png_ptr, png_get_rowbytes(png_ptr, info_ptr));
@@ -179,7 +185,13 @@ bool glat::PNGImage::saveDistanceField(std::string pngFileName) const {
 }
 
 bool glat::PNGImage::isColored(unsigned x, unsigned y) const {
-	return imageValue(x, y, 3) > 200;
+	if (m_imageComponents > 3)
+		return imageValue(x, y, 3) > 0;
+	unsigned long result = 0;
+	for (auto i = 0; i < m_imageComponents && i < 3; ++i) {
+		result += imageValue(x, y, i);
+	}
+	return result != 765;
 }
 
 void glat::PNGImage::setImageValue(unsigned x, unsigned y, unsigned numComponent, colorVal_t value) {
@@ -187,7 +199,9 @@ void glat::PNGImage::setImageValue(unsigned x, unsigned y, unsigned numComponent
 }
 
 glat::PNGImage::colorVal_t glat::PNGImage::getImageValue(signed long x, signed long y, signed long numComponent) const {
-	if (x < 0 || y < 0 || x > getWidth() || y > getHeight()) return 0;
+	// clamp x,y access to image ranges
+	x = std::max(0l, std::min(static_cast<signed long>(getWidth() - 1), x));
+	y = std::max(0l, std::min(static_cast<signed long>(getHeight() - 1), y));
 	return imageValue(x, y, numComponent);
 }
 

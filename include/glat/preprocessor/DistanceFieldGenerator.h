@@ -18,7 +18,7 @@ namespace glat {
 			static glow::ref_ptr<glat::PNGImage> bilinearResize(const glat::PNGImage& inImage, unsigned scaledWidth, unsigned scaledHeight);
 			static glow::ref_ptr<glat::PNGImage> bicubicResize(const glat::PNGImage& inImage, unsigned scaledWidth, unsigned scaledHeight);
 		protected:
-			static inline bool selfColoredNeighborsNot(const glat::PNGImage& original, unsigned x, unsigned y, unsigned maxX, unsigned maxY);
+			static inline bool selfColoredNeighborsNot(const glat::PNGImage& original, unsigned x, unsigned y);
 			DistanceFieldGenerator() {}
 		};
 	}
