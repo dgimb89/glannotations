@@ -15,10 +15,11 @@ glat::PNGImage::image_t::~image_t() {
 }
 // ----------------------
 
-glat::PNGImage::PNGImage(unsigned width, unsigned height, unsigned numComponents /* = 4 */) {
+glat::PNGImage::PNGImage(unsigned width, unsigned height, unsigned numComponents /* = 4 */, unsigned bitdepth /* = 8 */) {
 	m_width = width;
 	m_height = height;
 	m_channels = numComponents;
+	m_bitdepth = 8;
 	createImage();
 }
 

@@ -19,7 +19,7 @@ namespace glat {
 		} image_t;
 
 		// creates a blank Image
-		PNGImage(unsigned width, unsigned height, unsigned numComponents = 4);
+		PNGImage(unsigned width, unsigned height, unsigned numComponents = 4, unsigned bitdepth = 8);
 
 		// load given png image
 		PNGImage(std::string pngFileName);
