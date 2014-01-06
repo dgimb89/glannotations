@@ -118,17 +118,19 @@ bool glat::PNGImage::loadImage(std::string pngFileName) {
 
 	createImage();
 
-	png_bytep* row_ptrs = new png_bytep[m_height];
-	const unsigned int stride = getRowStride();
-	for (size_t i = 0; i < m_height; i++) {
-		png_uint_32 q = (m_height - i - 1) * stride;
-		row_ptrs[i] = reinterpret_cast<png_bytep>(m_image.get())+q;
+	png_bytep row_pointer = (png_bytep)png_malloc(png_ptr, png_get_rowbytes(png_ptr, info_ptr));
+	for (unsigned y = 0; y < m_height; y++) {
+		png_read_rows(png_ptr, (png_bytepp)&row_pointer, NULL, 1);
+		for (unsigned x = 0; x < this->m_width; x++) {
+			// set all components
+			for (unsigned numComponent = 0; numComponent < m_channels; ++numComponent) {
+				// we do yet only support 8 bit precision; change this when other values are supported
+				setImageValue(x, m_height - y - 1, numComponent, static_cast<colorVal_t>(row_pointer[x*m_channels + numComponent]));
+			}
+		}
 	}
-	png_read_image(png_ptr, row_ptrs);
-	png_read_end(png_ptr, info_ptr);
-	delete[] row_ptrs;
-
-	//png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)0);
+	png_free(png_ptr, row_pointer);
+	png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)0);
 	fclose(pFile);
 	setDirty(false);
 	return true;
