@@ -86,53 +86,48 @@ bool glat::PNGImage::loadImage(std::string pngFileName) {
 	m_width = png_get_image_width(png_ptr, info_ptr);
 	m_height = png_get_image_height(png_ptr, info_ptr);
 	m_bitdepth = png_get_bit_depth(png_ptr, info_ptr);
-	png_byte colorType = png_get_color_type(png_ptr, info_ptr);
+	m_channels = png_get_channels(png_ptr, info_ptr);
 
-	switch (colorType) {
-	case PNG_COLOR_TYPE_RGB:
-		// handle background color as transparent
-		m_channels = 3;
+	switch (png_get_color_type(png_ptr, info_ptr)) {
+		case PNG_COLOR_TYPE_PALETTE:
+			// convert palette colors to full rgb
+			png_set_palette_to_rgb(png_ptr);
+			m_channels = 3;
 		break;
 
-	case PNG_COLOR_TYPE_RGBA:
-		// trivial case here
-		m_channels = 4;
+		case PNG_COLOR_TYPE_GRAY:
+			if (m_bitdepth < 8) {
+				png_set_expand_gray_1_2_4_to_8(png_ptr);
+				m_bitdepth = 8;
+			}
 		break;
-
-	case PNG_COLOR_TYPE_GRAY_ALPHA:
-		m_channels = 2;
-		break;
-
-	case PNG_COLOR_TYPE_GRAY:
-		// typical distance field format
-		// check for 8 bit depth - expand if necessary
-		if (m_bitdepth < 8) png_set_expand(png_ptr);
-		m_channels = 1;
-		break;
-
-	default:
-		// try expanding other formats to rgba
-		if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS)) {
-			png_set_expand(png_ptr);
-		} else {
-			fclose(pFile);
-			return false;
-		}
 	}
 
-	png_bytep row_pointer = (png_bytep)png_malloc(png_ptr, png_get_rowbytes(png_ptr, info_ptr));
+	// if the image has a transperancy set - convert it to a full Alpha channel
+	if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS)) {
+		png_set_tRNS_to_alpha(png_ptr);
+		m_channels += 1;
+	}
+
+	// we don't support 16 bit precision yet
+	if (m_bitdepth == 16) {
+		png_set_strip_16(png_ptr);
+		m_bitdepth = 8;
+	}
 
 	createImage();
 
-	png_bytepp rowPtrs = new png_bytep[imgHeight];
+	png_bytep* row_ptrs = new png_bytep[m_height];
 	const unsigned int stride = getRowStride();
 	for (size_t i = 0; i < m_height; i++) {
 		png_uint_32 q = (m_height - i - 1) * stride;
-		rowPtrs[i] = static_cast<png_bytep>(&m_image[q]);
+		row_ptrs[i] = reinterpret_cast<png_bytep>(m_image.get())+q;
 	}
-	png_read_image(png_ptr, rowPtrs);
-	delete[] rowPtrs;
-	png_destroy_read_struct(&png_ptr, &info_ptr,(png_infopp)0);
+	png_read_image(png_ptr, row_ptrs);
+	png_read_end(png_ptr, info_ptr);
+	delete[] row_ptrs;
+
+	//png_destroy_read_struct(&png_ptr, &info_ptr, (png_infopp)0);
 	fclose(pFile);
 	setDirty(false);
 	return true;
@@ -169,8 +164,6 @@ bool glat::PNGImage::saveDistanceField(std::string pngFileName) const {
 	if (setjmp(png_jmpbuf(png_ptr))) return false;
 	png_bytepp row_pointers = new png_bytep[m_height];
 	for (unsigned h = 0; h < m_height; ++h) {
-		colorVal_t* test = m_image->data;
-		// we can ignore number of image components as it should be 1 anyway
 		row_pointers[h] = reinterpret_cast<png_bytep>(&m_image->data[h * m_width]);
 	}
 	png_write_image(png_ptr, row_pointers);
@@ -226,7 +219,7 @@ unsigned glat::PNGImage::getWidth() const {
 }
 
 unsigned glat::PNGImage::getRowStride() const {
-	return m_width * m_bitdepth * (m_channels / 8);
+	return m_width * m_channels * (m_bitdepth / 8);
 }
 
 unsigned glat::PNGImage::getHeight() const {
