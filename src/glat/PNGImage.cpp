@@ -18,7 +18,7 @@ glat::PNGImage::image_t::~image_t() {
 glat::PNGImage::PNGImage(unsigned width, unsigned height, unsigned numComponents /* = 4 */) {
 	m_width = width;
 	m_height = height;
-	m_imageComponents = numComponents;
+	m_channels = numComponents;
 	createImage();
 }
 
@@ -43,7 +43,8 @@ bool glat::PNGImage::distanceTransformFromPNG(std::string pngFileName, unsigned 
 	m_image = distanceTransform->getImage();
 	m_width = distanceTransform->getWidth();
 	m_height = distanceTransform->getHeight();
-	m_imageComponents = 1;
+	m_bitdepth = 8;
+	m_channels = 1;
 	return true;
 }
 
@@ -56,7 +57,7 @@ bool glat::PNGImage::distanceTransform(unsigned minimalSideLength /* = 500 */) {
 	m_image = distanceTransform->getImage();
 	m_width = distanceTransform->getWidth();
 	m_height = distanceTransform->getHeight();
-	m_imageComponents = 1;
+	m_channels = 1;
 	return true;
 }
 
@@ -84,25 +85,29 @@ bool glat::PNGImage::loadImage(std::string pngFileName) {
 
 	m_width = png_get_image_width(png_ptr, info_ptr);
 	m_height = png_get_image_height(png_ptr, info_ptr);
+	m_bitdepth = png_get_bit_depth(png_ptr, info_ptr);
 	png_byte colorType = png_get_color_type(png_ptr, info_ptr);
 
 	switch (colorType) {
 	case PNG_COLOR_TYPE_RGB:
 		// handle background color as transparent
-		m_imageComponents = 3;
+		m_channels = 3;
 		break;
 
 	case PNG_COLOR_TYPE_RGBA:
 		// trivial case here
-		m_imageComponents = 4;
+		m_channels = 4;
 		break;
 
 	case PNG_COLOR_TYPE_GRAY_ALPHA:
+		m_channels = 2;
+		break;
+
 	case PNG_COLOR_TYPE_GRAY:
 		// typical distance field format
 		// check for 8 bit depth - expand if necessary
-		if (png_get_bit_depth(png_ptr, info_ptr) < 8) png_set_expand(png_ptr);
-		m_imageComponents = 1;
+		if (m_bitdepth < 8) png_set_expand(png_ptr);
+		m_channels = 1;
 		break;
 
 	default:
@@ -119,23 +124,22 @@ bool glat::PNGImage::loadImage(std::string pngFileName) {
 
 	createImage();
 
-	for (unsigned y = 0; y < m_height; y++) {
-		png_read_rows(png_ptr, (png_bytepp)&row_pointer, NULL, 1);
-		for (unsigned x = 0; x < this->m_width; x++) {
-			// set all components
-			for (unsigned numComponent = 0; numComponent < m_imageComponents; ++numComponent) {
-				setImageValue(x, y, numComponent, static_cast<colorVal_t>(row_pointer[x*m_imageComponents + numComponent]));
-			}
-		}
+	png_bytepp rowPtrs = new png_bytep[imgHeight];
+	const unsigned int stride = getRowStride();
+	for (size_t i = 0; i < m_height; i++) {
+		png_uint_32 q = (m_height - i - 1) * stride;
+		rowPtrs[i] = static_cast<png_bytep>(&m_image[q]);
 	}
-
+	png_read_image(png_ptr, rowPtrs);
+	delete[] rowPtrs;
+	png_destroy_read_struct(&png_ptr, &info_ptr,(png_infopp)0);
 	fclose(pFile);
 	setDirty(false);
 	return true;
 }
 
 bool glat::PNGImage::saveDistanceField(std::string pngFileName) const {
-	if (m_imageComponents != 1) {
+	if (m_channels != 1) {
 		return false;
 	}
 
@@ -185,10 +189,10 @@ bool glat::PNGImage::saveDistanceField(std::string pngFileName) const {
 }
 
 bool glat::PNGImage::isColored(unsigned x, unsigned y) const {
-	if (m_imageComponents > 3)
+	if (m_channels > 3)
 		return imageValue(x, y, 3) > 0;
 	unsigned long result = 0;
-	for (auto i = 0; i < m_imageComponents && i < 3; ++i) {
+	for (auto i = 0; i < m_channels && i < 3; ++i) {
 		result += imageValue(x, y, i);
 	}
 	return result != 765;
@@ -206,7 +210,7 @@ glat::PNGImage::colorVal_t glat::PNGImage::getImageValue(signed long x, signed l
 }
 
 glat::PNGImage::colorVal_t& glat::PNGImage::imageValue(unsigned x, unsigned y, unsigned numComponent) const {
-	return m_image->data[(m_width * y + x) * m_imageComponents + numComponent];
+	return m_image->data[(m_width * y + x) * m_channels + numComponent];
 }
 
 const glow::ref_ptr<glat::PNGImage::image_t> glat::PNGImage::getImage() const {
@@ -214,11 +218,15 @@ const glow::ref_ptr<glat::PNGImage::image_t> glat::PNGImage::getImage() const {
 }
 
 void glat::PNGImage::createImage() {
-	m_image = new image_t(m_height * m_width * m_imageComponents);
+	m_image = new image_t(m_height * getRowStride());
 }
 
 unsigned glat::PNGImage::getWidth() const {
 	return m_width;
+}
+
+unsigned glat::PNGImage::getRowStride() const {
+	return m_width * m_bitdepth * (m_channels / 8);
 }
 
 unsigned glat::PNGImage::getHeight() const {
@@ -226,5 +234,5 @@ unsigned glat::PNGImage::getHeight() const {
 }
 
 unsigned glat::PNGImage::getNumComponents() const {
-	return m_imageComponents;
+	return m_channels;
 }

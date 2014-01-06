@@ -40,13 +40,14 @@ namespace glat {
 		unsigned getWidth() const;
 		unsigned getHeight() const;
 		unsigned getNumComponents() const;
+		inline unsigned getRowStride() const;
 
 
 	protected:
 		inline void createImage();
 
 		glow::ref_ptr<image_t> m_image;
-		unsigned m_width = 0, m_height = 0, m_imageComponents = 4;
+		unsigned m_width = 0, m_height = 0, m_bitdepth = 0, m_channels = 4;
 
 	private:
 		inline colorVal_t& imageValue(unsigned x, unsigned y, unsigned numComponent) const;
