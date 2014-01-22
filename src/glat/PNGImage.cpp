@@ -186,10 +186,10 @@ bool glat::PNGImage::saveDistanceField(std::string pngFileName) const {
 
 bool glat::PNGImage::isColored(unsigned x, unsigned y) const {
 	if (m_channels > 3)
-		return imageValue(x, y, 3) > 0;
+		return getImageValue(x, y, 3) > 0;
 	unsigned long result = 0;
 	for (auto i = 0; i < m_channels && i < 3; ++i) {
-		result += imageValue(x, y, i);
+		result += getImageValue(x, y, i);
 	}
 	return result != 765;
 }

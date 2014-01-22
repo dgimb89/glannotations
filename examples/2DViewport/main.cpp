@@ -17,7 +17,9 @@
 #include <glow/Buffer.h>
 #include <glow/logging.h>
 #include <glow/VertexArrayObject.h>
+#include <glow/debugmessageoutput.h>
 
+#include <glowutils/global.h>
 #include <glowutils/AutoTimer.h>
 #include <glowutils/AxisAlignedBoundingBox.h>
 #include <glowutils/Icosahedron.h>
@@ -74,7 +76,7 @@ public:
 
 	virtual void initialize(Window & window) override
 	{
-		glow::DebugMessageOutput::enable();
+		glow::debugmessageoutput::enable();
 
 		glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
@@ -299,22 +301,22 @@ public:
 		event.accept();
 	}
 
-	virtual const float depthAt(const ivec2 & windowCoordinates) override
+	virtual float depthAt(const ivec2 & windowCoordinates) override
 	{
 		return AbstractCoordinateProvider::depthAt(m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
 	}
 
-	virtual const vec3 objAt(const ivec2 & windowCoordinates) override
+	virtual vec3 objAt(const ivec2 & windowCoordinates) override
 	{
 		return unproject(m_camera, static_cast<GLenum>(GL_DEPTH_COMPONENT), windowCoordinates);
 	}
 
-	virtual const vec3 objAt(const ivec2 & windowCoordinates, const float depth) override
+	virtual vec3 objAt(const ivec2 & windowCoordinates, const float depth) override
 	{
 		return unproject(m_camera, depth, windowCoordinates);
 	}
 
-	virtual const glm::vec3 objAt(
+	virtual glm::vec3 objAt(
 		const ivec2 & windowCoordinates
 		, const float depth
 		, const mat4 & viewProjectionInverted) override
