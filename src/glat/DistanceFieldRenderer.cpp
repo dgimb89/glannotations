@@ -1,5 +1,6 @@
 #include <glat/DistanceFieldRenderer.h>
 #include <glat/ViewportState.h>
+#include <glat/InternalState.h>
 #include <glat/FontAnnotation.h>
 #include <glat/Outline.h>
 #include <glat/BumpMap.h>
@@ -42,6 +43,14 @@ void DistanceFieldRenderer::drawSetupState(const ViewportState& state) const {
 }
 
 
+void DistanceFieldRenderer::drawSetupState(const InternalState& state) const {
+	glDisable(GL_DEPTH_TEST);
+	m_quad->setPosition(state.getCamera()->projection());
+	m_quad->draw();
+	glEnable(GL_DEPTH_TEST);
+}
+
+
 glow::ref_ptr<glow::Texture> DistanceFieldRenderer::createRGBATexture(std::string distanceFieldFile) {
 	glow::ref_ptr<glow::Texture> texture = new glow::Texture(GL_TEXTURE_2D);
 	texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -63,6 +72,7 @@ void DistanceFieldRenderer::setupOutline(Styling* outline) {
 	Style::Outline* outlineStyle = reinterpret_cast<Style::Outline*>(outline);
 	m_quad->setOutline(outlineStyle->getWidth()*0.01f, outlineStyle->getColor());
 }
+
 
 void DistanceFieldRenderer::setupBumpMap(Styling* bumpMap) {
 	if (bumpMap == nullptr) return;

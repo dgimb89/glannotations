@@ -3,15 +3,18 @@ namespace glat {
 		static const char*	vertexShaderSource = R"(
 				#version 330
 
+				uniform mat4 modelView;
+				uniform mat4 projection;
+
 				layout (location = 0) in vec4 position;
-				uniform vec2 scale;
-				uniform vec2 offset;
+				layout (location = 1) in vec2 textureCoord;
 				out vec2 v_uv;
 
 				void main()
 				{
-					v_uv = vec2(position.x * scale.x, position.y * scale.y) * 0.5 + 0.5;
-					gl_Position = position + vec4(offset.x, offset.y, 0.0, 0.0);
+					v_uv = vec2(position.x, position.y) * 0.5 + 0.5;
+					//v_uv = textureCoord;
+					gl_Position = projection * modelView * position;
 				}
 				)";
 
@@ -19,10 +22,10 @@ namespace glat {
 				#version 330
 
 				uniform sampler2D source;
+				uniform int style;
 				uniform vec4 textColor;
 				uniform vec3 outlineColor;
 				uniform float outlineSize;
-				uniform int style;
 				uniform float bumpIntensity;
 
 				layout (location = 0) out vec4 fragColor;
@@ -30,7 +33,6 @@ namespace glat {
 				in vec2 v_uv;
 
 				vec4 getText() {
-					//vec3 textColor = vec3(1.0, 0.733, 0.2);//vec3(0.0, 0.0, 0.0);
 					float d = texture2D(source, v_uv).x - 0.48;	
 
 					if (d < 0.0) {
@@ -42,7 +44,6 @@ namespace glat {
 				}
 
 				vec4 getTextWithOutline() {
-					//vec3 textColor = vec3(1.0, 0.733, 0.2);
 					float d = texture2D(source, v_uv).x - 0.48;	
 
 					// Interpolations Faktor zwischen outline und Welt
@@ -72,8 +73,6 @@ namespace glat {
 					n = normalize(n);
 					lightSource = normalize(lightSource);
 
-					//vec4 diffuse = vec4(getTextWithOutline().rgb * angle, getTextWithOutline().a);
-					//vec4 diffuse = getTextWithOutline() * angle;
 					return dot(n, lightSource);
 				}
 
@@ -84,10 +83,10 @@ namespace glat {
 					} else if (style == 2) {
 						vec4 text = getText();
 						fragColor = vec4(text.rgb * getBumpMapEffect(), text.a);
-					}  else if (style == 3) {
+					} else if (style == 3) {
 						vec4 text = getTextWithOutline();
 						fragColor = vec4(text.rgb * getBumpMapEffect(), text.a);
-					}else {
+					} else {
 						fragColor = getText();
 					}
 				}

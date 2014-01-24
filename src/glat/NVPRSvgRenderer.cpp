@@ -1,6 +1,7 @@
 #include <glat/NVPRSvgRenderer.h>
 #include <glat/SVGAnnotation.h>
 #include <glat/ViewportState.h>
+#include <glat/InternalState.h>
 #include <glat/Outline.h>
 
 void glat::NVPRSvgRenderer::draw(glat::AbstractAnnotation* annotation) {
@@ -43,4 +44,8 @@ void glat::NVPRSvgRenderer::drawSetupState(const glat::ViewportState& state) con
 	glPopMatrix();
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
+}
+
+void glat::NVPRSvgRenderer::drawSetupState(const glat::InternalState& state) const {
+
 }

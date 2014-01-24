@@ -27,6 +27,7 @@ set(header
 
 	${header_path}/AbstractState.h
 	${header_path}/ViewportState.h
+	${header_path}/InternalState.h
 	
 	${header_path}/Quad.h
 )
@@ -53,6 +54,8 @@ set(sources
 
 	${source_path}/AbstractState.cpp
 	${source_path}/ViewportState.cpp
+	${source_path}/InternatState.cpp
+	
 	${source_path}/Quad.cpp
 
 	${source_path}/nvpr_init.h

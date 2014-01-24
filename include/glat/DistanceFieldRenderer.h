@@ -17,9 +17,12 @@ namespace glat {
 
 	protected:
 		virtual void drawSetupState(const glat::ViewportState& state) const;
+		virtual void drawSetupState(const glat::InternalState& state) const;
+
 		glow::ref_ptr<glow::Texture> createRGBATexture(std::string distanceFieldFile);
 		void setupOutline(glat::Styling* outline);
 		void setupBumpMap(glat::Styling* bumpMap);
+
 		int m_width;
 		int m_height;
 		glat::Quad* m_quad;

@@ -1,6 +1,7 @@
 #include <glat/NVPRFontRenderer.h>
 #include <glat/FontAnnotation.h>
 #include <glat/ViewportState.h>
+#include <glat/InternalState.h>
 #include <glat/Outline.h>
 
 void glat::NVPRFontRenderer::draw(glat::AbstractAnnotation* annotation) {
@@ -112,6 +113,10 @@ void glat::NVPRFontRenderer::drawSetupState(const glat::ViewportState& state) co
 	glPopMatrix();
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
+}
+
+void glat::NVPRFontRenderer::drawSetupState(const glat::InternalState& state) const {
+
 }
 
 void glat::NVPRFontRenderer::initializeFont(glat::FontAnnotation* annotation) {

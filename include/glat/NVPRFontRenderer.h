@@ -13,6 +13,7 @@ namespace glat{
 		virtual void draw(glat::AbstractAnnotation* annotation);
 	protected:
 		virtual void drawSetupState(const glat::ViewportState& state) const;
+		virtual void drawSetupState(const glat::InternalState& state) const;
 		void initializeFont(glat::FontAnnotation* annotation);
 
 		GLuint m_glyphBase;
