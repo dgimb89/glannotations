@@ -12,7 +12,7 @@ namespace glat {
 	public:
 		InternalState(glm::vec3 llf, glm::vec3 urb, glowutils::Camera* camera);
 
-		// Extends in screen space coordinates
+		// Extends in world coordinates
 		void setExtends(glm::vec3 llf, glm::vec3 urb);
 		const glm::vec3& getLLF() const;
 		const glm::vec3& getURB() const;

@@ -26,6 +26,7 @@ namespace glat {
 		void setTextColor(glm::vec4 color);
 
 	private:
+		void initialize();
 		int m_style;
 
 		glow::ref_ptr<glow::Shader> m_vertexShader;
@@ -35,7 +36,8 @@ namespace glat {
 		glow::ref_ptr<glow::Program> m_program;
 
 		glow::ref_ptr<glow::VertexArrayObject> m_vao;
-		glow::ref_ptr<glow::Buffer> m_buffer;
+		glow::ref_ptr<glow::Buffer> m_positions;
+		glow::ref_ptr<glow::Buffer> m_texCoords;
 	};
 }
 #endif // !GLAT_QUAD_H
