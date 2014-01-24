@@ -17,8 +17,33 @@ Quad::Quad(glow::Texture* distanceField) {
 	m_program = new glow::Program();
 	m_program->attach(m_vertexShader, m_fragmentShader);
 
+	initialize();
+}
+
+
+void Quad::initialize() {
 	m_vao = new glow::VertexArrayObject();
-	m_buffer = new glow::Buffer(GL_ARRAY_BUFFER);
+	m_positions = new glow::Buffer(GL_ARRAY_BUFFER);
+	m_texCoords = new glow::Buffer(GL_ARRAY_BUFFER);
+
+	// Position
+	m_vao->binding(0)->setAttribute(0);
+	m_vao->binding(0)->setFormat(4, GL_FLOAT, GL_FALSE, 0);
+	m_vao->enable(0);
+
+	// Texture Coordinates
+	glow::Array<glm::vec2> textureArray = glow::Vec2Array()
+		<< glm::vec2(1.f, 0.f)
+		<< glm::vec2(1.f, 1.f)
+		<< glm::vec2(0.f, 0.f)
+		<< glm::vec2(0.f, 1.f);
+
+	m_texCoords->setData(textureArray, GL_STATIC_DRAW);
+
+	m_vao->binding(1)->setAttribute(1);
+	m_vao->binding(1)->setBuffer(m_texCoords, 0, sizeof(glm::vec2));
+	m_vao->binding(1)->setFormat(2, GL_FLOAT, GL_FALSE, 0);
+	m_vao->enable(1);
 
 	setPosition();
 
@@ -29,35 +54,16 @@ Quad::Quad(glow::Texture* distanceField) {
 void Quad::setPosition(glm::mat4 projection /*=glm::mat4()*/) {
 
 	glow::Array<glm::vec4> vertexArray = glow::Vec4Array()
-		<< glm::vec4( 1.f, -1.f, -0.f, 1.f)
-		<< glm::vec4( 1.f,  1.f, -0.f, 1.f)
-		<< glm::vec4(-1.f, -1.f, -0.f, 1.f)
-		<< glm::vec4(-1.f,  1.f, -0.f, 1.f);
+		<< glm::vec4( .5f, -.5f, -10.f, 1.f)
+		<< glm::vec4( .5f,  .5f, -10.f, 1.f)
+		<< glm::vec4(-.5f, -.5f, -2.f, 1.f)
+		<< glm::vec4(-.5f,  .5f, -2.f, 1.f);
 
-	m_buffer->setData(vertexArray, GL_STATIC_DRAW);
-
-	m_vao->binding(0)->setAttribute(0);
-	m_vao->binding(0)->setBuffer(m_buffer, 0, sizeof(glm::vec4));
-	m_vao->binding(0)->setFormat(4, GL_FLOAT, GL_FALSE, 0);
-	m_vao->enable(0);
-
-
-	glow::Array<glm::vec2> textureArray = glow::Vec2Array()
-		<< glm::vec2(1.f, 1.f)
-		<< glm::vec2(1.f, 0.f)
-		<< glm::vec2(0.f, 1.f)
-		<< glm::vec2(0.f, 0.f);
-
-	glow::ref_ptr<glow::Buffer> texBuffer = new glow::Buffer(GL_ARRAY_BUFFER); 
-	texBuffer->setData(textureArray);
-
-	m_vao->binding(1)->setAttribute(1);
-	m_vao->binding(1)->setBuffer(texBuffer, 0, sizeof(glm::vec2));
-	m_vao->binding(1)->setFormat(2, GL_FLOAT, GL_FALSE, 0);
-	//m_vao->enable(1);
+	m_positions->setData(vertexArray, GL_STATIC_DRAW);
+	m_vao->binding(0)->setBuffer(m_positions, 0, sizeof(glm::vec4));
 
 	m_program->setUniform("modelView", glm::mat4());
-	m_program->setUniform("projection", glm::mat4());
+	m_program->setUniform("projection", projection);
 }
 
 
