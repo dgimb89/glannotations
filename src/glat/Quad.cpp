@@ -45,25 +45,24 @@ void Quad::initialize() {
 	m_vao->binding(1)->setFormat(2, GL_FLOAT, GL_FALSE, 0);
 	m_vao->enable(1);
 
-	setPosition();
+	setPosition(glm::vec3(-1.f, -1.f, 0.f), glm::vec3(1.f, 1.f, 0.f));
 
 	m_program->setUniform("source", 0);
 }
 
 
-void Quad::setPosition(glm::mat4 projection /*=glm::mat4()*/) {
+void Quad::setPosition(glm::vec3 llf, glm::vec3 urb, glm::mat4 modelViewProjection /*=glm::mat4()*/) {
 
 	glow::Array<glm::vec4> vertexArray = glow::Vec4Array()
-		<< glm::vec4( .5f, -.5f, -10.f, 1.f)
-		<< glm::vec4( .5f,  .5f, -10.f, 1.f)
-		<< glm::vec4(-.5f, -.5f, -2.f, 1.f)
-		<< glm::vec4(-.5f,  .5f, -2.f, 1.f);
+		<< glm::vec4( urb.x, llf.y, llf.z, 1.f)
+		<< glm::vec4( urb.x, urb.y, llf.z, 1.f)
+		<< glm::vec4( llf.x, llf.y, urb.z, 1.f)
+		<< glm::vec4( llf.x, urb.y, urb.z, 1.f);
 
 	m_positions->setData(vertexArray, GL_STATIC_DRAW);
 	m_vao->binding(0)->setBuffer(m_positions, 0, sizeof(glm::vec4));
 
-	m_program->setUniform("modelView", glm::mat4());
-	m_program->setUniform("projection", projection);
+	m_program->setUniform("modelViewProjection", modelViewProjection);
 }
 
 

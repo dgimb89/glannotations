@@ -54,7 +54,7 @@ set(sources
 
 	${source_path}/AbstractState.cpp
 	${source_path}/ViewportState.cpp
-	${source_path}/InternatState.cpp
+	${source_path}/InternalState.cpp
 	
 	${source_path}/Quad.cpp
 

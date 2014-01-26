@@ -92,8 +92,8 @@ public:
 
 		glat::RendererFactory dfFactory;
 		dfFactory.useNVpr(false);
-		//m_dfAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(-0.5f, 0.8f), glm::vec2(0.5f, 1.0f)), dfFactory);
-		m_dfAnnotation = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-0.5f, 0.8f, 1.f), glm::vec3(0.5f, 1.0f, 1.f), &m_camera), dfFactory);
+		//m_dfAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(-0.5f, -0.5f), glm::vec2(0.5f, .5f)), dfFactory);
+		m_dfAnnotation = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-0.5f, -0.5f, -3.f), glm::vec3(0.5f, 1.0f, -5.f), &m_camera), dfFactory);
 		m_dfAnnotation->setText("x");
 		m_dfAnnotation->getState()->setStyling(new glat::Style::Outline(2.f, glm::vec3(1.f, 1.f, 1.f)));
 

@@ -18,7 +18,7 @@ namespace glat {
 		~Quad();
 		void draw();
 
-		void setPosition(glm::mat4 projection = glm::mat4());
+		void setPosition(glm::vec3 llf, glm::vec3 urb, glm::mat4 modelViewProjection = glm::mat4());
 		void setScale(glm::vec2 scale);
 		void setOffset(glm::vec2 offset);
 		void setOutline(float size, glm::vec3 color);

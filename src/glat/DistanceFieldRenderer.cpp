@@ -22,9 +22,7 @@ void DistanceFieldRenderer::draw(AbstractAnnotation* annotation) {
 	if (currentAnnotation->isDirty()) {
 		
 		m_quad = new Quad(createRGBATexture(path));
-		//m_quad->setScale(glm::vec2(4.0f, 4.5f));
-		//m_quad->setOffset(glm::vec2(0.2f, 0.2f));
-		
+
 		setupOutline(annotation->getState()->getStyling("Outline"));
 		setupBumpMap(annotation->getState()->getStyling("BumpMap"));
 		currentAnnotation->setDirty(false);
@@ -38,16 +36,17 @@ void DistanceFieldRenderer::draw(AbstractAnnotation* annotation) {
 
 void DistanceFieldRenderer::drawSetupState(const ViewportState& state) const {
 	glDisable(GL_DEPTH_TEST);
+	m_quad->setPosition(glm::vec3(state.getLLF(), 0.f), glm::vec3(state.getURB(), 0.f));
 	m_quad->draw();
 	glEnable(GL_DEPTH_TEST);
 }
 
 
 void DistanceFieldRenderer::drawSetupState(const InternalState& state) const {
-	glDisable(GL_DEPTH_TEST);
-	m_quad->setPosition(state.getCamera()->projection());
+	//glDisable(GL_DEPTH_TEST);
+	m_quad->setPosition(state.getLLF(), state.getURB(), state.getCamera()->viewProjection());
 	m_quad->draw();
-	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_DEPTH_TEST);
 }
 
 
