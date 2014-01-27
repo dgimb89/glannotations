@@ -33,7 +33,7 @@ glat::PNGImage::PNGImage(std::string pngFileName, std::string destDistanceFieldF
 			saveDistanceField(destDistanceFieldFile);
 }
 
-bool glat::PNGImage::distanceTransformFromPNG(std::string pngFileName, unsigned minimalSideLength /* = 500 */) {
+bool glat::PNGImage::distanceTransformFromPNG(std::string pngFileName, unsigned minimalSideLength /* = 32 */) {
 	setDirty(true);
 
 	// load source image
@@ -49,7 +49,7 @@ bool glat::PNGImage::distanceTransformFromPNG(std::string pngFileName, unsigned 
 	return true;
 }
 
-bool glat::PNGImage::distanceTransform(unsigned minimalSideLength /* = 500 */) {
+bool glat::PNGImage::distanceTransform(unsigned minimalSideLength /* = 32 */) {
 	// load source image
 	setDirty(true);
 	glow::ref_ptr<glat::PNGImage> distanceTransform = glat::preprocessor::DistanceFieldGenerator::distanceTransform(*this, minimalSideLength);

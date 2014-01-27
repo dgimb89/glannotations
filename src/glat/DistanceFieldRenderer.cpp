@@ -44,10 +44,8 @@ void DistanceFieldRenderer::drawSetupState(const ViewportState& state) const {
 
 
 void DistanceFieldRenderer::drawSetupState(const InternalState& state) const {
-	glDisable(GL_DEPTH_TEST);
 	m_quad->setPosition(state.getCamera()->projection());
 	m_quad->draw();
-	glEnable(GL_DEPTH_TEST);
 }
 
 
