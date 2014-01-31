@@ -3,8 +3,7 @@ namespace glat {
 		static const char*	vertexShaderSource = R"(
 				#version 330
 
-				uniform mat4 modelView;
-				uniform mat4 projection;
+				uniform mat4 modelViewProjection;
 
 				layout (location = 0) in vec4 position;
 				layout (location = 1) in vec2 textureCoord;
@@ -12,9 +11,8 @@ namespace glat {
 
 				void main()
 				{
-					//v_uv = vec2(position.x, position.y) * 0.5 + 0.5;
 					v_uv = textureCoord;
-					gl_Position = projection * modelView * position;
+					gl_Position = modelViewProjection * position;
 				}
 				)";
 

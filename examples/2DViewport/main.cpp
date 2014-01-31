@@ -92,10 +92,10 @@ public:
 
 		glat::RendererFactory dfFactory;
 		dfFactory.useNVpr(false);
-		//m_dfAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(-0.5f, 0.8f), glm::vec2(0.5f, 1.0f)), dfFactory);
-		m_dfAnnotation = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-0.5f, 0.8f, 1.f), glm::vec3(0.5f, 1.0f, 1.f), &m_camera), dfFactory);
+		//m_dfAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(-0.5f, -0.5f), glm::vec2(0.5f, .5f)), dfFactory);
+		m_dfAnnotation = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-3.f, 0.f, -3.f), glm::vec3(3.f, 1.5f, -5.f), &m_camera), dfFactory);
 		m_dfAnnotation->setText("x");
-		m_dfAnnotation->getState()->setStyling(new glat::Style::Outline(2.f, glm::vec3(1.f, 1.f, 1.f)));
+		//m_dfAnnotation->getState()->setStyling(new glat::Style::Outline(2.f, glm::vec3(1.f, 1.f, 1.f)));
 
 		m_fontAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(0.8f, -1.f), glm::vec2(1.f, 0.f)));
 		m_fontAnnotation->getState()->setStyling(new glat::Style::Outline(3.f, glm::vec3(.3f, .3f, .3f)));
@@ -146,10 +146,9 @@ public:
 		char clockBuffer[10];
 		sprintf(clockBuffer, "%d", clock() / CLOCKS_PER_SEC);
 		m_fontAnnotation->setText(clockBuffer);
-		m_fontAnnotation->draw();
 
 		m_dfAnnotation->draw();
-
+		m_fontAnnotation->draw();
 		m_svgAnnotation->draw();
 	}
 
