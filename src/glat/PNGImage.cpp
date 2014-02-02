@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <png.h>
 #include <algorithm>
+#include "config.h"
 
 #include <glat/preprocessor/DistanceFieldGenerator.h>
 
@@ -64,7 +65,7 @@ bool glat::PNGImage::distanceTransform(unsigned minimalSideLength /* = 32 */) {
 
 bool glat::PNGImage::loadImage(std::string pngFileName) {
 	char header[8];	// 8 is the maximum size that can be checked
-
+	pngFileName = std::string(RESOURCES_DIR + pngFileName);
 	/* open file */
 	FILE* pFile = NULL;
 	pFile = fopen(pngFileName.c_str(), "rb");
@@ -137,6 +138,8 @@ bool glat::PNGImage::loadImage(std::string pngFileName) {
 }
 
 bool glat::PNGImage::saveDistanceField(std::string pngFileName) const {
+	pngFileName = std::string(RESOURCES_DIR + pngFileName);
+	
 	if (m_channels != 1) {
 		return false;
 	}
@@ -167,7 +170,7 @@ bool glat::PNGImage::saveDistanceField(std::string pngFileName) const {
 	if (setjmp(png_jmpbuf(png_ptr))) return false;
 	png_bytepp row_pointers = new png_bytep[m_height];
 	for (unsigned h = 0; h < m_height; ++h) {
-		row_pointers[h] = reinterpret_cast<png_bytep>(&m_image->data[h * m_width]);
+		row_pointers[h] = reinterpret_cast<png_bytep>(&m_image->data[(m_height - h - 1) * m_width]);
 	}
 	png_write_image(png_ptr, row_pointers);
 	
@@ -186,7 +189,7 @@ bool glat::PNGImage::saveDistanceField(std::string pngFileName) const {
 
 bool glat::PNGImage::isColored(unsigned x, unsigned y) const {
 	if (m_channels > 3)
-		return getImageValue(x, y, 3) > 0;
+		return getImageValue(x, y, 3) == 255;
 	unsigned long result = 0;
 	for (auto i = 0; i < m_channels && i < 3; ++i) {
 		result += getImageValue(x, y, i);

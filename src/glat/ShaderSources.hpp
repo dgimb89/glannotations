@@ -31,10 +31,10 @@ namespace glat {
 				in vec2 v_uv;
 
 				vec4 getText() {
-					float d = texture2D(source, v_uv).x - 0.48;	
+					float d = texture2D(source, v_uv).x - 0.5;	
 
 					if (d < 0.0) {
-						return textColor;
+						return vec4(textColor.rgb, textColor.a * smoothstep(0.0, 0.03, abs(d)));
 					} 
 					else {
 						return vec4(0.0, 0.0, 0.0, 0.0);

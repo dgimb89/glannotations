@@ -29,6 +29,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${GLAT_DIR}/cmake/Modules/)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+set(RESOURCES_DIR "${CMAKE_BINARY_DIR}/resources/" CACHE FILEPATH "GLAT")
 
 
 # Generate folders
@@ -47,6 +48,7 @@ find_package(GLOW REQUIRED)
 find_package(Libpng REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(GLM REQUIRED)
+find_package(FreeType REQUIRED)
 
 # Include directories
 include_directories(
@@ -59,6 +61,9 @@ include_directories(
 
 # LIBRARIES
 add_subdirectory(src)
+
+# RESOURCES
+file(COPY "resources" DESTINATION .)
 
 # EXAMPLES
 if(OPTION_BUILD_EXAMPLES)

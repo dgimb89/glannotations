@@ -143,6 +143,6 @@ glow::ref_ptr<glat::PNGImage> glat::preprocessor::DistanceFieldGenerator::distan
 }
 
 glat::PNGImage::colorVal_t glat::preprocessor::DistanceFieldGenerator::colorValueFromFloat(double val) {
-	double clampedVal = std::max(-127.0, std::min(128.0, val * 128)); // clamp to [-127 | 128]
+	double clampedVal = std::max(-127.0, std::min(128.0, ((val < 0.0)? -1.0 : 1.0) *  std::sqrt(std::abs(val)) * 128)); // clamp to [-127 | 128]
 	return static_cast<glat::PNGImage::colorVal_t>(127.0 + clampedVal); // map to [0 | 255]
 }
