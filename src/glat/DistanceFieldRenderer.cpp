@@ -43,10 +43,8 @@ void DistanceFieldRenderer::drawSetupState(const ViewportState& state) const {
 
 
 void DistanceFieldRenderer::drawSetupState(const InternalState& state) const {
-	//glDisable(GL_DEPTH_TEST);
 	m_quad->setPosition(state.getLLF(), state.getURB(), state.getCamera()->viewProjection());
 	m_quad->draw();
-	//glEnable(GL_DEPTH_TEST);
 }
 
 
@@ -60,7 +58,8 @@ glow::ref_ptr<glow::Texture> DistanceFieldRenderer::createRGBATexture(std::strin
 	texture->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 	glat::PNGImage dfImage(distanceFieldFile);
-	dfImage.distanceTransform(128);
+	dfImage.distanceTransform();
+	dfImage.scaleToHeight(196);
 	texture->image2D(0, GL_RED, dfImage.getWidth(), dfImage.getHeight(), 0, GL_RED, GL_UNSIGNED_BYTE, dfImage.getImage()->data);
 	return texture;
 }

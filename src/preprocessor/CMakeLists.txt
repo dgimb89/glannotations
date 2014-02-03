@@ -6,13 +6,11 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(header
 	${header_path}/SVGLoader.h
-	${header_path}/DistanceFieldGenerator.h
 	${header_path}/GlyphSetGenerator.h
 )
 
 set(libsources
 	${source_path}/SVGLoader.cpp
-	${source_path}/DistanceFieldGenerator.cpp
 	${source_path}/GlyphSetGenerator.cpp
 )
 
@@ -60,6 +58,7 @@ endif()
 #add_subdirectory(libsvg)
 
 target_link_libraries(${TARGET}
+	glat
 	${FREETYPE_LIBRARY}
 	${OPENGL_LIBRARIES}
 	${TINYXML2_LIBRARY}

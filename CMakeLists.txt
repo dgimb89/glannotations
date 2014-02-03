@@ -48,7 +48,7 @@ find_package(GLOW REQUIRED)
 find_package(Libpng REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(GLM REQUIRED)
-find_package(FreeType REQUIRED)
+find_package(Freetype REQUIRED)
 
 # Include directories
 include_directories(

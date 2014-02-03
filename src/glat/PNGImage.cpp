@@ -4,11 +4,12 @@
 #include <algorithm>
 #include "config.h"
 
-#include <glat/preprocessor/DistanceFieldGenerator.h>
+#include <glat/DistanceFieldGenerator.h>
 
 // internal data wrapper
 glat::PNGImage::image_t::image_t(unsigned size) {
 	data = new unsigned char[size];
+	std::fill_n(data, size, 255);
 }
 
 glat::PNGImage::image_t::~image_t() {
@@ -34,12 +35,12 @@ glat::PNGImage::PNGImage(std::string pngFileName, std::string destDistanceFieldF
 			saveDistanceField(destDistanceFieldFile);
 }
 
-bool glat::PNGImage::distanceTransformFromPNG(std::string pngFileName, unsigned minimalSideLength /* = 32 */) {
+bool glat::PNGImage::distanceTransformFromPNG(std::string pngFileName) {
 	setDirty(true);
 
 	// load source image
 	if (!loadImage(pngFileName)) return false;
-	glow::ref_ptr<glat::PNGImage> distanceTransform = glat::preprocessor::DistanceFieldGenerator::distanceTransform(*this, minimalSideLength);
+	glow::ref_ptr<glat::PNGImage> distanceTransform = glat::DistanceFieldGenerator::distanceTransform(*this);
 
 	// set new image info data
 	m_image = distanceTransform->getImage();
@@ -50,17 +51,9 @@ bool glat::PNGImage::distanceTransformFromPNG(std::string pngFileName, unsigned 
 	return true;
 }
 
-bool glat::PNGImage::distanceTransform(unsigned minimalSideLength /* = 32 */) {
+void glat::PNGImage::distanceTransform() {
 	// load source image
-	setDirty(true);
-	glow::ref_ptr<glat::PNGImage> distanceTransform = glat::preprocessor::DistanceFieldGenerator::distanceTransform(*this, minimalSideLength);
-
-	// set new image info data
-	m_image = distanceTransform->getImage();
-	m_width = distanceTransform->getWidth();
-	m_height = distanceTransform->getHeight();
-	m_channels = 1;
-	return true;
+	replaceImageWith(glat::DistanceFieldGenerator::distanceTransform(*this));
 }
 
 bool glat::PNGImage::loadImage(std::string pngFileName) {
@@ -191,10 +184,10 @@ bool glat::PNGImage::isColored(unsigned x, unsigned y) const {
 	if (m_channels > 3)
 		return getImageValue(x, y, 3) == 255;
 	unsigned long result = 0;
-	for (auto i = 0; i < m_channels && i < 3; ++i) {
+	for (auto i = 0; i < m_channels; ++i) {
 		result += getImageValue(x, y, i);
 	}
-	return result != 765;
+	return result != (m_channels * 255);
 }
 
 void glat::PNGImage::setImageValue(unsigned x, unsigned y, unsigned numComponent, colorVal_t value) {
@@ -234,4 +227,29 @@ unsigned glat::PNGImage::getHeight() const {
 
 unsigned glat::PNGImage::getNumComponents() const {
 	return m_channels;
+}
+
+void glat::PNGImage::scaleToWidth(unsigned scaledWidth) {
+	replaceImageWith(glat::DistanceFieldGenerator::bicubicResize(*this, scaledWidth, getHeight() * scaledWidth / getWidth()));
+}
+
+void glat::PNGImage::scaleToHeight(unsigned scaledHeight) {
+	replaceImageWith(glat::DistanceFieldGenerator::bicubicResize(*this, getWidth() * scaledHeight / getHeight(), scaledHeight));
+}
+
+void glat::PNGImage::scale(float scaleFactor) {
+	replaceImageWith(glat::DistanceFieldGenerator::bicubicResize(*this, getWidth() * scaleFactor, getHeight() * scaleFactor));
+}
+
+unsigned glat::PNGImage::getComponentBitdepth() const {
+	return m_bitdepth;
+}
+
+void glat::PNGImage::replaceImageWith(glow::ref_ptr<glat::PNGImage> image) {
+	setDirty(true);
+	m_image = image->getImage();
+	m_height = image->getHeight();
+	m_width = image->getWidth();
+	m_channels = image->getNumComponents();
+	m_bitdepth = image->getComponentBitdepth();
 }

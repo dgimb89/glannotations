@@ -23,6 +23,7 @@ set(header
 	${header_path}/NVPRSvgRenderer.h
 
 	${header_path}/PNGImage.h
+	${header_path}/DistanceFieldGenerator.h
 	${header_path}/DistanceFieldRenderer.h
 
 	${header_path}/AbstractState.h
@@ -50,6 +51,7 @@ set(sources
 	${source_path}/NVPRSvgRenderer.cpp
 
 	${source_path}/PNGImage.cpp
+	${source_path}/DistanceFieldGenerator.cpp	
 	${source_path}/DistanceFieldRenderer.cpp
 
 	${source_path}/AbstractState.cpp
@@ -85,7 +87,6 @@ endif()
 target_link_libraries(${TARGET}
 	general
 		${GLEW_LIBRARY}
-		preprocessor
 		${OPENGL_LIBRARIES}
 		${LIBPNG_LIBRARY}
 

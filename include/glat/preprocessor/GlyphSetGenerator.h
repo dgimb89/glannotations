@@ -3,8 +3,6 @@
 
 #include <glat/PNGImage.h>
 #include <glow/ref_ptr.h>
-#include <ft2build.h>
-#include FT_FREETYPE_H
 
 namespace glat {
 	namespace preprocessor {
@@ -13,7 +11,8 @@ namespace glat {
 		public:
 			static bool generateGlyphset(std::string fontFileName, unsigned numGlyphs, bool extendExisting = true);
 		protected:
-			glow::ref_ptr<PNGImage> generateGlyphImage(FT_Bitmap* bitmap, FT_Int x, FT_Int y);
+			static glow::ref_ptr<PNGImage> generateGlyphImage(void* bitmap, unsigned marginLeft, int ascender, int descener, int bearingY);
+			static inline int convertFontToPixelSize(int input);
 			GlyphSetGenerator() {}
 		};
 	}
