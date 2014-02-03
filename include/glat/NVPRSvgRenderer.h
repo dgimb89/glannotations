@@ -1,8 +1,6 @@
 #ifndef GLAT_NVPR
 #define GLAT_NVPR_SVG_RENDERER_H
 
-#ifdef OPTION_USE_NVPR
-
 #include <glat/NVPRRenderer.h>
 
 namespace glat {
@@ -17,6 +15,5 @@ namespace glat {
 		unsigned m_width, m_height;
 	};
 }
-#endif // OPTION_USE_NVPR
 
 #endif // GLAT_NVPR_SVG_RENDERER_H

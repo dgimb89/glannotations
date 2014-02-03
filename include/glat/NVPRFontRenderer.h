@@ -1,6 +1,5 @@
 #ifndef GLAT_NVPR_FONT_RENDERER_H
 #define GLAT_NVPR_FONT_RENDERER_H
-#ifdef OPTION_USE_NVPR
 #include <glat/NVPRRenderer.h>
 
 #include <glm/glm.hpp>
@@ -23,6 +22,4 @@ namespace glat{
 		const int numChars = 256;  // ISO/IEC 8859-1 8-bit character range
 	};
 }
-
-#endif // OPTION_USE_NVPR
 #endif

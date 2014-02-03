@@ -1,7 +1,5 @@
 #ifndef GLAT_NVPR_RENDERER_H
 #define GLAT_NVPR_RENDERER_H
-
-#ifdef OPTION_USE_NVPR
 #include <glm/glm.hpp>
 
 #include <glat/AbstractRenderer.h>
@@ -22,6 +20,5 @@ namespace glat {
 		GLuint m_pathSettings;
 	};
 }
-#endif // OPTION_USE_NVPR
 
 #endif // GLAT_NVPR_RENDERER_H
