@@ -1,3 +1,5 @@
+#ifdef OPTION_USE_NVPR
+
 #include <glat/NVPRRenderer.h>
 #include <glat/AbstractAnnotation.h>
 #include <glat/Outline.h>
@@ -45,3 +47,5 @@ void glat::NVPRRenderer::setupOrthoProjection(glm::vec2 llf, glm::vec2 urb, floa
 		(yMin + height) + height * (1 - urb.y) / screenHeight,
 		-1, 1);
 }
+
+#endif // OPTION_USE_NVPR

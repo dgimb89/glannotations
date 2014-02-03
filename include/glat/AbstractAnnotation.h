@@ -21,7 +21,7 @@ public:
 protected:
 	AbstractAnnotation(glat::AbstractState* initialState);
 	glow::ref_ptr<glat::AbstractRenderer> m_renderer;
-	std::vector<glow::ref_ptr<glat::AbstractState>> m_states;
+	std::vector<glow::ref_ptr<glat::AbstractState> > m_states;
 	float m_statePhase;
 };
 }

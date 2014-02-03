@@ -45,6 +45,9 @@ set(sources
 
 	${source_path}/RendererFactory.cpp
 
+	${source_path}/nvpr_init.h
+	${source_path}/nvpr_init.c
+
 	${source_path}/NVPRRenderer.cpp
 	${source_path}/NVPRFontRenderer.cpp
 	${source_path}/NVPRSvgRenderer.cpp
@@ -57,9 +60,6 @@ set(sources
 	${source_path}/InternalState.cpp
 	
 	${source_path}/Quad.cpp
-
-	${source_path}/nvpr_init.h
-	${source_path}/nvpr_init.c
 	
 	${source_path}/ShaderSources.hpp
 )

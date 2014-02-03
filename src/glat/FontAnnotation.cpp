@@ -26,7 +26,7 @@ const glm::vec4 glat::FontAnnotation::getColor() {
 	return m_color;
 }
 
-glat::FontAnnotation::FontAnnotation(glat::AbstractState* initialState, std::string text, glm::vec4 color, glat::RendererFactory& factory)
+glat::FontAnnotation::FontAnnotation(glat::AbstractState* initialState, std::string text, glm::vec4 color, const glat::RendererFactory& factory)
 : FontAnnotation(initialState, factory) {
 	setText(text);
 	setColor(color);
