@@ -1,3 +1,5 @@
+#ifdef OPTION_USE_NVPR
+
 #include <glat/NVPRFontRenderer.h>
 #include <glat/FontAnnotation.h>
 #include <glat/ViewportState.h>
@@ -147,3 +149,4 @@ void glat::NVPRFontRenderer::initializeFont(glat::FontAnnotation* annotation) {
 		GL_USE_MISSING_GLYPH_NV, m_pathSettings,
 		emScale);
 }
+#endif // OPTION_USE_NVPR

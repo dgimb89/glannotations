@@ -11,7 +11,7 @@ namespace glat {
 
 	class AbstractRenderer;
 
-	typedef std::map<std::string, glow::ref_ptr<glat::Styling>> StylingList;
+	typedef std::map<std::string, glow::ref_ptr<glat::Styling> > StylingList;
 
 	namespace State {
 		enum PositionAnchor { NO_ANCHOR, TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT };

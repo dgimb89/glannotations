@@ -1,3 +1,4 @@
+#ifdef OPTION_USE_NVPR
 #include <glat/NVPRSvgRenderer.h>
 #include <glat/SVGAnnotation.h>
 #include <glat/ViewportState.h>
@@ -49,3 +50,4 @@ void glat::NVPRSvgRenderer::drawSetupState(const glat::ViewportState& state) con
 void glat::NVPRSvgRenderer::drawSetupState(const glat::InternalState& state) const {
 
 }
+#endif // OPTION_USE_NVPR

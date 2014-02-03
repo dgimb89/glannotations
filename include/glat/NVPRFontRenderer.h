@@ -1,6 +1,6 @@
 #ifndef GLAT_NVPR_FONT_RENDERER_H
 #define GLAT_NVPR_FONT_RENDERER_H
-
+#ifdef OPTION_USE_NVPR
 #include <glat/NVPRRenderer.h>
 
 #include <glm/glm.hpp>
@@ -24,4 +24,5 @@ namespace glat{
 	};
 }
 
+#endif // OPTION_USE_NVPR
 #endif
