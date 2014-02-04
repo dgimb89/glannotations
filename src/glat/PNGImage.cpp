@@ -7,8 +7,8 @@
 #include <glat/DistanceFieldGenerator.h>
 
 // internal data wrapper
-glat::PNGImage::image_t::image_t(unsigned size) {
-	data = new unsigned char[size];
+glat::PNGImage::image_t::image_t(size_t size) {
+	data = new colorVal_t[size];
 	std::fill_n(data, size, 255);
 }
 
@@ -17,7 +17,7 @@ glat::PNGImage::image_t::~image_t() {
 }
 // ----------------------
 
-glat::PNGImage::PNGImage(unsigned width, unsigned height, unsigned numComponents /* = 4 */, unsigned bitdepth /* = 8 */) {
+glat::PNGImage::PNGImage(size_t width, size_t height, unsigned short numComponents /* = 4 */, unsigned short bitdepth /* = 8 */) {
 	m_width = width;
 	m_height = height;
 	m_channels = numComponents;
@@ -180,28 +180,28 @@ bool glat::PNGImage::saveDistanceField(std::string pngFileName) const {
 	return true;
 }
 
-bool glat::PNGImage::isColored(unsigned x, unsigned y) const {
+bool glat::PNGImage::isColored(size_t x, size_t y) const {
 	if (m_channels > 3)
-		return getImageValue(x, y, 3) == 255;
-	unsigned long result = 0;
+		return getImageValue(x, y, 3) == 255u;
+	size_t result = 0;
 	for (auto i = 0; i < m_channels; ++i) {
 		result += getImageValue(x, y, i);
 	}
 	return result != (m_channels * 255);
 }
 
-void glat::PNGImage::setImageValue(unsigned x, unsigned y, unsigned numComponent, colorVal_t value) {
+void glat::PNGImage::setImageValue(size_t x, size_t y, unsigned short numComponent, colorVal_t value) {
 	imageValue(x, y, numComponent) = value;
 }
 
-glat::PNGImage::colorVal_t glat::PNGImage::getImageValue(signed long x, signed long y, signed long numComponent) const {
+glat::PNGImage::colorVal_t glat::PNGImage::getImageValue(signed long x, signed long y, unsigned short numComponent) const {
 	// clamp x,y access to image ranges
 	x = std::max(0l, std::min(static_cast<signed long>(getWidth() - 1), x));
 	y = std::max(0l, std::min(static_cast<signed long>(getHeight() - 1), y));
 	return imageValue(x, y, numComponent);
 }
 
-glat::PNGImage::colorVal_t& glat::PNGImage::imageValue(unsigned x, unsigned y, unsigned numComponent) const {
+glat::PNGImage::colorVal_t& glat::PNGImage::imageValue(size_t x, size_t y, unsigned short numComponent) const {
 	return m_image->data[(m_width * y + x) * m_channels + numComponent];
 }
 
@@ -213,35 +213,35 @@ void glat::PNGImage::createImage() {
 	m_image = new image_t(m_height * getRowStride());
 }
 
-unsigned glat::PNGImage::getWidth() const {
+size_t glat::PNGImage::getWidth() const {
 	return m_width;
 }
 
-unsigned glat::PNGImage::getRowStride() const {
+size_t glat::PNGImage::getRowStride() const {
 	return m_width * m_channels * (m_bitdepth / 8);
 }
 
-unsigned glat::PNGImage::getHeight() const {
+size_t glat::PNGImage::getHeight() const {
 	return m_height;
 }
 
-unsigned glat::PNGImage::getNumComponents() const {
+unsigned short glat::PNGImage::getNumComponents() const {
 	return m_channels;
 }
 
-void glat::PNGImage::scaleToWidth(unsigned scaledWidth) {
+void glat::PNGImage::scaleToWidth(size_t scaledWidth) {
 	replaceImageWith(glat::DistanceFieldGenerator::bicubicResize(*this, scaledWidth, getHeight() * scaledWidth / getWidth()));
 }
 
-void glat::PNGImage::scaleToHeight(unsigned scaledHeight) {
+void glat::PNGImage::scaleToHeight(size_t scaledHeight) {
 	replaceImageWith(glat::DistanceFieldGenerator::bicubicResize(*this, getWidth() * scaledHeight / getHeight(), scaledHeight));
 }
 
-void glat::PNGImage::scale(float scaleFactor) {
+void glat::PNGImage::scale(double scaleFactor) {
 	replaceImageWith(glat::DistanceFieldGenerator::bicubicResize(*this, getWidth() * scaleFactor, getHeight() * scaleFactor));
 }
 
-unsigned glat::PNGImage::getComponentBitdepth() const {
+unsigned short glat::PNGImage::getComponentBitdepth() const {
 	return m_bitdepth;
 }
 

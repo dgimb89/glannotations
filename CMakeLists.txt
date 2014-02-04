@@ -50,6 +50,8 @@ find_package(GLEW REQUIRED)
 find_package(GLM REQUIRED)
 find_package(Freetype REQUIRED)
 
+SET(RAPIDJSON_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/3rdparty/rapidjson/include)
+
 # Include directories
 include_directories(
 	${GLEW_INCLUDE_DIR}

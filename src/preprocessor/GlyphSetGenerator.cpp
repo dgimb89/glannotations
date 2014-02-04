@@ -1,8 +1,9 @@
 #include <glat/preprocessor/GlyphSetGenerator.h>
-#include <iostream>
+#include <glat/GlyphSetConfig.h>
 #include "config.h"
+
+#include <iostream>
 #include <ft2build.h>
-#include <vector>
 #include FT_FREETYPE_H
 
 #define PT_SIZE 196
@@ -15,7 +16,13 @@ inline void handleError(const FT_Error& ftError) {
 	std::cerr << "Error: " << ftError << " in " << __FILE__ << ":"<< __LINE__ << std::endl;
 }
 
-bool glat::preprocessor::GlyphSetGenerator::generateGlyphset(std::string fontFileName, unsigned numGlyphs, bool extendExisting /*= true*/) {
+void glat::preprocessor::GlyphSetGenerator::generateGlyphset(std::string fontFileName, unsigned numGlyphs, bool overrideExisting /*= false*/) {
+
+	glat::GlyphSetConfig jsonConfig(fontFileName);
+	if (!overrideExisting && jsonConfig.getStartGlyph() <= GLYPHSET_BEGIN && jsonConfig.getNumGlyphs() + jsonConfig.getStartGlyph() - GLYPHSET_BEGIN >= numGlyphs) {
+		std::cout << "Existing glyphset already includes requested glyphset" << std::endl;
+		return;
+	}
 	FT_Library library;
 	handleError(FT_Init_FreeType(&library));
 
@@ -48,12 +55,9 @@ bool glat::preprocessor::GlyphSetGenerator::generateGlyphset(std::string fontFil
 		FT_GlyphSlot slot = face->glyph; // just a shortcut for the current to-be-rendered glyph
 		// we begin with glyph mapped to ascii 33 -- everything before that is whitespace anyway
 		handleError(FT_Load_Char(face, FT_ULong(GLYPHSET_BEGIN + i), FT_LOAD_RENDER)); // automatically rendered to AA 8bit grayscale bitmap
-		std::string filename = std::to_string(i);
-		filename += ".png";
 		glow::ref_ptr<glat::PNGImage> glyphImage = generateGlyphImage(&slot->bitmap, std::abs(slot->bitmap_left), convertFontToPixelSize(face->size->metrics.ascender), convertFontToPixelSize(face->size->metrics.descender), convertFontToPixelSize(slot->metrics.horiBearingY));
 		glyphImage->distanceTransform();
 		glyphImage->scaleToHeight(SCALEDOWN_HEIGHT);
-		//glyphImage->saveDistanceField(filename);
 		rowWidth += glyphImage->getWidth();
 
 		if ((i + 1) % GLYPH_GROUP_SIZE == 0) {
@@ -62,7 +66,6 @@ bool glat::preprocessor::GlyphSetGenerator::generateGlyphset(std::string fontFil
 		}
 
 		glyphImages.push_back(glyphImage);
-		std::cout << filename << std::endl;
 	}
 	if (rowWidth > maxRowWidth) maxRowWidth = rowWidth;
 
@@ -70,13 +73,17 @@ bool glat::preprocessor::GlyphSetGenerator::generateGlyphset(std::string fontFil
 	FT_Done_FreeType(library);
 
 	// create final glyphset image
-	glow::ref_ptr<glat::PNGImage> finalImage = new glat::PNGImage(maxRowWidth, std::ceilf(glyphImages.size() / static_cast<float>(GLYPH_GROUP_SIZE)) * SCALEDOWN_HEIGHT, 1);
+	size_t finalHeight = std::ceilf(glyphImages.size() / static_cast<float>(GLYPH_GROUP_SIZE)) * SCALEDOWN_HEIGHT;
+	glow::ref_ptr<glat::PNGImage> finalImage = new glat::PNGImage(maxRowWidth, finalHeight, 1);
 	size_t width = 0, height = finalImage->getHeight() - SCALEDOWN_HEIGHT;
 	unsigned glyphIndex = 0;
+	std::vector<glat::GlyphSetConfig::GlyphConfig> glyphConfigs;
 	for (auto image : glyphImages) {
+		glyphConfigs.push_back(glat::GlyphSetConfig::GlyphConfig(width, height, width + image->getWidth() - 1, height + image->getHeight() - 1));
 		for (size_t w = 0; w < image->getWidth(); ++w)
-			for (size_t h = 0; h < image->getHeight(); ++h)
+			for (size_t h = 0; h < image->getHeight(); ++h) {
 				finalImage->setImageValue(width + w, height + h, 0, image->getImageValue(w, h, 0));
+			}
 		width += image->getWidth();
 		++glyphIndex;
 		if (glyphIndex % GLYPH_GROUP_SIZE == 0) {
@@ -85,6 +92,11 @@ bool glat::preprocessor::GlyphSetGenerator::generateGlyphset(std::string fontFil
 		}
 	}
 	finalImage->saveDistanceField("glyphset.png");
+
+	jsonConfig.setStartGlyph(GLYPHSET_BEGIN);
+	jsonConfig.setGlyphConfigs(glyphConfigs, maxRowWidth-1, finalHeight-1);
+	jsonConfig.serialize();
+
 }
 
 inline int glat::preprocessor::GlyphSetGenerator::convertFontToPixelSize(int input) {

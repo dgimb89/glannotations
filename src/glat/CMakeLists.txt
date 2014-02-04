@@ -6,6 +6,7 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(header
 	${header_path}/Object.h
+	${header_path}/GlyphSetConfig.h
 	${header_path}/AbstractAnnotation.h
 	${header_path}/FontAnnotation.h
 	${header_path}/SVGAnnotation.h
@@ -35,6 +36,7 @@ set(header
 
 set(sources
 	${source_path}/Object.cpp
+	${source_path}/GlyphSetConfig.cpp
 	${source_path}/AbstractAnnotation.cpp
 	${source_path}/FontAnnotation.cpp
 	${source_path}/SVGAnnotation.cpp
@@ -75,7 +77,10 @@ source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$"
     ${glat_source_group} ${sources})
 
 CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
-include_directories (${CMAKE_CURRENT_BINARY_DIR}) 
+include_directories (
+	${CMAKE_CURRENT_BINARY_DIR}
+	${RAPIDJSON_INCLUDE_DIR}
+) 
 
 # Build library
 if(OPTION_BUILD_STATIC)

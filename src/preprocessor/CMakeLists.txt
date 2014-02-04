@@ -36,7 +36,7 @@ source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$"
 
 find_package(TinyXML2 REQUIRED)
 
-include_directories(	
+include_directories(
 		${TINYXML2_INCLUDE_DIR}
 		${FREETYPE_INCLUDE_DIR_ft2build}
 		${FREETYPE_INCLUDE_DIR_freetype2}
