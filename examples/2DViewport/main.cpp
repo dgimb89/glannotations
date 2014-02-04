@@ -95,6 +95,9 @@ public:
 		//m_dfAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(-0.5f, -0.5f), glm::vec2(0.5f, .5f)), dfFactory);
 		m_dfAnnotation = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-3.f, 0.f, -3.f), glm::vec3(3.f, 1.5f, -5.f), &m_camera), dfFactory);
 		m_dfAnnotation->setText("x");
+
+		m_dfGlyphAnnotation = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-3.f, -1.f, -5.f), glm::vec3(-3.f, 1.f, -1.f), &m_camera), dfFactory);
+		m_dfGlyphAnnotation->setText("x");
 		//m_dfAnnotation->getState()->setStyling(new glat::Style::Outline(2.f, glm::vec3(1.f, 1.f, 1.f)));
 
 		m_fontAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(0.8f, -1.f), glm::vec2(1.f, 0.f)));
@@ -122,6 +125,7 @@ public:
 		m_icosahedron = nullptr;
 		m_agrid = nullptr;
 		m_fontAnnotation = nullptr;
+		m_dfGlyphAnnotation = nullptr;
 	}
 
 	virtual void framebufferResizeEvent(ResizeEvent & event) override
@@ -148,6 +152,7 @@ public:
 		m_fontAnnotation->setText(clockBuffer);
 
 		m_dfAnnotation->draw();
+		m_dfGlyphAnnotation->draw();
 		m_fontAnnotation->draw();
 		m_svgAnnotation->draw();
 	}
@@ -333,6 +338,7 @@ protected:
 	glow::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
 	glow::ref_ptr<glat::FontAnnotation> m_fontAnnotation;
 	glow::ref_ptr<glat::FontAnnotation> m_dfAnnotation;
+	glow::ref_ptr<glat::FontAnnotation> m_dfGlyphAnnotation;
 	glow::ref_ptr<glat::SVGAnnotation> m_svgAnnotation;
 
 	glowutils::Camera m_camera;

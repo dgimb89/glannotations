@@ -1,6 +1,7 @@
 #include <glat/FontAnnotation.h>
 
 void glat::FontAnnotation::setText(std::string text) {
+	setTextDirty(true);
 	m_text = text;
 }
 
@@ -42,4 +43,17 @@ glat::FontAnnotation::FontAnnotation(glat::AbstractState* initialState, const gl
 	: AbstractAnnotation(initialState) {
 	m_renderer = factory.createRenderer(*this);
 	setColor(glm::vec4(0.f, 0.f, 0.f, 1.f));
+}
+
+void glat::FontAnnotation::setTextDirty(bool textDirty) {
+	m_textDirty = textDirty;
+}
+
+bool glat::FontAnnotation::isTextDirty() {
+	return m_textDirty;
+}
+
+void glat::FontAnnotation::setDirty(bool dirty) {
+	m_textDirty = dirty;
+	glat::Object::setDirty(dirty);
 }

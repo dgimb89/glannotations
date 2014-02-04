@@ -16,6 +16,7 @@ set(header
 	${header_path}/Outline.h
 	${header_path}/BumpMap.h
 
+	${header_path}/TextureManager.h
 	${header_path}/RendererFactory.h
 	${header_path}/AbstractRenderer.h
 
@@ -25,7 +26,7 @@ set(header
 
 	${header_path}/PNGImage.h
 	${header_path}/DistanceFieldGenerator.h
-	${header_path}/DistanceFieldRenderer.h
+	${header_path}/DistanceFieldFontRenderer.h
 
 	${header_path}/AbstractState.h
 	${header_path}/ViewportState.h
@@ -46,6 +47,7 @@ set(sources
 	${source_path}/Outline.cpp
 	${source_path}/BumpMap.cpp
 
+	${source_path}/TextureManager.cpp
 	${source_path}/RendererFactory.cpp
 
 	${source_path}/nvpr_init.h
@@ -57,7 +59,7 @@ set(sources
 
 	${source_path}/PNGImage.cpp
 	${source_path}/DistanceFieldGenerator.cpp	
-	${source_path}/DistanceFieldRenderer.cpp
+	${source_path}/DistanceFieldFontRenderer.cpp
 
 	${source_path}/AbstractState.cpp
 	${source_path}/ViewportState.cpp

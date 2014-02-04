@@ -37,7 +37,7 @@ namespace glat {
 						return vec4(textColor.rgb, textColor.a * smoothstep(0.0, 0.03, abs(d)));
 					} 
 					else {
-						return vec4(0.0, 0.0, 0.0, 0.0);
+						discard;
 					}
 				}
 

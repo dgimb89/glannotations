@@ -8,13 +8,14 @@
 #include <glow/Texture.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/Buffer.h>
+#include <memory>
 
 #include <glowutils/Camera.h>
 
 namespace glat {
 	class Quad {
 	public:
-		Quad(glow::Texture* distanceField);
+		Quad(std::shared_ptr<glow::Texture> distanceField);
 		~Quad();
 		void draw();
 
@@ -32,7 +33,7 @@ namespace glat {
 		glow::ref_ptr<glow::Shader> m_vertexShader;
 		glow::ref_ptr<glow::Shader> m_fragmentShader;
 
-		glow::ref_ptr<glow::Texture> m_texture;
+		std::shared_ptr<glow::Texture> m_texture;
 		glow::ref_ptr<glow::Program> m_program;
 
 		glow::ref_ptr<glow::VertexArrayObject> m_vao;

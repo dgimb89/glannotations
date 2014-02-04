@@ -27,6 +27,7 @@ namespace glat {
 		void setGlyphConfigs(const std::vector<glat::GlyphSetConfig::GlyphConfig>& glyphConfigs, double maxWidth, double maxHeight);
 		const std::vector<glat::GlyphSetConfig::GlyphConfig>& getGlyphConfigs();
 		const glat::GlyphSetConfig::GlyphConfig& getGlyphConfig(unsigned short numGlyph);
+		const glat::GlyphSetConfig::GlyphConfig& getGlyphConfigForCharcode(unsigned short charCode);
 
 	protected: 
 		std::string getFileContent();

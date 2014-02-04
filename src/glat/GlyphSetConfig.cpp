@@ -133,6 +133,10 @@ void glat::GlyphSetConfig::setGlyphConfigs(const std::vector<GlyphConfig>& glyph
 	}
 }
 
+const glat::GlyphSetConfig::GlyphConfig& glat::GlyphSetConfig::getGlyphConfigForCharcode(unsigned short charCode) {
+	return getGlyphConfig(charCode - m_startGlyph);
+}
+
 glat::GlyphSetConfig::GlyphConfig::GlyphConfig(glm::highp_float llf_x, glm::highp_float llf_y, glm::highp_float urb_x, glm::highp_float urb_y) {
 	this->llf = glm::highp_vec2(llf_x, llf_y);
 	this->urb = glm::highp_vec2(urb_x, urb_y);

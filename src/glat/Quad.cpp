@@ -8,7 +8,7 @@
 
 using namespace glat;
 
-Quad::Quad(glow::Texture* distanceField) {
+Quad::Quad(std::shared_ptr<glow::Texture> distanceField) {
 	m_style = 0;
 	m_vertexShader = glow::Shader::fromString(GL_VERTEX_SHADER, ShaderSource::vertexShaderSource);
 	m_fragmentShader = glow::Shader::fromString(GL_FRAGMENT_SHADER, ShaderSource::fragmentShaderSource);

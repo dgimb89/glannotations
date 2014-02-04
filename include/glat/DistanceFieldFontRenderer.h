@@ -1,5 +1,5 @@
-#ifndef GLAT_DISTANCE_FIELD_MAPPING_H
-#define GLAT_DISTANCE_FIELD_MAPPING_H
+#ifndef GLAT_DISTANCE_FIELD_FONT_RENDERER_H
+#define GLAT_DISTANCE_FIELD_FONT_RENDERER_H
 
 #include <string>
 
@@ -11,7 +11,7 @@
 #include <glowutils/ScreenAlignedQuad.h>
 
 namespace glat {
-	class DistanceFieldRenderer : public AbstractRenderer {
+	class DistanceFieldFontRenderer : public AbstractRenderer {
 	public:
 		virtual void draw(glat::AbstractAnnotation* annotation);
 

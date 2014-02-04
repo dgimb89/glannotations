@@ -3,7 +3,7 @@
 #include <GL/glew.h>
 #include "config.h"
 #include <glat/SVGAnnotation.h>
-#include <glat/DistanceFieldRenderer.h>
+#include <glat/DistanceFieldFontRenderer.h>
 #ifdef OPTION_USE_NVPR
 #include <glat/NVPRFontRenderer.h>
 #include <glat/NVPRSvgRenderer.h>
@@ -53,7 +53,7 @@ glat::AbstractRenderer* glat::RendererFactory::createRenderer(const glat::FontAn
 	else
 #endif
 	{
-		return new glat::DistanceFieldRenderer();
+		return new glat::DistanceFieldFontRenderer();
 	}
 }
 
@@ -65,7 +65,8 @@ glat::AbstractRenderer* glat::RendererFactory::createRenderer(const glat::SVGAnn
 	else
 #endif
 	{
-		return new glat::DistanceFieldRenderer();
+		// not yet implemented		
+		return nullptr;
 	}
 }
 
