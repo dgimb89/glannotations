@@ -5,7 +5,6 @@
 #include <glat/Outline.h>
 #include <glat/BumpMap.h>
 #include <glat/PNGImage.h>
-#include <glat/GlyphSetConfig.h>
 #include <glat/TextureManager.h>
 
 const char* path = "glat_df.png";
@@ -19,12 +18,11 @@ void DistanceFieldFontRenderer::draw(AbstractAnnotation* annotation) {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	if (currentAnnotation->isDirty()) {
+		m_glyphConfig = new glat::GlyphSetConfig(currentAnnotation->getFontName());
 		std::vector<char> charCodes;
 		for (unsigned i = 0; i < currentAnnotation->getText().length(); ++i) {
 			charCodes.push_back(currentAnnotation->getText()[i]);
 		}
-
-		glat::GlyphSetConfig glyphSetConfig(currentAnnotation->getFontName());
 		//glyphSetConfig.getGlyphConfigForCharcode(charCodes.back());
 		m_quad = new Quad(glat::TextureManager::getInstance()->getTexture(std::string(path)));
 
@@ -41,7 +39,10 @@ void DistanceFieldFontRenderer::draw(AbstractAnnotation* annotation) {
 
 void DistanceFieldFontRenderer::drawSetupState(const ViewportState& state) const {
 	glDisable(GL_DEPTH_TEST);
-	m_quad->setPosition(glm::vec3(state.getLLF(), 0.f), glm::vec3(state.getURB(), 0.f));
+	if (state.isDirty()) {
+		m_quad->setPosition(glm::vec3(state.getLLF(), 0.f), glm::vec3(state.getURB(), 0.f));
+		state.setDirty(false);
+	}
 	m_quad->draw();
 	glEnable(GL_DEPTH_TEST);
 }
@@ -70,15 +71,15 @@ glow::ref_ptr<glow::Texture> DistanceFieldFontRenderer::createRGBATexture(std::s
 }
 
 
-void DistanceFieldFontRenderer::setupOutline(Styling* outline) {
+void DistanceFieldFontRenderer::setupOutline(const Styling* outline) {
 	if (outline == nullptr) return;
-	Style::Outline* outlineStyle = reinterpret_cast<Style::Outline*>(outline);
+	const Style::Outline* outlineStyle = reinterpret_cast<const Style::Outline*>(outline);
 	m_quad->setOutline(outlineStyle->getWidth()*0.01f, outlineStyle->getColor());
 }
 
 
-void DistanceFieldFontRenderer::setupBumpMap(Styling* bumpMap) {
+void DistanceFieldFontRenderer::setupBumpMap(const Styling* bumpMap) {
 	if (bumpMap == nullptr) return;
-	Style::BumpMap* bumpMapStyle = reinterpret_cast<Style::BumpMap*>(bumpMap);
+	const Style::BumpMap* bumpMapStyle = reinterpret_cast<const Style::BumpMap*>(bumpMap);
 	m_quad->setBumpMap(bumpMapStyle->getIntensity());
 }

@@ -9,8 +9,8 @@ namespace glat {
 		class Outline : public glat::Styling {
 		public:
 			Outline(float width, glm::vec3 rgbColor);
-			float getWidth();
-			glm::vec3 getColor();
+			float getWidth() const;
+			glm::vec3 getColor() const;
 			void setWidth(float width);
 			void setColor(glm::vec3 rgbColor);
 

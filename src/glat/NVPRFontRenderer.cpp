@@ -89,7 +89,7 @@ void glat::NVPRFontRenderer::drawSetupState(const glat::ViewportState& state) co
 			GL_UNSIGNED_BYTE, m_currentText, m_glyphBase,
 			1, ~0,
 			GL_TRANSLATE_2D_NV, xtranslate);
-		glm::vec3 outlineColor = reinterpret_cast<glat::Style::Outline*>(state.getStyling("Outline").get())->getColor();
+		glm::vec3 outlineColor = reinterpret_cast<const glat::Style::Outline*>(state.getStyling("Outline").get())->getColor();
 		glColor3f(outlineColor.r, outlineColor.g, outlineColor.b);
 		glCoverStrokePathInstancedNV((GLsizei)messageLen,
 			GL_UNSIGNED_BYTE, m_currentText, m_glyphBase,

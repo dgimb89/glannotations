@@ -1,7 +1,7 @@
 #ifndef GLAT_ABSTRACT_RENDERER_H
 #define GLAT_ABSTRACT_RENDERER_H
 
-#include <glat/Object.h>
+#include <glat/DirtyFlagObject.h>
 
 namespace glat {
 
@@ -10,7 +10,7 @@ namespace glat {
 	class ViewportState;
 	class InternalState;
 
-	class AbstractRenderer : public glat::Object {
+	class AbstractRenderer : public glat::DirtyFlagObject {
 		friend class ViewportState;
 		friend class InternalState;
 	public:

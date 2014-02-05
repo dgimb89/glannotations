@@ -3,13 +3,13 @@
 
 #include <map>
 #include <memory>
-#include <glat/Object.h>
+#include <glat/DirtyFlagObject.h>
 #include <glow/Texture.h>
 
 namespace glat {
 
 	/// Singleton Texture Manager
-	class TextureManager : public glat::Object {
+	class TextureManager : public glat::DirtyFlagObject {
 	public:
 		static TextureManager* getInstance();
 		std::shared_ptr<glow::Texture> getTexture(std::string fileName);

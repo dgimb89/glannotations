@@ -14,7 +14,7 @@ namespace glat {
 	protected:
 		void clearStencilBuffer();
 		virtual void setupOrthoProjection(glm::vec2 llf, glm::vec2 urb, float width, float height, float yMin = 0.f) const;
-		virtual void setupOutline(glat::Styling* outline, float scaleFactor = 1.f);
+		virtual void setupOutline(const glat::Styling* outline, float scaleFactor = 1.f);
 
 		bool m_drawOutline = false;
 		GLuint m_pathSettings;

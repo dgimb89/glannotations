@@ -4,12 +4,12 @@
 #include <string>
 #include <glm/glm.hpp>
 
-#include <glat/Object.h>
+#include <glat/DirtyFlagObject.h>
 #include <glow/Referenced.h>
 #include <glow/ref_ptr.h>
 
 namespace glat {
-	class PNGImage : public glat::Object {
+	class PNGImage : public glat::DirtyFlagObject {
 	public:
 		typedef unsigned char colorVal_t;
 		typedef struct image_t : public glow::Referenced{

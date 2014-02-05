@@ -1,11 +1,11 @@
 #include <glat/AbstractState.h>
 
 void glat::AbstractState::setStyling(glat::Styling* style) {
-	setDirty(true);
+	setDirty(true); 
 	m_stylings[style->getID()] = style;
 }
 
-glow::ref_ptr<glat::Styling> glat::AbstractState::getStyling(std::string ID) const {
+glow::ref_ptr<const glat::Styling> glat::AbstractState::getStyling(std::string ID) const {
 	auto itr = m_stylings.find(ID);
 	if (itr == m_stylings.end()) 
 		return nullptr;

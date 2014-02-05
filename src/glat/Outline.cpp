@@ -6,20 +6,18 @@ glat::Style::Outline::Outline(float width, glm::vec3 rgbaColor) {
 }
 
 void glat::Style::Outline::setWidth(float width) {
-	setDirty(true);
 	m_width = width;
 }
 
 void glat::Style::Outline::setColor(glm::vec3 rgbaColor) {
-	setDirty(true);
 	m_color = rgbaColor;
 }
 
-float glat::Style::Outline::getWidth() {
+float glat::Style::Outline::getWidth() const {
 	return m_width;
 }
 
-glm::vec3 glat::Style::Outline::getColor() {
+glm::vec3 glat::Style::Outline::getColor() const {
 	return m_color;
 }
 

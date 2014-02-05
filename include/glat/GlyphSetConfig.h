@@ -1,14 +1,14 @@
 #ifndef GLAT_GLYPH_SET_CONFIG_H
 #define GLAT_GLYPH_SET_CONFIG_H
 
-#include <glat/Object.h>
+#include <glat/DirtyFlagObject.h>
 #include <glm/glm.hpp>
 #include <string>
 #include <vector>
 
 namespace glat {
 
-	class GlyphSetConfig : public glat::Object {
+	class GlyphSetConfig : public glat::DirtyFlagObject {
 	public:
 		struct GlyphConfig {
 			glm::highp_vec2 llf, urb;

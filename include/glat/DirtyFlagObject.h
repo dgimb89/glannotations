@@ -1,12 +1,12 @@
-#ifndef GLAT_OBJECT_H
-#define GLAT_OBJECT_H
+#ifndef GLAT_DIRTY_FLAG_OBJECT_H
+#define GLAT_DIRTY_FLAG_OBJECT_H
 
 #include <glow/Referenced.h>
 
 namespace glat {
-	class Object : public glow::Referenced {
+	class DirtyFlagObject : public glow::Referenced {
 	public:
-		Object();
+		DirtyFlagObject();
 		virtual bool isDirty() const;
 		inline virtual void setDirty(bool) const;
 
@@ -15,4 +15,4 @@ namespace glat {
 	};
 }
 
-#endif // GLAT_OBJECT_H
+#endif // GLAT_DIRTY_FLAG_OBJECT_H

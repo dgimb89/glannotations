@@ -8,7 +8,7 @@ namespace glat {
 		class BumpMap : public glat::Styling {
 		public:
 			BumpMap(float intensity);
-			float getIntensity();
+			float getIntensity() const;
 			void setIntensity(float intensity);
 
 		protected:

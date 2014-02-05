@@ -55,5 +55,5 @@ bool glat::FontAnnotation::isTextDirty() {
 
 void glat::FontAnnotation::setDirty(bool dirty) {
 	m_textDirty = dirty;
-	glat::Object::setDirty(dirty);
+	glat::DirtyFlagObject::setDirty(dirty);
 }

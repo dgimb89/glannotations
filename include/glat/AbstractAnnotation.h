@@ -1,7 +1,7 @@
 #ifndef GLAT_ABSTRACT_ANNOTATION_H
 #define GLAT_ABSTRACT_ANNOTATION_H
 
-#include <glat/Object.h>
+#include <glat/DirtyFlagObject.h>
 #include <glat/AbstractRenderer.h>
 #include <glat/RendererFactory.h>
 #include <glat/AbstractState.h>
@@ -11,7 +11,7 @@
 #include <memory>
 
 namespace glat {
-class AbstractAnnotation : public glat::Object {
+class AbstractAnnotation : public glat::DirtyFlagObject {
 public:
 	void draw();
 	void setState(float statePhase);

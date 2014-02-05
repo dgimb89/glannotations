@@ -1,6 +1,8 @@
 #ifndef GLAT_QUAD_H
 #define GLAT_QUAD_H
 
+#include <glat/DirtyFlagObject.h>
+
 #include <glm/glm.hpp>
 
 #include <glow/Shader.h>
@@ -13,7 +15,7 @@
 #include <glowutils/Camera.h>
 
 namespace glat {
-	class Quad {
+	class Quad : public glow::Referenced {
 	public:
 		Quad(std::shared_ptr<glow::Texture> distanceField);
 		~Quad();

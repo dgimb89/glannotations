@@ -5,7 +5,7 @@ set(header_path "${GLAT_DIR}/include/glat")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(header
-	${header_path}/Object.h
+	${header_path}/DirtyFlagObject.h
 	${header_path}/GlyphSetConfig.h
 	${header_path}/AbstractAnnotation.h
 	${header_path}/FontAnnotation.h
@@ -36,7 +36,7 @@ set(header
 )
 
 set(sources
-	${source_path}/Object.cpp
+	${source_path}/DirtyFlagObject.cpp
 	${source_path}/GlyphSetConfig.cpp
 	${source_path}/AbstractAnnotation.cpp
 	${source_path}/FontAnnotation.cpp

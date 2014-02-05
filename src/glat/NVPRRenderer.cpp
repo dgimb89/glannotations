@@ -27,11 +27,11 @@ glat::NVPRRenderer::NVPRRenderer() {
 	initializeNVPR();
 }
 
-void glat::NVPRRenderer::setupOutline(glat::Styling* outline, float scaleFactor /* = 1.f*/) {
+void glat::NVPRRenderer::setupOutline(const glat::Styling* outline, float scaleFactor /* = 1.f*/) {
 	m_drawOutline = false;
 	if (outline == nullptr) return;
 	m_drawOutline = true;
-	glat::Style::Outline* outlineStyle = reinterpret_cast<glat::Style::Outline*>(outline);
+	const glat::Style::Outline* outlineStyle = reinterpret_cast<const glat::Style::Outline*>(outline);
 	glPathParameterfNV(m_pathSettings, GL_PATH_STROKE_WIDTH_NV, scaleFactor * outlineStyle->getWidth());
 }
 
