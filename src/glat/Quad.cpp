@@ -1,7 +1,6 @@
 #include <glat/Quad.h>
 #include "ShaderSources.hpp"
 
-#include <glow/Array.h>
 #include <glow/VertexAttributeBinding.h>
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -32,11 +31,12 @@ void Quad::initialize() {
 	m_vao->enable(0);
 
 	// Texture Coordinates
-	glow::Array<glm::vec2> textureArray = glow::Vec2Array()
-		<< glm::vec2(1.f, 0.f)
-		<< glm::vec2(1.f, 1.f)
-		<< glm::vec2(0.f, 0.f)
-		<< glm::vec2(0.f, 1.f);
+	std::array<glm::vec2, 4> textureArray{ {
+			glm::vec2(1.f, 0.f)
+		,	glm::vec2(1.f, 1.f)
+		,	glm::vec2(0.f, 0.f)
+		,	glm::vec2(0.f, 1.f)
+	}};
 
 	m_texCoords->setData(textureArray, GL_STATIC_DRAW);
 
@@ -53,11 +53,12 @@ void Quad::initialize() {
 
 void Quad::setPosition(glm::vec3 llf, glm::vec3 urb, glm::mat4 modelViewProjection /*=glm::mat4()*/) {
 
-	glow::Array<glm::vec4> vertexArray = glow::Vec4Array()
-		<< glm::vec4( urb.x, llf.y, llf.z, 1.f)
-		<< glm::vec4( urb.x, urb.y, llf.z, 1.f)
-		<< glm::vec4( llf.x, llf.y, urb.z, 1.f)
-		<< glm::vec4( llf.x, urb.y, urb.z, 1.f);
+	std::array<glm::vec4, 4> vertexArray{ {
+			glm::vec4(urb.x, llf.y, llf.z, 1.f)
+		,	glm::vec4(urb.x, urb.y, llf.z, 1.f)
+		,	glm::vec4(llf.x, llf.y, urb.z, 1.f)
+		,	glm::vec4(llf.x, urb.y, urb.z, 1.f)
+	}};
 
 	m_positions->setData(vertexArray, GL_STATIC_DRAW);
 	m_vao->binding(0)->setBuffer(m_positions, 0, sizeof(glm::vec4));

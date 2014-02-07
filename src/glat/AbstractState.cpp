@@ -5,12 +5,12 @@ void glat::AbstractState::setStyling(glat::Styling* style) {
 	m_stylings[style->getID()] = style;
 }
 
-glow::ref_ptr<const glat::Styling> glat::AbstractState::getStyling(std::string ID) const {
+const glat::Styling* glat::AbstractState::getStyling(std::string ID) const {
 	auto itr = m_stylings.find(ID);
-	if (itr == m_stylings.end()) 
+	if (itr == m_stylings.end())
 		return nullptr;
 
-	return itr->second;
+	return itr->second.operator const glat::Styling *();
 }
 
 void glat::AbstractState::setAnchor(State::PositionAnchor anchor) {

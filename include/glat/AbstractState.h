@@ -12,7 +12,7 @@ namespace glat {
 
 	class AbstractRenderer;
 
-	typedef std::map<std::string, glow::ref_ptr<const glat::Styling> > StylingList;
+	typedef std::map<std::string, glow::ref_ptr<glat::Styling> > StylingList;
 
 	namespace State {
 		enum PositionAnchor { NO_ANCHOR, TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT };
@@ -26,7 +26,7 @@ namespace glat {
 		void setStyling(glat::Styling* style);
 
 		// returns nullptr if style does not exist
-		glow::ref_ptr<const glat::Styling> getStyling(std::string ID) const;
+		const glat::Styling* getStyling(std::string ID) const;
 		virtual bool isValid() = 0;
 		void setAnchor(State::PositionAnchor anchor);
 		void setAutoExtend(State::AutoExtend extensionBehaviour);
