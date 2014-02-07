@@ -7,16 +7,16 @@ glat::ViewportState::ViewportState(glm::vec2 llf, glm::vec2 urb) {
 
 void glat::ViewportState::setExtends(glm::vec2 llf, glm::vec2 urb) {
 	setDirty(true);
-	m_llf = llf;
-	m_urb = urb;
+	m_ll = llf;
+	m_ur = urb;
 }
 
-const glm::vec2& glat::ViewportState::getLLF() const {
-	return m_llf;
+const glm::vec2& glat::ViewportState::getLL() const {
+	return m_ll;
 }
 
-const glm::vec2& glat::ViewportState::getURB() const {
-	return m_urb;
+const glm::vec2& glat::ViewportState::getUR() const {
+	return m_ur;
 }
 
 void glat::ViewportState::draw(const AbstractRenderer& renderer) const {
@@ -24,5 +24,9 @@ void glat::ViewportState::draw(const AbstractRenderer& renderer) const {
 }
 
 bool glat::ViewportState::isValid() {
-	return (m_urb - m_llf).length() > 0;
+	return (m_ur - m_ll).length() > 0;
+}
+
+const glm::vec2 glat::ViewportState::getLR() const {
+	return glm::vec2(m_ur.x, m_ll.y);
 }

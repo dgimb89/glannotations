@@ -12,14 +12,15 @@ namespace glat {
 
 		// Extends in screen space coordinates
 		void setExtends(glm::vec2 llf, glm::vec2 urb);
-		const glm::vec2& getLLF() const;
-		const glm::vec2& getURB() const;
+		const glm::vec2& getLL() const;
+		const glm::vec2& getUR() const;
+		const glm::vec2 getLR() const;
 
 		virtual bool isValid();
 
 	protected:
 		virtual void draw(const AbstractRenderer& renderer) const;
-		glm::vec2 m_llf, m_urb;
+		glm::vec2 m_ll, m_ur;
 	};
 }
 

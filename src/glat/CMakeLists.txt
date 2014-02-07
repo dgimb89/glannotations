@@ -32,7 +32,9 @@ set(header
 	${header_path}/ViewportState.h
 	${header_path}/InternalState.h
 	
+	${header_path}/AbstractDrawingPrimitive.h
 	${header_path}/Quad.h
+	${header_path}/QuadStrip.h
 )
 
 set(sources
@@ -65,7 +67,9 @@ set(sources
 	${source_path}/ViewportState.cpp
 	${source_path}/InternalState.cpp
 	
+	${source_path}/AbstractDrawingPrimitive.cpp
 	${source_path}/Quad.cpp
+	${source_path}/QuadStrip.cpp
 	
 	${source_path}/ShaderSources.hpp
 )

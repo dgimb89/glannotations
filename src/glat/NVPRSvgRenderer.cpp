@@ -21,7 +21,7 @@ void glat::NVPRSvgRenderer::drawSetupState(const glat::ViewportState& state) con
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 	glLoadIdentity();
-	setupOrthoProjection(state.getLLF(), state.getURB(), m_width, m_height);
+	setupOrthoProjection(state.getLL(), state.getUR(), m_width, m_height);
 	
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();

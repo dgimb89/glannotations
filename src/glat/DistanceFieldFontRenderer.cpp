@@ -40,7 +40,7 @@ void DistanceFieldFontRenderer::draw(AbstractAnnotation* annotation) {
 void DistanceFieldFontRenderer::drawSetupState(const ViewportState& state) const {
 	glDisable(GL_DEPTH_TEST);
 	if (state.isDirty()) {
-		m_quad->setPosition(glm::vec3(state.getLLF(), 0.f), glm::vec3(state.getURB(), 0.f));
+		m_quad->setPosition(glm::vec3(state.getLL(), 0.0), glm::vec3(state.getLR(), 0.0), glm::vec3(state.getUR(), 0.0));
 		state.setDirty(false);
 	}
 	m_quad->draw();
@@ -49,7 +49,9 @@ void DistanceFieldFontRenderer::drawSetupState(const ViewportState& state) const
 
 
 void DistanceFieldFontRenderer::drawSetupState(const InternalState& state) const {
-	m_quad->setPosition(state.getLLF(), state.getURB(), state.getCamera()->viewProjection());
+	if (state.isDirty()) {
+		m_quad->setPosition(state.getLL(), state.getLR(), state.getUR(), state.getViewProjection());
+	}
 	m_quad->draw();
 }
 

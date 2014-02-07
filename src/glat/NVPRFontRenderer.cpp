@@ -76,7 +76,7 @@ void glat::NVPRFontRenderer::drawSetupState(const glat::ViewportState& state) co
 	(0.1*totalAdvance*aspect_ratio + (yMax + yMin) / 2)*scale,
 	-1, 1);*/
 
-	setupOrthoProjection(state.getLLF(), state.getURB(), totalAdvance, yMax - yMin, yMin);
+	setupOrthoProjection(state.getLL(), state.getUR(), totalAdvance, yMax - yMin, yMin);
 
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
