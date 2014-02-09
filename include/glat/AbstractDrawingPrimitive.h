@@ -21,11 +21,12 @@ namespace glat {
 		virtual void draw() = 0;
 		virtual void setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur, glm::mat4 modelViewProjection = glm::mat4()) = 0;
 
-		void setScale(glm::vec2 scale);
-		void setOffset(glm::vec2 offset);
-		void setOutline(float size, glm::vec3 color);
-		void setBumpMap(float intensity);
-		void setTextColor(glm::vec4 color);
+		virtual void setScale(glm::vec2 scale);
+		virtual void setOffset(glm::vec2 offset);
+		virtual void setOutline(float size, glm::vec3 color);
+		virtual void setBumpMap(float intensity);
+		virtual void setTextColor(glm::vec4 color);
+
 		void setupShader(const char* fragShader, const char* vertShader);
 
 	protected:

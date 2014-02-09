@@ -3,8 +3,12 @@
 #include "ShaderSources.hpp"
 
 glat::Quad::Quad(std::shared_ptr<glow::Texture> texture, bool isDistanceField) : glat::AbstractDrawingPrimitive(texture) {
-	// todo: switch for shader wheter it's a DF or not
-	setupShader(ShaderSource::fragmentShaderSource, ShaderSource::vertexShaderSource);
+	if (isDistanceField) {
+		setupShader(ShaderSource::fragDFQuadShaderSource, ShaderSource::vertShaderSource);
+	}
+	else {
+		setupShader(ShaderSource::fragQuadShaderSource, ShaderSource::vertShaderSource);
+	}
 	// Position
 	m_vao->binding(0)->setAttribute(0);
 	m_vao->binding(0)->setFormat(3, GL_FLOAT, GL_FALSE, 0);

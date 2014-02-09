@@ -27,7 +27,8 @@ std::shared_ptr<glow::Texture> glat::TextureManager::getTexture(std::string file
 	texture->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	texture->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	glat::PNGImage image(fileName);
-	texture->image2D(0, image.getNumComponents() == 1 ? GL_RED : (image.getNumComponents() == 3 ? GL_RGB : GL_RGBA), image.getWidth(), image.getHeight(), 0, GL_RED, GL_UNSIGNED_BYTE, image.getImage()->data);
+	GLenum format = image.getNumComponents() == 1 ? GL_RED : (image.getNumComponents() == 3 ? GL_RGB : GL_RGBA);
+	texture->image2D(0, format, image.getWidth(), image.getHeight(), 0, format, GL_UNSIGNED_BYTE, image.getImage()->data);
 	m_textures[fileName] = texture;
 	return texture;
 }

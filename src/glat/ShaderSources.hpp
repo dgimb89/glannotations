@@ -1,6 +1,6 @@
 namespace glat {
 	namespace ShaderSource {
-		static const char*	vertexShaderSource = R"(
+		static const char*	vertShaderSource = R"(
 				#version 330
 
 				uniform mat4 modelViewProjection;
@@ -16,7 +16,22 @@ namespace glat {
 				}
 				)";
 
-		static const char* fragmentShaderSource = R"(
+		static const char* fragQuadShaderSource = R"(
+				#version 330
+
+				uniform sampler2D source;
+
+				layout (location = 0) out vec4 fragColor;
+
+				in vec2 v_uv;
+
+				void main()
+				{
+					fragColor = texture2D(source, v_uv);
+				}
+				)";
+
+		static const char* fragDFQuadShaderSource = R"(
 				#version 330
 
 				uniform sampler2D source;

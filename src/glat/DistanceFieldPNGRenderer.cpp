@@ -15,11 +15,14 @@ void glat::DistanceFieldPNGRenderer::draw(AbstractAnnotation* annotation) {
 			glat::TextureManager::getInstance()->getTexture(currentAnnotation->getFileName()), 
 			currentAnnotation->isDistanceField()
 		);
-		setupOutline(annotation->getState()->getStyling("Outline"));
-		setupBumpMap(annotation->getState()->getStyling("BumpMap"));
+
+		if (currentAnnotation->isDistanceField()) {
+			m_drawingPrimitive->setTextColor(currentAnnotation->getColor());
+			setupOutline(annotation->getState()->getStyling("Outline"));
+			setupBumpMap(annotation->getState()->getStyling("BumpMap"));
+		}
 	}
 
-	m_drawingPrimitive->setTextColor(currentAnnotation->getColor());
 	annotation->getState()->draw(*this);
 
 	glDisable(GL_BLEND);
