@@ -22,6 +22,7 @@ namespace glat {
 	class AbstractState : public glat::DirtyFlagObject {
 		friend class NVPRRenderer;
 		friend class DistanceFieldFontRenderer;
+		friend class DistanceFieldPNGRenderer;
 	public:
 		void setStyling(glat::Styling* style);
 

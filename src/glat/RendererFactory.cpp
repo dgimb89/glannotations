@@ -2,11 +2,17 @@
 #define NOMINMAX
 #include <GL/glew.h>
 #include "config.h"
+
 #include <glat/SVGAnnotation.h>
+#include <glat/PNGAnnotation.h>
+#include <glat/FontAnnotation.h>
+
 #include <glat/DistanceFieldFontRenderer.h>
+#include <glat/DistanceFieldPNGRenderer.h>
+
 #ifdef OPTION_USE_NVPR
-#include <glat/NVPRFontRenderer.h>
-#include <glat/NVPRSvgRenderer.h>
+	#include <glat/NVPRFontRenderer.h>
+	#include <glat/NVPRSvgRenderer.h>
 #endif
 
 bool glat::RendererFactory::isExtensionSupported(const char *extension) {
@@ -70,6 +76,6 @@ glat::AbstractRenderer* glat::RendererFactory::createRenderer(const glat::SVGAnn
 	}
 }
 
-glat::AbstractRenderer* glat::RendererFactory::createRenderer(const glat::AbstractAnnotation& annotation) const {
-	return nullptr;
+glat::AbstractRenderer* glat::RendererFactory::createRenderer(const glat::PNGAnnotation& annotation) const {
+	return new glat::DistanceFieldPNGRenderer();
 }

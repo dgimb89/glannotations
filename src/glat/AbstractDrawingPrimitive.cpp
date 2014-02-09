@@ -2,13 +2,13 @@
 
 using namespace glat;
 
-AbstractDrawingPrimitive::AbstractDrawingPrimitive(std::shared_ptr<glow::Texture> distanceField) {
+AbstractDrawingPrimitive::AbstractDrawingPrimitive(std::shared_ptr<glow::Texture> texture) {
 	m_vao = new glow::VertexArrayObject();
 	m_positions = new glow::Buffer(GL_ARRAY_BUFFER);
 	m_texCoords = new glow::Buffer(GL_ARRAY_BUFFER);
 	
 	m_style = 0;
-	m_texture = distanceField;
+	m_texture = texture;
 }
 
 

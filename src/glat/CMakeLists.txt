@@ -26,7 +26,9 @@ set(header
 	${header_path}/NVPRSvgRenderer.h
 
 	${header_path}/PNGImage.h
+	${header_path}/AbstractPrimitiveRenderer.h
 	${header_path}/DistanceFieldGenerator.h
+	${header_path}/DistanceFieldPNGRenderer.h
 	${header_path}/DistanceFieldFontRenderer.h
 
 	${header_path}/AbstractState.h
@@ -62,7 +64,9 @@ set(sources
 	${source_path}/NVPRSvgRenderer.cpp
 
 	${source_path}/PNGImage.cpp
-	${source_path}/DistanceFieldGenerator.cpp	
+	${source_path}/AbstractPrimitiveRenderer.cpp
+	${source_path}/DistanceFieldGenerator.cpp
+	${source_path}/DistanceFieldPNGRenderer.cpp	
 	${source_path}/DistanceFieldFontRenderer.cpp
 
 	${source_path}/AbstractState.cpp

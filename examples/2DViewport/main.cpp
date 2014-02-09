@@ -39,6 +39,7 @@
 
 #include <glat/FontAnnotation.h>
 #include <glat/SVGAnnotation.h>
+#include <glat/PNGAnnotation.h>
 #include <glat/ViewportState.h>
 #include <glat/InternalState.h>
 #include <glat/Outline.h>
@@ -92,25 +93,24 @@ public:
 
 		glat::RendererFactory dfFactory;
 		dfFactory.useNVpr(false);
-		m_dfAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(-0.95f, 0.75f), glm::vec2(-0.5f, 0.95f)), dfFactory);
-		m_dfAnnotation->setColor(glm::vec4(0.f, 0.f, 1.f, 1.f));
-		m_dfAnnotation->getState()->setStyling(new glat::Style::Outline(20.f, glm::vec3(0.f, 0.f, 0.f)));
-		m_dfAnnotation->setText("x");
+		m_dfViewportPNGAnnotation = new glat::PNGAnnotation(new glat::ViewportState(glm::vec2(-0.95f, 0.75f), glm::vec2(-0.5f, 0.95f)), "glat_df.png", dfFactory);
+		m_dfViewportPNGAnnotation->setAsDistanceField(glm::vec4(0.f, 0.f, 1.f, 1.f));
+		m_dfViewportPNGAnnotation->getState()->setStyling(new glat::Style::Outline(2.f, glm::vec3(0.f, 0.f, 0.f)));
 
-		m_dfGlyphAnnotation = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-3.f, -1.f, -5.f), glm::vec3(3.f, -1.f, -5.f), glm::vec3(3.f, 1.0f, -5.f), &m_camera), dfFactory);
-		m_dfGlyphAnnotation->setText("x");
+		m_dfInternalFontAnnotation = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-3.f, -1.f, -5.f), glm::vec3(3.f, -1.f, -5.f), glm::vec3(3.f, 1.0f, -5.f), &m_camera), dfFactory);
+		m_dfInternalFontAnnotation->setText("x");
 
-		m_fontAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(0.8f, -1.f), glm::vec2(1.f, 0.f)));
-		m_fontAnnotation->getState()->setStyling(new glat::Style::Outline(3.f, glm::vec3(.3f, .3f, .3f)));
-		m_fontAnnotation->getState()->setStyling(new glat::Style::BumpMap(1.0f));
-		m_fontAnnotation->setColor(glm::vec4(0.75, 0.75, 0.75, 1.0));
-		m_fontAnnotation->setText("0");
+		m_nvprViewportFontAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(0.8f, -1.f), glm::vec2(1.f, 0.f)));
+		m_nvprViewportFontAnnotation->getState()->setStyling(new glat::Style::Outline(3.f, glm::vec3(.3f, .3f, .3f)));
+		m_nvprViewportFontAnnotation->getState()->setStyling(new glat::Style::BumpMap(1.0f));
+		m_nvprViewportFontAnnotation->setColor(glm::vec4(0.75, 0.75, 0.75, 1.0));
+		m_nvprViewportFontAnnotation->setText("0");
 
-		m_svgAnnotation = new glat::SVGAnnotation(new glat::ViewportState(glm::vec2(-1.f, -1.f), glm::vec2(-0.3f, 0.f)));
-		m_svgAnnotation->getState()->setStyling(new glat::Style::Outline(2.f, glm::vec3(.3f, .3f, .3f)));
-		m_svgAnnotation->setPathString("M100,180 L40,10 L190,120 L10,120 L160,10 z");
-		m_svgAnnotation->setHeight(190);
-		m_svgAnnotation->setWidth(200);
+		m_nvprViewportSVGAnnotation = new glat::SVGAnnotation(new glat::ViewportState(glm::vec2(-1.f, -1.f), glm::vec2(-0.3f, 0.f)));
+		m_nvprViewportSVGAnnotation->getState()->setStyling(new glat::Style::Outline(2.f, glm::vec3(.3f, .3f, .3f)));
+		m_nvprViewportSVGAnnotation->setPathString("M100,180 L40,10 L190,120 L10,120 L160,10 z");
+		m_nvprViewportSVGAnnotation->setHeight(190);
+		m_nvprViewportSVGAnnotation->setWidth(200);
 
 		m_camera.setZNear(0.1f);
 		m_camera.setZFar(1024.f);
@@ -124,8 +124,8 @@ public:
 		m_sphere = nullptr;
 		m_icosahedron = nullptr;
 		m_agrid = nullptr;
-		m_fontAnnotation = nullptr;
-		m_dfGlyphAnnotation = nullptr;
+		m_nvprViewportFontAnnotation = nullptr;
+		m_dfInternalFontAnnotation = nullptr;
 	}
 
 	virtual void framebufferResizeEvent(ResizeEvent & event) override
@@ -149,12 +149,12 @@ public:
 
 		char clockBuffer[10];
 		sprintf(clockBuffer, "%d", clock() / CLOCKS_PER_SEC);
-		m_fontAnnotation->setText(clockBuffer);
+		m_nvprViewportFontAnnotation->setText(clockBuffer);
 
-		m_dfGlyphAnnotation->draw();
-		m_dfAnnotation->draw();
-		m_fontAnnotation->draw();
-		m_svgAnnotation->draw();
+		//m_dfGlyphAnnotation->draw();
+		m_dfViewportPNGAnnotation->draw();
+		m_nvprViewportFontAnnotation->draw();
+		m_nvprViewportSVGAnnotation->draw();
 	}
 
 	virtual void timerEvent(TimerEvent & event) override
@@ -336,10 +336,10 @@ protected:
 
 	glow::ref_ptr<glowutils::Icosahedron> m_icosahedron;
 	glow::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
-	glow::ref_ptr<glat::FontAnnotation> m_fontAnnotation;
-	glow::ref_ptr<glat::FontAnnotation> m_dfAnnotation;
-	glow::ref_ptr<glat::FontAnnotation> m_dfGlyphAnnotation;
-	glow::ref_ptr<glat::SVGAnnotation> m_svgAnnotation;
+	glow::ref_ptr<glat::FontAnnotation> m_nvprViewportFontAnnotation;
+	glow::ref_ptr<glat::PNGAnnotation> m_dfViewportPNGAnnotation;
+	glow::ref_ptr<glat::FontAnnotation> m_dfInternalFontAnnotation;
+	glow::ref_ptr<glat::SVGAnnotation> m_nvprViewportSVGAnnotation;
 
 	glowutils::Camera m_camera;
 	glowutils::WorldInHandNavigation m_nav;

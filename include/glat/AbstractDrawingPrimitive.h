@@ -15,7 +15,7 @@
 namespace glat {
 	class AbstractDrawingPrimitive : public glow::Referenced {
 	public:
-		AbstractDrawingPrimitive(std::shared_ptr<glow::Texture> distanceField);
+		AbstractDrawingPrimitive(std::shared_ptr<glow::Texture> texture);
 		~AbstractDrawingPrimitive();
 
 		virtual void draw() = 0;
