@@ -63,9 +63,15 @@ void glat::QuadStrip::updateQuadRanges() {
 		i++;
 	}
 
-	// last two textureRanges in first vector does not matter but must be present for correct interpolation
-	firstTextureVector.push_back(texVec2_t(0.f, 0.f));
-	firstTextureVector.push_back(texVec2_t(0.f, 0.f));
+	// last two textureRanges does not matter but must be present for correct interpolation
+	if (m_textureRanges.size() % 2 == 0) {
+		firstTextureVector.push_back(texVec2_t(0.f, 0.f));
+		firstTextureVector.push_back(texVec2_t(0.f, 0.f));
+	}
+	else {
+		secondTextureVector.push_back(texVec2_t(0.f, 0.f));
+		secondTextureVector.push_back(texVec2_t(0.f, 0.f));
+	}
 
 	// we build our texture switch VBO here
 	for (i = 0; i < (2 * m_textureRanges.size()) + 2; i+=2) {
