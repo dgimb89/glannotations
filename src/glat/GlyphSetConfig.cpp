@@ -12,6 +12,9 @@
 #define GLYPH_CONFIG "glyphconfig.json"
 
 glat::GlyphSetConfig::GlyphSetConfig(std::string fontFileName) {
+	if (fontFileName == "")
+		throw std::runtime_error("Font file can not be empty!");
+
 	m_fontFileName = fontFileName;
 
 	rapidjson::Document document;	
@@ -49,11 +52,11 @@ void glat::GlyphSetConfig::serialize() {
 		for (auto glyphConfig : m_glyphConfigs) {
 			rapidjson::Value singleGlyph(rapidjson::kObjectType);
 
-			singleGlyph.AddMember("llf_x", glyphConfig.llf.x, allocator);
-			singleGlyph.AddMember("llf_y", glyphConfig.llf.y, allocator);
+			singleGlyph.AddMember("llf_x", glyphConfig.ll.x, allocator);
+			singleGlyph.AddMember("llf_y", glyphConfig.ll.y, allocator);
 
-			singleGlyph.AddMember("urb_x", glyphConfig.urb.x, allocator);
-			singleGlyph.AddMember("urb_y", glyphConfig.urb.y, allocator);
+			singleGlyph.AddMember("urb_x", glyphConfig.ur.x, allocator);
+			singleGlyph.AddMember("urb_y", glyphConfig.ur.y, allocator);
 
 			glyphs.PushBack(singleGlyph, allocator);
 		}
@@ -87,7 +90,7 @@ std::string glat::GlyphSetConfig::getFileContent() {
 	configFile += GLYPH_CONFIG;
 	std::ifstream in(configFile);
 	if (in.fail() || !in.good()) {
-		// config non-existant - creating new one and set to dirty
+		// config non-existent - creating new one and set to dirty
 		setDirty(true);
 		return std::string("{ }");
 	}
@@ -126,10 +129,10 @@ void glat::GlyphSetConfig::setGlyphConfigs(const std::vector<GlyphConfig>& glyph
 	setDirty(true);
 	setNormalizedGlyphConfigs(glyphConfigs);
 	for (auto& glyphConfig : m_glyphConfigs) {
-		glyphConfig.llf.x /= maxWidth;
-		glyphConfig.llf.y /= maxHeight;
-		glyphConfig.urb.x /= maxWidth;
-		glyphConfig.urb.y /= maxHeight;
+		glyphConfig.ll.x /= maxWidth;
+		glyphConfig.ll.y /= maxHeight;
+		glyphConfig.ur.x /= maxWidth;
+		glyphConfig.ur.y /= maxHeight;
 	}
 }
 
@@ -137,7 +140,11 @@ const glat::GlyphSetConfig::GlyphConfig& glat::GlyphSetConfig::getGlyphConfigFor
 	return getGlyphConfig(charCode - m_startGlyph);
 }
 
-glat::GlyphSetConfig::GlyphConfig::GlyphConfig(glm::highp_float llf_x, glm::highp_float llf_y, glm::highp_float urb_x, glm::highp_float urb_y) {
-	this->llf = glm::highp_vec2(llf_x, llf_y);
-	this->urb = glm::highp_vec2(urb_x, urb_y);
+std::string glat::GlyphSetConfig::getGlyphsetImageName() const {
+	return std::string(m_fontFileName + ".png");
+}
+
+glat::GlyphSetConfig::GlyphConfig::GlyphConfig(glm::float_t ll_x, glm::float_t ll_y, glm::float_t ur_x, glm::float_t ur_y) {
+	this->ll = glm::highp_vec2(ll_x, ll_y);
+	this->ur = glm::highp_vec2(ur_x, ur_y);
 }

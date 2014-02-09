@@ -3,6 +3,7 @@
 #include <glat/InternalState.h>
 #include <glat/PNGAnnotation.h>
 #include <glat/TextureManager.h>
+#include <glat/Quad.h>
 
 void glat::DistanceFieldPNGRenderer::draw(AbstractAnnotation* annotation) {
 	PNGAnnotation* currentAnnotation = dynamic_cast<PNGAnnotation*>(annotation);
@@ -26,23 +27,4 @@ void glat::DistanceFieldPNGRenderer::draw(AbstractAnnotation* annotation) {
 	annotation->getState()->draw(*this);
 
 	glDisable(GL_BLEND);
-}
-
-void glat::DistanceFieldPNGRenderer::drawSetupState(const ViewportState& state) const {
-	glDisable(GL_DEPTH_TEST);
-	if (state.isDirty()) {
-		m_drawingPrimitive->setPosition(glm::vec3(state.getLL(), 0.0), glm::vec3(state.getLR(), 0.0), glm::vec3(state.getUR(), 0.0));
-		state.setDirty(false);
-	}
-	m_drawingPrimitive->draw();
-	glEnable(GL_DEPTH_TEST);
-}
-
-
-void glat::DistanceFieldPNGRenderer::drawSetupState(const InternalState& state) const {
-	if (state.isDirty()) {
-		m_drawingPrimitive->setPosition(state.getLL(), state.getLR(), state.getUR(), state.getViewProjection());
-		state.setDirty(false);
-	}
-	m_drawingPrimitive->draw();
 }

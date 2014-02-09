@@ -11,13 +11,14 @@ namespace glat {
 	class GlyphSetConfig : public glat::DirtyFlagObject {
 	public:
 		struct GlyphConfig {
-			glm::highp_vec2 llf, urb;
-			GlyphConfig(glm::highp_float llf_x, glm::highp_float llf_y, glm::highp_float urb_x, glm::highp_float urb_y);
+			glm::vec2 ll, ur;
+			GlyphConfig(glm::float_t ll_x, glm::float_t ll_y, glm::float_t ur_x, glm::float_t ur_y);
 		};
 
 		GlyphSetConfig(std::string fontFileName);
 		void serialize();
 
+		std::string getGlyphsetImageName() const;
 		unsigned short getNumGlyphs();
 		void setStartGlyph(unsigned short startGlyph);
 		unsigned short getStartGlyph();

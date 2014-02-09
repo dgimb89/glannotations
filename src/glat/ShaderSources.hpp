@@ -1,6 +1,49 @@
 namespace glat {
 	namespace ShaderSource {
-		static const char*	vertShaderSource = R"(
+		///// QUADSTRIP
+
+		static const char*	vertQuadStripShaderSource = R"(
+				#version 330
+
+				uniform mat4 modelViewProjection;
+
+				layout (location = 0) in vec3 position;
+				layout (location = 1) in vec2 textureCoord;
+				layout (location = 2) in vec2 textureCoord2;
+				layout (location = 3) in float textureSwitch;
+				out float v_uv;
+
+				void main()
+				{
+					v_uv = textureSwitch;
+					gl_Position = modelViewProjection * vec4(position, 1.0);
+				}
+				)";
+
+		static const char* fragQuadStripShaderSource = R"(
+				#version 330
+
+				uniform sampler2D source;
+
+				layout (location = 0) out vec4 fragColor;
+
+				in float v_uv;
+
+				void main()
+				{
+					if(v_uv == 1.0)
+						fragColor = vec4(1.0, 0.0, 0.0, 1.0);
+					else if(v_uv == -1.0)
+						fragColor = vec4(0.0, 1.0, 0.0, 1.0);
+					else
+						fragColor = vec4(0.0, 0.0, 0.0, 1.0);
+				}
+				)";
+
+
+		//// QUAD
+
+		static const char*	vertQuadShaderSource = R"(
 				#version 330
 
 				uniform mat4 modelViewProjection;

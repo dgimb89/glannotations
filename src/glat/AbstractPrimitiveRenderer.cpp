@@ -2,6 +2,8 @@
 
 #include <glat/Outline.h>
 #include <glat/BumpMap.h>
+#include <glat/ViewportState.h>
+#include <glat/InternalState.h>
 
 void glat::AbstractPrimitiveRenderer::setupOutline(const Styling* outline) {
 	if (outline == nullptr) return;
@@ -14,4 +16,23 @@ void glat::AbstractPrimitiveRenderer::setupBumpMap(const Styling* bumpMap) {
 	if (bumpMap == nullptr) return;
 	const Style::BumpMap* bumpMapStyle = reinterpret_cast<const Style::BumpMap*>(bumpMap);
 	m_drawingPrimitive->setBumpMap(bumpMapStyle->getIntensity());
+}
+
+void glat::AbstractPrimitiveRenderer::drawSetupState(const ViewportState& state) const {
+	glDisable(GL_DEPTH_TEST);
+	if (state.isDirty()) {
+		m_drawingPrimitive->setPosition(glm::vec3(state.getLL(), 0.0), glm::vec3(state.getLR(), 0.0), glm::vec3(state.getUR(), 0.0));
+		state.setDirty(false);
+	}
+	m_drawingPrimitive->draw();
+	glEnable(GL_DEPTH_TEST);
+}
+
+
+void glat::AbstractPrimitiveRenderer::drawSetupState(const InternalState& state) const {
+	if (state.isDirty()) {
+		m_drawingPrimitive->setPosition(state.getLL(), state.getLR(), state.getUR(), state.getViewProjection());
+		state.setDirty(false);
+	}
+	m_drawingPrimitive->draw();
 }

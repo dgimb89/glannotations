@@ -10,10 +10,6 @@ namespace glat {
 	class DistanceFieldPNGRenderer : public AbstractPrimitiveRenderer {
 	public:
 		virtual void draw(glat::AbstractAnnotation* annotation);
-
-	protected:
-		virtual void drawSetupState(const glat::ViewportState& state) const;
-		virtual void drawSetupState(const glat::InternalState& state) const;
 	};
 }
 

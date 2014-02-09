@@ -1,10 +1,10 @@
 #include <glat/TextureManager.h>
 #include <glat/PNGImage.h>
 
-glat::TextureManager* glat::TextureManager::_instance = nullptr;
+glow::ref_ptr<glat::TextureManager> glat::TextureManager::_instance = nullptr;
 
-glat::TextureManager* glat::TextureManager::getInstance() {
-	if (_instance == nullptr) {
+glow::ref_ptr<glat::TextureManager> glat::TextureManager::getInstance() {
+	if (!_instance) {
 		_instance = new TextureManager;
 	}
 

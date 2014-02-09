@@ -91,7 +91,7 @@ void glat::preprocessor::GlyphSetGenerator::generateGlyphset(std::string fontFil
 			height -= SCALEDOWN_HEIGHT;
 		}
 	}
-	finalImage->saveDistanceField("glyphset.png");
+	finalImage->saveDistanceField(jsonConfig.getGlyphsetImageName());
 
 	jsonConfig.setStartGlyph(GLYPHSET_BEGIN);
 	jsonConfig.setGlyphConfigs(glyphConfigs, maxRowWidth-1, finalHeight-1);

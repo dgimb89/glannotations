@@ -4,10 +4,10 @@
 
 glat::Quad::Quad(std::shared_ptr<glow::Texture> texture, bool isDistanceField) : glat::AbstractDrawingPrimitive(texture) {
 	if (isDistanceField) {
-		setupShader(ShaderSource::fragDFQuadShaderSource, ShaderSource::vertShaderSource);
+		setupShader(ShaderSource::fragDFQuadShaderSource, ShaderSource::vertQuadShaderSource);
 	}
 	else {
-		setupShader(ShaderSource::fragQuadShaderSource, ShaderSource::vertShaderSource);
+		setupShader(ShaderSource::fragQuadShaderSource, ShaderSource::vertQuadShaderSource);
 	}
 	// Position
 	m_vao->binding(0)->setAttribute(0);

@@ -4,12 +4,13 @@
 #include <glat/AbstractDrawingPrimitive.h>
 
 namespace glat {
-	class QuadStrip : public glat::AbstractDrawingPrimitive{
+	class QuadStrip : public glat::AbstractDrawingPrimitive {
 	public:
-		typedef std::pair<glm::vec2, glm::vec2> textureRange_t;
+		typedef glm::vec2 texVec2_t;
+		typedef std::pair<texVec2_t, texVec2_t> textureRange_t;
 		QuadStrip(std::shared_ptr<glow::Texture> distanceField);
 
-		void addQuad(glm::vec2 texture_ll, glm::vec2 texture_ur);
+		void addQuad(texVec2_t texture_ll, texVec2_t texture_ur);
 		void clearQuads();
 
 		virtual void draw();
@@ -17,9 +18,9 @@ namespace glat {
 
 	protected:
 		void updateQuadRanges();
-		inline void pushTextureCoords(std::vector<glm::vec2>& textureVec, const textureRange_t& textureRange);
-		inline glm::vec2 getUL(const textureRange_t& textureRange);
-		inline glm::vec2 getLR(const textureRange_t& textureRange);
+		inline void pushTextureCoords(std::vector<texVec2_t>& textureVec, const textureRange_t& textureRange);
+		inline texVec2_t getUL(const textureRange_t& textureRange);
+		inline texVec2_t getLR(const textureRange_t& textureRange);
 
 		std::vector<textureRange_t> m_textureRanges;
 		glm::vec3 m_ll, m_ur, m_lr;
