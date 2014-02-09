@@ -16,7 +16,7 @@ public:
 	void draw();
 	void setState(float statePhase);
 	void addState(glat::AbstractState* state);
-	glat::AbstractState* getState(unsigned statePosition = 0);
+	glow::ref_ptr<glat::AbstractState> getState(unsigned statePosition = 0);
 
 protected:
 	AbstractAnnotation(glat::AbstractState* initialState);

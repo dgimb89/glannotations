@@ -11,7 +11,6 @@ void glat::NVPRFontRenderer::draw(glat::AbstractAnnotation* annotation) {
 		glStencilFunc(GL_NOTEQUAL, 0, 0x1F);
 		glStencilOp(GL_KEEP, GL_KEEP, GL_ZERO);
 		initializeFont(currentAnnotation);
-		currentAnnotation->setDirty(false);
 	}
 	m_currentText = currentAnnotation->getText().c_str();
 	m_textColor = currentAnnotation->getColor();

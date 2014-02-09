@@ -7,10 +7,11 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}")
 set(header
 	${header_path}/DirtyFlagObject.h
 	${header_path}/GlyphSetConfig.h
+
 	${header_path}/AbstractAnnotation.h
 	${header_path}/FontAnnotation.h
 	${header_path}/SVGAnnotation.h
-	${header_path}/PDFAnnotation.h
+	${header_path}/PNGAnnotation.h
 
 	${header_path}/Styling.h
 	${header_path}/Outline.h
@@ -40,10 +41,11 @@ set(header
 set(sources
 	${source_path}/DirtyFlagObject.cpp
 	${source_path}/GlyphSetConfig.cpp
+
 	${source_path}/AbstractAnnotation.cpp
 	${source_path}/FontAnnotation.cpp
 	${source_path}/SVGAnnotation.cpp
-	${source_path}/PDFAnnotation.cpp
+	${source_path}/PNGAnnotation.cpp
 
 	${source_path}/Styling.cpp
 	${source_path}/Outline.cpp

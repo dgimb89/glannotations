@@ -16,8 +16,9 @@ void glat::AbstractAnnotation::addState(glat::AbstractState* state) {
 
 void glat::AbstractAnnotation::draw() {
 	m_renderer->draw(this);
+	setDirty(false);
 }
 
-glat::AbstractState* glat::AbstractAnnotation::getState(unsigned statePosition /*= 0*/) {
+glow::ref_ptr<glat::AbstractState> glat::AbstractAnnotation::getState(unsigned statePosition /*= 0*/) {
 	return m_states.at(statePosition);
 }

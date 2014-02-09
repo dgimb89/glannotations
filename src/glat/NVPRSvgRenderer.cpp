@@ -12,7 +12,6 @@ void glat::NVPRSvgRenderer::draw(glat::AbstractAnnotation* annotation) {
 		setupOutline(annotation->getState()->getStyling("Outline"));
 		m_height = currentAnnotation->getHeight();
 		m_width = currentAnnotation->getWidth();
-		annotation->setDirty(false);
 	}
 	glat::NVPRRenderer::draw(annotation);
 }
@@ -39,6 +38,7 @@ void glat::NVPRSvgRenderer::drawSetupState(const glat::ViewportState& state) con
 		glColor3f(0.2f, 0.2f, 0.2f); // yellow
 		glCoverStrokePathNV(m_pathSettings, GL_CONVEX_HULL_NV);
 	}
+	state.setDirty(false);
 
 	// cleanup
 	glPopMatrix();
@@ -47,5 +47,5 @@ void glat::NVPRSvgRenderer::drawSetupState(const glat::ViewportState& state) con
 }
 
 void glat::NVPRSvgRenderer::drawSetupState(const glat::InternalState& state) const {
-
+	state.setDirty(false);
 }

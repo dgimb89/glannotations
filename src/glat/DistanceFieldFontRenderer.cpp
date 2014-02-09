@@ -28,7 +28,6 @@ void DistanceFieldFontRenderer::draw(AbstractAnnotation* annotation) {
 
 		setupOutline(annotation->getState()->getStyling("Outline"));
 		setupBumpMap(annotation->getState()->getStyling("BumpMap"));
-		currentAnnotation->setDirty(false);
 	}
 
 	m_quad->setTextColor(currentAnnotation->getColor());
@@ -51,6 +50,7 @@ void DistanceFieldFontRenderer::drawSetupState(const ViewportState& state) const
 void DistanceFieldFontRenderer::drawSetupState(const InternalState& state) const {
 	if (state.isDirty()) {
 		m_quad->setPosition(state.getLL(), state.getLR(), state.getUR(), state.getViewProjection());
+		state.setDirty(false);
 	}
 	m_quad->draw();
 }

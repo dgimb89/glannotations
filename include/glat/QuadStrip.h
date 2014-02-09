@@ -13,7 +13,7 @@ namespace glat {
 		void clearQuads();
 
 		virtual void draw();
-		virtual void setPosition(glm::vec3 llf, glm::vec3 urb, glm::mat4 modelViewProjection = glm::mat4());
+		virtual void setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur, glm::mat4 modelViewProjection = glm::mat4());
 
 	protected:
 		void updateQuadRanges();
@@ -22,8 +22,7 @@ namespace glat {
 		inline glm::vec2 getLR(const textureRange_t& textureRange);
 
 		std::vector<textureRange_t> m_textureRanges;
-		glm::vec3 m_llf;
-		glm::vec3 m_urb;
+		glm::vec3 m_ll, m_ur, m_lr;
 		unsigned m_vertexCount;
 
 		glow::ref_ptr<glow::Buffer> m_secondTexCoords;

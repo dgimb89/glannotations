@@ -3,7 +3,7 @@
 
 glat::QuadStrip::QuadStrip(std::shared_ptr<glow::Texture> distanceField) : glat::AbstractDrawingPrimitive(distanceField) {
 	// initial position
-	m_llf = m_urb = glm::vec3(0.0f, 0.0f, 0.0f);
+	m_ll = m_ur = glm::vec3(0.0f, 0.0f, 0.0f);
 	m_vertexCount = 0;
 	m_secondTexCoords = new glow::Buffer(GL_ARRAY_BUFFER);
 	m_texSwitch = new glow::Buffer(GL_ARRAY_BUFFER);
@@ -79,50 +79,54 @@ void glat::QuadStrip::updateQuadRanges() {
 
 	m_texCoords->setData(firstTextureVector, GL_STATIC_DRAW);
 	m_vao->binding(1)->setAttribute(1);
-	m_vao->binding(1)->setFormat(firstTextureVector.size(), GL_FLOAT, GL_FALSE, 0);
+	m_vao->binding(1)->setFormat(2, GL_FLOAT, GL_FALSE, 0);
 	m_vao->binding(1)->setBuffer(m_texCoords, 0, sizeof(glm::vec2));
 	m_vao->enable(1);
 
 	m_secondTexCoords->setData(secondTextureVector, GL_STATIC_DRAW);
 	m_vao->binding(2)->setAttribute(2);
-	m_vao->binding(2)->setFormat(secondTextureVector.size(), GL_FLOAT, GL_FALSE, 0);
+	m_vao->binding(2)->setFormat(2, GL_FLOAT, GL_FALSE, 0);
 	m_vao->binding(2)->setBuffer(m_texCoords, 0, sizeof(glm::vec2));
 	m_vao->enable(2);
 
 	m_texSwitch->setData(textureSwitch, GL_STATIC_DRAW);
 	m_vao->binding(3)->setAttribute(3);
-	m_vao->binding(3)->setFormat(textureSwitch.size(), GL_FLOAT, GL_FALSE, 0);
+	m_vao->binding(3)->setFormat(1, GL_FLOAT, GL_FALSE, 0);
 	m_vao->binding(3)->setBuffer(m_texCoords, 0, sizeof(float));
 	m_vao->enable(3);
 
 	// update vertices VBO
 	std::vector<glm::vec3> vertexVector;
 
-	glm::vec3 spanVector = m_urb - m_llf;
-	// normalize
-	spanVector /= textureWidth;
+	glm::vec3 widthSpan = m_lr - m_ll;
+	widthSpan /= textureWidth; // normalize
+	glm::vec3 heightSpan = m_ur - m_lr;
+	glm::vec3 currentLL = m_ll;
 
-	double heightDiff = m_urb.y - m_llf.y;
+	vertexVector.push_back(currentLL);
+	vertexVector.push_back(currentLL + heightSpan);
 
 	for (auto textureCoords : m_textureRanges) {
-		//auto test = m_llf + glm::vec;
-		//heightDiff
-		//vertexVector.push_back(m_llf + ((textureCoords.second.x) / textureWidth * normSpanVector));
+		// we can calculate necessary width for current quad from texture widths because the scaling is done uniformly
+		currentLL += (textureCoords.second.x - textureCoords.first.x) * widthSpan;
+		vertexVector.push_back(currentLL);
+		vertexVector.push_back(currentLL + heightSpan);
 	}
 
 	m_positions->setData(vertexVector, GL_STATIC_DRAW);
 
 	m_vao->binding(0)->setAttribute(0);
-	m_vao->binding(0)->setFormat(vertexVector.size(), GL_FLOAT, GL_FALSE, 0);
-	m_vao->binding(0)->setBuffer(m_positions, 0, sizeof(glm::vec4));
+	m_vao->binding(0)->setFormat(3, GL_FLOAT, GL_FALSE, 0);
+	m_vao->binding(0)->setBuffer(m_positions, 0, sizeof(glm::vec3));
 	m_vao->enable(0);
 
 	m_vertexCount = vertexVector.size();
 }
 
-void glat::QuadStrip::setPosition(glm::vec3 llf, glm::vec3 urb, glm::mat4 modelViewProjection /*= glm::mat4()*/) {
-	m_llf = llf;
-	m_urb = urb;
+void glat::QuadStrip::setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur, glm::mat4 modelViewProjection /*= glm::mat4()*/) {
+	m_ll = ll;
+	m_lr = lr;
+	m_ur = ur;
 	m_program->setUniform("modelViewProjection", modelViewProjection);
 
 	updateQuadRanges();
