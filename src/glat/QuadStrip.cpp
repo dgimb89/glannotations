@@ -9,8 +9,7 @@ glat::QuadStrip::QuadStrip(std::shared_ptr<glow::Texture> distanceField) : glat:
 	m_vertexCount = 0;
 	m_secondTexCoords = new glow::Buffer(GL_ARRAY_BUFFER);
 	m_texSwitch = new glow::Buffer(GL_ARRAY_BUFFER);
-	// initial texture coordinates
-	
+	// todo: initial texture coordinates
 }
 
 void glat::QuadStrip::addQuad(texVec2_t texture_ll, texVec2_t texture_ur) {
