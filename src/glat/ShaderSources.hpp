@@ -4,7 +4,6 @@ namespace glat {
 
 		static const char*	vertQuadStripShaderSource = R"(
 				#version 330
-				precision highp float;
 				uniform mat4 modelViewProjection;
 
 				layout (location = 0) in vec3 position;
@@ -12,29 +11,31 @@ namespace glat {
 				layout (location = 2) in vec2 textureCoord2;
 				layout (location = 3) in float textureSwitch;
 				out float v_uv;
+				out vec2 tex1;
+				out vec2 tex2;
 
 				void main()
 				{
 					v_uv = textureSwitch;
+					tex1 = textureCoord;
+					tex2 = textureCoord2;
 					gl_Position = modelViewProjection * vec4(position, 1.0);
 				}
 				)";
 
 		static const char* fragQuadStripShaderSource = R"(
 				#version 330
-				precision highp float;
 				uniform sampler2D source;
 
 				layout (location = 0) out vec4 fragColor;
 
 				in float v_uv;
+				in vec2 tex1;
+				in vec2 tex2;
 
 				void main()
 				{
-					if(abs(v_uv) > 0.99999)
-						fragColor = vec4(1.0, 0.0, 0.0, 1.0);
-					else
-						fragColor = vec4(0.0, 0.0, 0.0, 1.0);
+					fragColor = step(0.9999, abs(v_uv)) * texture2D(source, tex1) + (( 1 - step(0.9999, abs(v_uv))) * texture2D(source, tex2));
 				}
 				)";
 
