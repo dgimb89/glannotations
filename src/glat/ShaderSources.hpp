@@ -26,6 +26,7 @@ namespace glat {
 		static const char* fragQuadStripShaderSource = R"(
 				#version 330
 				uniform sampler2D source;
+				uniform vec4 textColor;
 
 				layout (location = 0) out vec4 fragColor;
 
@@ -35,7 +36,11 @@ namespace glat {
 
 				void main()
 				{
-					fragColor = step(0.9999, abs(v_uv)) * texture2D(source, tex1) + (( 1 - step(0.9999, abs(v_uv))) * texture2D(source, tex2));
+					float distance = step(0.9999, abs(v_uv)) * texture2D(source, tex1).x + (( 1 - step(0.9999, abs(v_uv))) * texture2D(source, tex2).x);
+					if(distance > 0.5) 
+						discard;
+					fragColor = textColor;
+
 				}
 				)";
 

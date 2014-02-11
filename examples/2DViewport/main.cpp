@@ -104,7 +104,7 @@ public:
 
 		m_dfInternalFontAnnotation = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-3.f, -1.f, -5.f), glm::vec3(3.f, -1.f, -5.f), glm::vec3(3.f, 1.0f, -5.f), &m_camera), dfFactory);
 		m_dfInternalFontAnnotation->setFontName("calibri.ttf");
-		m_dfInternalFontAnnotation->setText("GLAT");
+		m_dfInternalFontAnnotation->setText("DistanceField");
 
 		m_nvprViewportFontAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(0.8f, -1.f), glm::vec2(1.f, 0.f)));
 		m_nvprViewportFontAnnotation->getState()->setStyling(new glat::Style::Outline(3.f, glm::vec3(.3f, .3f, .3f)));
