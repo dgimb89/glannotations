@@ -8,7 +8,7 @@
 
 #define PT_SIZE 196
 #define GLYPHSET_BEGIN 33
-#define SCALEDOWN_HEIGHT 128
+#define SCALEDOWN_HEIGHT 256
 #define GLYPH_GROUP_SIZE 16
 
 inline void handleError(const FT_Error& ftError) {
@@ -19,7 +19,7 @@ inline void handleError(const FT_Error& ftError) {
 void glat::preprocessor::GlyphSetGenerator::generateGlyphset(std::string fontFileName, unsigned numGlyphs, bool overrideExisting /*= false*/) {
 
 	glat::GlyphSetConfig jsonConfig(fontFileName);
-	if (!overrideExisting && jsonConfig.getStartGlyph() <= GLYPHSET_BEGIN && jsonConfig.getNumGlyphs() + jsonConfig.getStartGlyph() - GLYPHSET_BEGIN >= numGlyphs) {
+	if (!overrideExisting && !jsonConfig.isDirty() && jsonConfig.getStartGlyph() <= GLYPHSET_BEGIN && jsonConfig.getNumGlyphs() + jsonConfig.getStartGlyph() - GLYPHSET_BEGIN >= numGlyphs) {
 		std::cout << "Existing glyphset already includes requested glyphset" << std::endl;
 		return;
 	}
@@ -91,6 +91,7 @@ void glat::preprocessor::GlyphSetGenerator::generateGlyphset(std::string fontFil
 			height -= SCALEDOWN_HEIGHT;
 		}
 	}
+	//finalImage->scaleToWidth(1024);
 	finalImage->saveDistanceField(jsonConfig.getGlyphsetImageName());
 
 	jsonConfig.setStartGlyph(GLYPHSET_BEGIN);

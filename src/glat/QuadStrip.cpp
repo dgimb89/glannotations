@@ -9,7 +9,10 @@ glat::QuadStrip::QuadStrip(std::shared_ptr<glow::Texture> distanceField) : glat:
 	m_vertexCount = 0;
 	m_secondTexCoords = new glow::Buffer(GL_ARRAY_BUFFER);
 	m_texSwitch = new glow::Buffer(GL_ARRAY_BUFFER);
-	// todo: initial texture coordinates
+
+	m_vao->binding(0)->setAttribute(0);
+	m_vao->binding(0)->setFormat(3, GL_FLOAT, GL_FALSE, 0);
+	m_vao->enable(0);
 }
 
 void glat::QuadStrip::addQuad(texVec2_t texture_ll, texVec2_t texture_ur) {
@@ -133,12 +136,14 @@ void glat::QuadStrip::updateQuadRanges() {
 }
 
 void glat::QuadStrip::setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur, glm::mat4 modelViewProjection /*= glm::mat4()*/) {
-	m_ll = ll;
-	m_lr = lr;
-	m_ur = ur;
+	if (ll != m_ll || lr != m_lr || ur != m_ur) {
+		m_ll = ll;
+		m_lr = lr;
+		m_ur = ur;
+		updateQuadRanges();
+	}
 	m_program->setUniform("modelViewProjection", modelViewProjection);
 
-	updateQuadRanges();
 }
 
 glat::QuadStrip::texVec2_t glat::QuadStrip::getUL(const textureRange_t& textureRange) {
