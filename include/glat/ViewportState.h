@@ -18,6 +18,10 @@ namespace glat {
 
 		virtual bool isValid();
 
+		virtual void interpolate(const AbstractAnnotation& annotation, AbstractState* secondState, float interpolate) const;
+		virtual void interpolate(const AbstractAnnotation& annotation, const ViewportState& viewState, float interpolate) const;
+		virtual void interpolate(const AbstractAnnotation& annotation, const InternalState& internalState, float interpolate) const;
+
 	protected:
 		virtual void draw(const AbstractRenderer& renderer) const;
 		glm::vec2 m_ll, m_ur;

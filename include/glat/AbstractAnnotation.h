@@ -14,15 +14,20 @@ namespace glat {
 class AbstractAnnotation : public glat::DirtyFlagObject {
 public:
 	void draw();
-	void setState(float statePhase);
-	void addState(glat::AbstractState* state);
-	glow::ref_ptr<glat::AbstractState> getState(unsigned statePosition = 0);
+	void setState(unsigned statePosition);
+	void setInterpolatedState(unsigned firstStatePos, unsigned secondStatePos, float interpolate);
+	unsigned addState(glat::AbstractState* state);
+	glow::ref_ptr<glat::AbstractState> getState();
+
+	void interpolate(const ViewportState& firstState, const ViewportState& secondState, float interpolate) const;
+	void interpolate(const ViewportState& firstState, const InternalState& secondState, float interpolate) const;
+	void interpolate(const InternalState& firstState, const InternalState& secondState, float interpolate) const;
 
 protected:
 	AbstractAnnotation(glat::AbstractState* initialState);
 	glow::ref_ptr<glat::AbstractRenderer> m_renderer;
 	std::vector<glow::ref_ptr<glat::AbstractState> > m_states;
-	float m_statePhase;
+	mutable glow::ref_ptr<glat::AbstractState> m_activeState;
 };
 }
 

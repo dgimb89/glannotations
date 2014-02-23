@@ -66,6 +66,7 @@ public:
 		m_flightNav.setCamera(&m_camera);
 
 		m_timer.start();
+		m_interpolation = 0.f;
 	}
 
 	virtual ~EventHandler()
@@ -105,6 +106,8 @@ public:
 		m_dfInternalFontAnnotation = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-3.f, -1.f, -5.f), glm::vec3(3.f, -1.f, -5.f), glm::vec3(3.f, 1.0f, -5.f), &m_camera), dfFactory);
 		m_dfInternalFontAnnotation->setFontName("calibri.ttf");
 		m_dfInternalFontAnnotation->setText("DistanceField");
+		m_dfInternalFontAnnotation->addState(new glat::ViewportState(glm::vec2(-1.f, -1.f), glm::vec2(0.f, 0.f)));
+
 
 		m_nvprViewportFontAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(0.8f, -1.f), glm::vec2(1.f, 0.f)));
 		m_nvprViewportFontAnnotation->getState()->setStyling(new glat::Style::Outline(3.f, glm::vec3(.3f, .3f, .3f)));
@@ -187,6 +190,16 @@ public:
 			break;
 		case GLFW_KEY_F11:
 			event.window()->toggleMode();
+			break;
+		case GLFW_KEY_N:
+			m_interpolation += 0.02;
+			m_interpolation = min(m_interpolation, 1.f);
+			m_dfInternalFontAnnotation->setInterpolatedState(0, 1, m_interpolation);
+			break;
+		case GLFW_KEY_M:
+			m_interpolation -= 0.02;
+			m_interpolation = max(m_interpolation, 0.f);
+			m_dfInternalFontAnnotation->setInterpolatedState(0, 1, m_interpolation);
 			break;
 		}
 
@@ -348,6 +361,7 @@ protected:
 	glm::ivec2 m_lastMousePos;
 	bool m_flightEnabled;
 	glowutils::Timer m_timer;
+	float m_interpolation;
 
 	glowutils::AxisAlignedBoundingBox m_aabb;
 };

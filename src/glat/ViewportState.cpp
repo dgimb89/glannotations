@@ -1,5 +1,6 @@
 #include <glat/ViewportState.h>
 #include <glat/AbstractRenderer.h>
+#include <glat/AbstractAnnotation.h>
 
 glat::ViewportState::ViewportState(glm::vec2 llf, glm::vec2 urb) {
 	setExtends(llf, urb);
@@ -29,4 +30,16 @@ bool glat::ViewportState::isValid() {
 
 const glm::vec2 glat::ViewportState::getLR() const {
 	return glm::vec2(m_ur.x, m_ll.y);
+}
+
+void glat::ViewportState::interpolate(const AbstractAnnotation& annotation, AbstractState* secondState, float interpolate) const {
+	secondState->interpolate(annotation, *this, interpolate);
+}
+
+void glat::ViewportState::interpolate(const AbstractAnnotation& annotation, const ViewportState& viewState, float interpolate) const {
+	annotation.interpolate(viewState, *this, interpolate);
+}
+
+void glat::ViewportState::interpolate(const AbstractAnnotation& annotation, const InternalState& internalState, float interpolate) const {
+	annotation.interpolate(*this, internalState, 1.f - interpolate);
 }
