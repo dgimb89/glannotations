@@ -37,16 +37,16 @@ glow::ref_ptr<glat::AbstractState> glat::AbstractAnnotation::getState() {
 }
 
 void glat::AbstractAnnotation::interpolate(const ViewportState& firstState, const ViewportState& secondState, float interpolate) const {
-	glm::vec2 newLL = firstState.getLL() * interpolate + secondState.getLL() * (1.f - interpolate);
-	glm::vec2 newUR = firstState.getUR() * interpolate + secondState.getUR() * (1.f - interpolate);
+	glm::vec2 newLL = firstState.getLL() * (1.f - interpolate) + secondState.getLL() * interpolate;
+	glm::vec2 newUR = firstState.getUR() * (1.f - interpolate) + secondState.getUR() * interpolate;
 	m_activeState = new ViewportState(newLL, newUR);
 }
 
 void glat::AbstractAnnotation::interpolate(const ViewportState& firstState, const InternalState& secondState, float interpolate) const {
-	glm::vec3 newLL = glm::vec3(firstState.getLL(), 0.f) * interpolate + secondState.getLL() * (1.f - interpolate);
-	glm::vec3 newLR = glm::vec3(firstState.getLR(), 0.f) * interpolate + secondState.getLR() * (1.f - interpolate);
-	glm::vec3 newUR = glm::vec3(firstState.getUR(), 0.f) * interpolate + secondState.getUR() * (1.f - interpolate);
-	m_activeState = new InternalState(newLL, newLR, newUR, secondState.getCamera(), interpolate);
+	glm::vec3 newLL = glm::vec3(firstState.getLL(), 0.f) * (1.f - interpolate) + secondState.getLL() * interpolate;
+	glm::vec3 newLR = glm::vec3(firstState.getLR(), 0.f) * (1.f - interpolate) + secondState.getLR() * interpolate;
+	glm::vec3 newUR = glm::vec3(firstState.getUR(), 0.f) * (1.f - interpolate) + secondState.getUR() * interpolate;
+	m_activeState = new InternalState(newLL, newLR, newUR, secondState.getCamera(), 1.f-interpolate);
 }
 
 void glat::AbstractAnnotation::interpolate(const InternalState& firstState, const InternalState& secondState, float interpolate) const {
