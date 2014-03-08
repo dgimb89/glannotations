@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1"
+	 id="Layer_1" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="210.178px"
+	 height="88.246px" viewBox="121.747 86.737 210.178 88.246" enable-background="new 121.747 86.737 210.178 88.246"
+	 xml:space="preserve">
+<path fill="#4BAD3A" d="M146.096,139.178c2.652,10.795,14.057,20.734,51.493,25.301c35.361,4.322,58.41-6.512,66.182-11.555
+	c0,0,5.254-2.311,2.102,1.26c0,0-22.274,20.592-65.969,20.797c-43.703,0.211-78.369-21.846-78.155-44.121
+	c-0.21-22.274,34.453-44.334,78.155-44.122c43.703,0.21,65.969,20.797,65.969,20.797c3.152,3.571-2.101,1.261-2.101,1.261
+	c-7.773-5.042-30.723-14.974-66.183-11.556c-34.88,3.36-46.258,15.214-50.042,23.19c-1.456,3.072-2.277,8.304-2.277,8.888
+	C144.918,133.34,145.414,135.715,146.096,139.178z"/>
+<text transform="matrix(1 0 0 1 172.9905 147.675)" fill="#555555" font-family="'Consolas'" font-size="50.5579">gl</text>
+<g enable-background="new    ">
+	<path fill="#545454" d="M246.16,130.764v8.889h-2.889v8.021H233.25v-21.428c0-4.146,1.131-7.369,3.393-9.664
+		c2.264-2.297,5.445-3.443,9.543-3.443c3.949,0,6.871,1.041,8.764,3.123s2.838,5.295,2.838,9.638v21.773h-10.022v-21.105
+		c0-1.316-0.158-2.23-0.471-2.74c-0.312-0.51-0.871-0.766-1.677-0.766c-1.564,0-2.346,1.168-2.346,3.506v4.195H246.16z"/>
+	<path fill="#545454" d="M278.525,123.655v24.02h-10.022v-24.02h-7.678v-9.677h25.353v9.677H278.525z"/>
+</g>
+<circle fill="none" stroke="#555555" stroke-miterlimit="10" cx="323.111" cy="130.854" r="8.689"/>
+<circle fill="#555555" cx="323.111" cy="130.854" r="5.561"/>
+<polyline fill="none" stroke="#555555" stroke-miterlimit="10" points="288.525,147.674 304.012,147.674 316.434,136.414 "/>
+</svg>
