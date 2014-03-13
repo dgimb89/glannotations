@@ -29,8 +29,8 @@ glat::GlyphSetConfig::GlyphSetConfig(std::string fontFileName) {
 			m_glyphConfigs.push_back(	glat::GlyphSetConfig::GlyphConfig(
 											glyphConfigs[i]["llf_x"].GetDouble(),
 											glyphConfigs[i]["llf_y"].GetDouble(),
-											glyphConfigs[i]["urb_x"].GetDouble(),
-											glyphConfigs[i]["urb_y"].GetDouble()));
+											glyphConfigs[i]["advance_x"].GetDouble(),
+											glyphConfigs[i]["advance_y"].GetDouble()));
 		}
 		setDirty(false);
 	}
@@ -52,11 +52,11 @@ void glat::GlyphSetConfig::serialize() {
 		for (auto glyphConfig : m_glyphConfigs) {
 			rapidjson::Value singleGlyph(rapidjson::kObjectType);
 
-			singleGlyph.AddMember("llf_x", glyphConfig.ll.x, allocator);
-			singleGlyph.AddMember("llf_y", glyphConfig.ll.y, allocator);
+			singleGlyph.AddMember("llf_x", glyphConfig._ll.x, allocator);
+			singleGlyph.AddMember("llf_y", glyphConfig._ll.y, allocator);
 
-			singleGlyph.AddMember("urb_x", glyphConfig.ur.x, allocator);
-			singleGlyph.AddMember("urb_y", glyphConfig.ur.y, allocator);
+			singleGlyph.AddMember("advance_x", glyphConfig._advance.x, allocator);
+			singleGlyph.AddMember("advance_y", glyphConfig._advance.y, allocator);
 
 			glyphs.PushBack(singleGlyph, allocator);
 		}
@@ -129,10 +129,10 @@ void glat::GlyphSetConfig::setGlyphConfigs(const std::vector<GlyphConfig>& glyph
 	setDirty(true);
 	setNormalizedGlyphConfigs(glyphConfigs);
 	for (auto& glyphConfig : m_glyphConfigs) {
-		glyphConfig.ll.x /= maxWidth;
-		glyphConfig.ll.y /= maxHeight;
-		glyphConfig.ur.x /= maxWidth;
-		glyphConfig.ur.y /= maxHeight;
+		glyphConfig._ll.x /= maxWidth;
+		glyphConfig._ll.y /= maxHeight;
+		glyphConfig._advance.x /= maxWidth;
+		glyphConfig._advance.y /= maxHeight;
 	}
 }
 
@@ -144,7 +144,7 @@ std::string glat::GlyphSetConfig::getGlyphsetImageName() const {
 	return std::string(m_fontFileName + ".png");
 }
 
-glat::GlyphSetConfig::GlyphConfig::GlyphConfig(glm::float_t ll_x, glm::float_t ll_y, glm::float_t ur_x, glm::float_t ur_y) {
-	this->ll = glm::highp_vec2(ll_x, ll_y);
-	this->ur = glm::highp_vec2(ur_x, ur_y);
+glat::GlyphSetConfig::GlyphConfig::GlyphConfig(glm::float_t ll_x, glm::float_t ll_y, glm::float_t advance_x, glm::float_t advance_y) {
+	_ll = glm::highp_vec2(ll_x, ll_y);
+	_advance = glm::highp_vec2(advance_x, advance_y);
 }

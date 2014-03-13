@@ -3,5 +3,6 @@ include_directories(
 	${GLEW_INCLUDE_DIR}
 	${GLFW_INCLUDE_DIR}
 )
-add_subdirectory(2DViewport)
+add_subdirectory(DFRendering)
+add_subdirectory(NVPRendering)
 add_subdirectory(DFPreprocessing)

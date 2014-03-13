@@ -10,7 +10,7 @@ namespace glat {
 		typedef std::pair<texVec2_t, texVec2_t> textureRange_t;
 		QuadStrip(std::shared_ptr<glow::Texture> distanceField);
 
-		void addQuad(texVec2_t texture_ll, texVec2_t texture_ur);
+		void addQuad(texVec2_t texture_ll, texVec2_t texture_advance);
 		void clearQuads();
 
 		virtual void draw();
@@ -26,8 +26,11 @@ namespace glat {
 		glm::vec3 m_ll, m_ur, m_lr;
 		unsigned m_vertexCount;
 
-		glow::ref_ptr<glow::Buffer> m_secondTexCoords;
-		glow::ref_ptr<glow::Buffer> m_texSwitch;
+		glow::ref_ptr<glow::Buffer> m_advanceH;
+		glow::ref_ptr<glow::Buffer> m_advanceW; 
+		glow::ref_ptr<glow::Buffer> m_texAdvance;
+
+		glow::ref_ptr<glow::Shader> m_geometryShader;
 	};
 }
 #endif // !GLAT_QUAD_STRIP_H

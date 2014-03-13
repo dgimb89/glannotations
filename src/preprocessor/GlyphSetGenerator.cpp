@@ -79,7 +79,7 @@ void glat::preprocessor::GlyphSetGenerator::generateGlyphset(std::string fontFil
 	unsigned glyphIndex = 0;
 	std::vector<glat::GlyphSetConfig::GlyphConfig> glyphConfigs;
 	for (auto image : glyphImages) {
-		glyphConfigs.push_back(glat::GlyphSetConfig::GlyphConfig(width, height, width + image->getWidth() - 1, height + image->getHeight() - 1));
+		glyphConfigs.push_back(glat::GlyphSetConfig::GlyphConfig(width, height, image->getWidth() - 1, image->getHeight() - 1));
 		for (size_t w = 0; w < image->getWidth(); ++w)
 			for (size_t h = 0; h < image->getHeight(); ++h) {
 				finalImage->setImageValue(width + w, height + h, 0, image->getImageValue(w, h, 0));

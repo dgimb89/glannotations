@@ -1,5 +1,5 @@
 
-set(target Example_2DViewport)
+set(target Example_DF_Rendering)
 message(STATUS "example ${target}")
 
 add_executable(${target} 

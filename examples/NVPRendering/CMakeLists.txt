@@ -1,0 +1,18 @@
+
+set(target Example_NVP_Rendering)
+message(STATUS "example ${target}")
+
+add_executable(${target} 
+    main.cpp
+)
+
+target_link_libraries(${target}
+	general
+		${GLEW_LIBRARY}
+    	glat
+    	preprocessor
+	debug
+		${GLOW_LIBRARIES_DEBUG}
+	optimized
+		${GLOW_LIBRARIES}
+)

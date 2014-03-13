@@ -11,8 +11,8 @@ namespace glat {
 	class GlyphSetConfig : public glat::DirtyFlagObject {
 	public:
 		struct GlyphConfig {
-			glm::vec2 ll, ur;
-			GlyphConfig(glm::float_t ll_x, glm::float_t ll_y, glm::float_t ur_x, glm::float_t ur_y);
+			glm::vec2 _ll, _advance;
+			GlyphConfig(glm::float_t ll_x, glm::float_t ll_y, glm::float_t advance_x, glm::float_t advance_y);
 		};
 
 		GlyphSetConfig(std::string fontFileName);

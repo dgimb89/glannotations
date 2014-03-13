@@ -14,8 +14,8 @@ void glat::DistanceFieldFontRenderer::draw(AbstractAnnotation* annotation) {
 		m_glyphConfig = new glat::GlyphSetConfig(currentAnnotation->getFontName());		
 		auto quadStrip = new QuadStrip(glat::TextureManager::getInstance()->getTexture(m_glyphConfig->getGlyphsetImageName()));
 		for (unsigned i = 0; i < currentAnnotation->getText().length(); ++i) {
-			quadStrip->addQuad(	m_glyphConfig->getGlyphConfigForCharcode(currentAnnotation->getText().at(i)).ll, 
-								m_glyphConfig->getGlyphConfigForCharcode(currentAnnotation->getText().at(i)).ur);
+			quadStrip->addQuad(	m_glyphConfig->getGlyphConfigForCharcode(currentAnnotation->getText().at(i))._ll, 
+								m_glyphConfig->getGlyphConfigForCharcode(currentAnnotation->getText().at(i))._advance);
 		}
 		m_drawingPrimitive = quadStrip;
 

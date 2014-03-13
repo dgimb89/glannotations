@@ -100,26 +100,11 @@ public:
 		glat::RendererFactory dfFactory;
 		dfFactory.useNVpr(false);
 		m_dfViewportPNGAnnotation = new glat::PNGAnnotation(new glat::ViewportState(glm::vec2(-0.95f, 0.75f), glm::vec2(-0.5f, 0.95f)), "glat.png", dfFactory);
-		//m_dfViewportPNGAnnotation->setAsDistanceField(glm::vec4(0.f, 0.f, 1.f, 1.f));
-		//m_dfViewportPNGAnnotation->getState()->setStyling(new glat::Style::Outline(2.f, glm::vec3(0.f, 0.f, 0.f)));
 
 		m_dfInternalFontAnnotation = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-3.f, -1.f, -5.f), glm::vec3(3.f, -1.f, -5.f), glm::vec3(3.f, 1.0f, -5.f), &m_camera), dfFactory);
 		m_dfInternalFontAnnotation->setFontName("calibri.ttf");
 		m_dfInternalFontAnnotation->setText("DistanceField");
 		m_dfInternalFontAnnotation->addState(new glat::ViewportState(glm::vec2(-.75f, -.5f), glm::vec2(0.75f, 0.5f)));
-
-
-		m_nvprViewportFontAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(0.8f, -1.f), glm::vec2(1.f, 0.f)));
-		m_nvprViewportFontAnnotation->getState()->setStyling(new glat::Style::Outline(3.f, glm::vec3(.3f, .3f, .3f)));
-		m_nvprViewportFontAnnotation->getState()->setStyling(new glat::Style::BumpMap(1.0f));
-		m_nvprViewportFontAnnotation->setColor(glm::vec4(0.75, 0.75, 0.75, 1.0));
-		m_nvprViewportFontAnnotation->setText("0");
-
-		m_nvprViewportSVGAnnotation = new glat::SVGAnnotation(new glat::ViewportState(glm::vec2(-1.f, -1.f), glm::vec2(-0.3f, 0.f)));
-		m_nvprViewportSVGAnnotation->getState()->setStyling(new glat::Style::Outline(2.f, glm::vec3(.3f, .3f, .3f)));
-		m_nvprViewportSVGAnnotation->setPathString("M100,180 L40,10 L190,120 L10,120 L160,10 z");
-		m_nvprViewportSVGAnnotation->setHeight(190);
-		m_nvprViewportSVGAnnotation->setWidth(200);
 
 		window.addTimer(0, 0, false);
 	}
@@ -128,7 +113,6 @@ public:
 		m_sphere = nullptr;
 		m_icosahedron = nullptr;
 		m_agrid = nullptr;
-		m_nvprViewportFontAnnotation = nullptr;
 		m_dfInternalFontAnnotation = nullptr;
 	}
 
@@ -151,14 +135,8 @@ public:
 
 		m_agrid->draw();
 
-		char clockBuffer[10];
-		sprintf(clockBuffer, "%d", clock() / CLOCKS_PER_SEC);
-		m_nvprViewportFontAnnotation->setText(clockBuffer);
-
 		m_dfInternalFontAnnotation->draw();
 		m_dfViewportPNGAnnotation->draw();
-		m_nvprViewportFontAnnotation->draw();
-		m_nvprViewportSVGAnnotation->draw();
 	}
 
 	virtual void timerEvent(TimerEvent & event) override
@@ -350,10 +328,8 @@ protected:
 
 	glow::ref_ptr<glowutils::Icosahedron> m_icosahedron;
 	glow::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
-	glow::ref_ptr<glat::FontAnnotation> m_nvprViewportFontAnnotation;
 	glow::ref_ptr<glat::PNGAnnotation> m_dfViewportPNGAnnotation;
 	glow::ref_ptr<glat::FontAnnotation> m_dfInternalFontAnnotation;
-	glow::ref_ptr<glat::SVGAnnotation> m_nvprViewportSVGAnnotation;
 
 	glowutils::Camera m_camera;
 	glowutils::WorldInHandNavigation m_nav;
@@ -373,7 +349,7 @@ int main(int argc, char* argv[])
 {
 	ContextFormat format;
 	format.setVersion(4, 0);
-	format.setProfile(ContextFormat::CompatibilityProfile);
+	format.setProfile(ContextFormat::CoreProfile);
 	format.setStencilBufferSize(4);
 	format.setSamples(24);
 

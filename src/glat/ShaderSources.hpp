@@ -8,17 +8,15 @@ namespace glat {
 
 				layout (location = 0) in vec3 position;
 				layout (location = 1) in vec2 texCoord;
-				layout (location = 2) in vec3 advanceH;
-				layout (location = 3) in vec3 advanceW;
-				layout (location = 4) in vec2 texAdvanceH;
-				layout (location = 5) in vec2 texAdvanceW;
+				layout (location = 2) in vec2 texAdvance;
+				layout (location = 3) in vec3 advanceH;
+				layout (location = 4) in vec3 advanceW;
 				
 				out QuadData {
 					vec2 texCoord;
+					vec2 texAdvance;
 					vec3 advanceH;
 					vec3 advanceW;
-					vec2 texAdvanceH;
-					vec2 texAdvanceW;
 					mat4 mvp;
 				} quad;
 
@@ -27,25 +25,23 @@ namespace glat {
 					quad.texCoord = texCoord;
 					quad.advanceH = advanceH;
 					quad.advanceW = advanceW;
-					quad.texAdvanceW = texAdvanceW;
-					quad.texAdvanceH = texAdvanceH;
+					quad.texAdvance = texAdvance;
 					quad.mvp = modelViewProjection;
-					gl_Position = position;
+					gl_Position = vec4(position, 1.0);
 				}
 				)";
 
 		static const char* geomQuadStripShaderSource = R"(
-				#version 430
+				#version 330
 
 				layout(points) in;
 				layout(triangle_strip, max_vertices = 4) out;
 
 				in QuadData {
 					vec2 texCoord;
+					vec2 texAdvance;
 					vec3 advanceH;
 					vec3 advanceW;
-					vec2 texAdvanceH;
-					vec2 texAdvanceW;
 					mat4 mvp;
 				} quad[1];
 
@@ -55,23 +51,24 @@ namespace glat {
 
 				void main() {
 					// ll
-					gl_Position = vec4(gl_in[0].gl_Position, 1.0) * quad.mvp;
+					//gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
+					gl_Position = quad[0].mvp * gl_in[0].gl_Position;
 					vertex.texCoord = quad[0].texCoord;
 					EmitVertex();
 
 					// ul
-					gl_Position = vec4(gl_in[0].gl_Position + quad[0].advanceH, 1.0) * quad.mvp;
-					vertex.texCoord = quad[0].texCoord + quad[0].texAdvanceH;
+					gl_Position = quad[0].mvp * vec4(gl_in[0].gl_Position.xyz + quad[0].advanceH, 1.0);
+					vertex.texCoord = quad[0].texCoord + vec2(0.0, quad[0].texAdvance.y);
 					EmitVertex();
 
 					// lr
-					gl_Position = vec4(gl_in[0].gl_Position + quad[0].advanceW, 1.0) * quad.mvp;
-					vertex.texCoord = quad[0].texCoord + quad[0].texAdvanceW;
+					gl_Position = quad[0].mvp * vec4(gl_in[0].gl_Position.xyz + quad[0].advanceW, 1.0);
+					vertex.texCoord = quad[0].texCoord.xy + vec2(quad[0].texAdvance.x, 0.0);
 					EmitVertex();
 
 					// ur
-					gl_Position = vec4(gl_in[0].gl_Position + quad[0].advanceH + quad[0].advanceW, 1.0) * quad.mvp;
-					vertex.texCoord = quad[0].texCoord + quad[0].texAdvanceW + quad[0].texAdvanceH;
+					gl_Position = quad[0].mvp * vec4(gl_in[0].gl_Position.xyz + quad[0].advanceH + quad[0].advanceW, 1.0);
+					vertex.texCoord = quad[0].texCoord.xy + quad[0].texAdvance;
 					EmitVertex();
 
 					EndPrimitive();
@@ -85,16 +82,18 @@ namespace glat {
 
 				layout (location = 0) out vec4 fragColor;
 
-				out VertexData {
+				in VertexData {
 					vec2 texCoord;
 				} vertex;
 
 				void main()
 				{
-					float distance = texture2D(source, vertex.texCoord).x;
-					if(distance > 0.5) 
+					float distance = texture2D(source, vertex.texCoord);
+					if(distance > 0.5) {
 						discard;
-					fragColor = textColor;
+					} else {
+						fragColor = textColor;
+					}
 				}
 				)";
 
