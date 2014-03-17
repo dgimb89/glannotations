@@ -11,6 +11,7 @@ namespace glat {
 	protected:
 		virtual void drawSetupState(const glat::ViewportState& state) const;
 		virtual void drawSetupState(const glat::InternalState& state) const;
+		virtual void drawSetupState(const glat::ExternalBoxState& state) const;
 
 		unsigned m_width, m_height;
 	};

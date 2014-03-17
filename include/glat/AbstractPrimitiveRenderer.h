@@ -16,6 +16,7 @@ namespace glat {
 
 		virtual void drawSetupState(const glat::ViewportState& state) const;
 		virtual void drawSetupState(const glat::InternalState& state) const;
+		virtual void drawSetupState(const glat::ExternalBoxState& state) const;
 
 		// we set the primitive to mutable because there is no outside interference at all - the quad is JUST used for rendering for this specific Renderer
 		mutable glow::ref_ptr<glat::AbstractDrawingPrimitive> m_drawingPrimitive;

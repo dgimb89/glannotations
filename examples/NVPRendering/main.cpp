@@ -362,7 +362,7 @@ int main(int argc, char* argv[])
 
 	window.setEventHandler(new EventHandler());
 
-	if (window.create(format, "Navigations Example"))
+	if (window.create(format, "NVP Rendering Example"))
 	{
 		window.context()->setSwapInterval(Context::NoVerticalSyncronization);
 

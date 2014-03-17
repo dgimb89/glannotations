@@ -116,7 +116,11 @@ void glat::NVPRFontRenderer::drawSetupState(const glat::ViewportState& state) co
 }
 
 void glat::NVPRFontRenderer::drawSetupState(const glat::InternalState& state) const {
+	throw std::logic_error("The method or operation is not implemented.");
+	}
 
+void glat::NVPRFontRenderer::drawSetupState(const glat::ExternalBoxState& state) const {
+	throw std::logic_error("The method or operation is not implemented.");
 }
 
 void glat::NVPRFontRenderer::initializeFont(glat::FontAnnotation* annotation) {

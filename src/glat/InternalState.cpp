@@ -56,8 +56,9 @@ const glm::mat4& glat::InternalState::getViewProjection() const {
 }
 
 bool glat::InternalState::isDirty() const {
-	if (m_camera->viewProjection() != m_camProjection)
+	if (m_camera->viewProjection() != m_camProjection) {
 		return true;
+	}
 	return glat::AbstractState::isDirty();
 }
 

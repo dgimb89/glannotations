@@ -4,6 +4,7 @@
 #include <glat/BumpMap.h>
 #include <glat/ViewportState.h>
 #include <glat/InternalState.h>
+#include <glat/ExternalBoxState.h>
 
 void glat::AbstractPrimitiveRenderer::setupOutline(const Styling* outline) {
 	if (outline == nullptr) return;
@@ -33,6 +34,18 @@ void glat::AbstractPrimitiveRenderer::drawSetupState(const InternalState& state)
 	if (state.isDirty()) {
 		m_drawingPrimitive->setPosition(state.getLL(), state.getLR(), state.getUR(), state.getViewProjection());
 		state.setDirty(false);
+	}
+	m_drawingPrimitive->draw();
+}
+
+void glat::AbstractPrimitiveRenderer::drawSetupState(const glat::ExternalBoxState& state) const {
+	if (state.isDirty()) {
+		state.updateInternalPosition();
+		m_drawingPrimitive->setPosition(state.getLL(), state.getLR(), state.getUR(), state.getViewProjection());
+		state.setDirty(false);
+	}
+	if (state.isDrawBox()) {
+		// TODO: draw box here
 	}
 	m_drawingPrimitive->draw();
 }

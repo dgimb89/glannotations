@@ -42,6 +42,7 @@
 #include <glat/PNGAnnotation.h>
 #include <glat/ViewportState.h>
 #include <glat/InternalState.h>
+#include <glat/ExternalBoxState.h>
 #include <glat/Outline.h>
 #include <glat/BumpMap.h>
 
@@ -106,6 +107,10 @@ public:
 		m_dfInternalFontAnnotation->setText("DistanceField");
 		m_dfInternalFontAnnotation->addState(new glat::ViewportState(glm::vec2(-.75f, -.5f), glm::vec2(0.75f, 0.5f)));
 
+		m_dfExternalBoxAnnotation = new glat::FontAnnotation(new glat::ExternalBoxState(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(2.f, 0.f, 0.f), glm::vec3(0.f, 2.f, 0.f), glm::vec3(0.f, 0.f, -2.f), &m_camera, true), dfFactory);
+		m_dfExternalBoxAnnotation->setFontName("calibri.ttf");
+		m_dfExternalBoxAnnotation->setText("Kugel");
+
 		window.addTimer(0, 0, false);
 	}
 	virtual void finalize(Window &) override
@@ -137,6 +142,7 @@ public:
 
 		m_dfInternalFontAnnotation->draw();
 		m_dfViewportPNGAnnotation->draw();
+		m_dfExternalBoxAnnotation->draw();
 	}
 
 	virtual void timerEvent(TimerEvent & event) override
@@ -330,6 +336,7 @@ protected:
 	glow::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
 	glow::ref_ptr<glat::PNGAnnotation> m_dfViewportPNGAnnotation;
 	glow::ref_ptr<glat::FontAnnotation> m_dfInternalFontAnnotation;
+	glow::ref_ptr<glat::FontAnnotation> m_dfExternalBoxAnnotation;
 
 	glowutils::Camera m_camera;
 	glowutils::WorldInHandNavigation m_nav;
@@ -349,24 +356,17 @@ int main(int argc, char* argv[])
 {
 	ContextFormat format;
 	format.setVersion(4, 0);
-	format.setProfile(ContextFormat::CoreProfile);
-	format.setStencilBufferSize(4);
 	format.setSamples(24);
 
 	Window window;
 
 	window.setEventHandler(new EventHandler());
 
-	if (window.create(format, "Navigations Example"))
-	{
+	if (window.create(format, "DF Rendering Example")) {
 		window.context()->setSwapInterval(Context::NoVerticalSyncronization);
-
 		window.show();
-
 		return MainLoop::run();
-	}
-	else
-	{
+	} else {
 		return 1;
 	}
 }

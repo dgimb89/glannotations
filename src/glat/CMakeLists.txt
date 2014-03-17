@@ -32,6 +32,8 @@ set(header
 	${header_path}/DistanceFieldFontRenderer.h
 
 	${header_path}/AbstractState.h
+	${header_path}/AbstractExternalState.h
+	${header_path}/ExternalBoxState.h
 	${header_path}/ViewportState.h
 	${header_path}/InternalState.h
 	
@@ -70,6 +72,8 @@ set(sources
 	${source_path}/DistanceFieldFontRenderer.cpp
 
 	${source_path}/AbstractState.cpp
+	${source_path}/AbstractExternalState.cpp
+	${source_path}/ExternalBoxState.cpp
 	${source_path}/ViewportState.cpp
 	${source_path}/InternalState.cpp
 	

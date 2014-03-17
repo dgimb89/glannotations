@@ -49,3 +49,8 @@ void glat::NVPRSvgRenderer::drawSetupState(const glat::ViewportState& state) con
 void glat::NVPRSvgRenderer::drawSetupState(const glat::InternalState& state) const {
 	state.setDirty(false);
 }
+
+void glat::NVPRSvgRenderer::drawSetupState(const glat::ExternalBoxState& state) const {
+	// TODO
+	throw std::logic_error("The method or operation is not implemented.");
+}

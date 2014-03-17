@@ -24,4 +24,5 @@ void glat::AbstractState::setAutoExtend(State::AutoExtend extendBehaviour) {
 }
 
 glat::AbstractState::AbstractState() {
+	setDirty(true);
 }
