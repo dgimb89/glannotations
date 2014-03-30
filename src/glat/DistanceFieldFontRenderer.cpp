@@ -19,7 +19,7 @@ void glat::DistanceFieldFontRenderer::draw(AbstractAnnotation* annotation) {
 		}
 		m_drawingPrimitive = quadStrip;
 
-		m_drawingPrimitive->setTextColor(currentAnnotation->getColor());
+		m_drawingPrimitive->setColor(currentAnnotation->getColor());
 		setupOutline(annotation->getState()->getStyling("Outline"));
 		setupBumpMap(annotation->getState()->getStyling("BumpMap"));
 	}

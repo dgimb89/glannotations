@@ -1,10 +1,10 @@
 #ifndef GLAT_QUAD_STRIP_H
 #define GLAT_QUAD_STRIP_H
 
-#include <glat/AbstractDrawingPrimitive.h>
+#include <glat/AbstractDFPrimitive.h>
 
 namespace glat {
-	class QuadStrip : public glat::AbstractDrawingPrimitive {
+	class QuadStrip : public glat::AbstractDFPrimitive {
 	public:
 		typedef glm::vec2 texVec2_t;
 		typedef std::pair<texVec2_t, texVec2_t> textureRange_t;

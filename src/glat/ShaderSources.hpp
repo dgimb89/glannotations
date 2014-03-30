@@ -78,7 +78,7 @@ namespace glat {
 		static const char* fragQuadStripShaderSource = R"(
 				#version 330
 				uniform sampler2D source;
-				uniform vec4 textColor;
+				uniform vec4 color;
 
 				layout (location = 0) out vec4 fragColor;
 
@@ -92,7 +92,7 @@ namespace glat {
 					if(distance > 0.5) {
 						discard;
 					} else {
-						fragColor = textColor;
+						fragColor = color;
 					}
 				}
 				)";
@@ -136,7 +136,7 @@ namespace glat {
 
 				uniform sampler2D source;
 				uniform int style;
-				uniform vec4 textColor;
+				uniform vec4 color;
 				uniform vec3 outlineColor;
 				uniform float outlineSize;
 				uniform float bumpIntensity;
@@ -149,7 +149,7 @@ namespace glat {
 					float d = texture2D(source, v_uv).x - 0.5;	
 
 					if (d < 0.0) {
-						return vec4(textColor.rgb, textColor.a * smoothstep(0.0, 0.03, abs(d)));
+						return vec4(color.rgb, color.a * smoothstep(0.0, 0.03, abs(d)));
 					} 
 					else {
 						discard;
@@ -163,7 +163,7 @@ namespace glat {
 					float d_outline = smoothstep(outlineSize, 0.00 , d);
 
 					if (d < 0.0) {
-						return textColor;
+						return color;
 					}
 					else if (d_outline > 0.0) {
 						return vec4(outlineColor, d_outline);

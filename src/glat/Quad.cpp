@@ -2,7 +2,7 @@
 #include <glow/VertexAttributeBinding.h>
 #include "ShaderSources.hpp"
 
-glat::Quad::Quad(std::shared_ptr<glow::Texture> texture, bool isDistanceField) : glat::AbstractDrawingPrimitive(texture) {
+glat::Quad::Quad(std::shared_ptr<glow::Texture> texture, bool isDistanceField) : glat::AbstractDFPrimitive(texture) {
 	if (isDistanceField) {
 		setupShader(ShaderSource::fragDFQuadShaderSource, ShaderSource::vertQuadShaderSource);
 	}

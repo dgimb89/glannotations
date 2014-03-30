@@ -2,7 +2,7 @@
 #include <glow/VertexAttributeBinding.h>
 #include "ShaderSources.hpp"
 
-glat::QuadStrip::QuadStrip(std::shared_ptr<glow::Texture> distanceField) : glat::AbstractDrawingPrimitive(distanceField) {
+glat::QuadStrip::QuadStrip(std::shared_ptr<glow::Texture> distanceField) : glat::AbstractDFPrimitive(distanceField) {
 	setupShader(ShaderSource::fragQuadStripShaderSource, ShaderSource::vertQuadStripShaderSource);
 	// initial position
 	m_ll = m_lr = m_ur = glm::vec3(0.0f, 0.0f, 0.0f);

@@ -1,7 +1,7 @@
 #ifndef GLAT_ABSTRACT_PRIMITIVE_RENDERER_H
 #define GLAT_ABSTRACT_PRIMITIVE_RENDERER_H
 
-#include <glat/AbstractDrawingPrimitive.h>
+#include <glat/AbstractDFPrimitive.h>
 #include <glat/AbstractRenderer.h>
 #include <glat/Styling.h>
 
@@ -19,7 +19,7 @@ namespace glat {
 		virtual void drawSetupState(const glat::ExternalBoxState& state) const;
 
 		// we set the primitive to mutable because there is no outside interference at all - the quad is JUST used for rendering for this specific Renderer
-		mutable glow::ref_ptr<glat::AbstractDrawingPrimitive> m_drawingPrimitive;
+		mutable glow::ref_ptr<glat::AbstractDFPrimitive> m_drawingPrimitive;
 	};
 }
 

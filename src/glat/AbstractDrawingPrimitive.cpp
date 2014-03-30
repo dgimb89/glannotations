@@ -7,38 +7,12 @@ AbstractDrawingPrimitive::AbstractDrawingPrimitive(std::shared_ptr<glow::Texture
 	m_positions = new glow::Buffer(GL_ARRAY_BUFFER);
 	m_texCoords = new glow::Buffer(GL_ARRAY_BUFFER);
 	
-	m_style = 0;
 	m_texture = texture;
 }
 
 
-void AbstractDrawingPrimitive::setScale(glm::vec2 scale) {
-	m_program->setUniform("scale", scale);
-}
-
-
-void AbstractDrawingPrimitive::setOffset(glm::vec2 offset) {
-	m_program->setUniform("offset", offset);
-}
-
-
-void AbstractDrawingPrimitive::setOutline(float size, glm::vec3 color) {
-	m_style |= 1;
-	m_program->setUniform("outlineSize", size);
-	m_program->setUniform("outlineColor", color);
-	m_program->setUniform("style", m_style);
-}
-
-
-void AbstractDrawingPrimitive::setBumpMap(float intensity) {
-	m_style |= 2;
-	m_program->setUniform("bumpIntensity", intensity);
-	m_program->setUniform("style", m_style);
-}
-
-
-void AbstractDrawingPrimitive::setTextColor(glm::vec4 color) {
-	m_program->setUniform("textColor", color);
+void AbstractDrawingPrimitive::setColor(glm::vec4 color) {
+	m_program->setUniform("color", color);
 }
 
 

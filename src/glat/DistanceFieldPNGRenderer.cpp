@@ -18,7 +18,7 @@ void glat::DistanceFieldPNGRenderer::draw(AbstractAnnotation* annotation) {
 		);
 
 		if (currentAnnotation->isDistanceField()) {
-			m_drawingPrimitive->setTextColor(currentAnnotation->getColor());
+			m_drawingPrimitive->setColor(currentAnnotation->getColor());
 			setupOutline(annotation->getState()->getStyling("Outline"));
 			setupBumpMap(annotation->getState()->getStyling("BumpMap"));
 		}

@@ -78,6 +78,7 @@ set(sources
 	${source_path}/InternalState.cpp
 	
 	${source_path}/AbstractDrawingPrimitive.cpp
+	${source_path}/AbstractDFPrimitive.cpp
 	${source_path}/Quad.cpp
 	${source_path}/QuadStrip.cpp
 	

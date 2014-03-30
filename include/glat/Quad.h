@@ -1,10 +1,10 @@
 #ifndef GLAT_QUAD_H
 #define GLAT_QUAD_H
 
-#include <glat/AbstractDrawingPrimitive.h>
+#include <glat/AbstractDFPrimitive.h>
 
 namespace glat {
-	class Quad : public glat::AbstractDrawingPrimitive {
+	class Quad : public glat::AbstractDFPrimitive {
 	public:
 		Quad(std::shared_ptr<glow::Texture> texture, bool isDistanceField);
 		
