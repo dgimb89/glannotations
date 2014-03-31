@@ -16,6 +16,7 @@ set(header
 	${header_path}/Styling.h
 	${header_path}/Outline.h
 	${header_path}/BumpMap.h
+	${header_path}/ExternalColor.h
 
 	${header_path}/TextureManager.h
 	${header_path}/RendererFactory.h
@@ -40,6 +41,7 @@ set(header
 	${header_path}/AbstractDrawingPrimitive.h
 	${header_path}/Quad.h
 	${header_path}/QuadStrip.h
+	${header_path}/Box.h
 )
 
 set(sources
@@ -54,6 +56,7 @@ set(sources
 	${source_path}/Styling.cpp
 	${source_path}/Outline.cpp
 	${source_path}/BumpMap.cpp
+	${source_path}/ExternalColor.cpp
 
 	${source_path}/TextureManager.cpp
 	${source_path}/RendererFactory.cpp
@@ -81,6 +84,7 @@ set(sources
 	${source_path}/AbstractDFPrimitive.cpp
 	${source_path}/Quad.cpp
 	${source_path}/QuadStrip.cpp
+	${source_path}/Box.cpp
 	
 	${source_path}/ShaderSources.hpp
 )

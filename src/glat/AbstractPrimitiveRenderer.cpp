@@ -42,10 +42,11 @@ void glat::AbstractPrimitiveRenderer::drawSetupState(const glat::ExternalBoxStat
 	if (state.isDirty()) {
 		state.updateInternalPosition();
 		m_drawingPrimitive->setPosition(state.getLL(), state.getLR(), state.getUR(), state.getViewProjection());
+		state.setupExternalPrimitives();
 		state.setDirty(false);
 	}
-	if (state.isDrawBox()) {
-		// TODO: draw box here
+	if (state.getDrawExternal()) {
+		state.drawExternalPrimitives();
 	}
 	m_drawingPrimitive->draw();
 }

@@ -49,7 +49,7 @@ void glat::Quad::setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur, glm::mat4
 	m_positions->setData(vertexArray, GL_STATIC_DRAW);
 	m_vao->binding(0)->setBuffer(m_positions, 0, sizeof(glm::vec3));
 
-	m_program->setUniform("modelViewProjection", modelViewProjection);
+	setModelViewProjection(modelViewProjection);
 }
 
 

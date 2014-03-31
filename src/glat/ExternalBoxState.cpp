@@ -1,5 +1,6 @@
 #include <glat/ExternalBoxState.h>
 #include <glat/AbstractRenderer.h>
+#include <glat/Box.h>
 
 bool glat::ExternalBoxState::isValid() {
 	// all spanning vectors have to be linear independent
@@ -27,25 +28,19 @@ void glat::ExternalBoxState::draw(const AbstractRenderer& renderer) const {
 	renderer.drawSetupState(*this);
 }
 
-bool glat::ExternalBoxState::isDrawBox() const {
-	return m_drawBox;
-}
-
-void glat::ExternalBoxState::setDrawBox(bool drawBox) {
-	m_drawBox = drawBox;
-}
-
 void glat::ExternalBoxState::setExtends(glm::vec3 llf, glm::vec3 widthSpan, glm::vec3 heightSpan, glm::vec3 depthSpan) {
 	m_llf = llf;
 	m_widthSpan = widthSpan;
 	m_heightSpan = heightSpan;
 	m_depthSpan = depthSpan;
+	reinterpret_cast<glat::Box*>(m_externalPrimitive.get())->setPosition(llf, widthSpan, heightSpan, depthSpan);
 }
 
 glat::ExternalBoxState::ExternalBoxState(glm::vec3 llf, glm::vec3 widthSpan, glm::vec3 heightSpan, glm::vec3 depthSpan, glowutils::Camera* camera, bool drawBox /*= true*/)
-	: AbstractExternalState(camera) {
+: AbstractExternalState(camera) {
+	m_externalPrimitive = new glat::Box();
 	setExtends(llf, widthSpan, heightSpan, depthSpan);
-	setDrawBox(drawBox);
+	setDrawExternal(drawBox);
 }
 
 const glm::vec3& glat::ExternalBoxState::getLL() const {
@@ -90,14 +85,14 @@ void glat::ExternalBoxState::updateInternalPosition() const {
 inline void glat::ExternalBoxState::updatePositions(const glm::vec3 ll, const glm::vec3 widthSpan, const glm::vec3 heightSpan, const glm::vec3 depthSpan, const glm::vec3 eye) const {
 	// this is not the actual distance but as we know the current face is our best fit (approx. orthogonal to lookAt vector) and other face is parallel, we can get away with just checking 1 point
 	if (glm::length(ll - eye) < glm::length((ll + depthSpan) - eye)) {
-		m_internalLL = ll;
+		m_internalLL = ll - (depthSpan * 0.01f);
 		m_internalLR = m_internalLL + widthSpan;
 		m_internalUR = m_internalLR + heightSpan;
 		return;
 	} 
 
 	// back face
-	m_internalLL = ll + widthSpan + depthSpan;
+	m_internalLL = ll + widthSpan + (depthSpan*1.01f);
 	m_internalLR = m_internalLL - widthSpan;
 	m_internalUR = m_internalLR + heightSpan;
 }

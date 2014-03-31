@@ -117,8 +117,7 @@ void glat::QuadStrip::setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur, glm:
 		m_ur = ur;
 		updateQuadRanges();
 	}
-	m_program->setUniform("modelViewProjection", modelViewProjection);
-
+	setModelViewProjection(modelViewProjection);
 }
 
 glat::QuadStrip::texVec2_t glat::QuadStrip::getUL(const textureRange_t& textureRange) {

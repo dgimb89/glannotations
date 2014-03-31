@@ -13,6 +13,8 @@ void glat::AbstractDFPrimitive::setBumpMap(float intensity) {
 	m_program->setUniform("style", m_style);
 }
 
-glat::AbstractDFPrimitive::AbstractDFPrimitive(std::shared_ptr<glow::Texture> texture) : glat::AbstractDrawingPrimitive(texture) {
+glat::AbstractDFPrimitive::AbstractDFPrimitive(std::shared_ptr<glow::Texture> texture) : glat::AbstractDrawingPrimitive() {
 	m_style = 0;
+	m_texCoords = new glow::Buffer(GL_ARRAY_BUFFER);
+	m_texture = texture;
 }

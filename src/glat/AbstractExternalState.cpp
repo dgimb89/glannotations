@@ -1,4 +1,5 @@
 #include <glat/AbstractExternalState.h>
+#include <glat/ExternalColor.h>
 
 glow::ref_ptr<glat::InternalState> glat::AbstractExternalState::getInternalAnnotation() {
 	return m_internalState;
@@ -20,9 +21,33 @@ bool glat::AbstractExternalState::isDirty() const {
 }
 
 const glm::mat4& glat::AbstractExternalState::getViewProjection() const {
-	return m_camProjection = m_camera->viewProjection();
+	m_camProjection = m_camera->viewProjection();
+	m_externalPrimitive->setModelViewProjection(m_camProjection);
+	return m_camProjection;
 }
 
 glat::AbstractExternalState::AbstractExternalState(glowutils::Camera* camera) : AbstractState() {
 	setCamera(camera);
+}
+
+bool glat::AbstractExternalState::getDrawExternal() const {
+	return m_drawExternal;
+}
+
+void glat::AbstractExternalState::setDrawExternal(bool drawExternal) {
+	m_drawExternal = drawExternal;
+}
+
+void glat::AbstractExternalState::drawExternalPrimitives() const {
+	m_externalPrimitive->draw();
+}
+
+void glat::AbstractExternalState::setupExternalColor(const glat::Styling* externalColor) const {
+	if (externalColor == nullptr) return;
+	const glat::Style::ExternalColor* externalColorStyle = reinterpret_cast<const glat::Style::ExternalColor*>(externalColor);
+	m_externalPrimitive->setColor(externalColorStyle->getColor());
+}
+
+void glat::AbstractExternalState::setupExternalPrimitives() const {
+	setupExternalColor(getStyling("ExternalColor"));
 }

@@ -2,12 +2,9 @@
 
 using namespace glat;
 
-AbstractDrawingPrimitive::AbstractDrawingPrimitive(std::shared_ptr<glow::Texture> texture) {
+AbstractDrawingPrimitive::AbstractDrawingPrimitive() {
 	m_vao = new glow::VertexArrayObject();
 	m_positions = new glow::Buffer(GL_ARRAY_BUFFER);
-	m_texCoords = new glow::Buffer(GL_ARRAY_BUFFER);
-	
-	m_texture = texture;
 }
 
 
@@ -26,4 +23,8 @@ void glat::AbstractDrawingPrimitive::setupShader(const char* fragShader, const c
 	
 	m_program = new glow::Program();
 	m_program->attach(m_vertexShader, m_fragmentShader);
+}
+
+void glat::AbstractDrawingPrimitive::setModelViewProjection(glm::mat4 modelViewProjection /*= glm::mat4()*/) {
+	m_program->setUniform("modelViewProjection", modelViewProjection);
 }
