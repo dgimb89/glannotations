@@ -30,7 +30,7 @@ static const char* geomShader = R"(
 				#version 330
 
 				layout(lines) in;
-				layout(triangle_strip, max_vertices = 14) out;
+				layout(triangle_strip, max_vertices = 18) out;
 
 				in BoxData {
 					mat4 mvp;
@@ -38,44 +38,61 @@ static const char* geomShader = R"(
 
 				void main() {
 					vec4 vertices[8];
-					vertices[4] = vec4(gl_in[0].gl_Position.x, gl_in[0].gl_Position.y, gl_in[0].gl_Position.z, 1.0);
-					vertices[0] = vec4(gl_in[0].gl_Position.x, gl_in[0].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
-					vertices[6] = vec4(gl_in[0].gl_Position.x, gl_in[1].gl_Position.y, gl_in[0].gl_Position.z, 1.0);
-					vertices[2] = vec4(gl_in[0].gl_Position.x, gl_in[1].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
-					vertices[5] = vec4(gl_in[1].gl_Position.x, gl_in[0].gl_Position.y, gl_in[0].gl_Position.z, 1.0);
-					vertices[1] = vec4(gl_in[1].gl_Position.x, gl_in[0].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
-					vertices[7] = vec4(gl_in[1].gl_Position.x, gl_in[1].gl_Position.y, gl_in[0].gl_Position.z, 1.0);
-					vertices[3] = vec4(gl_in[1].gl_Position.x, gl_in[1].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
+					// front face
+					vertices[0] = box[0].mvp * vec4(gl_in[0].gl_Position.x, gl_in[0].gl_Position.y, gl_in[0].gl_Position.z, 1.0);
+					vertices[1] = box[0].mvp * vec4(gl_in[0].gl_Position.x, gl_in[1].gl_Position.y, gl_in[0].gl_Position.z, 1.0);
+					vertices[2] = box[0].mvp * vec4(gl_in[1].gl_Position.x, gl_in[0].gl_Position.y, gl_in[0].gl_Position.z, 1.0);
+					vertices[3] = box[0].mvp * vec4(gl_in[1].gl_Position.x, gl_in[1].gl_Position.y, gl_in[0].gl_Position.z, 1.0);
 
-					gl_Position = box[0].mvp * vertices[0];
-					EmitVertex();
-					gl_Position = box[0].mvp * vertices[1];
-					EmitVertex();
-					gl_Position = box[0].mvp * vertices[2];
-					EmitVertex();
-					gl_Position = box[0].mvp * vertices[3];
-					EmitVertex();
-					gl_Position = box[0].mvp * vertices[7];
-					EmitVertex();
-					gl_Position = box[0].mvp * vertices[1];
-					EmitVertex();
-					gl_Position = box[0].mvp * vertices[5];
-					EmitVertex();
-					gl_Position = box[0].mvp * vertices[4];
-					EmitVertex();
-					gl_Position = box[0].mvp * vertices[7];
-					EmitVertex();
-					gl_Position = box[0].mvp * vertices[6];
-					EmitVertex();
-					gl_Position = box[0].mvp * vertices[2];
-					EmitVertex();
-					gl_Position = box[0].mvp * vertices[4];
-					EmitVertex();
-					gl_Position = box[0].mvp * vertices[0];
-					EmitVertex();
-					gl_Position = box[0].mvp * vertices[1];
-					EmitVertex();
+					// back face
+					vertices[4] = box[0].mvp * vec4(gl_in[1].gl_Position.x, gl_in[0].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
+					vertices[5] = box[0].mvp * vec4(gl_in[1].gl_Position.x, gl_in[1].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
+					vertices[6] = box[0].mvp * vec4(gl_in[0].gl_Position.x, gl_in[0].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
+					vertices[7] = box[0].mvp * vec4(gl_in[0].gl_Position.x, gl_in[1].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
 
+					// lateral surface
+					gl_Position = vertices[0];
+					EmitVertex();
+					gl_Position = vertices[1];
+					EmitVertex();
+					gl_Position = vertices[2];
+					EmitVertex();
+					gl_Position = vertices[3];
+					EmitVertex();
+					gl_Position = vertices[4];
+					EmitVertex();
+					gl_Position = vertices[5];
+					EmitVertex();
+					gl_Position = vertices[6];
+					EmitVertex();
+					gl_Position = vertices[7];
+					EmitVertex();
+					gl_Position = vertices[0];
+					EmitVertex();
+					gl_Position = vertices[1];
+					EmitVertex();
+					EndPrimitive();
+
+					// top surface
+					gl_Position = vertices[1];
+					EmitVertex();
+					gl_Position = vertices[7];
+					EmitVertex();
+					gl_Position = vertices[3];
+					EmitVertex();
+					gl_Position = vertices[5];
+					EmitVertex();
+					EndPrimitive();
+
+					// bottom surface
+					gl_Position = vertices[6];
+					EmitVertex();
+					gl_Position = vertices[0];
+					EmitVertex();
+					gl_Position = vertices[4];
+					EmitVertex();
+					gl_Position = vertices[2];
+					EmitVertex();
 					EndPrimitive();
 				}
 				)";
