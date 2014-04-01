@@ -92,7 +92,7 @@ namespace glat {
 					if(distance > 0.5) {
 						discard;
 					} else {
-						fragColor = color;
+						fragColor = vec4(color.rgb, color.a * (1.0 - smoothstep(0.49, 0.5, distance)));
 					}
 				}
 				)";

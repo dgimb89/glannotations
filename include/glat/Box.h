@@ -8,14 +8,10 @@ namespace glat {
 	public:
 		Box();
 		virtual void draw();
-		void setPosition(glm::vec3 llf, glm::vec3 widthSpan, glm::vec3 heightSpan, glm::vec3 depthSpan);
+		void setPosition(glm::vec3 llf, glm::vec3 urb);
 
 	protected:
 		glow::ref_ptr<glow::Shader> m_geometryShader;
-
-		glow::ref_ptr<glow::Buffer> m_widthSpan;
-		glow::ref_ptr<glow::Buffer> m_heightSpan;
-		glow::ref_ptr<glow::Buffer> m_depthSpan;
 	};
 }
 

@@ -359,7 +359,7 @@ int main(int argc, char* argv[])
 {
 	ContextFormat format;
 	format.setVersion(4, 0);
-	format.setSamples(24);
+	format.setSamples(16);
 
 	Window window;
 

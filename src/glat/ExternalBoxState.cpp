@@ -33,7 +33,7 @@ void glat::ExternalBoxState::setExtends(glm::vec3 llf, glm::vec3 widthSpan, glm:
 	m_widthSpan = widthSpan;
 	m_heightSpan = heightSpan;
 	m_depthSpan = depthSpan;
-	reinterpret_cast<glat::Box*>(m_externalPrimitive.get())->setPosition(llf, widthSpan, heightSpan, depthSpan);
+	reinterpret_cast<glat::Box*>(m_externalPrimitive.get())->setPosition(llf, llf + widthSpan + heightSpan + depthSpan);
 }
 
 glat::ExternalBoxState::ExternalBoxState(glm::vec3 llf, glm::vec3 widthSpan, glm::vec3 heightSpan, glm::vec3 depthSpan, glowutils::Camera* camera, bool drawBox /*= true*/)
