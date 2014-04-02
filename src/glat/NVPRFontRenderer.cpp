@@ -2,7 +2,7 @@
 #include <glat/FontAnnotation.h>
 #include <glat/ViewportState.h>
 #include <glat/InternalState.h>
-#include <glat/Outline.h>
+#include <glat/Styles/Outline.h>
 
 void glat::NVPRFontRenderer::draw(glat::AbstractAnnotation* annotation) {
 	glat::FontAnnotation* currentAnnotation = reinterpret_cast<glat::FontAnnotation*>(annotation);
@@ -88,7 +88,7 @@ void glat::NVPRFontRenderer::drawSetupState(const glat::ViewportState& state) co
 			GL_UNSIGNED_BYTE, m_currentText, m_glyphBase,
 			1, ~0,
 			GL_TRANSLATE_2D_NV, xtranslate);
-		auto outlineStyle = reinterpret_cast<const glat::Style::Outline*>(state.getStyling("Outline"));
+		auto outlineStyle = reinterpret_cast<const glat::Styles::Outline*>(state.getStyling("Outline"));
 		glm::vec3 outlineColor = outlineStyle->getColor();
 		glColor3f(outlineColor.r, outlineColor.g, outlineColor.b);
 		glCoverStrokePathInstancedNV((GLsizei)messageLen,

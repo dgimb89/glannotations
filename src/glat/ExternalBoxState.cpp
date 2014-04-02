@@ -2,6 +2,8 @@
 #include <glat/AbstractRenderer.h>
 #include <glat/Box.h>
 
+const float NearPlacementOffset = 0.01f;
+
 bool glat::ExternalBoxState::isValid() {
 	// all spanning vectors have to be linear independent
 	return	glm::cross(m_widthSpan, m_heightSpan).length() > 0.0
@@ -59,40 +61,39 @@ void glat::ExternalBoxState::updateInternalPosition() const {
 	glm::vec3 lookAt = glm::normalize(m_camera->center() - m_camera->eye());
 	// first choose which side the annotation should be rendered on by evaluate lowest deviation face-normal to camera-lookAt 
 	// front & back faces
-	float scalarFrontBack = std::fabsf(glm::dot(glm::normalize(glm::cross(m_heightSpan, m_widthSpan)), lookAt));
+	float scalarFrontSide = glm::dot(glm::normalize(glm::cross(m_heightSpan, m_widthSpan)), lookAt);
 	// left & right faces
-	float scalarLeftRight = std::fabsf(glm::dot(glm::normalize(glm::cross(m_heightSpan, m_depthSpan)), lookAt));
+	float scalarLeftSide = glm::dot(glm::normalize(glm::cross(m_heightSpan, m_depthSpan)), lookAt);
 	// bottom & up faces
-	float scalarBottomUp = std::fabsf(glm::dot(glm::normalize(glm::cross(m_depthSpan, m_widthSpan)), lookAt));
+	float scalarBottomSide = glm::dot(glm::normalize(glm::cross(m_depthSpan, m_widthSpan)), lookAt);
 
-	if (scalarFrontBack > scalarBottomUp && scalarFrontBack > scalarLeftRight) {
+	// first look which angle is the smallest angle
+	if (std::fabs(scalarFrontSide) > std::fabs(scalarBottomSide) && std::fabs(scalarFrontSide) > std::fabs(scalarLeftSide)) {
 		// Front-Back-Faces
-		updatePositions(m_llf, m_widthSpan, m_heightSpan, m_depthSpan, m_camera->eye());
+		updatePositions(m_llf, m_widthSpan, m_heightSpan, m_depthSpan, scalarFrontSide < 0.f);
 		return;
 	}
 
-	if (scalarLeftRight > scalarBottomUp) {
+	if (std::fabs(scalarLeftSide) > std::fabs(scalarBottomSide)) {
 		// Left-Right-Faces
-		updatePositions(m_llf + m_widthSpan, m_depthSpan, m_heightSpan, -m_widthSpan, m_camera->eye());
+		updatePositions(m_llf + m_widthSpan, m_depthSpan, m_heightSpan, -m_widthSpan, scalarLeftSide < 0.f);
 		return;
 	}
 
 	// Bottom-Up-Faces
-	updatePositions(m_llf + m_heightSpan, m_widthSpan, m_depthSpan, -m_heightSpan, m_camera->eye());
+	updatePositions(m_llf + m_heightSpan, m_widthSpan, m_depthSpan, -m_heightSpan, scalarBottomSide < 0.f);
 	return;
 }
 
-inline void glat::ExternalBoxState::updatePositions(const glm::vec3 ll, const glm::vec3 widthSpan, const glm::vec3 heightSpan, const glm::vec3 depthSpan, const glm::vec3 eye) const {
-	// this is not the actual distance but as we know the current face is our best fit (approx. orthogonal to lookAt vector) and other face is parallel, we can get away with just checking 1 point
-	if (glm::length(ll - eye) < glm::length((ll + depthSpan) - eye)) {
-		m_internalLL = ll - (depthSpan * 0.01f);
-		m_internalLR = m_internalLL + widthSpan;
-		m_internalUR = m_internalLR + heightSpan;
-		return;
-	} 
+inline void glat::ExternalBoxState::updatePositions(glm::vec3 ll, glm::vec3 widthSpan, glm::vec3 heightSpan, glm::vec3 depthSpan, bool backside) const {
+	if (backside) {
+		ll = ll + depthSpan + widthSpan;
+		widthSpan = -widthSpan;
+		depthSpan = -depthSpan;
+	}
 
-	// back face
-	m_internalLL = ll + widthSpan + (depthSpan*1.01f);
-	m_internalLR = m_internalLL - widthSpan;
+	m_internalLL = ll - (depthSpan * NearPlacementOffset);
+	m_internalLR = m_internalLL + widthSpan;
 	m_internalUR = m_internalLR + heightSpan;
+	return;
 }

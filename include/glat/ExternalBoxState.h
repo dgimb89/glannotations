@@ -25,7 +25,7 @@ namespace glat {
 
 	protected:
 		virtual void draw(const AbstractRenderer& renderer) const;
-		inline void updatePositions(const glm::vec3 ll, const glm::vec3 widthSpan, const glm::vec3 heightSpan, const glm::vec3 depthSpan, const glm::vec3 eye) const;
+		inline void updatePositions(glm::vec3 ll, glm::vec3 widthSpan, glm::vec3 heightSpan, glm::vec3 depthSpan, bool backside) const;
 		mutable glm::vec3 m_internalLL, m_internalUR, m_internalLR;
 		glm::vec3 m_llf, m_widthSpan, m_heightSpan, m_depthSpan;
 

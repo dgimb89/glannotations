@@ -1,6 +1,6 @@
 #include <glat/NVPRRenderer.h>
 #include <glat/AbstractAnnotation.h>
-#include <glat/Outline.h>
+#include <glat/Styles/Outline.h>
 
 void glat::NVPRRenderer::draw(glat::AbstractAnnotation* annotation) {
 	// disable depth test and back face culling
@@ -31,7 +31,7 @@ void glat::NVPRRenderer::setupOutline(const glat::Styling* outline, float scaleF
 	m_drawOutline = false;
 	if (outline == nullptr) return;
 	m_drawOutline = true;
-	const glat::Style::Outline* outlineStyle = reinterpret_cast<const glat::Style::Outline*>(outline);
+	const glat::Styles::Outline* outlineStyle = reinterpret_cast<const glat::Styles::Outline*>(outline);
 	glPathParameterfNV(m_pathSettings, GL_PATH_STROKE_WIDTH_NV, scaleFactor * outlineStyle->getWidth());
 }
 

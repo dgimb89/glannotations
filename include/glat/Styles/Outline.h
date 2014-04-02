@@ -5,7 +5,7 @@
 #include <glm/glm.hpp>
 
 namespace glat {
-	namespace Style {
+	namespace Styles {
 		class Outline : public glat::Styling {
 		public:
 			Outline(float width, glm::vec3 rgbColor);

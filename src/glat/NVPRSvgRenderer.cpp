@@ -2,7 +2,7 @@
 #include <glat/SVGAnnotation.h>
 #include <glat/ViewportState.h>
 #include <glat/InternalState.h>
-#include <glat/Outline.h>
+#include <glat/Styles/Outline.h>
 
 void glat::NVPRSvgRenderer::draw(glat::AbstractAnnotation* annotation) {
 	glat::SVGAnnotation* currentAnnotation = reinterpret_cast<glat::SVGAnnotation*>(annotation);

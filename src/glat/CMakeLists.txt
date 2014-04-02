@@ -14,9 +14,10 @@ set(header
 	${header_path}/PNGAnnotation.h
 
 	${header_path}/Styling.h
-	${header_path}/Outline.h
-	${header_path}/BumpMap.h
-	${header_path}/ExternalColor.h
+	${header_path}/Styles.h
+	${header_path}/Styles/Outline.h
+	${header_path}/Styles/BumpMap.h
+	${header_path}/Styles/ExternalColor.h
 
 	${header_path}/TextureManager.h
 	${header_path}/RendererFactory.h
@@ -54,9 +55,9 @@ set(sources
 	${source_path}/PNGAnnotation.cpp
 
 	${source_path}/Styling.cpp
-	${source_path}/Outline.cpp
-	${source_path}/BumpMap.cpp
-	${source_path}/ExternalColor.cpp
+	${source_path}/Styles/Outline.cpp
+	${source_path}/Styles/BumpMap.cpp
+	${source_path}/Styles/ExternalColor.cpp
 
 	${source_path}/TextureManager.cpp
 	${source_path}/RendererFactory.cpp

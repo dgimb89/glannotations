@@ -5,7 +5,7 @@
 #include <glm/glm.hpp>
 
 namespace glat {
-	namespace Style {
+	namespace Styles {
 		class ExternalColor : public glat::Styling {
 		public:
 			ExternalColor(glm::vec4 color);

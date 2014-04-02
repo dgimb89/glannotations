@@ -43,9 +43,7 @@
 #include <glat/ViewportState.h>
 #include <glat/InternalState.h>
 #include <glat/ExternalBoxState.h>
-#include <glat/Outline.h>
-#include <glat/BumpMap.h>
-#include <glat/ExternalColor.h>
+#include <glat/Styles.h>
 
 using namespace glowwindow;
 using namespace glm;
@@ -112,7 +110,7 @@ public:
 		m_dfExternalBoxAnnotation = new glat::FontAnnotation(new glat::ExternalBoxState(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(2.f, 0.f, 0.f), glm::vec3(0.f, 2.f, 0.f), glm::vec3(0.f, 0.f, -2.f), &m_camera, true), dfFactory);
 		m_dfExternalBoxAnnotation->setFontName("calibri.ttf");
 		m_dfExternalBoxAnnotation->setText("Cube");
-		m_dfExternalBoxAnnotation->getState()->setStyling(new glat::Style::ExternalColor(glm::vec4(0.f, 0.f, 1.f, 0.25f)));
+		m_dfExternalBoxAnnotation->getState()->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 1.f, 0.25f)));
 
 		window.addTimer(0, 0, false);
 	}

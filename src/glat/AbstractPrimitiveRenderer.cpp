@@ -1,21 +1,21 @@
 #include <glat/AbstractPrimitiveRenderer.h>
 
-#include <glat/Outline.h>
-#include <glat/BumpMap.h>
+#include <glat/Styles/Outline.h>
+#include <glat/Styles/BumpMap.h>
 #include <glat/ViewportState.h>
 #include <glat/InternalState.h>
 #include <glat/ExternalBoxState.h>
 
 void glat::AbstractPrimitiveRenderer::setupOutline(const Styling* outline) {
 	if (outline == nullptr) return;
-	const Style::Outline* outlineStyle = reinterpret_cast<const Style::Outline*>(outline);
+	const Styles::Outline* outlineStyle = reinterpret_cast<const Styles::Outline*>(outline);
 	m_drawingPrimitive->setOutline(outlineStyle->getWidth()*0.1f, outlineStyle->getColor());
 }
 
 
 void glat::AbstractPrimitiveRenderer::setupBumpMap(const Styling* bumpMap) {
 	if (bumpMap == nullptr) return;
-	const Style::BumpMap* bumpMapStyle = reinterpret_cast<const Style::BumpMap*>(bumpMap);
+	const Styles::BumpMap* bumpMapStyle = reinterpret_cast<const Styles::BumpMap*>(bumpMap);
 	m_drawingPrimitive->setBumpMap(bumpMapStyle->getIntensity());
 }
 

@@ -1,5 +1,5 @@
 #include <glat/AbstractExternalState.h>
-#include <glat/ExternalColor.h>
+#include <glat/Styles/ExternalColor.h>
 
 glow::ref_ptr<glat::InternalState> glat::AbstractExternalState::getInternalAnnotation() {
 	return m_internalState;
@@ -44,7 +44,7 @@ void glat::AbstractExternalState::drawExternalPrimitives() const {
 
 void glat::AbstractExternalState::setupExternalColor(const glat::Styling* externalColor) const {
 	if (externalColor == nullptr) return;
-	const glat::Style::ExternalColor* externalColorStyle = reinterpret_cast<const glat::Style::ExternalColor*>(externalColor);
+	const glat::Styles::ExternalColor* externalColorStyle = reinterpret_cast<const glat::Styles::ExternalColor*>(externalColor);
 	m_externalPrimitive->setColor(externalColorStyle->getColor());
 }
 

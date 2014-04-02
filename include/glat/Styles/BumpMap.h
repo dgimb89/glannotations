@@ -4,7 +4,7 @@
 #include <glat/Styling.h>
 
 namespace glat {
-	namespace Style {
+	namespace Styles {
 		class BumpMap : public glat::Styling {
 		public:
 			BumpMap(float intensity);
