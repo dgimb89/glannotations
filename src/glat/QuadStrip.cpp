@@ -1,9 +1,103 @@
 #include <glat/QuadStrip.h>
 #include <glow/VertexAttributeBinding.h>
-#include "ShaderSources.hpp"
+
+static const char*	vertQuadStripShaderSource = R"(
+				#version 330
+				uniform mat4 modelViewProjection;
+
+				layout (location = 0) in vec3 position;
+				layout (location = 1) in vec2 texCoord;
+				layout (location = 2) in vec2 texAdvance;
+				layout (location = 3) in vec3 advanceH;
+				layout (location = 4) in vec3 advanceW;
+				
+				out QuadData {
+					vec2 texCoord;
+					vec2 texAdvance;
+					vec3 advanceH;
+					vec3 advanceW;
+					mat4 mvp;
+				} quad;
+
+				void main()
+				{
+					quad.texCoord = texCoord;
+					quad.advanceH = advanceH;
+					quad.advanceW = advanceW;
+					quad.texAdvance = texAdvance;
+					quad.mvp = modelViewProjection;
+					gl_Position = vec4(position, 1.0);
+				}
+				)";
+
+static const char* geomQuadStripShaderSource = R"(
+				#version 330
+
+				layout(points) in;
+				layout(triangle_strip, max_vertices = 4) out;
+
+				in QuadData {
+					vec2 texCoord;
+					vec2 texAdvance;
+					vec3 advanceH;
+					vec3 advanceW;
+					mat4 mvp;
+				} quad[];
+
+				out VertexData {
+					vec2 texCoord;
+				} vertex;
+
+				void setVertexData(in float upper, in float right, out vec4 position, out vec2 texCoord) {
+					position = quad[0].mvp * vec4(gl_in[0].gl_Position.xyz + upper * quad[0].advanceH + right * quad[0].advanceW, 1.0);
+					texCoord = quad[0].texCoord + vec2(right * quad[0].texAdvance.x, upper * quad[0].texAdvance.y);
+				}
+
+				void main() {
+					// ll
+					setVertexData(0.0, 0.0, gl_Position, vertex.texCoord);
+					EmitVertex();
+
+					// ul
+					setVertexData(1.0, 0.0, gl_Position, vertex.texCoord);
+					EmitVertex();
+
+					// lr
+					setVertexData(0.0, 1.0, gl_Position, vertex.texCoord);
+					EmitVertex();
+
+					// ur
+					setVertexData(1.0, 1.0, gl_Position, vertex.texCoord);
+					EmitVertex();
+
+					EndPrimitive();
+				}
+				)";
+
+static const char* fragQuadStripShaderSource = R"(
+				#version 330
+				uniform sampler2D source;
+				uniform vec4 color;
+
+				layout (location = 0) out vec4 fragColor;
+
+				in VertexData {
+					vec2 texCoord;
+				} vertex;
+
+				void main()
+				{
+					float distance = texture2D(source, vertex.texCoord);
+					if(distance > 0.5) {
+						discard;
+					} else {
+						fragColor = vec4(color.rgb, color.a * (1.0 - smoothstep(0.49, 0.5, distance)));
+					}
+				}
+				)";
 
 glat::QuadStrip::QuadStrip(std::shared_ptr<glow::Texture> distanceField) : glat::AbstractDFPrimitive(distanceField) {
-	setupShader(ShaderSource::fragQuadStripShaderSource, ShaderSource::vertQuadStripShaderSource);
+	setupShader(fragQuadStripShaderSource, vertQuadStripShaderSource);
 	// initial position
 	m_ll = m_lr = m_ur = glm::vec3(0.0f, 0.0f, 0.0f);
 	m_vertexCount = 0;
@@ -12,7 +106,7 @@ glat::QuadStrip::QuadStrip(std::shared_ptr<glow::Texture> distanceField) : glat:
 	m_texAdvance = new glow::Buffer(GL_ARRAY_BUFFER);
 
 
-	m_geometryShader = glow::Shader::fromString(GL_GEOMETRY_SHADER, ShaderSource::geomQuadStripShaderSource);
+	m_geometryShader = glow::Shader::fromString(GL_GEOMETRY_SHADER, geomQuadStripShaderSource);
 	m_program->attach(m_geometryShader);
 
 	m_vao->binding(0)->setAttribute(0);
