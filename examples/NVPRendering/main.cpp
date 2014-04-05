@@ -42,8 +42,8 @@
 #include <glat/PNGAnnotation.h>
 #include <glat/ViewportState.h>
 #include <glat/InternalState.h>
-#include <glat/Outline.h>
-#include <glat/BumpMap.h>
+#include <glat/Styles/Outline.h>
+#include <glat/Styles/BumpMap.h>
 
 using namespace glowwindow;
 using namespace glm;
@@ -98,13 +98,13 @@ public:
 		m_agrid->setCamera(&m_camera);
 
 		m_nvprViewportFontAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(0.8f, -1.f), glm::vec2(1.f, 0.f)));
-		m_nvprViewportFontAnnotation->getState()->setStyling(new glat::Style::Outline(3.f, glm::vec3(.3f, .3f, .3f)));
-		m_nvprViewportFontAnnotation->getState()->setStyling(new glat::Style::BumpMap(1.0f));
+		m_nvprViewportFontAnnotation->getState()->setStyling(new glat::Styles::Outline(3.f, glm::vec3(.3f, .3f, .3f)));
+		m_nvprViewportFontAnnotation->getState()->setStyling(new glat::Styles::BumpMap(1.0f));
 		m_nvprViewportFontAnnotation->setColor(glm::vec4(0.75, 0.75, 0.75, 1.0));
 		m_nvprViewportFontAnnotation->setText("0");
 
 		m_nvprViewportSVGAnnotation = new glat::SVGAnnotation(new glat::ViewportState(glm::vec2(-1.f, -1.f), glm::vec2(-0.3f, 0.f)));
-		m_nvprViewportSVGAnnotation->getState()->setStyling(new glat::Style::Outline(2.f, glm::vec3(.3f, .3f, .3f)));
+		m_nvprViewportSVGAnnotation->getState()->setStyling(new glat::Styles::Outline(2.f, glm::vec3(.3f, .3f, .3f)));
 		m_nvprViewportSVGAnnotation->setPathString("M100,180 L40,10 L190,120 L10,120 L160,10 z");
 		m_nvprViewportSVGAnnotation->setHeight(190);
 		m_nvprViewportSVGAnnotation->setWidth(200);
