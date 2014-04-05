@@ -66,6 +66,10 @@ public:
 		m_flightNav.setCamera(&m_camera);
 
 		m_timer.start();
+		m_previousTime = 0.0;
+		m_swapElapsedTime = 0.0;
+		m_swapCount = 0;
+
 		m_interpolation = 0.f;
 	}
 
@@ -128,7 +132,7 @@ public:
 		m_camera.setViewport(event.width(), event.height());
 	}
 
-	virtual void paintEvent(PaintEvent &) override
+	virtual void paintEvent(PaintEvent &event) override
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -144,12 +148,14 @@ public:
 		m_dfInternalFontAnnotation->draw();
 		m_dfViewportPNGAnnotation->draw();
 		m_dfExternalBoxAnnotation->draw();
+
+		computeFps(event);
 	}
 
 	virtual void timerEvent(TimerEvent & event) override
 	{
-		float delta = static_cast<float>(m_timer.elapsed() / 1000.0 / 1000.0 / 1000.0);
-		m_timer.reset();
+		float delta = static_cast<float>((m_timer.elapsed() - m_previousTime) / 1000.0 / 1000.0 / 1000.0);
+		m_previousTime = m_timer.elapsed();
 		m_flightNav.move(delta);
 
 		event.window()->repaint();
@@ -329,6 +335,37 @@ public:
 		return unproject(m_camera, viewProjectionInverted, depth, windowCoordinates);
 	}
 
+	bool startsWith(const std::string & str, const std::string str2)
+	{
+		return str.compare(0, str2.length(), str2) == 0;
+	}
+
+	void computeFps(glowwindow::PaintEvent & event)
+	{
+		m_timer.update();
+
+		++m_swapCount;
+
+		if (m_timer.elapsed() - m_swapElapsedTime >= 1e+9)
+		{
+			const float fps = 1e+9f * static_cast<float>(static_cast<long double>(m_swapCount) / (m_timer.elapsed() - m_swapElapsedTime));
+
+			std::string title = event.window()->title();
+			if (!startsWith(title, m_baseTitle) || m_baseTitle.length() == 0)
+			{
+				m_baseTitle = title;
+			}
+
+			std::stringstream stream;
+			stream << m_baseTitle << " (" << std::fixed << std::setprecision(2) << fps << " fps)";
+
+			event.window()->setTitle(stream.str());
+
+			m_swapElapsedTime = m_timer.elapsed();
+			m_swapCount = 0;
+		}
+	}
+
 protected:
 
 	glow::ref_ptr<glow::Program> m_sphere;
@@ -345,7 +382,12 @@ protected:
 	glm::ivec2 m_lastMousePos;
 	bool m_flightEnabled;
 	glowutils::Timer m_timer;
+	long double m_previousTime;
 	float m_interpolation;
+
+	long double m_swapElapsedTime;
+	unsigned int m_swapCount;
+	std::string m_baseTitle;
 
 	glowutils::AxisAlignedBoundingBox m_aabb;
 };
