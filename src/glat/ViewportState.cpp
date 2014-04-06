@@ -43,3 +43,7 @@ void glat::ViewportState::interpolate(const AbstractAnnotation& annotation, cons
 void glat::ViewportState::interpolate(const AbstractAnnotation& annotation, const InternalState& internalState, float interpolate) const {
 	annotation.interpolate(*this, internalState, 1.f - interpolate);
 }
+
+void glat::ViewportState::interpolate(const AbstractAnnotation& annotation, const ExternalBoxState& externalState, float interpolate) const {
+	annotation.interpolate(*this, externalState, 1.f - interpolate);
+}
