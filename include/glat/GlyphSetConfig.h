@@ -1,5 +1,4 @@
-#ifndef GLAT_GLYPH_SET_CONFIG_H
-#define GLAT_GLYPH_SET_CONFIG_H
+#pragma once
 
 #include <glat/DirtyFlagObject.h>
 #include <glm/glm.hpp>
@@ -37,5 +36,3 @@ namespace glat {
 		std::string m_fontFileName;
 	};
 }
-
-#endif // GLAT_GLYPH_SET_CONFIG_H

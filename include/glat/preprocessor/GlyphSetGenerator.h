@@ -1,5 +1,4 @@
-#ifndef GLAT_PREPROCESSOR_GLYPH_SET_GENERATOR_H
-#define GLAT_PREPROCESSOR_GLYPH_SET_GENERATOR_H
+#pragma once
 
 #include <glow/ref_ptr.h>
 #include <glat/PNGImage.h>
@@ -20,4 +19,3 @@ namespace glat {
 		};
 	}
 }
-#endif // !GLAT_PREPROCESSOR_GLYPH_SET_GENERATOR_H

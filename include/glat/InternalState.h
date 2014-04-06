@@ -1,5 +1,4 @@
-#ifndef GLAT_INTERNAL_STATE_H
-#define GLAT_INTERNAL_STATE_H
+#pragma once
 
 #include <glat/AbstractState.h>
 #include <glm/glm.hpp>
@@ -40,5 +39,3 @@ namespace glat {
 		float m_interpolation;
 	};
 }
-
-#endif // GLAT_INTERNAL_STATE_H

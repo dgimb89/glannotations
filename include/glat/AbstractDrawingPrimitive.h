@@ -1,5 +1,4 @@
-#ifndef GLAT_ABSTRACT_DRAWING_PRIMITIVE_H
-#define GLAT_ABSTRACT_DRAWING_PRIMITIVE_H
+#pragma once
 
 #include <glat/DirtyFlagObject.h>
 
@@ -34,4 +33,3 @@ namespace glat {
 		glow::ref_ptr<glow::Buffer> m_positions;
 	};
 }
-#endif // !GLAT_ABSTRACT_DRAWING_PRIMITIVE_H

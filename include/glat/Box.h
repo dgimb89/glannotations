@@ -1,5 +1,4 @@
-#ifndef GLAT_BOX_H
-#define GLAT_BOX_H
+#pragma once
 
 #include <glat/AbstractDrawingPrimitive.h>
 
@@ -14,5 +13,3 @@ namespace glat {
 		glow::ref_ptr<glow::Shader> m_geometryShader;
 	};
 }
-
-#endif // !GLAT_BOX_H

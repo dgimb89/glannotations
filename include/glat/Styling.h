@@ -1,5 +1,4 @@
-#ifndef GLAT_STYLING_H
-#define GLAT_STYLING_H
+#pragma once
 
 #include <glat/DirtyFlagObject.h>
 #include <string>
@@ -13,5 +12,3 @@ namespace glat {
 		Styling();
 	};
 }
-
-#endif

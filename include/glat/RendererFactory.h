@@ -1,5 +1,4 @@
-#ifndef GLAT_RENDERER_H
-#define GLAT_RENDERER_H
+#pragma once
 
 namespace glat {
 
@@ -23,5 +22,3 @@ namespace glat {
 		bool m_useNVpr;
 	};
 }
-
-#endif

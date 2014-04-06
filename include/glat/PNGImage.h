@@ -1,5 +1,4 @@
-#ifndef GLAT_PNG_IMAGE_H
-#define GLAT_PNG_IMAGE_H
+#pragma once
 
 #include <string>
 #include <glm/glm.hpp>
@@ -65,5 +64,3 @@ namespace glat {
 
 	};
 }
-
-#endif

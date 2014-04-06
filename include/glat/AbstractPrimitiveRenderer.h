@@ -1,5 +1,4 @@
-#ifndef GLAT_ABSTRACT_PRIMITIVE_RENDERER_H
-#define GLAT_ABSTRACT_PRIMITIVE_RENDERER_H
+#pragma once
 
 #include <glat/AbstractDFPrimitive.h>
 #include <glat/AbstractRenderer.h>
@@ -22,5 +21,3 @@ namespace glat {
 		mutable glow::ref_ptr<glat::AbstractDFPrimitive> m_drawingPrimitive;
 	};
 }
-
-#endif //! GLAT_ABSTRACT_PRIMITIVE_RENDERER_H

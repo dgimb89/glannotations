@@ -1,5 +1,4 @@
-#ifndef GLAT_SVG_ANNOTATION_H
-#define GLAT_SVG_ANNOTATION_H
+#pragma once
 
 #include <glat/AbstractAnnotation.h>
 
@@ -21,5 +20,3 @@ namespace glat {
 		unsigned m_width, m_height;
 	};
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef GLAT_QUAD_H
-#define GLAT_QUAD_H
+#pragma once
 
 #include <glat/AbstractDFPrimitive.h>
 
@@ -12,4 +11,3 @@ namespace glat {
 		virtual void setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur, glm::mat4 modelViewProjection = glm::mat4());
 	};
 }
-#endif // !GLAT_QUAD_H

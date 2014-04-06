@@ -1,5 +1,4 @@
-#ifndef GLAT_FONT_ANNOTATION_H
-#define GLAT_FONT_ANNOTATION_H
+#pragma once
 
 #include <glat/AbstractAnnotation.h>
 #include <glm/glm.hpp>
@@ -29,5 +28,3 @@ namespace glat {
 		bool m_textDirty = true;
 	};
 }
-
-#endif

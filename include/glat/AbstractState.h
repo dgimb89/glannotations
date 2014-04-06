@@ -1,5 +1,4 @@
-#ifndef GLAT_ABSTRACT_STATE_H
-#define GLAT_ABSTRACT_STATE_H
+#pragma once
 
 #include <glat/DirtyFlagObject.h>
 #include <glow/ref_ptr.h>
@@ -49,5 +48,3 @@ namespace glat {
 		State::AutoExtend m_autoExtend;
 	};
 }
-
-#endif

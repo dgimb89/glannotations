@@ -1,5 +1,4 @@
-#ifndef GLAT_ABSTRACT_RENDERER_H
-#define GLAT_ABSTRACT_RENDERER_H
+#pragma once
 
 #include <glat/DirtyFlagObject.h>
 
@@ -23,5 +22,3 @@ namespace glat {
 		virtual void drawSetupState(const glat::ExternalBoxState& state) const = 0;
 	};
 }
-
-#endif

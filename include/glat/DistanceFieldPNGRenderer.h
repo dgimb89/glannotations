@@ -1,5 +1,4 @@
-#ifndef GLAT_DISTANCE_FIELD_PNG_RENDERER_H
-#define GLAT_DISTANCE_FIELD_PNG_RENDERER_H
+#pragma once
 
 #include <string>
 
@@ -12,5 +11,3 @@ namespace glat {
 		virtual void draw(glat::AbstractAnnotation* annotation);
 	};
 }
-
-#endif // !GLAT_DISTANCE_FIELD_PNG_RENDERER_H

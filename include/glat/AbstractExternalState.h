@@ -1,5 +1,4 @@
-#ifndef GLAT_ABSTRACT_EXTERNAL_STATE_H
-#define GLAT_ABSTRACT_EXTERNAL_STATE_H
+#pragma once
 
 #include <glat/AbstractState.h>
 #include <glat/InternalState.h>
@@ -41,5 +40,3 @@ namespace glat {
 		bool m_drawExternal;
 	};
 }
-
-#endif // !GLAT_ABSTRACT_EXTERNAL_STATE_H

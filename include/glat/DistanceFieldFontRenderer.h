@@ -1,5 +1,4 @@
-#ifndef GLAT_DISTANCE_FIELD_FONT_RENDERER_H
-#define GLAT_DISTANCE_FIELD_FONT_RENDERER_H
+#pragma once
 
 #include <glat/AbstractPrimitiveRenderer.h>
 #include <glat/GlyphSetConfig.h>
@@ -14,5 +13,3 @@ namespace glat {
 		glow::ref_ptr<glat::GlyphSetConfig> m_glyphConfig;
 	};
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef GLAT_ABSTRACT_ANNOTATION_H
-#define GLAT_ABSTRACT_ANNOTATION_H
+#pragma once
 
 #include <glat/DirtyFlagObject.h>
 #include <glat/AbstractRenderer.h>
@@ -30,5 +29,3 @@ protected:
 	mutable glow::ref_ptr<glat::AbstractState> m_activeState;
 };
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef GLAT_VIEWPORT_STATE_H
-#define GLAT_VIEWPORT_STATE_H
+#pragma once
 
 #include <glat/AbstractState.h>
 #include <glm/glm.hpp>
@@ -27,5 +26,3 @@ namespace glat {
 		glm::vec2 m_ll, m_ur;
 	};
 }
-
-#endif // GLAT_VIEWPORT_STATE_H

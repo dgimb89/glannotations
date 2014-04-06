@@ -1,5 +1,4 @@
-#ifndef GLAT_TEXTURE_MANAGER_H
-#define GLAT_TEXTURE_MANAGER_H
+#pragma once
 
 #include <map>
 #include <memory>
@@ -21,5 +20,3 @@ namespace glat {
 		static glow::ref_ptr<TextureManager> _instance;
 	};
 }
-
-#endif // GLAT_TEXTURE_MANAGER_H

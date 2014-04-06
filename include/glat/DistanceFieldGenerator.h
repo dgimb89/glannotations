@@ -1,5 +1,4 @@
-#ifndef GLAT_PREPROCESSOR_DISTANCE_FIELD_GENERATOR_H
-#define GLAT_PREPROCESSOR_DISTANCE_FIELD_GENERATOR_H
+#pragma once
 
 #include <glat/PNGImage.h>
 #include <glow/ref_ptr.h>
@@ -22,5 +21,3 @@ namespace glat {
 		DistanceFieldGenerator() {}
 	};
 }
-
-#endif // !GLAT_PREPROCESSOR_DISTANCE_FIELD_GENERATOR_H

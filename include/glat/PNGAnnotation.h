@@ -1,5 +1,4 @@
-#ifndef GLAT_PNG_ANNOTATION_H
-#define GLAT_PNG_ANNOTATION_H
+#pragma once
 
 #include <glat/AbstractAnnotation.h>
 #include <glm/glm.hpp>
@@ -23,5 +22,3 @@ namespace glat {
 		std::string m_fileName;
 	};
 }
-
-#endif // !GLAT_PNG_ANNOTATION_H

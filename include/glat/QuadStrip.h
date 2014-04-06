@@ -1,5 +1,4 @@
-#ifndef GLAT_QUAD_STRIP_H
-#define GLAT_QUAD_STRIP_H
+#pragma once
 
 #include <glat/AbstractDFPrimitive.h>
 
@@ -33,4 +32,3 @@ namespace glat {
 		glow::ref_ptr<glow::Shader> m_geometryShader;
 	};
 }
-#endif // !GLAT_QUAD_STRIP_H

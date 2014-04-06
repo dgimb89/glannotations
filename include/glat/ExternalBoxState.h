@@ -1,5 +1,4 @@
-#ifndef GLAT_EXTERNAL_CUBE_STATE_H
-#define GLAT_EXTERNAL_CUBE_STATE_H
+#pragma once
 
 #include <glat/AbstractExternalState.h>
 #include <glat/AbstractDrawingPrimitive.h>
@@ -31,5 +30,3 @@ namespace glat {
 
 	};
 }
-
-#endif // !GLAT_EXTERNAL_CUBE_STATE_H
