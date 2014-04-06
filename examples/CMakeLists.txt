@@ -5,4 +5,5 @@ include_directories(
 )
 add_subdirectory(DFRendering)
 add_subdirectory(NVPRendering)
+add_subdirectory(PresentationScene)
 add_subdirectory(DFPreprocessing)

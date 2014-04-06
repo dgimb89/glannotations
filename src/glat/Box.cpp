@@ -13,9 +13,6 @@ static const char*	vertShader = R"(
 				layout (location = 3) in vec3 depthSpan;
 				
 				out BoxData {
-					vec4 widthSpan;
-					vec4 heightSpan;
-					vec4 depthSpan;
 					mat4 mvp;
 				} box;
 

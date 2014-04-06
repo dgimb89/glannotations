@@ -39,7 +39,9 @@ void glat::AbstractExternalState::setDrawExternal(bool drawExternal) {
 }
 
 void glat::AbstractExternalState::drawExternalPrimitives() const {
-	m_externalPrimitive->draw();
+	if (getDrawExternal()) {
+		m_externalPrimitive->draw();
+	}
 }
 
 void glat::AbstractExternalState::setupExternalColor(const glat::Styling* externalColor) const {

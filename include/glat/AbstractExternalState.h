@@ -29,10 +29,11 @@ namespace glat {
 
 		void setDrawExternal(bool drawExternal);
 		bool getDrawExternal() const;
-		void drawExternalPrimitives() const;
 		void setupExternalPrimitives() const;
-		void setupExternalColor(const glat::Styling* externalColor) const;
+		void drawExternalPrimitives() const;
+
 	protected:
+		void setupExternalColor(const glat::Styling* externalColor) const;
 		glow::ref_ptr<glat::InternalState> m_internalState;
 		glowutils::Camera* m_camera;
 		mutable glm::mat4 m_camProjection;

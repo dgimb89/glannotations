@@ -109,7 +109,7 @@ public:
 
 		m_dfExternalBoxAnnotation = new glat::FontAnnotation(new glat::ExternalBoxState(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(2.f, 0.f, 0.f), glm::vec3(0.f, 2.f, 0.f), glm::vec3(0.f, 0.f, -2.f), &m_camera, true), dfFactory);
 		m_dfExternalBoxAnnotation->setFontName("calibri.ttf");
-		m_dfExternalBoxAnnotation->setText("Cube");
+		m_dfExternalBoxAnnotation->setText("Box");
 		m_dfExternalBoxAnnotation->getState()->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 1.f, 0.25f)));
 
 		window.addTimer(0, 0, false);
@@ -141,8 +141,8 @@ public:
 
 		m_agrid->draw();
 
-		m_dfInternalFontAnnotation->draw();
-		m_dfViewportPNGAnnotation->draw();
+		//m_dfInternalFontAnnotation->draw();
+		//m_dfViewportPNGAnnotation->draw();
 		m_dfExternalBoxAnnotation->draw();
 	}
 

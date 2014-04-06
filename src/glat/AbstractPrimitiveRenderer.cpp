@@ -45,8 +45,6 @@ void glat::AbstractPrimitiveRenderer::drawSetupState(const glat::ExternalBoxStat
 		state.setupExternalPrimitives();
 		state.setDirty(false);
 	}
-	if (state.getDrawExternal()) {
-		state.drawExternalPrimitives();
-	}
+	state.drawExternalPrimitives();
 	m_drawingPrimitive->draw();
 }
