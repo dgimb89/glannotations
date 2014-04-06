@@ -45,6 +45,15 @@ glat::ExternalBoxState::ExternalBoxState(glm::vec3 llf, glm::vec3 widthSpan, glm
 	m_externalPrimitive = new glat::Box();
 	setExtends(llf, widthSpan, heightSpan, depthSpan);
 	setDrawExternal(drawBox);
+	m_interpolation = 0.f;
+}
+
+glat::ExternalBoxState::ExternalBoxState(glm::vec3 llf, glm::vec3 widthSpan, glm::vec3 heightSpan, glm::vec3 depthSpan, glowutils::Camera* camera, float interpolation, bool drawBox /*= true*/)
+: AbstractExternalState(camera) {
+	m_externalPrimitive = new glat::Box();
+	setExtends(llf, widthSpan, heightSpan, depthSpan);
+	setDrawExternal(drawBox);
+	m_interpolation = interpolation;
 }
 
 const glm::vec3& glat::ExternalBoxState::getLL() const {

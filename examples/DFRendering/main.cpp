@@ -115,9 +115,7 @@ public:
 		m_dfExternalBoxAnnotation->setFontName("calibri.ttf");
 		m_dfExternalBoxAnnotation->setText("Box");
 		m_dfExternalBoxAnnotation->getState()->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 1.f, 0.25f)));
-		//glow::ref_ptr<glat::AbstractState> state = new glat::ExternalBoxState(glm::vec3(-2.f, -2.f, 2.f), glm::vec3(4.f, 0.f, 0.f), glm::vec3(0.f, 4.f, 0.f), glm::vec3(0.f, 0.f, -4.f), &m_camera, true);
-		//state->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 1.f, 0.f, 0.25f)));
-		glow::ref_ptr<glat::AbstractState> state = new glat::InternalState(glm::vec3(-3.f, -1.f, -5.f), glm::vec3(3.f, -1.f, -5.f), glm::vec3(3.f, 1.0f, -5.f), &m_camera);
+		glow::ref_ptr<glat::AbstractState> state = new glat::ViewportState(glm::vec2(-.75f, -.5f), glm::vec2(0.75f, 0.5f));
 		m_dfExternalBoxAnnotation->addState(state);
 
 		window.addTimer(0, 0, false);
@@ -149,7 +147,7 @@ public:
 
 		m_agrid->draw();
 
-		m_dfInternalFontAnnotation->draw();
+		//m_dfInternalFontAnnotation->draw();
 		//m_dfViewportPNGAnnotation->draw();
 		m_dfExternalBoxAnnotation->draw();
 

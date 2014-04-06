@@ -59,11 +59,38 @@ void glat::AbstractAnnotation::interpolate(const InternalState& firstState, cons
 }
 
 void glat::AbstractAnnotation::interpolate(const ViewportState& firstState, const ExternalBoxState& secondState, float interpolate) const {
+	if (interpolate <= 0.5f) {
+		glow::ref_ptr<glat::ExternalBoxState> state = new ExternalBoxState(glm::vec3(firstState.getLL() * 0.5f, 0.f) + secondState.getLLF() * 0.5f, secondState.getWidth(), secondState.getHeight(), secondState.getDepth(), secondState.getCamera(), true);
+		state->updateInternalPosition();
 
+		glm::vec3 newLL = glm::vec3(firstState.getLL(), 0.f) * (1.f - interpolate * 2.f) + state->getLL() * interpolate * 2.f;
+		glm::vec3 newLR = glm::vec3(firstState.getLR(), 0.f) * (1.f - interpolate * 2.f) + state->getLR() * interpolate * 2.f;
+		glm::vec3 newUR = glm::vec3(firstState.getUR(), 0.f) * (1.f - interpolate * 2.f) + state->getUR() * interpolate * 2.f;
+		m_activeState = new InternalState(newLL, newLR, newUR, secondState.getCamera(), (1.f - interpolate));
+	}
+	else {
+		glm::vec3 newLLF = glm::vec3(firstState.getLL(), 0.f) * (1.f - interpolate) + secondState.getLLF() * interpolate;
+		glm::vec3 newWidth = secondState.getWidth();
+		glm::vec3 newHeight = secondState.getHeight();
+		glm::vec3 newDepth = secondState.getDepth();
+
+		const glat::Styling* secondStyling = secondState.getStyling("ExternalColor");
+		glm::vec4 firstColor, secondColor;
+		firstColor = glm::vec4(0.f);
+
+		if (secondStyling != nullptr)
+			secondColor = dynamic_cast<const glat::Styles::ExternalColor*>(secondStyling)->getColor();
+		else
+			secondColor = glm::vec4(0.f);
+
+		glm::vec4 newColor = firstColor * (2.f - interpolate*2.f) + secondColor * (interpolate * 2.f - 1.f);
+
+		m_activeState = new ExternalBoxState(newLLF, newWidth, newHeight, newDepth, secondState.getCamera(), (1.f - interpolate), true);
+		m_activeState->setStyling(new glat::Styles::ExternalColor(newColor));
+	}
 }
 
 void glat::AbstractAnnotation::interpolate(const InternalState& firstState, const ExternalBoxState& secondState, float interpolate) const {
-
 	if (interpolate <= 0.5f) {
 		glow::ref_ptr<glat::ExternalBoxState> state = new ExternalBoxState(firstState.getLL() * 0.5f + secondState.getLLF() * 0.5f, secondState.getWidth(), secondState.getHeight(), secondState.getDepth(), firstState.getCamera(), true);
 		state->updateInternalPosition();
