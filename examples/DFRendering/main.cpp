@@ -115,6 +115,8 @@ public:
 		m_dfExternalBoxAnnotation->setFontName("calibri.ttf");
 		m_dfExternalBoxAnnotation->setText("Box");
 		m_dfExternalBoxAnnotation->getState()->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 1.f, 0.25f)));
+		glow::ref_ptr<glat::AbstractState> state = new glat::ViewportState(glm::vec2(-.75f, -.5f), glm::vec2(0.75f, 0.5f));
+		m_dfExternalBoxAnnotation->addState(state);
 
 		window.addTimer(0, 0, false);
 	}
@@ -185,11 +187,13 @@ public:
 		case GLFW_KEY_N:
 			m_interpolation += 0.01;
 			m_interpolation = min(m_interpolation, 1.f);
+			m_dfExternalBoxAnnotation->setInterpolatedState(0, 1, m_interpolation);
 			m_dfInternalFontAnnotation->setInterpolatedState(0, 1, m_interpolation);
 			break;
 		case GLFW_KEY_M:
 			m_interpolation -= 0.01;
 			m_interpolation = max(m_interpolation, 0.f);
+			m_dfExternalBoxAnnotation->setInterpolatedState(0, 1, m_interpolation);
 			m_dfInternalFontAnnotation->setInterpolatedState(0, 1, m_interpolation);
 			break;
 		}

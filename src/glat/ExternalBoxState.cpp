@@ -1,5 +1,6 @@
 #include <glat/ExternalBoxState.h>
 #include <glat/AbstractRenderer.h>
+#include <glat/AbstractAnnotation.h>
 #include <glat/Box.h>
 
 const float NearPlacementOffset = 0.01f;
@@ -12,18 +13,19 @@ bool glat::ExternalBoxState::isValid() {
 }
 
 void glat::ExternalBoxState::interpolate(const AbstractAnnotation& annotation, AbstractState* secondState, float interpolate) const {
-	// TODO
-	throw std::logic_error("The method or operation is not implemented.");
+	secondState->interpolate(annotation, *this, interpolate);
 }
 
 void glat::ExternalBoxState::interpolate(const AbstractAnnotation& annotation, const ViewportState& viewState, float interpolate) const {
-	// TODO
-	throw std::logic_error("The method or operation is not implemented.");
+	annotation.interpolate(viewState, *this, interpolate);
 }
 
 void glat::ExternalBoxState::interpolate(const AbstractAnnotation& annotation, const InternalState& internalState, float interpolate) const {
-	// TODO
-	throw std::logic_error("The method or operation is not implemented.");
+	annotation.interpolate(internalState, *this, interpolate);
+}
+
+void glat::ExternalBoxState::interpolate(const AbstractAnnotation& annotation, const ExternalBoxState& externalState, float interpolate) const {
+	annotation.interpolate(externalState, *this, interpolate);
 }
 
 void glat::ExternalBoxState::draw(const AbstractRenderer& renderer) const {
@@ -43,6 +45,15 @@ glat::ExternalBoxState::ExternalBoxState(glm::vec3 llf, glm::vec3 widthSpan, glm
 	m_externalPrimitive = new glat::Box();
 	setExtends(llf, widthSpan, heightSpan, depthSpan);
 	setDrawExternal(drawBox);
+	m_interpolation = 0.f;
+}
+
+glat::ExternalBoxState::ExternalBoxState(glm::vec3 llf, glm::vec3 widthSpan, glm::vec3 heightSpan, glm::vec3 depthSpan, glowutils::Camera* camera, float interpolation, bool drawBox /*= true*/)
+: AbstractExternalState(camera) {
+	m_externalPrimitive = new glat::Box();
+	setExtends(llf, widthSpan, heightSpan, depthSpan);
+	setDrawExternal(drawBox);
+	m_interpolation = interpolation;
 }
 
 const glm::vec3& glat::ExternalBoxState::getLL() const {
@@ -55,6 +66,22 @@ const glm::vec3& glat::ExternalBoxState::getUR() const {
 
 const glm::vec3& glat::ExternalBoxState::getLR() const {
 	return m_internalLR;
+}
+
+const glm::vec3& glat::ExternalBoxState::getLLF() const {
+	return m_llf;
+}
+
+const glm::vec3& glat::ExternalBoxState::getWidth() const {
+	return m_widthSpan;
+}
+
+const glm::vec3& glat::ExternalBoxState::getHeight() const {
+	return m_heightSpan;
+}
+
+const glm::vec3& glat::ExternalBoxState::getDepth() const {
+	return m_depthSpan;
 }
 
 void glat::ExternalBoxState::updateInternalPosition() const {

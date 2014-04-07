@@ -52,7 +52,14 @@ bool glat::InternalState::isValid() {
 }
 
 const glm::mat4& glat::InternalState::getViewProjection() const {
-	return m_camProjection = glm::mat4() * m_interpolation + m_camera->viewProjection() * (1.f - m_interpolation);
+
+	if (m_interpolation <= 0.75f) {
+		return m_camProjection = glm::mat4(m_camera->projection() * m_interpolation + m_camera->viewProjection() * (1.f - m_interpolation));
+	}
+	else {
+		return m_camProjection = glm::mat4() * ((m_interpolation - 0.75f) * 4.f) + (m_camera->projection() * 0.75f + m_camera->viewProjection() * 0.25f) * (1.f - ((m_interpolation - 0.75f) * 4.f));
+	}
+	
 }
 
 bool glat::InternalState::isDirty() const {
@@ -72,4 +79,8 @@ void glat::InternalState::interpolate(const AbstractAnnotation& annotation, cons
 
 void glat::InternalState::interpolate(const AbstractAnnotation& annotation, const InternalState& internalState, float interpolate) const {
 	annotation.interpolate(internalState, *this, interpolate);
+}
+
+void glat::InternalState::interpolate(const AbstractAnnotation& annotation, const ExternalBoxState& externalState, float interpolate) const {
+	annotation.interpolate(*this, externalState, 1.f-interpolate);
 }

@@ -21,7 +21,14 @@ bool glat::AbstractExternalState::isDirty() const {
 }
 
 const glm::mat4& glat::AbstractExternalState::getViewProjection() const {
-	m_camProjection = m_camera->viewProjection();
+
+	if (m_interpolation <= 0.75f) {
+		m_camProjection = glm::mat4(m_camera->projection() * m_interpolation + m_camera->viewProjection() * (1.f - m_interpolation));
+	}
+	else {
+		m_camProjection = glm::mat4() * ((m_interpolation - 0.75f) * 4.f) + (m_camera->projection() * 0.75f + m_camera->viewProjection() * 0.25f) * (1.f - ((m_interpolation - 0.75f) * 4.f));
+	}
+
 	m_externalPrimitive->setModelViewProjection(m_camProjection);
 	return m_camProjection;
 }

@@ -38,5 +38,6 @@ namespace glat {
 		mutable glm::mat4 m_camProjection;
 		mutable glow::ref_ptr<glat::AbstractDrawingPrimitive> m_externalPrimitive;
 		bool m_drawExternal;
+		float m_interpolation;
 	};
 }

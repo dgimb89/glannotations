@@ -21,6 +21,9 @@ public:
 	void interpolate(const ViewportState& firstState, const ViewportState& secondState, float interpolate) const;
 	void interpolate(const ViewportState& firstState, const InternalState& secondState, float interpolate) const;
 	void interpolate(const InternalState& firstState, const InternalState& secondState, float interpolate) const;
+	void interpolate(const ViewportState& firstState, const ExternalBoxState& secondState, float interpolate) const;
+	void interpolate(const InternalState& firstState, const ExternalBoxState& secondState, float interpolate) const;
+	void interpolate(const ExternalBoxState& firstState, const ExternalBoxState& secondState, float interpolate) const;
 
 protected:
 	AbstractAnnotation(glat::AbstractState* initialState);
