@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glat/NVPRRenderer.h>
+#include <glat/Styling.h>
 
 #include <glm/glm.hpp>
 
@@ -16,8 +17,9 @@ namespace glat{
 		virtual void drawSetupState(const glat::ExternalBoxState& state) const;
 
 		void initializeFont(glat::FontAnnotation* annotation);
-
-		GLuint m_glyphBase;
+		void getTextStencelingDimensions(const char* text, const size_t& messageLen, GLfloat* &xtranslate, GLfloat& totalAdvance, GLfloat& yMin, GLfloat& yMax, GLfloat& underline_position, GLfloat& underline_thickness) const;
+		void stencilThenCoverText(const size_t& messageLen, const GLfloat* xtranslate) const;
+		void drawOutline(const size_t& messageLen, const GLfloat* xtranslate, const glat::Styling* outline) const;
 		const char* m_currentText;
 		glm::vec4 m_textColor;
 		const float emScale = 2048;

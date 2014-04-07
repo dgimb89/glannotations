@@ -11,7 +11,8 @@ namespace glat {
 		virtual void drawSetupState(const glat::ViewportState& state) const;
 		virtual void drawSetupState(const glat::InternalState& state) const;
 		virtual void drawSetupState(const glat::ExternalBoxState& state) const;
-
+		void initializeSVG(const char* pathString);
+		void drawPath() const;
 		unsigned m_width, m_height;
 	};
 }

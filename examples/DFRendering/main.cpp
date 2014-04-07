@@ -134,7 +134,7 @@ public:
 
 	virtual void paintEvent(PaintEvent &event) override
 	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 		m_agrid->update();
 		m_sphere->setUniform("transform", m_camera.viewProjection());
@@ -145,8 +145,8 @@ public:
 
 		m_agrid->draw();
 
-		//m_dfInternalFontAnnotation->draw();
-		//m_dfViewportPNGAnnotation->draw();
+		m_dfInternalFontAnnotation->draw();
+		m_dfViewportPNGAnnotation->draw();
 		m_dfExternalBoxAnnotation->draw();
 
 		computeFps(event);

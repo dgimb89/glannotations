@@ -96,7 +96,7 @@ public:
 		m_agrid = new glowutils::AdaptiveGrid(16U);
 
 		m_camera.setZNear(0.1f);
-		m_camera.setZFar(1024.f);
+		m_camera.setZFar(10240.f);
 
 		m_agrid->setCamera(&m_camera);
 
@@ -105,6 +105,12 @@ public:
 		m_nvprViewportFontAnnotation->getState()->setStyling(new glat::Styles::BumpMap(1.0f));
 		m_nvprViewportFontAnnotation->setColor(glm::vec4(0.75, 0.75, 0.75, 1.0));
 		m_nvprViewportFontAnnotation->setText("0");
+		m_nvprViewportFontAnnotation->setFontName("calibri.ttf");
+
+		m_nvprInternalFontAnnotation = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-3.f, -2.f, -5.f), glm::vec3(3.f, -2.f, -5.f), glm::vec3(3.f, 2.0f, -5.f), &m_camera));
+		m_nvprInternalFontAnnotation->setFontName("calibri.ttf");
+		m_nvprInternalFontAnnotation->setText("NVPR");
+		m_nvprInternalFontAnnotation->setColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
 
 		m_nvprViewportSVGAnnotation = new glat::SVGAnnotation(new glat::ViewportState(glm::vec2(-1.f, -1.f), glm::vec2(-0.3f, 0.f)));
 		m_nvprViewportSVGAnnotation->getState()->setStyling(new glat::Styles::Outline(2.f, glm::vec3(.3f, .3f, .3f)));
@@ -147,6 +153,7 @@ public:
 
 		m_nvprViewportFontAnnotation->draw();
 		m_nvprViewportSVGAnnotation->draw();
+		m_nvprInternalFontAnnotation->draw();
 
 		computeFps(event);
 	}
@@ -371,6 +378,7 @@ protected:
 	glow::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
 	glow::ref_ptr<glat::FontAnnotation> m_nvprViewportFontAnnotation;
 	glow::ref_ptr<glat::SVGAnnotation> m_nvprViewportSVGAnnotation;
+	glow::ref_ptr<glat::FontAnnotation> m_nvprInternalFontAnnotation;
 
 	glowutils::Camera m_camera;
 	glowutils::WorldInHandNavigation m_nav;

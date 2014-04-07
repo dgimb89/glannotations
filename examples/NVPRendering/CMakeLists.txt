@@ -10,7 +10,6 @@ target_link_libraries(${target}
 	general
 		${GLEW_LIBRARY}
     	glat
-    	preprocessor
 	debug
 		${GLOW_LIBRARIES_DEBUG}
 	optimized
