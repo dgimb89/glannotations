@@ -12,13 +12,11 @@ static const char*	vertShader = R"(
 				layout (location = 2) in vec3 heightSpan;
 				layout (location = 3) in vec3 depthSpan;
 				
-				out BoxData {
-					mat4 mvp;
-				} box;
+				out mat4 mvp;
 
 				void main()
 				{
-					box.mvp = modelViewProjection;
+					mvp = modelViewProjection;
 					gl_Position = vec4(position, 1.0);
 				}
 				)";
@@ -29,23 +27,21 @@ static const char* geomShader = R"(
 				layout(lines) in;
 				layout(triangle_strip, max_vertices = 18) out;
 
-				in BoxData {
-					mat4 mvp;
-				} box[1];
+				in mat4 mvp[];				
 
 				void main() {
 					vec4 vertices[8];
 					// front face
-					vertices[0] = box[0].mvp * vec4(gl_in[0].gl_Position.x, gl_in[0].gl_Position.y, gl_in[0].gl_Position.z, 1.0);
-					vertices[1] = box[0].mvp * vec4(gl_in[0].gl_Position.x, gl_in[1].gl_Position.y, gl_in[0].gl_Position.z, 1.0);
-					vertices[2] = box[0].mvp * vec4(gl_in[1].gl_Position.x, gl_in[0].gl_Position.y, gl_in[0].gl_Position.z, 1.0);
-					vertices[3] = box[0].mvp * vec4(gl_in[1].gl_Position.x, gl_in[1].gl_Position.y, gl_in[0].gl_Position.z, 1.0);
+					vertices[0] = mvp[0] * vec4(gl_in[0].gl_Position.x, gl_in[0].gl_Position.y, gl_in[0].gl_Position.z, 1.0);
+					vertices[1] = mvp[0] * vec4(gl_in[0].gl_Position.x, gl_in[1].gl_Position.y, gl_in[0].gl_Position.z, 1.0);
+					vertices[2] = mvp[0] * vec4(gl_in[1].gl_Position.x, gl_in[0].gl_Position.y, gl_in[0].gl_Position.z, 1.0);
+					vertices[3] = mvp[0] * vec4(gl_in[1].gl_Position.x, gl_in[1].gl_Position.y, gl_in[0].gl_Position.z, 1.0);
 
 					// back face
-					vertices[4] = box[0].mvp * vec4(gl_in[1].gl_Position.x, gl_in[0].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
-					vertices[5] = box[0].mvp * vec4(gl_in[1].gl_Position.x, gl_in[1].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
-					vertices[6] = box[0].mvp * vec4(gl_in[0].gl_Position.x, gl_in[0].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
-					vertices[7] = box[0].mvp * vec4(gl_in[0].gl_Position.x, gl_in[1].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
+					vertices[4] = mvp[0] * vec4(gl_in[1].gl_Position.x, gl_in[0].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
+					vertices[5] = mvp[0] * vec4(gl_in[1].gl_Position.x, gl_in[1].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
+					vertices[6] = mvp[0] * vec4(gl_in[0].gl_Position.x, gl_in[0].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
+					vertices[7] = mvp[0] * vec4(gl_in[0].gl_Position.x, gl_in[1].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
 
 					// lateral surface
 					gl_Position = vertices[0];
