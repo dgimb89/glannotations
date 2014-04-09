@@ -49,7 +49,9 @@
 #include <glat/ViewportState.h>
 #include <glat/InternalState.h>
 #include <glat/ExternalBoxState.h>
+#include <glat/ExternalLabelState.h>
 #include <glat/Styles.h>
+#include <glat/Quad.h>
 
 #include "building.h"
 
@@ -140,9 +142,10 @@ public:
 		m_camera.setZNear(0.1f);
 		m_camera.setZFar(1024.f);
 		
+		m_quadBase = new glat::Quad;
+		m_quadBase->setPosition(glm::vec3(0.f, 0.f, 0.f), glm::vec3(10.f, 0.f, 0.f), glm::vec3(10.f, 0.f, 10.f));
+		m_quadBase->setColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.f));
 
-		glat::RendererFactory dfFactory;
-		dfFactory.useNVpr(false);
 		m_building = new glat::Building();
 		m_building1 = new glat::Building();
 		m_building2 = new glat::Building();
@@ -167,23 +170,46 @@ public:
 		m_building9->setPosition(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(1.f, 1.f, -1.f));
 		m_building10->setPosition(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(1.f, 1.f, -1.f));
 
+		float color;
+		srand(time(NULL));
+		color = ((rand() * 0.4f) / RAND_MAX) + 0.6f;
+		m_building->setColor(glm::vec4(color, color, color, 1.f));
+		m_building1->setColor(glm::vec4(0.1, 0.1f, 0.1f, 1.f));
+		m_building2->setColor(glm::vec4(0.1, 0.1f, 0.1f, 1.f));
+		m_building3->setColor(glm::vec4(0.1, 0.1f, 0.1f, 1.f));
+		m_building4->setColor(glm::vec4(0.1, 0.1f, 0.1f, 1.f));
+		m_building5->setColor(glm::vec4(0.1, 0.1f, 0.1f, 1.f));
+		m_building6->setColor(glm::vec4(0.1, 0.1f, 0.1f, 1.f));
+		m_building7->setColor(glm::vec4(0.1, 0.1f, 0.1f, 1.f));
+		m_building8->setColor(glm::vec4(0.1, 0.1f, 0.1f, 1.f));
+		m_building9->setColor(glm::vec4(0.1, 0.1f, 0.1f, 1.f));
+		m_building10->setColor(glm::vec4(0.1, 0.1f, 0.1f, 1.f));
 
-		m_building->setColor(glm::vec4(1.0, 0.f, 0.f, 1.f));
-		m_building1->setColor(glm::vec4(1.0, 0.f, 0.f, 1.f));
-		m_building2->setColor(glm::vec4(1.0, 0.f, 0.f, 1.f));
-		m_building3->setColor(glm::vec4(1.0, 0.f, 0.f, 1.f));
-		m_building4->setColor(glm::vec4(1.0, 0.f, 0.f, 1.f));
-		m_building5->setColor(glm::vec4(1.0, 0.f, 0.f, 1.f));
-		m_building6->setColor(glm::vec4(1.0, 0.f, 0.f, 1.f));
-		m_building7->setColor(glm::vec4(1.0, 0.f, 0.f, 1.f));
-		m_building8->setColor(glm::vec4(1.0, 0.f, 0.f, 1.f));
-		m_building9->setColor(glm::vec4(1.0, 0.f, 0.f, 1.f));
-		m_building10->setColor(glm::vec4(1.0, 0.f, 0.f, 1.f));
+		glat::RendererFactory dfFactory;
+		dfFactory.useNVpr(false);
+		m_dfViewportPNGAnnotation = new glat::PNGAnnotation(new glat::ViewportState(glm::vec2(-0.95f, 0.75f), glm::vec2(-0.5f, 0.95f)), "glat.png", dfFactory);
 
-		//m_dfExternalBoxAnnotation = new glat::FontAnnotation(new glat::ExternalBoxState(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(2.f, 0.f, 0.f), glm::vec3(0.f, 2.f, 0.f), glm::vec3(0.f, 0.f, -2.f), &m_camera, true), dfFactory);
-		//m_dfExternalBoxAnnotation->setFontName("calibri.ttf");
-		//m_dfExternalBoxAnnotation->setText("Box");
-		//m_dfExternalBoxAnnotation->getState()->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 1.f, 0.25f)));
+		m_dfInternalFontAnnotation = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-3.f, -1.f, -5.f), glm::vec3(3.f, -1.f, -5.f), glm::vec3(3.f, 1.0f, -5.f), &m_camera), dfFactory);
+		m_dfInternalFontAnnotation->setFontName("calibri.ttf");
+		m_dfInternalFontAnnotation->setText("DistanceField");
+		m_dfInternalFontAnnotation->setColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
+		m_dfInternalFontAnnotation->addState(new glat::ViewportState(glm::vec2(-.75f, -.5f), glm::vec2(0.75f, 0.5f)));
+
+		m_dfExternalBoxAnnotation = new glat::FontAnnotation(new glat::ExternalBoxState(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(2.f, 0.f, 0.f), glm::vec3(0.f, 2.f, 0.f), glm::vec3(0.f, 0.f, -2.f), &m_camera, true), dfFactory);
+		m_dfExternalBoxAnnotation->setFontName("calibri.ttf");
+		m_dfExternalBoxAnnotation->setText("Box");
+		m_dfExternalBoxAnnotation->getState()->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 1.f, 0.25f)));
+
+		//m_dfExternalBoxAnnotation->addState(new glat::InternalState(glm::vec3(-3.f, -1.f, -5.f), glm::vec3(3.f, -1.f, -5.f), glm::vec3(3.f, 1.0f, -5.f), &m_camera));
+
+		glow::ref_ptr<glat::AbstractState> state = new glat::ViewportState(glm::vec2(-.4f, -.4f), glm::vec2(0.4f, 0.4f));
+		m_dfExternalBoxAnnotation->addState(state);
+
+		m_dfLabelAnnotation = new glat::FontAnnotation(new glat::ExternalLabelState(glm::vec3(1.f, 1.f, -1.f), glm::vec3(10.f, 5.f, -5.f), 5.f, 2.f, &m_camera, true), dfFactory);
+		m_dfLabelAnnotation->setText("ExternalAnnotation");
+		m_dfLabelAnnotation->setFontName("calibri.ttf");
+		m_dfLabelAnnotation->setColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
+		m_dfLabelAnnotation->getState()->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 0.f, 1.f)));
 
 		window.addTimer(0, 0, false);
 	}
@@ -245,9 +271,14 @@ public:
 		m_building8->draw();
 		m_building9->draw();
 		m_building10->draw();
-		//m_dfExternalBoxAnnotation->draw();
 		//m_gbuffer->release();
+		//m_quadBase->setModelViewProjection(m_camera.projection());
+		//m_quadBase->draw();
 
+		m_dfInternalFontAnnotation->draw();
+		m_dfViewportPNGAnnotation->draw();
+		m_dfExternalBoxAnnotation->draw();
+		m_dfLabelAnnotation->draw();
 		m_fbo->unbind();
 
 		glDisable(GL_DEPTH_TEST);
@@ -449,7 +480,10 @@ public:
 	}
 
 protected:
+	glow::ref_ptr<glat::PNGAnnotation> m_dfViewportPNGAnnotation;
+	glow::ref_ptr<glat::FontAnnotation> m_dfInternalFontAnnotation;
 	glow::ref_ptr<glat::FontAnnotation> m_dfExternalBoxAnnotation;
+	glow::ref_ptr<glat::FontAnnotation> m_dfLabelAnnotation;
 	glow::ref_ptr<glat::Building> m_building;
 
 	glow::ref_ptr<glat::Building> m_building1;
@@ -462,6 +496,7 @@ protected:
 	glow::ref_ptr<glat::Building> m_building8;
 	glow::ref_ptr<glat::Building> m_building9;
 	glow::ref_ptr<glat::Building> m_building10;
+	glow::ref_ptr<glat::Quad> m_quadBase;
 
 
 	glowutils::Camera m_camera;
@@ -491,7 +526,7 @@ int main(int argc, char* argv[])
 {
 	ContextFormat format;
 	format.setVersion(4, 0);
-	format.setSamples(16);
+	format.setSamples(24);
 
 	Window window;
 
