@@ -206,7 +206,7 @@ public:
 		m_glatBox->setFontName("calibri.ttf");
 		m_glatBox->setText("GLAT");
 		m_glatBox->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
-		m_glatBox->getState()->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 1.f, 0.25f)));
+		m_glatBox->getState()->setStyling(new glat::Styles::Outline(2.f, glm::vec3(0.f, 0.f, 0.f)));
 
 		glow::ref_ptr<glat::AbstractState> state = new glat::ViewportState(glm::vec2(-.4f, -.4f), glm::vec2(0.4f, 0.4f));
 		m_glatBox->addState(state);
@@ -217,8 +217,13 @@ public:
 		m_glowText->setColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
 		m_glowText->getState()->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 0.f, 1.f)));
 
+		m_hpicgs = new glat::FontAnnotation(new glat::InternalState(glm::vec3(2.f, -1.f, -1.01f), glm::vec3(2.f, 3.f, -1.01f), glm::vec3(4.f, 3.f, -1.01f), &m_camera), dfFactory);
+		m_hpicgs->setFontName("calibri.ttf");
+		m_hpicgs->setText("CGS");
+		m_hpicgs->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
+		m_hpicgs->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
+
 		m_hpilogo = new glat::PNGAnnotation(new glat::InternalState(glm::vec3(-2.f, -4.f, 2.f), glm::vec3(-2.f, -4.f, 7.f), glm::vec3(-2.f, 1.0f, 7.f), &m_camera), "hpi.png", dfFactory);
-		m_hpilogo->getState()->setStyling(new glat::Styles::Outline(2.f, glm::vec3(1.f, 1.f, 1.f)));
 		m_hpilogo->addState(new glat::ViewportState(glm::vec2(-.25f, -.5f), glm::vec2(0.25f, 0.5f)));
 
 		window.addTimer(0, 0, false);
@@ -294,6 +299,7 @@ public:
 		//m_dfViewportPNGAnnotation->draw();
 		m_glatBox->draw();
 		m_glowText->draw();
+		m_hpicgs->draw();
 		//m_fbo->unbind();
 
 		glDisable(GL_DEPTH_TEST);
@@ -499,6 +505,7 @@ protected:
 	glow::ref_ptr<glat::FontAnnotation> m_glatBox;
 	glow::ref_ptr<glat::FontAnnotation> m_glowText;
 	glow::ref_ptr<glat::SVGAnnotation> m_nvprViewportSVGAnnotation;
+	glow::ref_ptr<glat::FontAnnotation> m_hpicgs;
 	glow::ref_ptr<glat::Building> m_building;
 	bool m_drawViewport;
 

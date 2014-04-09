@@ -143,7 +143,6 @@ static const char* geomQuadStripShaderSource = R"(
 						fragColor = vec4(text.rgb * getBumpMapEffect(), text.a);
 					} else {
 						fragColor = getText();
-						fragColor = vec4(style, 0.f, 1.f, 1.f);
 					}
 				}
 
