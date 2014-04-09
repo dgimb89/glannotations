@@ -125,8 +125,8 @@ public:
 		
 		glowutils::StringTemplate* gbufferVertexShader = new glowutils::StringTemplate(new glowutils::File("data/gbuffer.vert"));
 		glowutils::StringTemplate* gbufferFragmentShader = new glowutils::StringTemplate(new glowutils::File("data/gbuffer.frag"));
-		glowutils::StringTemplate* phongVertexShader = new glowutils::StringTemplate(new glowutils::File("data/color.vert"));
-		glowutils::StringTemplate* phongFragmentShader = new glowutils::StringTemplate(new glowutils::File("data/color.frag"));
+		glowutils::StringTemplate* phongVertexShader = new glowutils::StringTemplate(new glowutils::File("data/phong.vert"));
+		glowutils::StringTemplate* phongFragmentShader = new glowutils::StringTemplate(new glowutils::File("data/phong.frag"));
 
 		m_gbuffer = new glow::Program();
 		m_gbuffer->attach(new glow::Shader(GL_VERTEX_SHADER, gbufferVertexShader), new glow::Shader(GL_FRAGMENT_SHADER, gbufferFragmentShader));
@@ -179,6 +179,8 @@ public:
 		m_building->setModelViewProjection(m_camera.viewProjection());
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
+		m_phong->setUniform("transformi", m_camera.viewProjectionInverted());
+
 		m_fbo->bind();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
@@ -199,13 +201,18 @@ public:
 		CheckGLError();
 
 		m_phong->setUniform("color", 0);
-		m_geometryTex->bindActive(GL_TEXTURE0);
-		//m_colorTex->bindActive(GL_TEXTURE0);
+		m_phong->setUniform("normal", 1);
+		m_phong->setUniform("geom", 2);
+
+		m_colorTex->bindActive(GL_TEXTURE0);
+		m_normalTex->bindActive(GL_TEXTURE1);
+		m_geometryTex->bindActive(GL_TEXTURE2);
 
 		m_quad->draw();
 
-		m_geometryTex->unbindActive(GL_TEXTURE0);
-		//m_colorTex->unbindActive(GL_TEXTURE0);
+		m_colorTex->unbindActive(GL_TEXTURE0);
+		m_normalTex->unbindActive(GL_TEXTURE1);
+		m_geometryTex->unbindActive(GL_TEXTURE2);
 
 		glEnable(GL_DEPTH_TEST);
 		CheckGLError();
