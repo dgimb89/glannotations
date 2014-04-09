@@ -50,7 +50,8 @@
 #include <glat/InternalState.h>
 #include <glat/ExternalBoxState.h>
 #include <glat/Styles.h>
-#include <glat/Box.h>
+
+#include "building.h"
 
 using namespace glowwindow;
 using namespace glm;
@@ -142,7 +143,7 @@ public:
 
 		glat::RendererFactory dfFactory;
 		dfFactory.useNVpr(false);
-		m_building = new glat::Box();
+		m_building = new glat::Building();
 		m_building->setPosition(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(1.f, 1.f, -1.f));
 		m_building->setColor(glm::vec4(1.0, 0.f, 0.f, 1.f));
 		//m_dfExternalBoxAnnotation = new glat::FontAnnotation(new glat::ExternalBoxState(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(2.f, 0.f, 0.f), glm::vec3(0.f, 2.f, 0.f), glm::vec3(0.f, 0.f, -2.f), &m_camera, true), dfFactory);
@@ -395,7 +396,7 @@ public:
 
 protected:
 	glow::ref_ptr<glat::FontAnnotation> m_dfExternalBoxAnnotation;
-	glow::ref_ptr<glat::Box> m_building;
+	glow::ref_ptr<glat::Building> m_building;
 
 	glowutils::Camera m_camera;
 	glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;

@@ -148,17 +148,17 @@ public:
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-		//m_agrid->update();
-		//m_sphere->setUniform("transform", m_camera.viewProjection());
+		m_agrid->update();
+		m_sphere->setUniform("transform", m_camera.viewProjection());
 
-		//m_sphere->use();
-		//m_icosahedron->draw();
-		//m_sphere->release();
+		m_sphere->use();
+		m_icosahedron->draw();
+		m_sphere->release();
 
-		//m_agrid->draw();
+		m_agrid->draw();
 
-		//m_dfInternalFontAnnotation->draw();
-		//m_dfViewportPNGAnnotation->draw();
+		m_dfInternalFontAnnotation->draw();
+		m_dfViewportPNGAnnotation->draw();
 		m_dfExternalBoxAnnotation->draw();
 		m_dfLabelAnnotation->draw();
 

@@ -59,47 +59,47 @@ static const char* geomShader = R"(
 					vec3 normal3 = normalize(cross(vector5, vector6));
 
 					// lateral surface
-					gl_Position = vertices[0];v_normal = normalize(cross(vertices[0].xyz - vertices[1].xyz, vertices[2].xyz - vertices[1].xyz));v_vertex = gl_Position.xyz;
+					gl_Position = vertices[0];
 					EmitVertex();
-					gl_Position = vertices[1];v_normal = normalize(cross(vertices[0].xyz - vertices[1].xyz, vertices[2].xyz - vertices[1].xyz));v_vertex = gl_Position.xyz;
+					gl_Position = vertices[1];
 					EmitVertex();
-					gl_Position = vertices[2];v_normal = normalize(cross(vertices[0].xyz - vertices[1].xyz, vertices[2].xyz - vertices[1].xyz));v_vertex = gl_Position.xyz;
+					gl_Position = vertices[2];
 					EmitVertex();
-					gl_Position = vertices[3];v_normal = normalize(cross(vertices[3].xyz - vertices[2].xyz, vertices[1].xyz - vertices[2].xyz));v_vertex = gl_Position.xyz;
+					gl_Position = vertices[3];
 					EmitVertex();
-					gl_Position = vertices[4];v_normal = normalize(cross(vertices[4].xyz - vertices[2].xyz, vertices[3].xyz - vertices[2].xyz));v_vertex = gl_Position.xyz;
+					gl_Position = vertices[4];
 					EmitVertex();
-					gl_Position = vertices[5];v_normal = normalize(cross(vertices[5].xyz - vertices[3].xyz, vertices[4].xyz - vertices[3].xyz));v_vertex = gl_Position.xyz;
+					gl_Position = vertices[5];
 					EmitVertex();
-					gl_Position = vertices[6];v_normal = normalize(cross(vertices[6].xyz - vertices[5].xyz, vertices[4].xyz - vertices[5].xyz));v_vertex = gl_Position.xyz;
+					gl_Position = vertices[6];
 					EmitVertex();
-					gl_Position = vertices[7];v_normal = normalize(cross(vertices[7].xyz - vertices[6].xyz, vertices[5].xyz - vertices[6].xyz));v_vertex = gl_Position.xyz;
+					gl_Position = vertices[7];
 					EmitVertex();
-					gl_Position = vertices[0];v_normal = normalize(cross(vertices[0].xyz - vertices[7].xyz, vertices[6].xyz - vertices[7].xyz));v_vertex = gl_Position.xyz;
+					gl_Position = vertices[0];
 					EmitVertex();
-					gl_Position = vertices[1];v_normal = normalize(cross(vertices[1].xyz - vertices[0].xyz, vertices[7].xyz - vertices[0].xyz));v_vertex = gl_Position.xyz;
+					gl_Position = vertices[1];
 					EmitVertex();
 					EndPrimitive();
 
 					// top surface
-					gl_Position = vertices[1];v_normal = normal2;v_vertex = gl_Position.xyz;
+					gl_Position = vertices[1];
 					EmitVertex();
-					gl_Position = vertices[7];v_normal = normal2;v_vertex = gl_Position.xyz;
+					gl_Position = vertices[7];
 					EmitVertex();
-					gl_Position = vertices[3];v_normal = normal2;v_vertex = gl_Position.xyz;
+					gl_Position = vertices[3];
 					EmitVertex();
-					gl_Position = vertices[5];v_normal = normal2;v_vertex = gl_Position.xyz;
+					gl_Position = vertices[5];
 					EmitVertex();
 					EndPrimitive();
 
 					// bottom surface
-					gl_Position = vertices[6];v_normal = normal3;v_vertex = gl_Position.xyz;
+					gl_Position = vertices[6];
 					EmitVertex();
-					gl_Position = vertices[0];v_normal = normal3;v_vertex = gl_Position.xyz;
+					gl_Position = vertices[0];
 					EmitVertex();
-					gl_Position = vertices[4];v_normal = normal3;v_vertex = gl_Position.xyz;
+					gl_Position = vertices[4];
 					EmitVertex();
-					gl_Position = vertices[2];v_normal = normal3;v_vertex = gl_Position.xyz;
+					gl_Position = vertices[2];
 				
 					EmitVertex();
 					EndPrimitive();

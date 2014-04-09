@@ -3,6 +3,8 @@ set(target Example_Presentation_Scene)
 message(STATUS "example ${target}")
 
 add_executable(${target} 
+	building.h
+	building.cpp
     main.cpp
 )
 
