@@ -89,6 +89,8 @@ public:
 
 	virtual void initialize(Window & window) override
 	{
+		glat::RendererFactory dfFactory;
+		dfFactory.useNVpr(false);
 		glow::debugmessageoutput::enable();
 
 		glClearColor(1.0f, 1.0f, 1.0f, 0.f);
@@ -157,50 +159,79 @@ public:
 		m_building8 = new glat::Building();
 		m_building9 = new glat::Building();
 		m_building10 = new glat::Building();
-
-		m_building->setPosition(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(1.f, 1.f, -1.f));
-		m_building1->setPosition(glm::vec3(-3.f, -1.f, 3.f), glm::vec3(-2.f, 4.f, -2.f));
-		m_building2->setPosition(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(1.f, 1.f, -1.f));
-		m_building3->setPosition(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(1.f, 1.f, -1.f));
-		m_building4->setPosition(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(1.f, 1.f, -1.f));
-		m_building5->setPosition(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(1.f, 1.f, -1.f));
-		m_building6->setPosition(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(1.f, 1.f, -1.f));
-		m_building7->setPosition(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(1.f, 1.f, -1.f));
-		m_building8->setPosition(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(1.f, 1.f, -1.f));
-		m_building9->setPosition(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(1.f, 1.f, -1.f));
-		m_building10->setPosition(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(1.f, 1.f, -1.f));
+		m_building11 = new glat::Building();
+		m_building12 = new glat::Building();
+		m_building13 = new glat::Building();
+		m_building14 = new glat::Building();
+		m_building15 = new glat::Building();
+		m_building16 = new glat::Building();
+		m_building17 = new glat::Building();
+		m_building18 = new glat::Building();
+		m_building19 = new glat::Building();
 
 		float color;
 		srand(time(NULL));
 		color = ((rand() * 0.4f) / RAND_MAX) + 0.6f;
-		m_building->setColor(glm::vec4(color, color, color, 1.f));
-		m_building1->setColor(glm::vec4(0.1, 0.1f, 0.1f, 1.f));
-		m_building2->setColor(glm::vec4(0.1, 0.1f, 0.1f, 1.f));
-		m_building3->setColor(glm::vec4(0.1, 0.1f, 0.1f, 1.f));
-		m_building4->setColor(glm::vec4(0.1, 0.1f, 0.1f, 1.f));
-		m_building5->setColor(glm::vec4(0.1, 0.1f, 0.1f, 1.f));
-		m_building6->setColor(glm::vec4(0.1, 0.1f, 0.1f, 1.f));
-		m_building7->setColor(glm::vec4(0.1, 0.1f, 0.1f, 1.f));
-		m_building8->setColor(glm::vec4(0.1, 0.1f, 0.1f, 1.f));
-		m_building9->setColor(glm::vec4(0.1, 0.1f, 0.1f, 1.f));
-		m_building10->setColor(glm::vec4(0.1, 0.1f, 0.1f, 1.f));
+		m_building->setPosition(glm::vec3(-1.f, -4.f, 1.f), glm::vec3(1.f, -3.f, -1.f));
+		m_building1->setPosition(glm::vec3(-1.f, -4.f, 5.f), glm::vec3(1.f, 4.f, 2.f));
+		m_building2->setPosition(glm::vec3(-1.f, -4.f, 8.f), glm::vec3(1.f, 0.f, 6.f));
+		m_building3->setPosition(glm::vec3(-1.f, -4.f, 11.f), glm::vec3(1.f, 1.f, 9.f));
 
-		glat::RendererFactory dfFactory;
-		dfFactory.useNVpr(false);
-		m_dfViewportPNGAnnotation = new glat::PNGAnnotation(new glat::ViewportState(glm::vec2(-0.95f, 0.75f), glm::vec2(-0.5f, 0.95f)), "glat.png", dfFactory);
+		m_building4->setPosition(glm::vec3(2.f, -4.f, 1.f), glm::vec3(4.f, 6.f, -1.f));
+		m_building5->setPosition(glm::vec3(2.f, -4.f, 5.f), glm::vec3(4.f, 2.f, 2.f));
+		m_building6->setPosition(glm::vec3(2.f, -4.f, 8.f), glm::vec3(4.f, -1.f, 6.f));
+		m_building7->setPosition(glm::vec3(2.f, -4.f, 11.f), glm::vec3(4.f, -2.f, 9.f));
+
+		m_building8->setPosition(glm::vec3(5.f, -4.f, 1.f), glm::vec3(7.f, -1.f, -1.f));
+		m_building9->setPosition(glm::vec3(5.f, -4.f, 5.f), glm::vec3(7.f, 1.f, 2.f));
+		m_building10->setPosition(glm::vec3(5.f, -4.f, 11.f), glm::vec3(7.f, 3.f, 6.f));
 
 		m_dfInternalFontAnnotation = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-3.f, -1.f, -5.f), glm::vec3(3.f, -1.f, -5.f), glm::vec3(3.f, 1.0f, -5.f), &m_camera), dfFactory);
 		m_dfInternalFontAnnotation->setFontName("calibri.ttf");
 		m_dfInternalFontAnnotation->setText("DistanceField");
 		m_dfInternalFontAnnotation->setColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
 		m_dfInternalFontAnnotation->addState(new glat::ViewportState(glm::vec2(-.75f, -.5f), glm::vec2(0.75f, 0.5f)));
+		m_building11->setPosition(glm::vec3(8.f, -4.f, 1.f), glm::vec3(10.f, 0.f, -1.f));
+		m_building12->setPosition(glm::vec3(8.f, -4.f, 5.f), glm::vec3(10.f, 1.f, 2.f));
+		m_building13->setPosition(glm::vec3(8.f, -4.f, 8.f), glm::vec3(10.f, 3.f, 6.f));
+		m_building14->setPosition(glm::vec3(8.f, -4.f, 11.f), glm::vec3(10.f, 0.f, 9.f));
 
-		m_dfExternalBoxAnnotation = new glat::FontAnnotation(new glat::ExternalBoxState(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(2.f, 0.f, 0.f), glm::vec3(0.f, 2.f, 0.f), glm::vec3(0.f, 0.f, -2.f), &m_camera, true), dfFactory);
+		m_building15->setPosition(glm::vec3(8.f, -4.f, -100.f), glm::vec3(13.f, 7.f, -105.f));
+		m_building16->setPosition(glm::vec3(14.f, -4.f, -100.f), glm::vec3(19.f, 5.f, -105.f));
+		m_building17->setPosition(glm::vec3(-50.f, -4.f, -100.f), glm::vec3(-55.f, 6.f, -105.f));
+		m_building18->setPosition(glm::vec3(-56.f, -4.f, -100.f), glm::vec3(-61.f, 3.f, -105.f));
+		m_building19->setPosition(glm::vec3(20.f, -4.f, -100.f), glm::vec3(25.f, 1.f, -105.f));
+
+
+		glm::vec4 buildingColor = glm::vec4(0.25f, 0.2f, 0.25f, 1.f);
+		srand(time(NULL));
+		glm::vec4 temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
+		m_building->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
+		m_building1->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
+		m_building2->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
+		m_building3->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
+		m_building4->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
+		m_building5->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
+		m_building6->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
+		m_building7->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
+		m_building8->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
+		m_building9->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
+		m_building10->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
+		m_building11->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
+		m_building12->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
+		m_building13->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
+		m_building14->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
+		m_building15->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
+		m_building16->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
+		m_building17->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
+		m_building18->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
+		m_building19->setColor(buildingColor + temp);
+
+		m_dfExternalBoxAnnotation = new glat::FontAnnotation(new glat::ExternalBoxState(glm::vec3(-1.f, -4.f, 1.f), glm::vec3(2.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f), glm::vec3(0.f, 0.f, -2.f), &m_camera, false), dfFactory);
 		m_dfExternalBoxAnnotation->setFontName("calibri.ttf");
-		m_dfExternalBoxAnnotation->setText("Box");
+		m_dfExternalBoxAnnotation->setText("GLAT");
+		m_dfExternalBoxAnnotation->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 		m_dfExternalBoxAnnotation->getState()->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 1.f, 0.25f)));
-
-		//m_dfExternalBoxAnnotation->addState(new glat::InternalState(glm::vec3(-3.f, -1.f, -5.f), glm::vec3(3.f, -1.f, -5.f), glm::vec3(3.f, 1.0f, -5.f), &m_camera));
 
 		glow::ref_ptr<glat::AbstractState> state = new glat::ViewportState(glm::vec2(-.4f, -.4f), glm::vec2(0.4f, 0.4f));
 		m_dfExternalBoxAnnotation->addState(state);
@@ -248,6 +279,15 @@ public:
 		m_building8->setModelViewProjection(m_camera.viewProjection());
 		m_building9->setModelViewProjection(m_camera.viewProjection());
 		m_building10->setModelViewProjection(m_camera.viewProjection());
+		m_building11->setModelViewProjection(m_camera.viewProjection());
+		m_building12->setModelViewProjection(m_camera.viewProjection());
+		m_building13->setModelViewProjection(m_camera.viewProjection());
+		m_building14->setModelViewProjection(m_camera.viewProjection());
+		m_building15->setModelViewProjection(m_camera.viewProjection());
+		m_building16->setModelViewProjection(m_camera.viewProjection());
+		m_building17->setModelViewProjection(m_camera.viewProjection());
+		m_building18->setModelViewProjection(m_camera.viewProjection());
+		m_building19->setModelViewProjection(m_camera.viewProjection());
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		m_phong->setUniform("transformi", m_camera.viewProjectionInverted());
@@ -271,12 +311,22 @@ public:
 		m_building8->draw();
 		m_building9->draw();
 		m_building10->draw();
+		m_building11->draw();
+		m_building12->draw();
+		m_building13->draw();
+		m_building14->draw();
+		m_building15->draw();
+		m_building16->draw();
+		m_building17->draw();
+		m_building18->draw();
+		m_building19->draw();
+		//m_dfExternalBoxAnnotation->draw();
 		//m_gbuffer->release();
 		//m_quadBase->setModelViewProjection(m_camera.projection());
 		//m_quadBase->draw();
 
 		m_dfInternalFontAnnotation->draw();
-		m_dfViewportPNGAnnotation->draw();
+		//m_dfViewportPNGAnnotation->draw();
 		m_dfExternalBoxAnnotation->draw();
 		m_dfLabelAnnotation->draw();
 		m_fbo->unbind();
@@ -497,6 +547,15 @@ protected:
 	glow::ref_ptr<glat::Building> m_building9;
 	glow::ref_ptr<glat::Building> m_building10;
 	glow::ref_ptr<glat::Quad> m_quadBase;
+	glow::ref_ptr<glat::Building> m_building11;
+	glow::ref_ptr<glat::Building> m_building12;
+	glow::ref_ptr<glat::Building> m_building13;
+	glow::ref_ptr<glat::Building> m_building14;
+	glow::ref_ptr<glat::Building> m_building15;
+	glow::ref_ptr<glat::Building> m_building16;
+	glow::ref_ptr<glat::Building> m_building17;
+	glow::ref_ptr<glat::Building> m_building18;
+	glow::ref_ptr<glat::Building> m_building19;
 
 
 	glowutils::Camera m_camera;
