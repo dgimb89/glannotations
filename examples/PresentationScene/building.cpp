@@ -148,22 +148,50 @@ static const char* geomShader = R"(
 				}
 				)";
 
-static const char* fragShader = R"(
+				static const char* fragShader = R"(
 				#version 330
 				uniform vec4 color;
 
 				layout (location = 0) out vec4 fragColor;
-				layout (location = 1) out vec4 normals;
-				layout (location = 2) out vec4 geometry;
+				//layout (location = 1) out vec4 normals;
+				//layout (location = 2) out vec4 geometry;
 
 				in vec3 v_normal;
 				in vec3 v_vertex;
 
+				const vec3 lpos = vec3(0.0, 2.0, 2.0);
+
+				const vec3  specular = vec3(1.0, 1.0, 1.0) * 0.1;
+				const float shininess = 128.0;
+				const vec3  ambient = vec3(0.08, 0.10, 0.14);
+				const float ambifake = 0.78;
+
 				void main()
 				{
-					fragColor = color;
-					normals	= vec4(v_normal, 1.f);
-					geometry = vec4(v_vertex, 1.f);
+					//fragColor = color;
+					//normals	= vec4(v_normal, 1.f);
+					//geometry = vec4(v_vertex, 1.f);
+
+					vec3 n = normalize(v_normal);
+					vec3 g = v_vertex;
+	
+					vec3 l = normalize(lpos - g);
+					vec3 e = normalize(vec3(1.f, 1.f, 1.f));
+					vec3 h = normalize(l + e);
+
+					float ldotn = mix(ambifake, 1.0, dot(l, n));
+					float hdotn = dot(h, n);
+
+					vec4 phong;
+
+					if(ldotn > 0.0)
+						phong = vec4(
+						  specular * clamp(pow(hdotn, shininess), 0.0, 1.0) 
+						+ mix(ambient, vec3(1.0), ldotn), 1.0);
+					else
+						phong = vec4(ambient, 1.0);
+
+					fragColor = color * phong;
 				}
 				)";
 

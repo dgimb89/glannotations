@@ -120,12 +120,12 @@ public:
 
 		m_depth = new glow::RenderBufferObject();
 
-		m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_colorTex);
-		m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT1, m_normalTex);
-		m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT2, m_geometryTex);
-		m_fbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_depth);
+		//m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_colorTex);
+		//m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT1, m_normalTex);
+		//m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT2, m_geometryTex);
+		//m_fbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_depth);
 
-		m_fbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 });
+		//m_fbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 });
 		//m_fbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0});
 		
 		glowutils::StringTemplate* gbufferVertexShader = new glowutils::StringTemplate(new glowutils::File("data/gbuffer.vert"));
@@ -143,10 +143,6 @@ public:
 		
 		m_camera.setZNear(0.1f);
 		m_camera.setZFar(1024.f);
-		
-		m_quadBase = new glat::Quad;
-		m_quadBase->setPosition(glm::vec3(0.f, 0.f, 0.f), glm::vec3(10.f, 0.f, 0.f), glm::vec3(10.f, 0.f, 10.f));
-		m_quadBase->setColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.f));
 
 		m_building = new glat::Building();
 		m_building1 = new glat::Building();
@@ -186,21 +182,10 @@ public:
 		m_building9->setPosition(glm::vec3(5.f, -4.f, 5.f), glm::vec3(7.f, 1.f, 2.f));
 		m_building10->setPosition(glm::vec3(5.f, -4.f, 11.f), glm::vec3(7.f, 3.f, 6.f));
 
-		m_dfInternalFontAnnotation = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-3.f, -1.f, -5.f), glm::vec3(3.f, -1.f, -5.f), glm::vec3(3.f, 1.0f, -5.f), &m_camera), dfFactory);
-		m_dfInternalFontAnnotation->setFontName("calibri.ttf");
-		m_dfInternalFontAnnotation->setText("DistanceField");
-		m_dfInternalFontAnnotation->setColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
-		m_dfInternalFontAnnotation->addState(new glat::ViewportState(glm::vec2(-.75f, -.5f), glm::vec2(0.75f, 0.5f)));
 		m_building11->setPosition(glm::vec3(8.f, -4.f, 1.f), glm::vec3(10.f, 0.f, -1.f));
 		m_building12->setPosition(glm::vec3(8.f, -4.f, 5.f), glm::vec3(10.f, 1.f, 2.f));
 		m_building13->setPosition(glm::vec3(8.f, -4.f, 8.f), glm::vec3(10.f, 3.f, 6.f));
 		m_building14->setPosition(glm::vec3(8.f, -4.f, 11.f), glm::vec3(10.f, 0.f, 9.f));
-
-		m_building15->setPosition(glm::vec3(8.f, -4.f, -100.f), glm::vec3(13.f, 7.f, -105.f));
-		m_building16->setPosition(glm::vec3(14.f, -4.f, -100.f), glm::vec3(19.f, 5.f, -105.f));
-		m_building17->setPosition(glm::vec3(-50.f, -4.f, -100.f), glm::vec3(-55.f, 6.f, -105.f));
-		m_building18->setPosition(glm::vec3(-56.f, -4.f, -100.f), glm::vec3(-61.f, 3.f, -105.f));
-		m_building19->setPosition(glm::vec3(20.f, -4.f, -100.f), glm::vec3(25.f, 1.f, -105.f));
 
 
 		glm::vec4 buildingColor = glm::vec4(0.25f, 0.2f, 0.25f, 1.f);
@@ -242,6 +227,13 @@ public:
 		m_dfLabelAnnotation->setColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
 		m_dfLabelAnnotation->getState()->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 0.f, 1.f)));
 
+		m_dfInternalFontAnnotation = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-2.f, -4.f, 1.f), glm::vec3(-2.f, -4.f, 15.f), glm::vec3(-2.f, 1.0f, 15.f), &m_camera), dfFactory);
+		m_dfInternalFontAnnotation->setFontName("calibri.ttf");
+		m_dfInternalFontAnnotation->setText("HPI");
+		m_dfInternalFontAnnotation->setColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
+		m_dfInternalFontAnnotation->getState()->setStyling(new glat::Styles::Outline(2.f, glm::vec3(1.f, 1.f, 1.f)));
+		m_dfInternalFontAnnotation->addState(new glat::ViewportState(glm::vec2(-.75f, -.5f), glm::vec2(0.75f, 0.5f)));
+
 		window.addTimer(0, 0, false);
 	}
 	virtual void finalize(Window &) override
@@ -262,8 +254,8 @@ public:
 		m_normalTex->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
 		m_geometryTex->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
 
-		int result = glow::FrameBufferObject::defaultFBO()->getAttachmentParameter(GL_DEPTH, GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE);
-		m_depth->storage(result == 16 ? GL_DEPTH_COMPONENT16 : GL_DEPTH_COMPONENT, width, height);
+		//int result = glow::FrameBufferObject::defaultFBO()->getAttachmentParameter(GL_DEPTH, GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE);
+		//m_depth->storage(result == 16 ? GL_DEPTH_COMPONENT16 : GL_DEPTH_COMPONENT, width, height);
 	}
 
 	virtual void paintEvent(PaintEvent &) override
@@ -283,16 +275,11 @@ public:
 		m_building12->setModelViewProjection(m_camera.viewProjection());
 		m_building13->setModelViewProjection(m_camera.viewProjection());
 		m_building14->setModelViewProjection(m_camera.viewProjection());
-		m_building15->setModelViewProjection(m_camera.viewProjection());
-		m_building16->setModelViewProjection(m_camera.viewProjection());
-		m_building17->setModelViewProjection(m_camera.viewProjection());
-		m_building18->setModelViewProjection(m_camera.viewProjection());
-		m_building19->setModelViewProjection(m_camera.viewProjection());
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		m_phong->setUniform("transformi", m_camera.viewProjectionInverted());
 
-		m_fbo->bind();
+		//m_fbo->bind();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -315,15 +302,6 @@ public:
 		m_building12->draw();
 		m_building13->draw();
 		m_building14->draw();
-		m_building15->draw();
-		m_building16->draw();
-		m_building17->draw();
-		m_building18->draw();
-		m_building19->draw();
-		//m_dfExternalBoxAnnotation->draw();
-		//m_gbuffer->release();
-		//m_quadBase->setModelViewProjection(m_camera.projection());
-		//m_quadBase->draw();
 
 		m_dfInternalFontAnnotation->draw();
 		//m_dfViewportPNGAnnotation->draw();
@@ -336,24 +314,11 @@ public:
 		glDepthMask(GL_FALSE);
 		CheckGLError();
 
-		m_phong->setUniform("color", 0);
-		m_phong->setUniform("normal", 1);
-		m_phong->setUniform("geom", 2);
-
-		m_colorTex->bindActive(GL_TEXTURE0);
-		m_normalTex->bindActive(GL_TEXTURE1);
-		m_geometryTex->bindActive(GL_TEXTURE2);
-
-		m_quad->draw();
-
-		m_colorTex->unbindActive(GL_TEXTURE0);
-		m_normalTex->unbindActive(GL_TEXTURE1);
-		m_geometryTex->unbindActive(GL_TEXTURE2);
-
 		glEnable(GL_DEPTH_TEST);
 		CheckGLError();
 		glDepthMask(GL_TRUE);
 		CheckGLError();
+
 	}
 
 	virtual void timerEvent(TimerEvent & event) override
@@ -380,7 +345,7 @@ public:
 			break;
 		case GLFW_KEY_SPACE:
 			m_camera.setCenter(vec3());
-			m_camera.setEye(vec3(0.f, 1.f, 4.0f));
+			m_camera.setEye(vec3(-15.f, 5.f, -10.0f));
 			m_camera.setUp(vec3(0, 1, 0));
 			break;
 		case GLFW_KEY_F11:
@@ -535,6 +500,7 @@ protected:
 	glow::ref_ptr<glat::FontAnnotation> m_dfExternalBoxAnnotation;
 	glow::ref_ptr<glat::FontAnnotation> m_dfLabelAnnotation;
 	glow::ref_ptr<glat::Building> m_building;
+	bool m_drawViewport;
 
 	glow::ref_ptr<glat::Building> m_building1;
 	glow::ref_ptr<glat::Building> m_building2;
