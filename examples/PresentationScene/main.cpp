@@ -159,11 +159,6 @@ public:
 		m_building12 = new glat::Building();
 		m_building13 = new glat::Building();
 		m_building14 = new glat::Building();
-		m_building15 = new glat::Building();
-		m_building16 = new glat::Building();
-		m_building17 = new glat::Building();
-		m_building18 = new glat::Building();
-		m_building19 = new glat::Building();
 
 		float color;
 		srand(time(NULL));
@@ -205,34 +200,26 @@ public:
 		m_building11->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
 		m_building12->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
 		m_building13->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
-		m_building14->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
-		m_building15->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
-		m_building16->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
-		m_building17->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
-		m_building18->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
-		m_building19->setColor(buildingColor + temp);
+		m_building14->setColor(buildingColor + temp);
 
-		m_dfExternalBoxAnnotation = new glat::FontAnnotation(new glat::ExternalBoxState(glm::vec3(-1.f, -4.f, 1.f), glm::vec3(2.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f), glm::vec3(0.f, 0.f, -2.f), &m_camera, false), dfFactory);
-		m_dfExternalBoxAnnotation->setFontName("calibri.ttf");
-		m_dfExternalBoxAnnotation->setText("GLAT");
-		m_dfExternalBoxAnnotation->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
-		m_dfExternalBoxAnnotation->getState()->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 1.f, 0.25f)));
+		m_glatBox = new glat::FontAnnotation(new glat::ExternalBoxState(glm::vec3(-1.f, -4.f, 1.f), glm::vec3(2.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f), glm::vec3(0.f, 0.f, -2.f), &m_camera, false), dfFactory);
+		m_glatBox->setFontName("calibri.ttf");
+		m_glatBox->setText("GLAT");
+		m_glatBox->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
+		m_glatBox->getState()->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 1.f, 0.25f)));
 
 		glow::ref_ptr<glat::AbstractState> state = new glat::ViewportState(glm::vec2(-.4f, -.4f), glm::vec2(0.4f, 0.4f));
-		m_dfExternalBoxAnnotation->addState(state);
+		m_glatBox->addState(state);
 
-		m_dfLabelAnnotation = new glat::FontAnnotation(new glat::ExternalLabelState(glm::vec3(1.f, 1.f, -1.f), glm::vec3(10.f, 5.f, -5.f), 5.f, 2.f, &m_camera, true), dfFactory);
-		m_dfLabelAnnotation->setText("ExternalAnnotation");
-		m_dfLabelAnnotation->setFontName("calibri.ttf");
-		m_dfLabelAnnotation->setColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
-		m_dfLabelAnnotation->getState()->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 0.f, 1.f)));
+		m_glowText = new glat::FontAnnotation(new glat::ExternalLabelState(glm::vec3(1.f, 3.f, 3.f), glm::vec3(-3.f, 4.f, 12.f), 3.5f, 2.f, &m_camera, true), dfFactory);
+		m_glowText->setText("GLOW");
+		m_glowText->setFontName("calibri.ttf");
+		m_glowText->setColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
+		m_glowText->getState()->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 0.f, 1.f)));
 
-		m_dfInternalFontAnnotation = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-2.f, -4.f, 1.f), glm::vec3(-2.f, -4.f, 15.f), glm::vec3(-2.f, 1.0f, 15.f), &m_camera), dfFactory);
-		m_dfInternalFontAnnotation->setFontName("calibri.ttf");
-		m_dfInternalFontAnnotation->setText("HPI");
-		m_dfInternalFontAnnotation->setColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
-		m_dfInternalFontAnnotation->getState()->setStyling(new glat::Styles::Outline(2.f, glm::vec3(1.f, 1.f, 1.f)));
-		m_dfInternalFontAnnotation->addState(new glat::ViewportState(glm::vec2(-.75f, -.5f), glm::vec2(0.75f, 0.5f)));
+		m_hpilogo = new glat::PNGAnnotation(new glat::InternalState(glm::vec3(-2.f, -4.f, 2.f), glm::vec3(-2.f, -4.f, 7.f), glm::vec3(-2.f, 1.0f, 7.f), &m_camera), "hpi.png", dfFactory);
+		m_hpilogo->getState()->setStyling(new glat::Styles::Outline(2.f, glm::vec3(1.f, 1.f, 1.f)));
+		m_hpilogo->addState(new glat::ViewportState(glm::vec2(-.25f, -.5f), glm::vec2(0.25f, 0.5f)));
 
 		window.addTimer(0, 0, false);
 	}
@@ -275,7 +262,7 @@ public:
 		m_building12->setModelViewProjection(m_camera.viewProjection());
 		m_building13->setModelViewProjection(m_camera.viewProjection());
 		m_building14->setModelViewProjection(m_camera.viewProjection());
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 		
 		m_phong->setUniform("transformi", m_camera.viewProjectionInverted());
 
@@ -303,11 +290,11 @@ public:
 		m_building13->draw();
 		m_building14->draw();
 
-		m_dfInternalFontAnnotation->draw();
+		m_hpilogo->draw();
 		//m_dfViewportPNGAnnotation->draw();
-		m_dfExternalBoxAnnotation->draw();
-		m_dfLabelAnnotation->draw();
-		m_fbo->unbind();
+		m_glatBox->draw();
+		m_glowText->draw();
+		//m_fbo->unbind();
 
 		glDisable(GL_DEPTH_TEST);
 		CheckGLError();
@@ -344,9 +331,22 @@ public:
 			event.window()->setInputMode(GLFW_CURSOR, m_flightEnabled ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
 			break;
 		case GLFW_KEY_SPACE:
-			m_camera.setCenter(vec3());
-			m_camera.setEye(vec3(-15.f, 5.f, -10.0f));
+			m_camera.setCenter(vec3(0.f, 0.f, 5.f));
+			m_camera.setEye(vec3(-12.f, 5.f, -10.0f));
 			m_camera.setUp(vec3(0, 1, 0));
+			break;
+		case GLFW_KEY_N:
+			if (m_interpolation > 0.8)
+				m_interpolation += 0.005;
+			else
+				m_interpolation += 0.01;
+			m_interpolation = min(m_interpolation, 1.f);
+			m_hpilogo->setInterpolatedState(0, 1, m_interpolation);
+			break;
+		case GLFW_KEY_M:
+			m_interpolation -= 0.01;
+			m_interpolation = max(m_interpolation, 0.f);
+			m_hpilogo->setInterpolatedState(0, 1, m_interpolation);
 			break;
 		case GLFW_KEY_F11:
 			event.window()->toggleMode();
@@ -495,10 +495,10 @@ public:
 	}
 
 protected:
-	glow::ref_ptr<glat::PNGAnnotation> m_dfViewportPNGAnnotation;
-	glow::ref_ptr<glat::FontAnnotation> m_dfInternalFontAnnotation;
-	glow::ref_ptr<glat::FontAnnotation> m_dfExternalBoxAnnotation;
-	glow::ref_ptr<glat::FontAnnotation> m_dfLabelAnnotation;
+	glow::ref_ptr<glat::PNGAnnotation> m_hpilogo;
+	glow::ref_ptr<glat::FontAnnotation> m_glatBox;
+	glow::ref_ptr<glat::FontAnnotation> m_glowText;
+	glow::ref_ptr<glat::SVGAnnotation> m_nvprViewportSVGAnnotation;
 	glow::ref_ptr<glat::Building> m_building;
 	bool m_drawViewport;
 
@@ -517,11 +517,6 @@ protected:
 	glow::ref_ptr<glat::Building> m_building12;
 	glow::ref_ptr<glat::Building> m_building13;
 	glow::ref_ptr<glat::Building> m_building14;
-	glow::ref_ptr<glat::Building> m_building15;
-	glow::ref_ptr<glat::Building> m_building16;
-	glow::ref_ptr<glat::Building> m_building17;
-	glow::ref_ptr<glat::Building> m_building18;
-	glow::ref_ptr<glat::Building> m_building19;
 
 
 	glowutils::Camera m_camera;
