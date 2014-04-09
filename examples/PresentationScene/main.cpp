@@ -144,8 +144,42 @@ public:
 		glat::RendererFactory dfFactory;
 		dfFactory.useNVpr(false);
 		m_building = new glat::Building();
+		m_building1 = new glat::Building();
+		m_building2 = new glat::Building();
+		m_building3 = new glat::Building();
+		m_building4 = new glat::Building();
+		m_building5 = new glat::Building();
+		m_building6 = new glat::Building();
+		m_building7 = new glat::Building();
+		m_building8 = new glat::Building();
+		m_building9 = new glat::Building();
+		m_building10 = new glat::Building();
+
 		m_building->setPosition(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(1.f, 1.f, -1.f));
+		m_building1->setPosition(glm::vec3(-3.f, -1.f, 3.f), glm::vec3(-2.f, 4.f, -2.f));
+		m_building2->setPosition(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(1.f, 1.f, -1.f));
+		m_building3->setPosition(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(1.f, 1.f, -1.f));
+		m_building4->setPosition(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(1.f, 1.f, -1.f));
+		m_building5->setPosition(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(1.f, 1.f, -1.f));
+		m_building6->setPosition(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(1.f, 1.f, -1.f));
+		m_building7->setPosition(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(1.f, 1.f, -1.f));
+		m_building8->setPosition(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(1.f, 1.f, -1.f));
+		m_building9->setPosition(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(1.f, 1.f, -1.f));
+		m_building10->setPosition(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(1.f, 1.f, -1.f));
+
+
 		m_building->setColor(glm::vec4(1.0, 0.f, 0.f, 1.f));
+		m_building1->setColor(glm::vec4(1.0, 0.f, 0.f, 1.f));
+		m_building2->setColor(glm::vec4(1.0, 0.f, 0.f, 1.f));
+		m_building3->setColor(glm::vec4(1.0, 0.f, 0.f, 1.f));
+		m_building4->setColor(glm::vec4(1.0, 0.f, 0.f, 1.f));
+		m_building5->setColor(glm::vec4(1.0, 0.f, 0.f, 1.f));
+		m_building6->setColor(glm::vec4(1.0, 0.f, 0.f, 1.f));
+		m_building7->setColor(glm::vec4(1.0, 0.f, 0.f, 1.f));
+		m_building8->setColor(glm::vec4(1.0, 0.f, 0.f, 1.f));
+		m_building9->setColor(glm::vec4(1.0, 0.f, 0.f, 1.f));
+		m_building10->setColor(glm::vec4(1.0, 0.f, 0.f, 1.f));
+
 		//m_dfExternalBoxAnnotation = new glat::FontAnnotation(new glat::ExternalBoxState(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(2.f, 0.f, 0.f), glm::vec3(0.f, 2.f, 0.f), glm::vec3(0.f, 0.f, -2.f), &m_camera, true), dfFactory);
 		//m_dfExternalBoxAnnotation->setFontName("calibri.ttf");
 		//m_dfExternalBoxAnnotation->setText("Box");
@@ -178,6 +212,16 @@ public:
 	virtual void paintEvent(PaintEvent &) override
 	{
 		m_building->setModelViewProjection(m_camera.viewProjection());
+		m_building1->setModelViewProjection(m_camera.viewProjection());
+		m_building2->setModelViewProjection(m_camera.viewProjection());
+		m_building3->setModelViewProjection(m_camera.viewProjection());
+		m_building4->setModelViewProjection(m_camera.viewProjection());
+		m_building5->setModelViewProjection(m_camera.viewProjection());
+		m_building6->setModelViewProjection(m_camera.viewProjection());
+		m_building7->setModelViewProjection(m_camera.viewProjection());
+		m_building8->setModelViewProjection(m_camera.viewProjection());
+		m_building9->setModelViewProjection(m_camera.viewProjection());
+		m_building10->setModelViewProjection(m_camera.viewProjection());
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		m_phong->setUniform("transformi", m_camera.viewProjectionInverted());
@@ -191,6 +235,16 @@ public:
 
 		//m_gbuffer->use();
 		m_building->draw();
+		m_building1->draw();
+		m_building2->draw();
+		m_building3->draw();
+		m_building4->draw();
+		m_building5->draw();
+		m_building6->draw();
+		m_building7->draw();
+		m_building8->draw();
+		m_building9->draw();
+		m_building10->draw();
 		//m_dfExternalBoxAnnotation->draw();
 		//m_gbuffer->release();
 
@@ -397,6 +451,18 @@ public:
 protected:
 	glow::ref_ptr<glat::FontAnnotation> m_dfExternalBoxAnnotation;
 	glow::ref_ptr<glat::Building> m_building;
+
+	glow::ref_ptr<glat::Building> m_building1;
+	glow::ref_ptr<glat::Building> m_building2;
+	glow::ref_ptr<glat::Building> m_building3;
+	glow::ref_ptr<glat::Building> m_building4;
+	glow::ref_ptr<glat::Building> m_building5;
+	glow::ref_ptr<glat::Building> m_building6;
+	glow::ref_ptr<glat::Building> m_building7;
+	glow::ref_ptr<glat::Building> m_building8;
+	glow::ref_ptr<glat::Building> m_building9;
+	glow::ref_ptr<glat::Building> m_building10;
+
 
 	glowutils::Camera m_camera;
 	glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
