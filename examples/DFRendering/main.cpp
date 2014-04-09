@@ -116,7 +116,10 @@ public:
 		m_dfExternalBoxAnnotation->setFontName("calibri.ttf");
 		m_dfExternalBoxAnnotation->setText("Box");
 		m_dfExternalBoxAnnotation->getState()->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 1.f, 0.25f)));
-		glow::ref_ptr<glat::AbstractState> state = new glat::ViewportState(glm::vec2(-.75f, -.5f), glm::vec2(0.75f, 0.5f));
+
+		//m_dfExternalBoxAnnotation->addState(new glat::InternalState(glm::vec3(-3.f, -1.f, -5.f), glm::vec3(3.f, -1.f, -5.f), glm::vec3(3.f, 1.0f, -5.f), &m_camera));
+
+		glow::ref_ptr<glat::AbstractState> state = new glat::ViewportState(glm::vec2(-.4f, -.4f), glm::vec2(0.4f, 0.4f));
 		m_dfExternalBoxAnnotation->addState(state);
 
 		m_dfLabelAnnotation = new glat::FontAnnotation(new glat::ExternalLabelState(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 5.f, 5.f), 5.f, 2.f, &m_camera, true), dfFactory);
@@ -145,17 +148,17 @@ public:
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-		m_agrid->update();
-		m_sphere->setUniform("transform", m_camera.viewProjection());
+		//m_agrid->update();
+		//m_sphere->setUniform("transform", m_camera.viewProjection());
 
-		m_sphere->use();
-		m_icosahedron->draw();
-		m_sphere->release();
+		//m_sphere->use();
+		//m_icosahedron->draw();
+		//m_sphere->release();
 
-		m_agrid->draw();
+		//m_agrid->draw();
 
-		m_dfInternalFontAnnotation->draw();
-		m_dfViewportPNGAnnotation->draw();
+		//m_dfInternalFontAnnotation->draw();
+		//m_dfViewportPNGAnnotation->draw();
 		m_dfExternalBoxAnnotation->draw();
 		m_dfLabelAnnotation->draw();
 
