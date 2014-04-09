@@ -15,7 +15,7 @@ namespace glat {
 		virtual void setBumpMap(float intensity);
 
 	protected:
-		unsigned m_style;
+		int m_style;
 		glow::ref_ptr<glow::Buffer> m_texCoords;
 		std::shared_ptr<glow::Texture> m_texture;
 	};

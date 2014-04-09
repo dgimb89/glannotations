@@ -74,10 +74,14 @@ static const char* geomQuadStripShaderSource = R"(
 				}
 				)";
 
-static const char* fragQuadStripShaderSource = R"(
+				static const char* fragQuadStripShaderSource = R"(
 				#version 330
 				uniform sampler2D source;
+				uniform int style;
 				uniform vec4 color;
+				uniform vec3 outlineColor;
+				uniform float outlineSize;
+				uniform float bumpIntensity;
 
 				layout (location = 0) out vec4 fragColor;
 
@@ -85,15 +89,64 @@ static const char* fragQuadStripShaderSource = R"(
 					vec2 texCoord;
 				} vertex;
 
-				void main()
-				{
+				vec4 getText() {
 					float distance = texture2D(source, vertex.texCoord);
 					if(distance > 0.5) {
 						discard;
 					} else {
-						fragColor = vec4(color.rgb, color.a * (1.0 - smoothstep(0.49, 0.5, distance)));
+						return vec4(color.rgb, color.a * (1.0 - smoothstep(0.49, 0.5, distance)));
 					}
 				}
+
+				vec4 getTextWithOutline() {
+					float distance = texture2D(source, vertex.texCoord);
+
+					// Interpolations Faktor zwischen outline und Welt
+					float d_outline = smoothstep(outlineSize + 0.5, 0.5 , distance);
+
+					if (distance < 0.5) {
+						return color;
+					}
+					else if (d_outline > 0.0) {
+						return vec4(outlineColor, d_outline);
+					}
+					else {
+						return vec4(0.0, 0.0, 0.0, 0.0);
+					}
+				}
+
+				float getBumpMapEffect() {
+					float dx = dFdx(texture2D(source, vertex.texCoord).x) * 45.0 * bumpIntensity;
+					float dy = dFdy(texture2D(source, vertex.texCoord).x) * 50.0 * bumpIntensity;
+
+					vec3 vx = vec3(1.0, 0.0, dx);
+					vec3 vy = vec3(0.0, 1.0, dy);
+
+					vec3 n = cross(vx, vy);
+					vec3 lightSource = vec3(1.5, 1.5, 3.0);
+
+					n = normalize(n);
+					lightSource = normalize(lightSource);
+
+					return dot(n, lightSource);
+				}
+
+				void main()
+				{
+					if (style == 1) {
+						fragColor = getTextWithOutline();
+					} else if (style == 2) {
+						vec4 text = getText();
+						fragColor = vec4(text.rgb * getBumpMapEffect(), text.a);
+					} else if (style == 3) {
+						vec4 text = getTextWithOutline();
+						fragColor = vec4(text.rgb * getBumpMapEffect(), text.a);
+					} else {
+						fragColor = getText();
+						fragColor = vec4(style, 0.f, 1.f, 1.f);
+					}
+				}
+
 				)";
 
 glat::QuadStrip::QuadStrip(std::shared_ptr<glow::Texture> distanceField) : glat::AbstractDFPrimitive(distanceField) {
