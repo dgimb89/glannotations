@@ -30,7 +30,7 @@ void glat::ExternalLabelState::updateInternalPosition() const {
 	glm::vec3 heightSpan = glm::normalize(m_camera->up()) * m_height;
 	glm::vec3 widthSpan = glm::cross(heightSpan, glm::normalize(m_camera->eye() - m_camera->center())) * 0.5f * m_width;
 	m_internalState->setExtends(m_center - widthSpan, m_center + widthSpan, m_center + widthSpan + heightSpan);
-	reinterpret_cast<glat::Quad*>(m_externalPrimitive.get())->setPosition(m_reference, getLL(), getLL() + 0.1f*heightSpan);
+	reinterpret_cast<glat::Quad*>(m_externalPrimitive.get())->setPosition(m_reference, getLL(), getLL() + 0.05f*glm::cross(glm::normalize(m_camera->eye() - m_camera->center()),widthSpan), getViewProjection());
 }
 
 glat::ExternalLabelState::ExternalLabelState(glm::vec3 reference, glm::vec3 center, float width, float height, glowutils::Camera* camera, bool drawBox /*= true*/) : glat::AbstractExternalState(camera) {

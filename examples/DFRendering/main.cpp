@@ -122,10 +122,11 @@ public:
 		glow::ref_ptr<glat::AbstractState> state = new glat::ViewportState(glm::vec2(-.4f, -.4f), glm::vec2(0.4f, 0.4f));
 		m_dfExternalBoxAnnotation->addState(state);
 
-		m_dfLabelAnnotation = new glat::FontAnnotation(new glat::ExternalLabelState(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 5.f, 5.f), 5.f, 2.f, &m_camera, true), dfFactory);
-		m_dfLabelAnnotation->setText("Label");
+		m_dfLabelAnnotation = new glat::FontAnnotation(new glat::ExternalLabelState(glm::vec3(1.f, 1.f, -1.f), glm::vec3(10.f, 5.f, -5.f), 5.f, 2.f, &m_camera, true), dfFactory);
+		m_dfLabelAnnotation->setText("ExternalAnnotation");
 		m_dfLabelAnnotation->setFontName("calibri.ttf");
 		m_dfLabelAnnotation->setColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
+		m_dfLabelAnnotation->getState()->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 0.f, 1.f)));
 
 		window.addTimer(0, 0, false);
 	}
