@@ -116,12 +116,12 @@ public:
 
 		m_depth = new glow::RenderBufferObject();
 
-		m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_colorTex);
-		m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT1, m_normalTex);
-		m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT2, m_geometryTex);
-		m_fbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_depth);
+		//m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_colorTex);
+		//m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT1, m_normalTex);
+		//m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT2, m_geometryTex);
+		//m_fbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_depth);
 
-		m_fbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 });
+		//m_fbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 });
 		//m_fbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0});
 		
 		glowutils::StringTemplate* gbufferVertexShader = new glowutils::StringTemplate(new glowutils::File("data/gbuffer.vert"));
@@ -185,8 +185,8 @@ public:
 
 		m_building15->setPosition(glm::vec3(8.f, -4.f, -100.f), glm::vec3(13.f, 7.f, -105.f));
 		m_building16->setPosition(glm::vec3(14.f, -4.f, -100.f), glm::vec3(19.f, 5.f, -105.f));
-		m_building17->setPosition(glm::vec3(-50.f, -4.f, -100.f), glm::vec3(-55.f, 6.f, -105.f));
-		m_building18->setPosition(glm::vec3(-56.f, -4.f, -100.f), glm::vec3(-61.f, 3.f, -105.f));
+		m_building17->setPosition(glm::vec3(-55.f, -4.f, -100.f), glm::vec3(-50.f, 6.f, -105.f));
+		m_building18->setPosition(glm::vec3(-61.f, -4.f, -100.f), glm::vec3(-56.f, 3.f, -105.f));
 		m_building19->setPosition(glm::vec3(20.f, -4.f, -100.f), glm::vec3(25.f, 1.f, -105.f));
 
 
@@ -239,8 +239,8 @@ public:
 		m_normalTex->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
 		m_geometryTex->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
 
-		int result = glow::FrameBufferObject::defaultFBO()->getAttachmentParameter(GL_DEPTH, GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE);
-		m_depth->storage(result == 16 ? GL_DEPTH_COMPONENT16 : GL_DEPTH_COMPONENT, width, height);
+		//int result = glow::FrameBufferObject::defaultFBO()->getAttachmentParameter(GL_DEPTH, GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE);
+		//m_depth->storage(result == 16 ? GL_DEPTH_COMPONENT16 : GL_DEPTH_COMPONENT, width, height);
 	}
 
 	virtual void paintEvent(PaintEvent &) override
@@ -269,7 +269,7 @@ public:
 		
 		m_phong->setUniform("transformi", m_camera.viewProjectionInverted());
 
-		m_fbo->bind();
+		//m_fbo->bind();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -300,31 +300,32 @@ public:
 		//m_dfExternalBoxAnnotation->draw();
 		//m_gbuffer->release();
 
-		m_fbo->unbind();
+		//m_fbo->unbind();
 
 		glDisable(GL_DEPTH_TEST);
 		CheckGLError();
 		glDepthMask(GL_FALSE);
 		CheckGLError();
 
-		m_phong->setUniform("color", 0);
-		m_phong->setUniform("normal", 1);
-		m_phong->setUniform("geom", 2);
+		//m_phong->setUniform("color", 0);
+		//m_phong->setUniform("normal", 1);
+		//m_phong->setUniform("geom", 2);
 
-		m_colorTex->bindActive(GL_TEXTURE0);
-		m_normalTex->bindActive(GL_TEXTURE1);
-		m_geometryTex->bindActive(GL_TEXTURE2);
+		//m_colorTex->bindActive(GL_TEXTURE0);
+		//m_normalTex->bindActive(GL_TEXTURE1);
+		//m_geometryTex->bindActive(GL_TEXTURE2);
 
-		m_quad->draw();
+		//m_quad->draw();
 
-		m_colorTex->unbindActive(GL_TEXTURE0);
-		m_normalTex->unbindActive(GL_TEXTURE1);
-		m_geometryTex->unbindActive(GL_TEXTURE2);
+		//m_colorTex->unbindActive(GL_TEXTURE0);
+		//m_normalTex->unbindActive(GL_TEXTURE1);
+		//m_geometryTex->unbindActive(GL_TEXTURE2);
 
 		glEnable(GL_DEPTH_TEST);
 		CheckGLError();
 		glDepthMask(GL_TRUE);
 		CheckGLError();
+
 	}
 
 	virtual void timerEvent(TimerEvent & event) override
