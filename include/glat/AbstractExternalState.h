@@ -20,9 +20,9 @@ namespace glat {
 		glowutils::Camera* getCamera() const;
 		const glm::mat4& getViewProjection() const;
 
-		virtual const glm::vec3& getLL() const = 0;
-		virtual const glm::vec3& getUR() const = 0;
-		virtual const glm::vec3& getLR() const = 0;
+		const glm::vec3& getLL() const;
+		const glm::vec3& getUR() const;
+		const glm::vec3& getLR() const;
 
 		virtual bool isDirty() const;
 
@@ -30,10 +30,11 @@ namespace glat {
 		bool getDrawExternal() const;
 		void setupExternalPrimitives() const;
 		void drawExternalPrimitives() const;
+		virtual void updateInternalPosition() const = 0;
 
 	protected:
 		void setupExternalColor(const glat::Styling* externalColor) const;
-		glow::ref_ptr<glat::InternalState> m_internalState;
+		mutable glow::ref_ptr<glat::InternalState> m_internalState;
 		glowutils::Camera* m_camera;
 		mutable glm::mat4 m_camProjection;
 		mutable glow::ref_ptr<glat::AbstractDrawingPrimitive> m_externalPrimitive;

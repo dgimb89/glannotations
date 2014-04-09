@@ -1,11 +1,12 @@
 #pragma once
 
-#include <glat/AbstractDrawingPrimitive.h>
+#include <glat/AbstractDFPrimitive.h>
 
 namespace glat {
-	class Quad : public glat::AbstractDrawingPrimitive {
+	class TexturedQuad : public glat::AbstractDFPrimitive {
 	public:
-		Quad();
+		TexturedQuad(std::shared_ptr<glow::Texture> texture, bool isDistanceField);
+		
 		virtual void draw();
 		virtual void setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur, glm::mat4 modelViewProjection = glm::mat4());
 	};

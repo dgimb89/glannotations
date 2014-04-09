@@ -36,11 +36,13 @@ set(header
 	${header_path}/AbstractState.h
 	${header_path}/AbstractExternalState.h
 	${header_path}/ExternalBoxState.h
+	${header_path}/ExternalLabelState.h
 	${header_path}/ViewportState.h
 	${header_path}/InternalState.h
 	
 	${header_path}/AbstractDrawingPrimitive.h
 	${header_path}/Quad.h
+	${header_path}/TexturedQuad.h
 	${header_path}/QuadStrip.h
 	${header_path}/Box.h
 )
@@ -78,12 +80,14 @@ set(sources
 	${source_path}/AbstractState.cpp
 	${source_path}/AbstractExternalState.cpp
 	${source_path}/ExternalBoxState.cpp
+	${source_path}/ExternalLabelState.cpp
 	${source_path}/ViewportState.cpp
 	${source_path}/InternalState.cpp
 	
 	${source_path}/AbstractDrawingPrimitive.cpp
-	${source_path}/AbstractDFPrimitive.cpp
 	${source_path}/Quad.cpp
+	${source_path}/AbstractDFPrimitive.cpp
+	${source_path}/TexturedQuad.cpp
 	${source_path}/QuadStrip.cpp
 	${source_path}/Box.cpp
 	

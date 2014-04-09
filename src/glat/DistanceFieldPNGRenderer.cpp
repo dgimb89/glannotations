@@ -3,7 +3,7 @@
 #include <glat/InternalState.h>
 #include <glat/PNGAnnotation.h>
 #include <glat/TextureManager.h>
-#include <glat/Quad.h>
+#include <glat/TexturedQuad.h>
 
 void glat::DistanceFieldPNGRenderer::draw(AbstractAnnotation* annotation) {
 	PNGAnnotation* currentAnnotation = dynamic_cast<PNGAnnotation*>(annotation);
@@ -12,7 +12,7 @@ void glat::DistanceFieldPNGRenderer::draw(AbstractAnnotation* annotation) {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	if (currentAnnotation->isDirty()) {
-		m_drawingPrimitive = new Quad(
+		m_drawingPrimitive = new TexturedQuad(
 			glat::TextureManager::getInstance()->getTexture(currentAnnotation->getFileName()), 
 			currentAnnotation->isDistanceField()
 		);

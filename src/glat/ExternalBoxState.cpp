@@ -45,7 +45,6 @@ glat::ExternalBoxState::ExternalBoxState(glm::vec3 llf, glm::vec3 widthSpan, glm
 	m_externalPrimitive = new glat::Box();
 	setExtends(llf, widthSpan, heightSpan, depthSpan);
 	setDrawExternal(drawBox);
-	m_interpolation = 0.f;
 }
 
 glat::ExternalBoxState::ExternalBoxState(glm::vec3 llf, glm::vec3 widthSpan, glm::vec3 heightSpan, glm::vec3 depthSpan, glowutils::Camera* camera, float interpolation, bool drawBox /*= true*/)
@@ -54,18 +53,6 @@ glat::ExternalBoxState::ExternalBoxState(glm::vec3 llf, glm::vec3 widthSpan, glm
 	setExtends(llf, widthSpan, heightSpan, depthSpan);
 	setDrawExternal(drawBox);
 	m_interpolation = interpolation;
-}
-
-const glm::vec3& glat::ExternalBoxState::getLL() const {
-	return m_internalLL;
-}
-
-const glm::vec3& glat::ExternalBoxState::getUR() const {
-	return m_internalUR;
-}
-
-const glm::vec3& glat::ExternalBoxState::getLR() const {
-	return m_internalLR;
 }
 
 const glm::vec3& glat::ExternalBoxState::getLLF() const {
@@ -118,9 +105,7 @@ inline void glat::ExternalBoxState::updatePositions(glm::vec3 ll, glm::vec3 widt
 		widthSpan = -widthSpan;
 		depthSpan = -depthSpan;
 	}
-
-	m_internalLL = ll - (depthSpan * NearPlacementOffset);
-	m_internalLR = m_internalLL + widthSpan;
-	m_internalUR = m_internalLR + heightSpan;
+	glm::vec3 internalLL = ll - (depthSpan * NearPlacementOffset);
+	m_internalState->setExtends(internalLL, internalLL + widthSpan, internalLL + widthSpan + heightSpan);
 	return;
 }

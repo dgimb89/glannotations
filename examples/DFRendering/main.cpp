@@ -43,6 +43,7 @@
 #include <glat/ViewportState.h>
 #include <glat/InternalState.h>
 #include <glat/ExternalBoxState.h>
+#include <glat/ExternalLabelState.h>
 #include <glat/Styles.h>
 
 using namespace glowwindow;
@@ -118,6 +119,11 @@ public:
 		glow::ref_ptr<glat::AbstractState> state = new glat::ViewportState(glm::vec2(-.75f, -.5f), glm::vec2(0.75f, 0.5f));
 		m_dfExternalBoxAnnotation->addState(state);
 
+		m_dfLabelAnnotation = new glat::FontAnnotation(new glat::ExternalLabelState(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 5.f, 5.f), 5.f, 2.f, &m_camera, true), dfFactory);
+		m_dfLabelAnnotation->setText("Label");
+		m_dfLabelAnnotation->setFontName("calibri.ttf");
+		m_dfLabelAnnotation->setColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
+
 		window.addTimer(0, 0, false);
 	}
 	virtual void finalize(Window &) override
@@ -126,6 +132,7 @@ public:
 		m_icosahedron = nullptr;
 		m_agrid = nullptr;
 		m_dfInternalFontAnnotation = nullptr;
+		m_dfLabelAnnotation = nullptr;
 	}
 
 	virtual void framebufferResizeEvent(ResizeEvent & event) override
@@ -150,6 +157,7 @@ public:
 		m_dfInternalFontAnnotation->draw();
 		m_dfViewportPNGAnnotation->draw();
 		m_dfExternalBoxAnnotation->draw();
+		m_dfLabelAnnotation->draw();
 
 		computeFps(event);
 	}
@@ -379,6 +387,7 @@ protected:
 	glow::ref_ptr<glat::PNGAnnotation> m_dfViewportPNGAnnotation;
 	glow::ref_ptr<glat::FontAnnotation> m_dfInternalFontAnnotation;
 	glow::ref_ptr<glat::FontAnnotation> m_dfExternalBoxAnnotation;
+	glow::ref_ptr<glat::FontAnnotation> m_dfLabelAnnotation;
 
 	glowutils::Camera m_camera;
 	glowutils::WorldInHandNavigation m_nav;

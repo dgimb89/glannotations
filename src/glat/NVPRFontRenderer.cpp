@@ -85,6 +85,10 @@ void glat::NVPRFontRenderer::drawSetupState(const glat::ExternalBoxState& state)
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
+void glat::NVPRFontRenderer::drawSetupState(const glat::ExternalLabelState& state) const {
+	throw std::logic_error("The method or operation is not implemented.");
+}
+
 void glat::NVPRFontRenderer::initializeFont(glat::FontAnnotation* annotation) {
 	GLuint pathSettings = ~0;
 	glPathCommandsNV(pathSettings, 0, NULL, 0, GL_FLOAT, NULL);

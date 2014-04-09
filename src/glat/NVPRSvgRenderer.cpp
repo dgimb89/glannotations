@@ -83,3 +83,9 @@ void glat::NVPRSvgRenderer::drawSetupState(const glat::ExternalBoxState& state) 
 	// TODO
 	throw std::logic_error("The method or operation is not implemented.");
 }
+
+void glat::NVPRSvgRenderer::drawSetupState(const glat::ExternalLabelState& state) const {
+	glEnable(GL_DEPTH_TEST);
+	// TODO
+	throw std::logic_error("The method or operation is not implemented.");
+}

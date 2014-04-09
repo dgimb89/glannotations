@@ -14,6 +14,7 @@ namespace glat {
 	class ViewportState;
 	class InternalState;
 	class ExternalBoxState;
+	class ExternalLabelState;
 
 	typedef std::map<std::string, glow::ref_ptr<glat::Styling> > StylingList;
 
