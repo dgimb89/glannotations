@@ -14,13 +14,10 @@ static const char*	vertShader = R"(
 				
 				out mat4 mvp;
 
-				out vec3 v_normal;
-			
 				void main()
 				{
 					mvp = modelViewProjection;
 					gl_Position = vec4(position, 1.0);
-					v_normal = vec3(0.f, 1.f, 0.f);
 				}
 				)";
 
@@ -48,15 +45,6 @@ static const char* geomShader = R"(
 					vertices[5] = mvp[0] * vec4(gl_in[1].gl_Position.x, gl_in[1].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
 					vertices[6] = mvp[0] * vec4(gl_in[0].gl_Position.x, gl_in[0].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
 					vertices[7] = mvp[0] * vec4(gl_in[0].gl_Position.x, gl_in[1].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
-
-					// normal
-					vec3 vector3 = vertices[1].xyz - vertices[7].xyz;
-					vec3 vector4 = vertices[3].xyz - vertices[7].xyz;
-					vec3 normal2 = normalize(cross(vector3, vector4));
-
-					vec3 vector5 = vertices[6].xyz - vertices[2].xyz;
-					vec3 vector6 = vertices[4].xyz - vertices[2].xyz;
-					vec3 normal3 = normalize(cross(vector5, vector6));
 
 					// lateral surface
 					gl_Position = vertices[0];
@@ -112,17 +100,10 @@ static const char* fragShader = R"(
 				uniform vec4 color;
 
 				layout (location = 0) out vec4 fragColor;
-				layout (location = 1) out vec4 normals;
-				layout (location = 2) out vec4 geometry;
-
-				in vec3 v_normal;
-				in vec3 v_vertex;
 
 				void main()
 				{
 					fragColor = color;
-					normals	= vec4(v_normal, 1.f);
-					geometry = vec4(v_vertex, 1.f);
 				}
 				)";
 
