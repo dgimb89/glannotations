@@ -136,7 +136,9 @@ public:
 		m_icosahedron = nullptr;
 		m_agrid = nullptr;
 		m_dfInternalFontAnnotation = nullptr;
+		m_dfExternalBoxAnnotation = nullptr;
 		m_dfLabelAnnotation = nullptr;
+		m_dfViewportPNGAnnotation = nullptr;
 	}
 
 	virtual void framebufferResizeEvent(ResizeEvent & event) override

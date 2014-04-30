@@ -126,6 +126,8 @@ public:
 		m_icosahedron = nullptr;
 		m_agrid = nullptr;
 		m_nvprViewportFontAnnotation = nullptr;
+		m_nvprInternalFontAnnotation = nullptr;
+		m_nvprViewportSVGAnnotation = nullptr;
 	}
 
 	virtual void framebufferResizeEvent(ResizeEvent & event) override

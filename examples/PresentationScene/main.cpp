@@ -208,7 +208,7 @@ public:
 		m_glatBox->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 		m_glatBox->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
 
-		glow::ref_ptr<glat::AbstractState> state = new glat::ViewportState(glm::vec2(-.4f, -.4f), glm::vec2(0.4f, 0.4f));
+		glat::AbstractState* state = new glat::ViewportState(glm::vec2(-.4f, -.4f), glm::vec2(0.4f, 0.4f));
 		m_glatBox->addState(state);
 
 		m_glowText = new glat::FontAnnotation(new glat::ExternalLabelState(glm::vec3(1.f, 3.f, 3.f), glm::vec3(-3.f, 4.f, 12.f), 3.5f, 2.f, &m_camera, true), dfFactory);
@@ -223,7 +223,7 @@ public:
 		m_hpicgs->setText("CGS");
 		m_hpicgs->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 		m_hpicgs->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
-		glow::ref_ptr<glat::ExternalBoxState> extBox = new glat::ExternalBoxState(glm::vec3(), glm::vec3(1.f,0.f,0.f), glm::vec3(0.f,1.f,0.f), glm::vec3(0.f,0.f,1.f), &m_camera, true);
+		glat::ExternalBoxState* extBox = new glat::ExternalBoxState(glm::vec3(), glm::vec3(1.f,0.f,0.f), glm::vec3(0.f,1.f,0.f), glm::vec3(0.f,0.f,1.f), &m_camera, true);
 		extBox->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 0.f, 1.f)));
 		m_hpicgs->addState(extBox);
 
@@ -235,6 +235,36 @@ public:
 	}
 	virtual void finalize(Window &) override
 	{
+		m_quad = nullptr;
+		m_fbo = nullptr;
+		m_colorTex = nullptr;
+		m_normalTex = nullptr;
+		m_geometryTex = nullptr;
+		m_depth = nullptr;
+		m_gbuffer = nullptr;
+		m_phong = nullptr;
+
+		m_hpilogo = nullptr;
+		m_glatBox = nullptr;
+		m_glowText = nullptr;
+		m_nvprViewportSVGAnnotation = nullptr;
+		m_hpicgs = nullptr;
+		m_building = nullptr;
+
+		m_building1 = nullptr;
+		m_building2 = nullptr;
+		m_building3 = nullptr;
+		m_building4 = nullptr;
+		m_building5 = nullptr;
+		m_building6 = nullptr;
+		m_building7 = nullptr;
+		m_building8 = nullptr;
+		m_building9 = nullptr;
+		m_building10 = nullptr;
+		m_building11 = nullptr;
+		m_building12 = nullptr;
+		m_building13 = nullptr;
+		m_building14 = nullptr;
 	}
 
 	virtual void framebufferResizeEvent(ResizeEvent & event) override
