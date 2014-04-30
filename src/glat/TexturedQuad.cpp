@@ -107,7 +107,8 @@ static const char* fragDFQuadShaderSource = R"(
 				}
 				)";
 
-glat::TexturedQuad::TexturedQuad(std::shared_ptr<glow::Texture> texture, bool isDistanceField) : glat::AbstractDFPrimitive(texture) {
+glat::TexturedQuad::TexturedQuad(std::shared_ptr<glow::Texture> texture, bool isDistanceField) : glat::AbstractTexturedPrimitive(texture) {
+	m_style = 0;
 	if (isDistanceField) {
 		setupShader(fragDFQuadShaderSource, vertQuadShaderSource);
 	}

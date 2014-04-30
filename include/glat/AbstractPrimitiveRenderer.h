@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glat/AbstractDFPrimitive.h>
+#include <glat/AbstractTexturedPrimitive.h>
 #include <glat/AbstractRenderer.h>
 #include <glat/Styling.h>
 
@@ -23,6 +23,6 @@ namespace glat {
 		virtual void draw(glat::AbstractAnnotation* annotation) override;
 
 		// we set the primitive to mutable because there is no outside interference at all - the quad is JUST used for rendering for this specific Renderer
-		mutable glow::ref_ptr<glat::AbstractDFPrimitive> m_drawingPrimitive;
+		mutable glow::ref_ptr<glat::AbstractTexturedPrimitive> m_drawingPrimitive;
 	};
 }

@@ -2,154 +2,176 @@
 #include <glow/VertexAttributeBinding.h>
 
 static const char*	vertQuadStripShaderSource = R"(
-				#version 330
-				uniform mat4 modelViewProjection;
+	#version 330
+	uniform mat4 modelViewProjection;
 
-				layout (location = 0) in vec3 position;
-				layout (location = 1) in vec2 texCoord;
-				layout (location = 2) in vec2 texAdvance;
-				layout (location = 3) in vec3 advanceH;
-				layout (location = 4) in vec3 advanceW;
+	layout (location = 0) in vec3 position;
+	layout (location = 1) in vec2 texCoord;
+	layout (location = 2) in vec2 texAdvance;
+	layout (location = 3) in vec3 advanceH;
+	layout (location = 4) in vec3 advanceW;
 				
-				out QuadData {
-					vec2 texCoord;
-					vec2 texAdvance;
-					vec3 advanceH;
-					vec3 advanceW;
-					mat4 mvp;
-				} quad;
+	out QuadData {
+		vec2 texCoord;
+		vec2 texAdvance;
+		vec3 advanceH;
+		vec3 advanceW;
+		mat4 mvp;
+	} quad;
 
-				void main()
-				{
-					quad.texCoord = texCoord;
-					quad.advanceH = advanceH;
-					quad.advanceW = advanceW;
-					quad.texAdvance = texAdvance;
-					quad.mvp = modelViewProjection;
-					gl_Position = vec4(position, 1.0);
-				}
-				)";
+	void main()
+	{
+		quad.texCoord = texCoord;
+		quad.advanceH = advanceH;
+		quad.advanceW = advanceW;
+		quad.texAdvance = texAdvance;
+		quad.mvp = modelViewProjection;
+		gl_Position = vec4(position, 1.0);
+	}
+	)";
 
 static const char* geomQuadStripShaderSource = R"(
-				#version 330
+	#version 330
 
-				layout(points) in;
-				layout(triangle_strip, max_vertices = 4) out;
+	layout(points) in;
+	layout(triangle_strip, max_vertices = 4) out;
 
-				in QuadData {
-					vec2 texCoord;
-					vec2 texAdvance;
-					vec3 advanceH;
-					vec3 advanceW;
-					mat4 mvp;
-				} quad[];
+	in QuadData {
+		vec2 texCoord;
+		vec2 texAdvance;
+		vec3 advanceH;
+		vec3 advanceW;
+		mat4 mvp;
+	} quad[];
 
-				out VertexData {
-					vec2 texCoord;
-				} vertex;
+	out VertexData {
+		vec2 texCoord;
+	} vertex;
 
-				void setVertexData(in float upper, in float right, out vec4 position, out vec2 texCoord) {
-					position = quad[0].mvp * vec4(gl_in[0].gl_Position.xyz + upper * quad[0].advanceH + right * quad[0].advanceW, 1.0);
-					texCoord = quad[0].texCoord + vec2(right * quad[0].texAdvance.x, upper * quad[0].texAdvance.y);
-				}
+	void setVertexData(in float upper, in float right, out vec4 position, out vec2 texCoord) {
+		position = quad[0].mvp * vec4(gl_in[0].gl_Position.xyz + upper * quad[0].advanceH + right * quad[0].advanceW, 1.0);
+		texCoord = quad[0].texCoord + vec2(right * quad[0].texAdvance.x, upper * quad[0].texAdvance.y);
+	}
 
-				void main() {
-					// ll
-					setVertexData(0.0, 0.0, gl_Position, vertex.texCoord);
-					EmitVertex();
+	void main() {
+		// ll
+		setVertexData(0.0, 0.0, gl_Position, vertex.texCoord);
+		EmitVertex();
 
-					// ul
-					setVertexData(1.0, 0.0, gl_Position, vertex.texCoord);
-					EmitVertex();
+		// ul
+		setVertexData(1.0, 0.0, gl_Position, vertex.texCoord);
+		EmitVertex();
 
-					// lr
-					setVertexData(0.0, 1.0, gl_Position, vertex.texCoord);
-					EmitVertex();
+		// lr
+		setVertexData(0.0, 1.0, gl_Position, vertex.texCoord);
+		EmitVertex();
 
-					// ur
-					setVertexData(1.0, 1.0, gl_Position, vertex.texCoord);
-					EmitVertex();
+		// ur
+		setVertexData(1.0, 1.0, gl_Position, vertex.texCoord);
+		EmitVertex();
 
-					EndPrimitive();
-				}
-				)";
+		EndPrimitive();
+	}
+	)";
 
-				static const char* fragQuadStripShaderSource = R"(
-				#version 330
-				uniform sampler2D source;
-				uniform int style;
-				uniform vec4 color;
-				uniform vec3 outlineColor;
-				uniform float outlineSize;
-				uniform float bumpIntensity;
+static const char* fragDFQuadStripShaderSource = R"(
+	#version 330
+	uniform sampler2D source;
+	uniform int style;
+	uniform vec4 color;
+	uniform vec3 outlineColor;
+	uniform float outlineSize;
+	uniform float bumpIntensity;
 
-				layout (location = 0) out vec4 fragColor;
+	layout (location = 0) out vec4 fragColor;
 
-				in VertexData {
-					vec2 texCoord;
-				} vertex;
+	in VertexData {
+		vec2 texCoord;
+	} vertex;
 
-				vec4 getText() {
-					float distance = texture2D(source, vertex.texCoord);
-					if(distance > 0.5) {
-						discard;
-					} else {
-						return vec4(color.rgb, color.a * (1.0 - smoothstep(0.49, 0.5, distance)));
-					}
-				}
+	vec4 getText() {
+		float distance = texture2D(source, vertex.texCoord);
+		if(distance > 0.5) {
+			discard;
+		} else {
+			return vec4(color.rgb, color.a * (1.0 - smoothstep(0.49, 0.5, distance)));
+		}
+	}
 
-				vec4 getTextWithOutline() {
-					float distance = texture2D(source, vertex.texCoord);
+	vec4 getTextWithOutline() {
+		float distance = texture2D(source, vertex.texCoord);
 
-					// Interpolations Faktor zwischen outline und Welt
-					float d_outline = smoothstep(outlineSize + 0.5, 0.5 , distance);
+		// Interpolations Faktor zwischen outline und Welt
+		float d_outline = smoothstep(outlineSize + 0.5, 0.5 , distance);
 
-					if (distance < 0.5) {
-						return color;
-					}
-					else if (d_outline > 0.0) {
-						return vec4(outlineColor, d_outline);
-					}
-					else {
-						return vec4(0.0, 0.0, 0.0, 0.0);
-					}
-				}
+		if (distance < 0.5) {
+			return color;
+		}
+		else if (d_outline > 0.0) {
+			return vec4(outlineColor, d_outline);
+		}
+		else {
+			return vec4(0.0, 0.0, 0.0, 0.0);
+		}
+	}
 
-				float getBumpMapEffect() {
-					float dx = dFdx(texture2D(source, vertex.texCoord).x) * 45.0 * bumpIntensity;
-					float dy = dFdy(texture2D(source, vertex.texCoord).x) * 50.0 * bumpIntensity;
+	float getBumpMapEffect() {
+		float dx = dFdx(texture2D(source, vertex.texCoord).x) * 45.0 * bumpIntensity;
+		float dy = dFdy(texture2D(source, vertex.texCoord).x) * 50.0 * bumpIntensity;
 
-					vec3 vx = vec3(1.0, 0.0, dx);
-					vec3 vy = vec3(0.0, 1.0, dy);
+		vec3 vx = vec3(1.0, 0.0, dx);
+		vec3 vy = vec3(0.0, 1.0, dy);
 
-					vec3 n = cross(vx, vy);
-					vec3 lightSource = vec3(1.5, 1.5, 3.0);
+		vec3 n = cross(vx, vy);
+		vec3 lightSource = vec3(1.5, 1.5, 3.0);
 
-					n = normalize(n);
-					lightSource = normalize(lightSource);
+		n = normalize(n);
+		lightSource = normalize(lightSource);
 
-					return dot(n, lightSource);
-				}
+		return dot(n, lightSource);
+	}
 
-				void main()
-				{
-					if (style == 1) {
-						fragColor = getTextWithOutline();
-					} else if (style == 2) {
-						vec4 text = getText();
-						fragColor = vec4(text.rgb * getBumpMapEffect(), text.a);
-					} else if (style == 3) {
-						vec4 text = getTextWithOutline();
-						fragColor = vec4(text.rgb * getBumpMapEffect(), text.a);
-					} else {
-						fragColor = getText();
-					}
-				}
+	void main()
+	{
+		if (style == 1) {
+			fragColor = getTextWithOutline();
+		} else if (style == 2) {
+			vec4 text = getText();
+			fragColor = vec4(text.rgb * getBumpMapEffect(), text.a);
+		} else if (style == 3) {
+			vec4 text = getTextWithOutline();
+			fragColor = vec4(text.rgb * getBumpMapEffect(), text.a);
+		} else {
+			fragColor = getText();
+		}
+	}
 
-				)";
+	)";
 
-glat::QuadStrip::QuadStrip(std::shared_ptr<glow::Texture> distanceField) : glat::AbstractDFPrimitive(distanceField) {
-	setupShader(fragQuadStripShaderSource, vertQuadStripShaderSource);
+static const char* fragQuadStripShaderSource = R"(
+	#version 330
+	uniform sampler2D source;
+
+	layout (location = 0) out vec4 fragColor;
+
+	in VertexData {
+		vec2 texCoord;
+	} vertex;
+
+
+	void main() {
+		fragColor = texture2D(source, vertex.texCoord);
+	}
+
+	)";
+
+glat::QuadStrip::QuadStrip(std::shared_ptr<glow::Texture> texture, bool isDistanceField /* = true */) : glat::AbstractTexturedPrimitive(texture) {
+	if (isDistanceField) {
+		setupShader(fragDFQuadStripShaderSource, vertQuadStripShaderSource);
+	}
+	else {
+		setupShader(fragQuadStripShaderSource, vertQuadStripShaderSource);
+	}
 	// initial position
 	m_ll = m_lr = m_ur = glm::vec3(0.0f, 0.0f, 0.0f);
 	m_vertexCount = 0;

@@ -206,7 +206,7 @@ public:
 		m_glatBox->setFontName("calibri.ttf");
 		m_glatBox->setText("GLAT");
 		m_glatBox->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
-		m_glatBox->getState()->setStyling(new glat::Styles::Outline(2.f, glm::vec3(0.f, 0.f, 0.f)));
+		m_glatBox->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
 
 		glow::ref_ptr<glat::AbstractState> state = new glat::ViewportState(glm::vec2(-.4f, -.4f), glm::vec2(0.4f, 0.4f));
 		m_glatBox->addState(state);
@@ -215,6 +215,7 @@ public:
 		m_glowText->setText("GLOW");
 		m_glowText->setFontName("calibri.ttf");
 		m_glowText->setColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
+		m_glowText->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(1.f, 1.f, 1.f)));
 		m_glowText->getState()->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 0.f, 1.f)));
 
 		m_hpicgs = new glat::FontAnnotation(new glat::InternalState(glm::vec3(2.f, -1.f, -1.01f), glm::vec3(2.f, 3.f, -1.01f), glm::vec3(4.f, 3.f, -1.01f), &m_camera), dfFactory);
@@ -222,8 +223,12 @@ public:
 		m_hpicgs->setText("CGS");
 		m_hpicgs->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 		m_hpicgs->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
+		glow::ref_ptr<glat::ExternalBoxState> extBox = new glat::ExternalBoxState(glm::vec3(), glm::vec3(1.f,0.f,0.f), glm::vec3(0.f,1.f,0.f), glm::vec3(0.f,0.f,1.f), &m_camera, true);
+		extBox->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 0.f, 1.f)));
+		m_hpicgs->addState(extBox);
 
 		m_hpilogo = new glat::PNGAnnotation(new glat::InternalState(glm::vec3(-2.f, -4.f, 2.f), glm::vec3(-2.f, -4.f, 7.f), glm::vec3(-2.f, 1.0f, 7.f), &m_camera), "hpi.png", dfFactory);
+		//m_hpilogo->setAsDistanceField(glm::vec4(0.1f, 0.1f, 0.1f, 1.f));
 		m_hpilogo->addState(new glat::ViewportState(glm::vec2(-.25f, -.5f), glm::vec2(0.25f, 0.5f)));
 
 		window.addTimer(0, 0, false);
@@ -338,7 +343,7 @@ public:
 			break;
 		case GLFW_KEY_SPACE:
 			m_camera.setCenter(vec3(0.f, 0.f, 5.f));
-			m_camera.setEye(vec3(-12.f, 5.f, -10.0f));
+			m_camera.setEye(vec3(-17.f, 12.f, -15.0f));
 			m_camera.setUp(vec3(0, 1, 0));
 			break;
 		case GLFW_KEY_N:
@@ -354,6 +359,10 @@ public:
 			m_interpolation = max(m_interpolation, 0.f);
 			m_hpilogo->setInterpolatedState(0, 1, m_interpolation);
 			break;
+		case GLFW_KEY_B:
+			m_interpolation2 += 0.01;
+			m_interpolation2 = min(m_interpolation2, 1.f);
+			m_hpicgs->setInterpolatedState(0, 1, m_interpolation2);
 		case GLFW_KEY_F11:
 			event.window()->toggleMode();
 			break;
@@ -519,7 +528,6 @@ protected:
 	glow::ref_ptr<glat::Building> m_building8;
 	glow::ref_ptr<glat::Building> m_building9;
 	glow::ref_ptr<glat::Building> m_building10;
-	glow::ref_ptr<glat::Quad> m_quadBase;
 	glow::ref_ptr<glat::Building> m_building11;
 	glow::ref_ptr<glat::Building> m_building12;
 	glow::ref_ptr<glat::Building> m_building13;
@@ -544,6 +552,7 @@ protected:
 	float m_interpolation;
 
 	glowutils::AxisAlignedBoundingBox m_aabb;
+	float m_interpolation2;
 };
 
 

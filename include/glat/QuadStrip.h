@@ -1,13 +1,13 @@
 #pragma once
 
-#include <glat/AbstractDFPrimitive.h>
+#include <glat/AbstractTexturedPrimitive.h>
 
 namespace glat {
-	class QuadStrip : public glat::AbstractDFPrimitive {
+	class QuadStrip : public glat::AbstractTexturedPrimitive {
 	public:
 		typedef glm::vec2 texVec2_t;
 		typedef std::pair<texVec2_t, texVec2_t> textureRange_t;
-		QuadStrip(std::shared_ptr<glow::Texture> distanceField);
+		QuadStrip(std::shared_ptr<glow::Texture> texture, bool isDistanceField = true);
 
 		void addQuad(texVec2_t texture_ll, texVec2_t texture_advance);
 		void clearQuads();
