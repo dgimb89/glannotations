@@ -42,6 +42,7 @@ set(header
 	
 	${header_path}/AbstractDrawingPrimitive.h
 	${header_path}/Quad.h
+	${header_path}/Prismoid.h
 	${header_path}/AbstractTexturedPrimitive.h
 	${header_path}/QuadStrip.h
 	${header_path}/Box.h
@@ -86,6 +87,7 @@ set(sources
 	
 	${source_path}/AbstractDrawingPrimitive.cpp
 	${source_path}/Quad.cpp
+	${source_path}/Prismoid.cpp
 	${source_path}/AbstractTexturedPrimitive.cpp
 	${source_path}/QuadStrip.cpp
 	${source_path}/Box.cpp
