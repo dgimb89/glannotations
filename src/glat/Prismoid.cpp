@@ -5,6 +5,7 @@ static const char*	vertPrismoidShaderSource = R"(
 				#version 330
 
 				uniform mat4 modelViewProjection;
+				uniform mat4 lookAt;
 
 				layout (location = 0) in vec3 position;
 
@@ -27,7 +28,7 @@ static const char* geomPrismoidShaderSource = R"(
 				in PrismoidData {
 					mat4 mvp;
 				} prism[];
-
+			
 				vec4 prismoid[8]; // Scratch space for the eight corners of the prismoid
 
 				void emit(int a, int b, int c, int d) {
@@ -43,6 +44,7 @@ static const char* geomPrismoidShaderSource = R"(
 					vec3 p0, p1, p2, p3;
 					p0 = gl_in[0].gl_Position.xyz; p1 = gl_in[1].gl_Position.xyz;
 					p2 = gl_in[2].gl_Position.xyz; p3 = gl_in[3].gl_Position.xyz;
+
 					vec3 n0 = normalize(p1 - p0);
 					vec3 n1 = normalize(p2 - p1);
 					vec3 n2 = normalize(p3 - p2);
@@ -53,18 +55,19 @@ static const char* geomPrismoidShaderSource = R"(
 					vec3 i, j, k; float r = 0.05;
 
 					// Compute face 1 of 2:
-					j = u; i = vec3(0,1,0); k = cross(i, j); i *= r; k *= r;
-					prismoid[0] = prism[0].mvp * vec4(p1 + i + k, 1);
-					prismoid[1] = prism[0].mvp * vec4(p1 + i - k, 1);
-					prismoid[2] = prism[0].mvp * vec4(p1 - i - k, 1);
-					prismoid[3] = prism[0].mvp * vec4(p1 - i + k, 1);
+					// normals i need to be adjusted (TODO)
+					j = u; i = vec3(0.0, 0.0, 1.0); k = cross(i, j); i *= r; k *= r;
+					prismoid[0] = prism[0].mvp * vec4(p1 + i + k, 1.0);
+					prismoid[1] = prism[0].mvp * vec4(p1 + i - k, 1.0);
+					prismoid[2] = prism[0].mvp * vec4(p1 - i - k, 1.0);
+					prismoid[3] = prism[0].mvp * vec4(p1 - i + k, 1.0);
 
 					// Compute face 2 of 2:
-					j = v; i = vec3(0,1,0); k = cross(i, j); i *= r; k *= r;
-					prismoid[4] = prism[0].mvp * vec4(p2 + i + k, 1);
-					prismoid[5] = prism[0].mvp * vec4(p2 + i - k, 1);
-					prismoid[6] = prism[0].mvp * vec4(p2 - i - k, 1);
-					prismoid[7] = prism[0].mvp * vec4(p2 - i + k, 1);
+					j = v; i = vec3(0.0, 0.0, 1.0); k = cross(i, j); i *= r; k *= r;
+					prismoid[4] = prism[0].mvp * vec4(p2 + i + k, 1.0);
+					prismoid[5] = prism[0].mvp * vec4(p2 + i - k, 1.0);
+					prismoid[6] = prism[0].mvp * vec4(p2 - i - k, 1.0);
+					prismoid[7] = prism[0].mvp * vec4(p2 - i + k, 1.0);
 
 					// Emit the six faces of the prismoid:
 					emit(0, 1, 3, 2); emit(5, 4, 6, 7);

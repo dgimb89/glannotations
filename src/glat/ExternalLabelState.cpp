@@ -1,6 +1,7 @@
 #include <glat/ExternalLabelState.h>
 #include <glat/AbstractRenderer.h>
 #include <glat/Prismoid.h>
+#include <glat/Utility.h>
 
 bool glat::ExternalLabelState::isValid() {
 	return m_width > 0.f && m_height > 0.f;
@@ -30,7 +31,10 @@ void glat::ExternalLabelState::updateInternalPosition() const {
 	glm::vec3 heightSpan = glm::normalize(m_camera->up()) * m_height;
 	glm::vec3 widthSpan = glm::cross(heightSpan, glm::normalize(m_camera->eye() - m_camera->center())) * 0.5f * m_width;
 	m_internalState->setExtends(m_center - widthSpan, m_center + widthSpan, m_center + widthSpan + heightSpan);
-	reinterpret_cast<glat::Prismoid*>(m_externalPrimitive.get())->setPosition(std::vector<glm::vec3>({ m_reference, m_center }), getViewProjection());
+
+	std::vector<glm::vec3> linePoints({ m_reference });
+	glat::Utility::computeNextNearestPoint(2, m_reference, std::vector<glm::vec3>({ m_internalState->getLL(), m_internalState->getLR() }), linePoints);
+	reinterpret_cast<glat::Prismoid*>(m_externalPrimitive.get())->setPosition(linePoints, getViewProjection());
 }
 
 glat::ExternalLabelState::ExternalLabelState(glm::vec3 reference, glm::vec3 center, float width, float height, glowutils::Camera* camera, bool drawBox /*= true*/) : glat::AbstractExternalState(camera) {

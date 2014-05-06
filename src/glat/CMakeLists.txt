@@ -46,6 +46,8 @@ set(header
 	${header_path}/AbstractTexturedPrimitive.h
 	${header_path}/QuadStrip.h
 	${header_path}/Box.h
+
+	${header_path}/Utility.h
 )
 
 set(sources
@@ -92,6 +94,7 @@ set(sources
 	${source_path}/QuadStrip.cpp
 	${source_path}/Box.cpp
 	
+	${source_path}/Utility.cpp
 	${source_path}/ShaderSources.hpp
 )
 

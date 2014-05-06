@@ -18,7 +18,7 @@ namespace glat {
 		virtual void draw() = 0;
 		virtual void setColor(glm::vec4 color);
 
-		void setModelViewProjection(glm::mat4 modelViewProjection = glm::mat4());
+		virtual void setModelViewProjection(glm::mat4 modelViewProjection = glm::mat4());
 		void setupShader(const char* fragShader, const char* vertShader);
 
 	protected:
