@@ -56,14 +56,14 @@ static const char* geomPrismoidShaderSource = R"(
 
 					// Compute face 1 of 2:
 					// normals i need to be adjusted (TODO)
-					j = u; i = vec3(0.0, 0.0, 1.0); k = cross(i, j); i *= r; k *= r;
+					j = u; i = normalize(vec3(1.0, 0.0, 1.0)); k = cross(i, j); i *= r; k *= r;
 					prismoid[0] = prism[0].mvp * vec4(p1 + i + k, 1.0);
 					prismoid[1] = prism[0].mvp * vec4(p1 + i - k, 1.0);
 					prismoid[2] = prism[0].mvp * vec4(p1 - i - k, 1.0);
 					prismoid[3] = prism[0].mvp * vec4(p1 - i + k, 1.0);
 
 					// Compute face 2 of 2:
-					j = v; i = vec3(0.0, 0.0, 1.0); k = cross(i, j); i *= r; k *= r;
+					j = v; i = vec3(1.0, 0.0, 0.0); k = cross(i, j); i *= r; k *= r;
 					prismoid[4] = prism[0].mvp * vec4(p2 + i + k, 1.0);
 					prismoid[5] = prism[0].mvp * vec4(p2 + i - k, 1.0);
 					prismoid[6] = prism[0].mvp * vec4(p2 - i - k, 1.0);
