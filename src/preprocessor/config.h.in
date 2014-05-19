@@ -1,2 +1,0 @@
-#cmakedefine OPTION_USE_NVPR
-#define RESOURCES_DIR "${RESOURCES_DIR}/"

@@ -1,2 +1,0 @@
-add_subdirectory(glat)
-add_subdirectory(preprocessor)

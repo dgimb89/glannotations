@@ -1,79 +1,149 @@
-cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
 
-# PROJECT DESCRIPTION
-set(META_PROJECT_NAME        "glat")
-set(META_VERSION_MAJOR       "0")
+# Test for minimum required CMake version 2.8.12
+cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
+
+#
+# Project description and (meta) information
+#
+set(META_PROJECT_NAME        "GLAT")
+set(META_PROJECT_DESCRIPTION "OpenGL Annotations Toolkit")
+set(META_VERSION_MAJOR       "1")
 set(META_VERSION_MINOR       "0")
-set(META_VERSION_PATCH       "1")
+set(META_VERSION_PATCH       "0")
 set(META_VERSION             "${META_VERSION_MAJOR}.${META_VERSION_MINOR}.${META_VERSION_PATCH}")
-set(META_AUTHOR_DOMAIN       "https://github.com/dgimb89/glat")
+set(META_AUTHOR_ORGANIZATION "hpicgs group")
+set(META_AUTHOR_DOMAIN       "https://github.com/hpicgs/glat/")
+set(META_AUTHOR_MAINTAINER   "daniel.gimbatschki@student.hpi.uni-potsdam.de")
 
-# Project
-project(${META_PROJECT_NAME})
+# Set project name and type (C/C++)
+project(${META_PROJECT_NAME} C CXX)
 
+#
+# Configuration options
+#
+option(OPTION_LIMIT_CONFIGS "Generate limited configs (Release; Debug)." ON)
+option(OPTION_PORTABLE_INSTALL "Install into a self-contained directory." OFF)
+option(OPTION_BUILD_SHARED_LIBS "Build shared libraries (affects CMake variable BUILD_SHARED_LIBS)." ON)
+option(OPTION_BUILD_TESTS "Build tests (if gmock and gtest are found)." ON)
+option(OPTION_BUILD_EXAMPLES "Build examples." ON)
+option(OPTION_USE_NVPR "Allow Nvidia Path Rendering usage." ON)
+option(OPTION_BUILD_GLAT_PREPROCESSOR "Build glat preprocessor (required for preprocessing example)" ON)
+set(BUILD_SHARED_LIBS $OPTION_BUILD_SHARED_LIBS)
 
-# OPTIONS
-option(OPTION_USE_NVPR "Use NV Path Rendering" ON)
-option(OPTION_BUILD_EXAMPLES "Build examples" OFF)
-option(OPTION_BUILD_STATIC "Build static" OFF)
-
-
-# CMAKE CONFIGURATION
-set(GLAT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-message(STATUS "${GLAT_DIR}")
-
-# Include cmake modules from ./cmake
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${GLAT_DIR}/cmake/Modules/)
+#
+# CMake configuration:
+# 
+# Append the path to the custom cmake modules from this project to the CMAKE_MODULE_PATH.
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # Set output directories
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-set(RESOURCES_DIR "${CMAKE_BINARY_DIR}/resources/" CACHE FILEPATH "GLAT")
 
-
-# Generate folders
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-set(CMAKE_DEBUG_POSTFIX "d")
-
-# Include custom cmake functions
-include(cmake/common.cmake)
-
-
-# GLAT DEPENDENCIES
-
-# Find externals
-find_package(OpenGL REQUIRED)
-find_package(GLOW REQUIRED)
-find_package(Libpng REQUIRED)
-find_package(GLEW REQUIRED)
-find_package(GLM REQUIRED)
-find_package(Freetype REQUIRED)
-
-SET(RAPIDJSON_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/3rdparty/rapidjson/include)
-
-# Include directories
-include_directories(
-	${GLEW_INCLUDE_DIR}
-    ${GLAT_DIR}/include
-    ${OPENGL_INCLUDE_DIR}
-    ${GLM_INCLUDE_DIR}
-    ${GLOW_INCLUDE_DIR}
-    ${LIBPNG_INCLUDE_DIR})
-
-# LIBRARIES
-add_subdirectory(src)
-
-# RESOURCES
-file(COPY "resources" DESTINATION .)
-
-# EXAMPLES
-if(OPTION_BUILD_EXAMPLES)
-	
-	find_package(GLFW REQUIRED glfw3)
-	SET(GLAT_EXAMPLES_FOLDER ${CMAKE_CURRENT_BINARY_DIR}/examples/)
-    add_subdirectory(examples)
+# Set configuration types
+if(OPTION_LIMIT_CONFIGS)
+    set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Limited Configs" FORCE)
+endif()
+set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build, options are: ${CMAKE_CONFIGURATION_TYPES}")
+# Reorder CMAKE_CONFIGURATION_TYPES list so that the chosen CMAKE_BUILD_TYPE is the first element.
+if (NOT "${CMAKE_BUILD_TYPE}" STREQUAL "")
+    list(REMOVE_ITEM CMAKE_CONFIGURATION_TYPES "${CMAKE_BUILD_TYPE}")
+    list(INSERT CMAKE_CONFIGURATION_TYPES 0 "${CMAKE_BUILD_TYPE}")
 endif()
 
-# DEPLOYMENT
-install(DIRECTORY ${GLAT_DIR}/include/ DESTINATION include/)
+# Generate folders for IDE targets (e.g., VisualStudio solutions)
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
+# Put projects in root folder by default
+set(IDE_FOLDER "")  
+
+# Include custom cmake functions (works only after the CMAKE_MODULE_PATH was adapted as done in the line above)
+include(cmake/Custom.cmake)
+include(cmake/GitRevision.cmake)
+
+#
+# Platform and architecture setup
+#
+# Architecture (32/64 bit)
+set(X64 OFF)
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    set(X64 ON)
+endif()
+
+# Setup platform specifics (compile flags, etc., ...)
+if(MSVC)
+    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformWindowsMSVC.cmake)
+elseif(WIN32 AND CMAKE_COMPILER_IS_GNUCXX)
+    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformWindowsGCC.cmake)
+elseif(APPLE)
+    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformMacOS.cmake)
+elseif(UNIX)
+    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformLinuxGCC.cmake)
+else()
+    message(WARNING "Unsupported platform/compiler combination")
+endif()
+
+#
+# Deployment/installation setup
+#
+set(project ${META_PROJECT_NAME})
+if(WIN32)
+    set(INSTALL_ROOT ".")                      # C:\Programme\<project>
+    set(INSTALL_DATA "bin")                    # C:\Programme\<project>
+    set(INSTALL_BIN "bin")                    # C:\Programme\<project>
+    set(INSTALL_SHARED ".")                      # C:\Programme\<project>
+    set(INSTALL_LIB "lib")                    # C:\Programme\<project>\lib
+    set(INSTALL_INCLUDE "include")                # C:\Programme\<project>\include
+    set(INSTALL_DOC "doc")                    # C:\Programme\<project>\doc
+    set(INSTALL_SHORTCUTS ".")                      # Not available under Windows
+    set(INSTALL_ICONS ".")                      # Not available under Windows
+    set(INSTALL_INIT ".")                      # Not available under Windows
+
+else()
+    set(INSTALL_ROOT "share/${project}")       # /usr/[local]/share/<project>
+    set(INSTALL_DATA "share/${project}")       # /usr/[local]/share/<project>
+    set(INSTALL_BIN "bin")                    # /usr/[local]/bin
+    set(INSTALL_SHARED "lib")                    # /usr/[local]/lib
+    set(INSTALL_LIB "lib")                    # /usr/[local]/lib
+    set(INSTALL_INCLUDE "include")                # /usr/[local]/include
+    set(INSTALL_DOC "share/doc/${project}")   # /usr/[local]/share/doc/<project>
+    set(INSTALL_SHORTCUTS "share/applications")     # /usr/[local]/share/applications
+    set(INSTALL_ICONS "share/pixmaps")          # /usr/[local]/share/pixmaps
+    set(INSTALL_INIT "/etc/init")              # /etc/init (upstart init scripts)
+
+    # Adjust target paths for portable installs
+    if(OPTION_PORTABLE_INSTALL)
+        # Put binaries in root directory and keep data directory name
+        set(INSTALL_ROOT ".")           # /<INSTALL_PREFIX>
+        set(INSTALL_DATA ".")           # /<INSTALL_PREFIX>
+        set(INSTALL_BIN ".")           # /<INSTALL_PREFIX>
+        # We have to change the RPATH of binaries to achieve a usable local install.
+        # [TODO] For binaries, "$ORIGIN/lib" is right, so that libraries are found in ./lib.
+        #        However, I have not yet tested what happens when libraries use other libraries.
+        #        In that case, they might need the rpath $ORIGIN instead ...
+        set(CMAKE_SKIP_BUILD_RPATH FALSE)         # Use automatic rpath for build
+        set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)         # Use specific rpath for INSTALL
+        set(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)         # NO automatic rpath for INSTALL
+        set(CMAKE_INSTALL_RPATH "$ORIGIN/lib") # Libraries are relative to binary
+    endif()
+endif()
+
+# Install the project meta files
+install(FILES glat-config.cmake DESTINATION ${INSTALL_ROOT})
+install(FILES AUTHORS DESTINATION ${INSTALL_ROOT})
+install(FILES LICENSE DESTINATION ${INSTALL_ROOT})
+
+# Install the data directory including the data files it contains.
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/data DESTINATION ${INSTALL_DATA})
+
+# Add a revision file containing the git-head tag for cpack and install. The function
+# "create_revision_file (...)" is defined in cmake/GitRevision.cmake
+create_revision_file(${CMAKE_BINARY_DIR}/revision ${INSTALL_ROOT})
+
+#
+# Include subdirectories that contain project sources, documentation files, and packaging scripts
+#
+add_subdirectory(source)
+add_subdirectory(docs)
+add_subdirectory(packages)

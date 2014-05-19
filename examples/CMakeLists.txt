@@ -1,9 +1,0 @@
-include_directories(
-    ${GLM_INCLUDE_DIR}
-	${GLEW_INCLUDE_DIR}
-	${GLFW_INCLUDE_DIR}
-)
-add_subdirectory(DFRendering)
-add_subdirectory(NVPRendering)
-add_subdirectory(PresentationScene)
-add_subdirectory(DFPreprocessing)
