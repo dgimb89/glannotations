@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <random>
 #include <cassert>
-#include <ctime>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -19,8 +18,7 @@
 #include <glow/VertexArrayObject.h>
 #include <glow/debugmessageoutput.h>
 
-#include <glowutils/global.h>
-#include <glowutils/AutoTimer.h>
+#include <glowutils/Timer.h>
 #include <glowutils/AxisAlignedBoundingBox.h>
 #include <glowutils/Icosahedron.h>
 #include <glowutils/Camera.h>
@@ -29,7 +27,9 @@
 #include <glowutils/WorldInHandNavigation.h>
 #include <glowutils/FlightNavigation.h>
 #include <glowutils/File.h>
-#include <glowutils/Timer.h>
+#include <glowutils/File.h>
+#include <glowutils/glowutils.h>
+#include <glowutils/StringTemplate.h>
 
 #include <glowwindow/ContextFormat.h>
 #include <glowwindow/Context.h>
@@ -37,18 +37,22 @@
 #include <glowwindow/WindowEventHandler.h>
 #include <glowwindow/events.h>
 
+#include <ExampleWindowEventHandler.h>
+
 #include <glat/FontAnnotation.h>
-#include <glat/SVGAnnotation.h>
 #include <glat/PNGAnnotation.h>
+#include <glat/SVGAnnotation.h>
 #include <glat/ViewportState.h>
 #include <glat/InternalState.h>
+#include <glat/ExternalBoxState.h>
+#include <glat/ExternalLabelState.h>
 #include <glat/Styles.h>
 
 using namespace glowwindow;
 using namespace glm;
 
 
-class EventHandler : public WindowEventHandler, glowutils::AbstractCoordinateProvider
+class EventHandler : public ExampleWindowEventHandler, glowutils::AbstractCoordinateProvider
 {
 public:
 	EventHandler()
@@ -65,11 +69,6 @@ public:
 		m_flightNav.setCamera(&m_camera);
 
 		m_timer.start();
-		m_previousTime = 0.0;
-		m_swapElapsedTime = 0.0;
-		m_swapCount = 0;
-
-		m_interpolation = 0.f;
 	}
 
 	virtual ~EventHandler()
@@ -85,18 +84,27 @@ public:
 		glow::debugmessageoutput::enable();
 
 		glClearColor(1.0f, 1.0f, 1.0f, 0.f);
-
+		CheckGLError();
 
 		m_sphere = new glow::Program();
+		glowutils::StringTemplate* vertexShaderSource = new glowutils::StringTemplate(new glowutils::File("data/adaptive-grid/sphere.vert"));
+		glowutils::StringTemplate* fragmentShaderSource = new glowutils::StringTemplate(new glowutils::File("data/adaptive-grid/sphere.frag"));
+
+#ifdef MAC_OS
+		vertexShaderSource->replace("#version 140", "#version 150");
+		fragmentShaderSource->replace("#version 140", "#version 150");
+#endif
+
 		m_sphere->attach(
-			glowutils::createShaderFromFile(GL_VERTEX_SHADER, "data/adaptive-grid/sphere.vert")
-			, glowutils::createShaderFromFile(GL_FRAGMENT_SHADER, "data/adaptive-grid/sphere.frag"));
+			new glow::Shader(GL_VERTEX_SHADER, vertexShaderSource)
+			, new glow::Shader(GL_FRAGMENT_SHADER, fragmentShaderSource));
+
 
 		m_icosahedron = new glowutils::Icosahedron(2);
 		m_agrid = new glowutils::AdaptiveGrid(16U);
 
 		m_camera.setZNear(0.1f);
-		m_camera.setZFar(10240.f);
+		m_camera.setZFar(1024.f);
 
 		m_agrid->setCamera(&m_camera);
 
@@ -109,7 +117,7 @@ public:
 
 		m_nvprInternalFontAnnotation = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-3.f, -2.f, -5.f), glm::vec3(3.f, -2.f, -5.f), glm::vec3(3.f, 2.0f, -5.f), &m_camera));
 		m_nvprInternalFontAnnotation->setFontName("calibri.ttf");
-		m_nvprInternalFontAnnotation->setText("NVPR");
+		m_nvprInternalFontAnnotation->setText("Nvidia PR");
 		m_nvprInternalFontAnnotation->setColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
 
 		m_nvprViewportSVGAnnotation = new glat::SVGAnnotation(new glat::ViewportState(glm::vec2(-1.f, -1.f), glm::vec2(-0.3f, 0.f)));
@@ -133,12 +141,15 @@ public:
 	virtual void framebufferResizeEvent(ResizeEvent & event) override
 	{
 		glViewport(0, 0, event.width(), event.height());
+		CheckGLError();
+
 		m_camera.setViewport(event.width(), event.height());
 	}
 
-	virtual void paintEvent(PaintEvent & event) override
+	virtual void paintEvent(PaintEvent &) override
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		CheckGLError();
 
 		m_agrid->update();
 		m_sphere->setUniform("transform", m_camera.viewProjection());
@@ -153,17 +164,17 @@ public:
 		sprintf(clockBuffer, "%d", clock() / CLOCKS_PER_SEC);
 		m_nvprViewportFontAnnotation->setText(clockBuffer);
 
+		m_nvprInternalFontAnnotation->draw(); 
 		m_nvprViewportFontAnnotation->draw();
 		m_nvprViewportSVGAnnotation->draw();
-		m_nvprInternalFontAnnotation->draw();
+		CheckGLError();
 
-		computeFps(event);
 	}
 
 	virtual void timerEvent(TimerEvent & event) override
 	{
-		float delta = static_cast<float>((m_timer.elapsed() - m_previousTime) / 1000.0 / 1000.0 / 1000.0);
-		m_previousTime = m_timer.elapsed();
+		float delta = static_cast<float>(static_cast<float>(m_timer.elapsed().count()) / 1000.0 / 1000.0 / 1000.0);
+		m_timer.reset();
 		m_flightNav.move(delta);
 
 		event.window()->repaint();
@@ -186,17 +197,6 @@ public:
 			m_camera.setCenter(vec3());
 			m_camera.setEye(vec3(0.f, 1.f, 4.0f));
 			m_camera.setUp(vec3(0, 1, 0));
-			break;
-		case GLFW_KEY_F11:
-			event.window()->toggleMode();
-			break;
-		case GLFW_KEY_N:
-			m_interpolation += 0.01;
-			m_interpolation = min(m_interpolation, 1.f);
-			break;
-		case GLFW_KEY_M:
-			m_interpolation -= 0.01;
-			m_interpolation = max(m_interpolation, 0.f);
 			break;
 		}
 
@@ -285,6 +285,9 @@ public:
 		case glowutils::WorldInHandNavigation::RotateInteraction:
 			m_nav.rotateProcess(event.pos());
 			event.accept();
+			break;
+		case glowutils::WorldInHandNavigation::NoInteraction:
+			break;
 		}
 	}
 	virtual void mouseReleaseEvent(MouseEvent & event) override
@@ -306,7 +309,7 @@ public:
 		}
 	}
 
-	void scrollEvent(ScrollEvent & event) override
+	virtual void scrollEvent(ScrollEvent & event) override
 	{
 		if (m_flightEnabled)
 			return;
@@ -318,17 +321,17 @@ public:
 		event.accept();
 	}
 
-	virtual float depthAt(const ivec2 & windowCoordinates) override
+	virtual float depthAt(const ivec2 & windowCoordinates) const override
 	{
 		return AbstractCoordinateProvider::depthAt(m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
 	}
 
-	virtual vec3 objAt(const ivec2 & windowCoordinates) override
+	virtual vec3 objAt(const ivec2 & windowCoordinates) const override
 	{
 		return unproject(m_camera, static_cast<GLenum>(GL_DEPTH_COMPONENT), windowCoordinates);
 	}
 
-	virtual vec3 objAt(const ivec2 & windowCoordinates, const float depth) override
+	virtual vec3 objAt(const ivec2 & windowCoordinates, const float depth) const override
 	{
 		return unproject(m_camera, depth, windowCoordinates);
 	}
@@ -336,40 +339,9 @@ public:
 	virtual glm::vec3 objAt(
 		const ivec2 & windowCoordinates
 		, const float depth
-		, const mat4 & viewProjectionInverted) override
+		, const mat4 & viewProjectionInverted) const override
 	{
 		return unproject(m_camera, viewProjectionInverted, depth, windowCoordinates);
-	}
-
-	bool startsWith(const std::string & str, const std::string str2)
-	{
-		return str.compare(0, str2.length(), str2) == 0;
-	}
-
-	void computeFps(glowwindow::PaintEvent & event)
-	{
-		m_timer.update();
-
-		++m_swapCount;
-
-		if (m_timer.elapsed() - m_swapElapsedTime >= 1e+9)
-		{
-			const float fps = 1e+9f * static_cast<float>(static_cast<long double>(m_swapCount) / (m_timer.elapsed() - m_swapElapsedTime));
-
-			std::string title = event.window()->title();
-			if (!startsWith(title, m_baseTitle) || m_baseTitle.length() == 0)
-			{
-				m_baseTitle = title;
-			}
-
-			std::stringstream stream;
-			stream << m_baseTitle << " (" << std::fixed << std::setprecision(2) << fps << " fps)";
-
-			event.window()->setTitle(stream.str());
-
-			m_swapElapsedTime = m_timer.elapsed();
-			m_swapCount = 0;
-		}
 	}
 
 protected:
@@ -378,9 +350,12 @@ protected:
 
 	glow::ref_ptr<glowutils::Icosahedron> m_icosahedron;
 	glow::ref_ptr<glowutils::AdaptiveGrid> m_agrid;
+
 	glow::ref_ptr<glat::FontAnnotation> m_nvprViewportFontAnnotation;
 	glow::ref_ptr<glat::SVGAnnotation> m_nvprViewportSVGAnnotation;
 	glow::ref_ptr<glat::FontAnnotation> m_nvprInternalFontAnnotation;
+
+	long double m_previousTime;
 
 	glowutils::Camera m_camera;
 	glowutils::WorldInHandNavigation m_nav;
@@ -388,12 +363,6 @@ protected:
 	glm::ivec2 m_lastMousePos;
 	bool m_flightEnabled;
 	glowutils::Timer m_timer;
-	long double m_previousTime;
-	float m_interpolation;
-
-	long double m_swapElapsedTime;
-	unsigned int m_swapCount;
-	std::string m_baseTitle;
 
 	glowutils::AxisAlignedBoundingBox m_aabb;
 };
@@ -401,21 +370,46 @@ protected:
 
 /** This example shows ... .
 */
-int main(int argc, char* argv[])
+int main(int /*argc*/, char* /*argv*/[])
 {
+	glow::info() << "Usage:";
+	glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
+	glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+	glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+	glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+	glow::info() << "\t" << "Space" << "\t\t" << "Reset camera";
+	glow::info() << "\t" << "1" << "\t" << "Toggle flight mode / world in hand navigation";
+
+	glow::info();
+	glow::info() << "\t" << "During world in hand navigation";
+	glow::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
+	glow::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
+	glow::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
+
+	glow::info();
+	glow::info() << "\t" << "During flight mode";
+	glow::info() << "\t" << "Mouse Movement" << "\t" << "Look around";
+	glow::info() << "\t" << "W" << "\t\t" << "Move forward";
+	glow::info() << "\t" << "UP" << "\t\t" << "Move forward";
+	glow::info() << "\t" << "A" << "\t\t" << "Move left";
+	glow::info() << "\t" << "LEFT" << "\t\t" << "Move left";
+	glow::info() << "\t" << "S" << "\t\t" << "Move backward";
+	glow::info() << "\t" << "DOWN" << "\t\t" << "Move backward";
+	glow::info() << "\t" << "D" << "\t\t" << "Move right";
+	glow::info() << "\t" << "RIGHT" << "\t\t" << "Move right";
+
 	ContextFormat format;
-	format.setVersion(4, 0);
+	format.setVersion(3, 0);
 	format.setProfile(ContextFormat::CompatibilityProfile);
-	format.setStencilBufferSize(4);
-	format.setSamples(24);
+	format.setStencilBufferSize(24);
 
 	Window window;
 
 	window.setEventHandler(new EventHandler());
 
-	if (window.create(format, "NVP Rendering Example"))
+	if (window.create(format, "Navigations Example"))
 	{
-		window.context()->setSwapInterval(Context::NoVerticalSyncronization);
+		window.context()->setSwapInterval(Context::VerticalSyncronization);
 
 		window.show();
 

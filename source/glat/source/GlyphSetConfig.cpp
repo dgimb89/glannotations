@@ -7,9 +7,9 @@
 #include <rapidjson/prettywriter.h>
 
 #include <glat/GlyphSetConfig.h>
+#include "glat-version.h"
 
 #define GLYPH_CONFIG "glyphconfig.json"
-#define RESOURCES_DIR "./data/"
 
 glat::GlyphSetConfig::GlyphSetConfig(std::string fontFileName) {
 	if (fontFileName == "")

@@ -1,12 +1,14 @@
 #ifndef GLAT_EXTERNAL_COLOR_H
 #define GLAT_EXTERNAL_COLOR_H
 
-#include <glat/Styling.h>
 #include <glm/glm.hpp>
+
+#include <glat/Styling.h>
+#include <glat/glat_api.h>
 
 namespace glat {
 	namespace Styles {
-		class ExternalColor : public glat::Styling {
+		class GLAT_API ExternalColor : public glat::Styling {
 		public:
 			ExternalColor(glm::vec4 color);
 

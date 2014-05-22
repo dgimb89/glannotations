@@ -1,10 +1,12 @@
 #pragma once
 
-#include <glat/DirtyFlagObject.h>
 #include <string>
 
+#include <glat/DirtyFlagObject.h>
+#include <glat/glat_api.h>
+
 namespace glat {
-	class Styling : public glow::Referenced {
+	class GLAT_API Styling : public glow::Referenced {
 	public:
 		std::string getID();
 

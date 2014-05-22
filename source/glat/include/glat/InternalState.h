@@ -1,13 +1,14 @@
 #pragma once
 
-#include <glat/AbstractState.h>
+#include <glowutils/Camera.h>
 #include <glm/glm.hpp>
 
-#include <glowutils/Camera.h>
+#include <glat/AbstractState.h>
+#include <glat/glat_api.h>
 
 namespace glat {
 
-	class InternalState : public glat::AbstractState {
+	class GLAT_API InternalState : public glat::AbstractState {
 	public:
 		// lower left, lower right, upper right
 		InternalState(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur, glowutils::Camera* camera);

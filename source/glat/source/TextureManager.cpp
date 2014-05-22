@@ -20,7 +20,7 @@ std::shared_ptr<glow::Texture> glat::TextureManager::getTexture(std::string file
 	}
 
 	// load texture
-	auto texture = std::make_shared<glow::Texture>(GL_TEXTURE_2D);
+	auto texture = std::make_shared<glat::ManagedTexture>(GL_TEXTURE_2D);
 	texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	texture->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -31,4 +31,11 @@ std::shared_ptr<glow::Texture> glat::TextureManager::getTexture(std::string file
 	texture->image2D(0, format, image.getWidth(), image.getHeight(), 0, format, GL_UNSIGNED_BYTE, image.getImage()->data);
 	m_textures[fileName] = texture;
 	return texture;
+}
+
+glat::ManagedTexture::~ManagedTexture() {
+	glow::Texture::~Texture();
+}
+
+glat::ManagedTexture::ManagedTexture(GLenum target /*= GL_TEXTURE_2D*/) : glow::Texture(target) {
 }

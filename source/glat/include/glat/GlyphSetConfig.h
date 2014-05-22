@@ -1,15 +1,17 @@
 #pragma once
 
-#include <glat/DirtyFlagObject.h>
 #include <glm/glm.hpp>
 #include <string>
 #include <vector>
 
+#include <glat/glat_api.h>
+#include <glat/DirtyFlagObject.h>
+
 namespace glat {
 
-	class GlyphSetConfig : public glat::DirtyFlagObject {
+	class GLAT_API GlyphSetConfig : public glat::DirtyFlagObject {
 	public:
-		struct GlyphConfig {
+		struct GLAT_API GlyphConfig {
 			glm::vec2 _ll, _advance;
 			GlyphConfig(glm::float_t ll_x, glm::float_t ll_y, glm::float_t advance_x, glm::float_t advance_y);
 		};

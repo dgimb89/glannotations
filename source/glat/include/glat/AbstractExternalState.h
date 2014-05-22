@@ -1,14 +1,15 @@
 #pragma once
 
+#include <glowutils/Camera.h>
+
 #include <glat/AbstractState.h>
 #include <glat/InternalState.h>
 #include <glat/AbstractDrawingPrimitive.h>
-
-#include <glowutils/Camera.h>
+#include <glat/glat_api.h>
 
 namespace glat {
 
-	class AbstractExternalState : public glat::AbstractState {
+	class GLAT_API AbstractExternalState : public glat::AbstractState {
 
 	public:
 		AbstractExternalState(glowutils::Camera* camera);

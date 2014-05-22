@@ -1,10 +1,12 @@
 #pragma once
 
-#include <glat/AbstractAnnotation.h>
 #include <glm/glm.hpp>
 
+#include <glat/AbstractAnnotation.h>
+#include <glat/glat_api.h>
+
 namespace glat {
-	class FontAnnotation : public AbstractAnnotation {
+	class GLAT_API FontAnnotation : public AbstractAnnotation {
 	public:
 		FontAnnotation(glat::AbstractState* initialState, const glat::RendererFactory& factory = RendererFactory());
 		FontAnnotation(glat::AbstractState* initialState, std::string text, const glat::RendererFactory& factory = RendererFactory());

@@ -1,13 +1,15 @@
 #pragma once
 
-#include <glow/ref_ptr.h>
-#include <glat/PNGImage.h>
 #include <vector>
 #include <string>
+#include <glowbase/ref_ptr.h>
+
+#include <glat/PNGImage.h>
+#include <glat_preprocessor/glat_preprocessor_api.h>
 
 namespace glat {
 	namespace preprocessor {
-		class GlyphSetGenerator
+		class GLAT_PREPROCESSOR_API GlyphSetGenerator
 		{
 		public:
 			static void generateGlyphset(std::string fontFileName, unsigned numGlyphs, bool overrideExisting = false);

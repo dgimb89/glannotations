@@ -1,11 +1,12 @@
 #pragma once
 
-#include <glat/AbstractState.h>
 #include <glm/glm.hpp>
 
-namespace glat {
+#include <glat/AbstractState.h>
+#include <glat/glat_api.h>
 
-	class ViewportState : public glat::AbstractState {
+namespace glat {
+	class GLAT_API ViewportState : public glat::AbstractState {
 	public:
 		ViewportState(glm::vec2 llf, glm::vec2 urb);
 

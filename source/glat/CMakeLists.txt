@@ -17,11 +17,11 @@ find_package(GLM REQUIRED)
 #
 
 include_directories(
-	${GLEW_INCLUDE_DIR}
+    ${LIBPNG_INCLUDE_DIR}
     ${OPENGL_INCLUDE_DIR}
+	${GLEW_INCLUDE_DIR}
     ${GLM_INCLUDE_DIR}
     ${GLOW_INCLUDES}
-    ${LIBPNG_INCLUDE_DIR}
 )
 
 include_directories(
@@ -35,8 +35,9 @@ include_directories(
 #
 
 set(libs
+	${LIBPNG_LIBRARIES}
+	${OPENGL_LIBRARY}
 	${GLEW_LIBRARY}
-	${GLFW_LIBRARIES}
     ${GLOW_LIBRARIES}
 )
 

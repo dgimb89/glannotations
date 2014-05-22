@@ -1,12 +1,13 @@
 #pragma once
 
 #include <glowbase/ref_ptr.h>
-
-#include <glat/DirtyFlagObject.h>
-#include <glat/Styling.h>
 #include <map>
 #include <string>
 #include <memory>
+
+#include <glat/DirtyFlagObject.h>
+#include <glat/Styling.h>
+#include <glat/glat_api.h>
 
 namespace glat {
 
@@ -24,7 +25,7 @@ namespace glat {
 		enum AutoExtend{ OFF, WIDTH, HEIGHT };
 	}
 
-	class AbstractState : public glat::DirtyFlagObject {
+	class GLAT_API AbstractState : public glat::DirtyFlagObject {
 		friend class NVPRRenderer;
 		friend class DistanceFieldFontRenderer;
 		friend class DistanceFieldPNGRenderer;

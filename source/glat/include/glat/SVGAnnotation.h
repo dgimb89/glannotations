@@ -1,9 +1,10 @@
 #pragma once
 
 #include <glat/AbstractAnnotation.h>
+#include <glat/glat_api.h>
 
 namespace glat {
-	class SVGAnnotation : public AbstractAnnotation {
+	class GLAT_API SVGAnnotation : public AbstractAnnotation {
 	public:
 		SVGAnnotation(glat::AbstractState* initialState, const glat::RendererFactory& factory = RendererFactory());
 		SVGAnnotation(glat::AbstractState* initialState, std::string svgPathString, unsigned width, unsigned height, const glat::RendererFactory& factory = RendererFactory());

@@ -1,10 +1,10 @@
-#include <glat/PNGImage.h>
 #include <stdio.h>
 #include <png.h>
 #include <algorithm>
-#include "config.h"
 
+#include <glat/PNGImage.h>
 #include <glat/DistanceFieldGenerator.h>
+#include "glat-version.h"
 
 // internal data wrapper
 glat::PNGImage::image_t::image_t(size_t size) {

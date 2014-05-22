@@ -2,8 +2,10 @@
 
 #include <glowbase/Referenced.h>
 
+#include <glat/glat_api.h>
+
 namespace glat {
-	class DirtyFlagObject : public glow::Referenced {
+	class GLAT_API DirtyFlagObject : public glow::Referenced {
 	public:
 		DirtyFlagObject();
 		virtual bool isDirty() const;

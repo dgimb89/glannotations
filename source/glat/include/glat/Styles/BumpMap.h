@@ -2,10 +2,11 @@
 #define GLAT_BUMPMAP_H
 
 #include <glat/Styling.h>
+#include <glat/glat_api.h>
 
 namespace glat {
 	namespace Styles {
-		class BumpMap : public glat::Styling {
+		class GLAT_API BumpMap : public glat::Styling {
 		public:
 			BumpMap(float intensity);
 			float getIntensity() const;

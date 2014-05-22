@@ -1,10 +1,10 @@
-#include <glat/preprocessor/GlyphSetGenerator.h>
-#include <glat/GlyphSetConfig.h>
-#include "config.h"
-
 #include <iostream>
 #include <ft2build.h>
 #include FT_FREETYPE_H
+
+#include <glat_preprocessor/GlyphSetGenerator.h>
+#include <glat/GlyphSetConfig.h>
+#include "glat-version.h"
 
 #define PT_SIZE 196
 #define GLYPHSET_BEGIN 33

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glat/glat_api.h>
+
 namespace glat {
 
 	// forward declaration 
@@ -8,7 +10,7 @@ namespace glat {
 	class FontAnnotation;
 	class SVGAnnotation;
 
-	class RendererFactory {
+	class GLAT_API RendererFactory {
 	public:
 		RendererFactory();
 		glat::AbstractRenderer* createRenderer(const glat::PNGAnnotation& annotation) const;

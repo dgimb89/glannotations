@@ -2,7 +2,7 @@
 
 glat::AbstractTexturedPrimitive::AbstractTexturedPrimitive(std::shared_ptr<glow::Texture> texture) : glat::AbstractDrawingPrimitive() {
 	m_style = 0;
-	m_texCoords = new glow::Buffer(GL_ARRAY_BUFFER);
+	m_texCoords = new glow::Buffer();
 	m_texture = texture;
 }
 

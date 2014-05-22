@@ -13,10 +13,8 @@ if (OPTION_BUILD_GLAT_PREPROCESSOR)
 endif()
 
 # Examples
-if(OPTION_BUILD_EXAMPLES)
-	set(IDE_FOLDER "Examples")
-	add_subdirectory(examples)
-endif()
+set(IDE_FOLDER "Examples")
+add_subdirectory(examples)
 
 # Tests
 #set(IDE_FOLDER "Tests")

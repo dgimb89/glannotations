@@ -4,7 +4,7 @@ using namespace glat;
 
 AbstractDrawingPrimitive::AbstractDrawingPrimitive() {
 	m_vao = new glow::VertexArrayObject();
-	m_positions = new glow::Buffer(GL_ARRAY_BUFFER);
+	m_positions = new glow::Buffer();
 }
 
 

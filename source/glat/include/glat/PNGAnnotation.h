@@ -1,10 +1,12 @@
 #pragma once
 
-#include <glat/AbstractAnnotation.h>
 #include <glm/glm.hpp>
 
+#include <glat/AbstractAnnotation.h>
+#include <glat/glat_api.h>
+
 namespace glat {
-	class PNGAnnotation : public AbstractAnnotation
+	class GLAT_API PNGAnnotation : public AbstractAnnotation
 	{
 	public:
 		PNGAnnotation(glat::AbstractState* initialState, std::string fileName, const glat::RendererFactory& factory = RendererFactory());

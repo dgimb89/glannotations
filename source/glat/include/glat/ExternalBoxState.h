@@ -1,11 +1,13 @@
 #pragma once
 
-#include <glat/AbstractExternalState.h>
-#include <glat/AbstractDrawingPrimitive.h>
 #include <glm/glm.hpp>
 
+#include <glat/AbstractExternalState.h>
+#include <glat/AbstractDrawingPrimitive.h>
+#include <glat/glat_api.h>
+
 namespace glat {
-	class ExternalBoxState : public AbstractExternalState {
+	class GLAT_API ExternalBoxState : public AbstractExternalState {
 	public:
 		ExternalBoxState(glm::vec3 llf, glm::vec3 widthSpan, glm::vec3 heightSpan, glm::vec3 depthSpan, glowutils::Camera* camera, bool drawBox = true);
 		ExternalBoxState(glm::vec3 llf, glm::vec3 widthSpan, glm::vec3 heightSpan, glm::vec3 depthSpan, glowutils::Camera* camera, float interpolation, bool drawBox = true);

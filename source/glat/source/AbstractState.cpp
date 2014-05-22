@@ -10,7 +10,7 @@ const glat::Styling* glat::AbstractState::getStyling(std::string ID) const {
 	if (itr == m_stylings.end())
 		return nullptr;
 
-	return itr->second.operator const glat::Styling *();
+	return itr->second.get();
 }
 
 void glat::AbstractState::setAnchor(State::PositionAnchor anchor) {

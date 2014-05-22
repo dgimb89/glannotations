@@ -175,9 +175,9 @@ glat::QuadStrip::QuadStrip(std::shared_ptr<glow::Texture> texture, bool isDistan
 	// initial position
 	m_ll = m_lr = m_ur = glm::vec3(0.0f, 0.0f, 0.0f);
 	m_vertexCount = 0;
-	m_advanceH = new glow::Buffer(GL_ARRAY_BUFFER);
-	m_advanceW = new glow::Buffer(GL_ARRAY_BUFFER);
-	m_texAdvance = new glow::Buffer(GL_ARRAY_BUFFER);
+	m_advanceH = new glow::Buffer();
+	m_advanceW = new glow::Buffer();
+	m_texAdvance = new glow::Buffer();
 
 
 	m_geometryShader = glow::Shader::fromString(GL_GEOMETRY_SHADER, geomQuadStripShaderSource);

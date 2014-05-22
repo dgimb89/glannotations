@@ -5,7 +5,7 @@
 #include <glat/InternalState.h>
 #include <glat/Styles.h>
 
-#include "config.h"
+#define RESOURCES_DIR "./data/"
 
 void glat::NVPRFontRenderer::draw(glat::AbstractAnnotation* annotation) {
 	glat::FontAnnotation* currentAnnotation = reinterpret_cast<glat::FontAnnotation*>(annotation);

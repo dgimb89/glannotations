@@ -8,6 +8,13 @@
 
 namespace glat {
 
+	// Wrapper to allow management via TextureManager
+	class ManagedTexture : public glow::Texture {
+	public:
+		ManagedTexture(GLenum target = GL_TEXTURE_2D);
+		virtual ~ManagedTexture();
+	};
+
 	/// Singleton Texture Manager
 	class TextureManager : public glow::Referenced {
 	public:
@@ -15,7 +22,7 @@ namespace glat {
 		std::shared_ptr<glow::Texture> getTexture(std::string fileName);
 	protected:
 		TextureManager() {};
-		std::map<std::string, std::weak_ptr<glow::Texture>> m_textures;
+		std::map<std::string, std::weak_ptr<glat::ManagedTexture>> m_textures;
 	private:
 		static glow::ref_ptr<TextureManager> _instance;
 	};

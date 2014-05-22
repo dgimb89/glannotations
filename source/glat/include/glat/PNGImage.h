@@ -6,9 +6,10 @@
 #include <glm/glm.hpp>
 
 #include <glat/DirtyFlagObject.h>
+#include <glat/glat_api.h>
 
 namespace glat {
-	class PNGImage : public glat::DirtyFlagObject {
+	class GLAT_API PNGImage : public glat::DirtyFlagObject {
 	public:
 		typedef unsigned char colorVal_t;
 		typedef struct image_t : public glow::Referenced{
