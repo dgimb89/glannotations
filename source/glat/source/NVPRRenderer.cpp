@@ -10,6 +10,7 @@ void glat::NVPRRenderer::draw(glat::AbstractAnnotation* annotation) {
 	// TODO: do we have to clear stencil buffer with every draw?
 	glStencilFunc(GL_NOTEQUAL, 0, 0x1F);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_ZERO);
+	clearStencilBuffer();
 	// double dispatch to draw specific state
 	annotation->getState()->draw(*this);
 	// disable stencil test when finished

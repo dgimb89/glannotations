@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <random>
 #include <cassert>
-#include <ctime>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -16,15 +15,14 @@
 #include <glow/Shader.h>
 #include <glow/Buffer.h>
 #include <glow/logging.h>
-#include <glow/VertexArrayObject.h>
-#include <glow/debugmessageoutput.h>
 #include <glow/RenderBufferObject.h>
 #include <glow/FrameBufferObject.h>
 #include <glow/FrameBufferAttachment.h>
 #include <glow/Texture.h>
+#include <glow/VertexArrayObject.h>
+#include <glow/debugmessageoutput.h>
 
-#include <glowutils/global.h>
-#include <glowutils/AutoTimer.h>
+#include <glowutils/Timer.h>
 #include <glowutils/AxisAlignedBoundingBox.h>
 #include <glowutils/Icosahedron.h>
 #include <glowutils/Camera.h>
@@ -33,7 +31,8 @@
 #include <glowutils/WorldInHandNavigation.h>
 #include <glowutils/FlightNavigation.h>
 #include <glowutils/File.h>
-#include <glowutils/Timer.h>
+#include <glowutils/File.h>
+#include <glowutils/glowutils.h>
 #include <glowutils/StringTemplate.h>
 #include <glowutils/ScreenAlignedQuad.h>
 
@@ -43,6 +42,9 @@
 #include <glowwindow/WindowEventHandler.h>
 #include <glowwindow/events.h>
 
+#include <ExampleWindowEventHandler.h>
+
+#include <glat/RendererFactory.h>
 #include <glat/FontAnnotation.h>
 #include <glat/SVGAnnotation.h>
 #include <glat/PNGAnnotation.h>
@@ -51,7 +53,6 @@
 #include <glat/ExternalBoxState.h>
 #include <glat/ExternalLabelState.h>
 #include <glat/Styles.h>
-#include <glat/Quad.h>
 
 #include "building.h"
 
@@ -59,7 +60,7 @@ using namespace glowwindow;
 using namespace glm;
 
 
-class EventHandler : public WindowEventHandler, glowutils::AbstractCoordinateProvider
+class EventHandler : public ExampleWindowEventHandler, glowutils::AbstractCoordinateProvider
 {
 public:
 	EventHandler()
@@ -89,49 +90,17 @@ public:
 
 	virtual void initialize(Window & window) override
 	{
+		glow::debugmessageoutput::enable();
 		glat::RendererFactory dfFactory;
 		dfFactory.useNVpr(false);
 		glow::debugmessageoutput::enable();
 
 		glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
-		m_fbo = new glow::FrameBufferObject();
-
-		m_colorTex = new glow::Texture(GL_TEXTURE_2D);
-		m_colorTex->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		m_colorTex->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		m_colorTex->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		m_colorTex->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		m_colorTex->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-		m_normalTex = new glow::Texture(GL_TEXTURE_2D);
-		m_normalTex->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		m_normalTex->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		m_normalTex->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		m_normalTex->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		m_normalTex->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-		m_geometryTex = new glow::Texture(GL_TEXTURE_2D);
-		m_geometryTex->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		m_geometryTex->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		m_geometryTex->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		m_geometryTex->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		m_geometryTex->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-		m_depth = new glow::RenderBufferObject();
-
-		//m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT0, m_colorTex);
-		//m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT1, m_normalTex);
-		//m_fbo->attachTexture2D(GL_COLOR_ATTACHMENT2, m_geometryTex);
-		//m_fbo->attachRenderBuffer(GL_DEPTH_ATTACHMENT, m_depth);
-
-		//m_fbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 });
-		//m_fbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0});
-		
-		glowutils::StringTemplate* gbufferVertexShader = new glowutils::StringTemplate(new glowutils::File("data/gbuffer.vert"));
-		glowutils::StringTemplate* gbufferFragmentShader = new glowutils::StringTemplate(new glowutils::File("data/gbuffer.frag"));
-		glowutils::StringTemplate* phongVertexShader = new glowutils::StringTemplate(new glowutils::File("data/phong.vert"));
-		glowutils::StringTemplate* phongFragmentShader = new glowutils::StringTemplate(new glowutils::File("data/phong.frag"));
+		glowutils::StringTemplate* gbufferVertexShader = new glowutils::StringTemplate(new glowutils::File("data/presentation-scene/gbuffer.vert"));
+		glowutils::StringTemplate* gbufferFragmentShader = new glowutils::StringTemplate(new glowutils::File("data/presentation-scene/gbuffer.frag"));
+		glowutils::StringTemplate* phongVertexShader = new glowutils::StringTemplate(new glowutils::File("data/presentation-scene/phong.vert"));
+		glowutils::StringTemplate* phongFragmentShader = new glowutils::StringTemplate(new glowutils::File("data/presentation-scene/phong.frag"));
 
 		m_gbuffer = new glow::Program();
 		m_gbuffer->attach(new glow::Shader(GL_VERTEX_SHADER, gbufferVertexShader), new glow::Shader(GL_FRAGMENT_SHADER, gbufferFragmentShader));
@@ -140,9 +109,12 @@ public:
 		m_phong->attach(new glow::Shader(GL_VERTEX_SHADER, phongVertexShader), new glow::Shader(GL_FRAGMENT_SHADER, phongFragmentShader));
 
 		m_quad = new glowutils::ScreenAlignedQuad(m_phong);
-		
+
 		m_camera.setZNear(0.1f);
 		m_camera.setZFar(1024.f);
+		m_camera.setCenter(vec3(0.f, 0.f, 5.f));
+		m_camera.setEye(vec3(-17.f, 12.f, -15.0f));
+		m_camera.setUp(vec3(0, 1, 0));
 
 		m_building = new glat::Building();
 		m_building1 = new glat::Building();
@@ -229,24 +201,19 @@ public:
 		m_hpicgs->setText("GLOW");
 		m_hpicgs->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 		m_hpicgs->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
-		glat::ExternalBoxState* extBox = new glat::ExternalBoxState(glm::vec3(), glm::vec3(1.f,0.f,0.f), glm::vec3(0.f,1.f,0.f), glm::vec3(0.f,0.f,1.f), &m_camera, true);
+		glat::ExternalBoxState* extBox = new glat::ExternalBoxState(glm::vec3(), glm::vec3(1.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f), glm::vec3(0.f, 0.f, 1.f), &m_camera, true);
 		extBox->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 0.f, 1.f)));
 		m_hpicgs->addState(extBox);
 
 		m_hpilogo = new glat::PNGAnnotation(new glat::InternalState(glm::vec3(-2.f, -4.f, 2.f), glm::vec3(-2.f, -4.f, 7.f), glm::vec3(-2.f, 1.0f, 7.f), &m_camera), "hpi.png", dfFactory);
-		//m_hpilogo->setAsDistanceField(glm::vec4(0.1f, 0.1f, 0.1f, 1.f));
 		m_hpilogo->addState(new glat::ViewportState(glm::vec2(-.25f, -.5f), glm::vec2(0.25f, 0.5f)));
 
 		window.addTimer(0, 0, false);
+
 	}
 	virtual void finalize(Window &) override
 	{
 		m_quad = nullptr;
-		m_fbo = nullptr;
-		m_colorTex = nullptr;
-		m_normalTex = nullptr;
-		m_geometryTex = nullptr;
-		m_depth = nullptr;
 		m_gbuffer = nullptr;
 		m_phong = nullptr;
 
@@ -276,20 +243,10 @@ public:
 
 	virtual void framebufferResizeEvent(ResizeEvent & event) override
 	{
-		int width = event.width();
-		int height = event.height();
-
-		glViewport(0, 0, width, height);
+		glViewport(0, 0, event.width(), event.height());
 		CheckGLError();
 
-		m_camera.setViewport(width, height);
-
-		m_colorTex->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
-		m_normalTex->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
-		m_geometryTex->image2D(0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
-
-		//int result = glow::FrameBufferObject::defaultFBO()->getAttachmentParameter(GL_DEPTH, GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE);
-		//m_depth->storage(result == 16 ? GL_DEPTH_COMPONENT16 : GL_DEPTH_COMPONENT, width, height);
+		m_camera.setViewport(event.width(), event.height());
 	}
 
 	virtual void paintEvent(PaintEvent &) override
@@ -310,7 +267,7 @@ public:
 		m_building13->setModelViewProjection(m_camera.viewProjection());
 		m_building14->setModelViewProjection(m_camera.viewProjection());
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-		
+
 		m_phong->setUniform("transformi", m_camera.viewProjectionInverted());
 
 		//m_fbo->bind();
@@ -338,28 +295,15 @@ public:
 		m_building14->draw();
 
 		m_hpilogo->draw();
-		//m_dfViewportPNGAnnotation->draw();
 		m_glatBox->draw();
 		m_treevisBox->draw();
 		m_glowText->draw();
 		m_hpicgs->draw();
-		//m_fbo->unbind();
-
-		glDisable(GL_DEPTH_TEST);
-		CheckGLError();
-		glDepthMask(GL_FALSE);
-		CheckGLError();
-
-		glEnable(GL_DEPTH_TEST);
-		CheckGLError();
-		glDepthMask(GL_TRUE);
-		CheckGLError();
-
 	}
 
 	virtual void timerEvent(TimerEvent & event) override
 	{
-		float delta = static_cast<float>(m_timer.elapsed() / 1000.0 / 1000.0 / 1000.0);
+		float delta = static_cast<float>(static_cast<float>(m_timer.elapsed().count()) / 1000.0 / 1000.0 / 1000.0);
 		m_timer.reset();
 		m_flightNav.move(delta);
 
@@ -396,13 +340,6 @@ public:
 			m_interpolation -= 0.01;
 			m_interpolation = max(m_interpolation, 0.f);
 			m_hpilogo->setInterpolatedState(0, 1, m_interpolation);
-			break;
-		case GLFW_KEY_B:
-			m_interpolation2 += 0.01;
-			m_interpolation2 = min(m_interpolation2, 1.f);
-			m_hpicgs->setInterpolatedState(0, 1, m_interpolation2);
-		case GLFW_KEY_F11:
-			event.window()->toggleMode();
 			break;
 		}
 
@@ -491,6 +428,9 @@ public:
 		case glowutils::WorldInHandNavigation::RotateInteraction:
 			m_nav.rotateProcess(event.pos());
 			event.accept();
+			break;
+		case glowutils::WorldInHandNavigation::NoInteraction:
+			break;
 		}
 	}
 	virtual void mouseReleaseEvent(MouseEvent & event) override
@@ -512,7 +452,7 @@ public:
 		}
 	}
 
-	void scrollEvent(ScrollEvent & event) override
+	virtual void scrollEvent(ScrollEvent & event) override
 	{
 		if (m_flightEnabled)
 			return;
@@ -524,17 +464,17 @@ public:
 		event.accept();
 	}
 
-	virtual float depthAt(const ivec2 & windowCoordinates) override
+	virtual float depthAt(const ivec2 & windowCoordinates) const override
 	{
 		return AbstractCoordinateProvider::depthAt(m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
 	}
 
-	virtual vec3 objAt(const ivec2 & windowCoordinates) override
+	virtual vec3 objAt(const ivec2 & windowCoordinates) const override
 	{
 		return unproject(m_camera, static_cast<GLenum>(GL_DEPTH_COMPONENT), windowCoordinates);
 	}
 
-	virtual vec3 objAt(const ivec2 & windowCoordinates, const float depth) override
+	virtual vec3 objAt(const ivec2 & windowCoordinates, const float depth) const override
 	{
 		return unproject(m_camera, depth, windowCoordinates);
 	}
@@ -542,7 +482,7 @@ public:
 	virtual glm::vec3 objAt(
 		const ivec2 & windowCoordinates
 		, const float depth
-		, const mat4 & viewProjectionInverted) override
+		, const mat4 & viewProjectionInverted) const override
 	{
 		return unproject(m_camera, viewProjectionInverted, depth, windowCoordinates);
 	}
@@ -597,22 +537,51 @@ protected:
 
 /** This example shows ... .
 */
-int main(int argc, char* argv[])
+int main(int /*argc*/, char* /*argv*/[])
 {
-	ContextFormat format;
-	format.setVersion(4, 0);
-	format.setSamples(24);
+	glow::info() << "Usage:";
+	glow::info() << "\t" << "ESC" << "\t\t" << "Close example";
+	glow::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+	glow::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+	glow::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+	glow::info() << "\t" << "Space" << "\t\t" << "Reset camera";
+	glow::info() << "\t" << "1" << "\t" << "Toggle flight mode / world in hand navigation";
 
+	glow::info();
+	glow::info() << "\t" << "During world in hand navigation";
+	glow::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
+	glow::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
+	glow::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
+
+	glow::info();
+	glow::info() << "\t" << "During flight mode";
+	glow::info() << "\t" << "Mouse Movement" << "\t" << "Look around";
+	glow::info() << "\t" << "W" << "\t\t" << "Move forward";
+	glow::info() << "\t" << "UP" << "\t\t" << "Move forward";
+	glow::info() << "\t" << "A" << "\t\t" << "Move left";
+	glow::info() << "\t" << "LEFT" << "\t\t" << "Move left";
+	glow::info() << "\t" << "S" << "\t\t" << "Move backward";
+	glow::info() << "\t" << "DOWN" << "\t\t" << "Move backward";
+	glow::info() << "\t" << "D" << "\t\t" << "Move right";
+	glow::info() << "\t" << "RIGHT" << "\t\t" << "Move right";
+
+	ContextFormat format;
+	format.setVersion(3, 0);
+	format.setSamples(16);
 	Window window;
 
 	window.setEventHandler(new EventHandler());
 
-	if (window.create(format, "DF Rendering Example")) {
-		window.context()->setSwapInterval(Context::NoVerticalSyncronization);
+	if (window.create(format, "Navigations Example"))
+	{
+		window.context()->setSwapInterval(Context::VerticalSyncronization);
+
 		window.show();
+
 		return MainLoop::run();
 	}
-	else {
+	else
+	{
 		return 1;
 	}
 }

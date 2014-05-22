@@ -164,11 +164,9 @@ public:
 		sprintf(clockBuffer, "%d", clock() / CLOCKS_PER_SEC);
 		m_nvprViewportFontAnnotation->setText(clockBuffer);
 
-		m_nvprInternalFontAnnotation->draw(); 
-		m_nvprViewportFontAnnotation->draw();
 		m_nvprViewportSVGAnnotation->draw();
-		CheckGLError();
-
+		m_nvprViewportFontAnnotation->draw();
+		m_nvprInternalFontAnnotation->draw(); 
 	}
 
 	virtual void timerEvent(TimerEvent & event) override

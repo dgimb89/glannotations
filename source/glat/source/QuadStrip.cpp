@@ -161,6 +161,7 @@ static const char* fragQuadStripShaderSource = R"(
 
 	void main() {
 		fragColor = texture2D(source, vertex.texCoord);
+		if(fragColor.a < 0.001) discard;
 	}
 
 	)";

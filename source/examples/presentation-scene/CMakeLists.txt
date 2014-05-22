@@ -1,5 +1,5 @@
 
-set(target nvp-rendering)
+set(target presentation-scene)
 message(STATUS "Example ${target}")
 
 #
@@ -41,7 +41,6 @@ set(libs
     ${GLOW_LIBRARIES}
     ${EXAMPLE_COMMON}
     glat
-    glat_preprocessor
 )
 
 #
@@ -50,6 +49,8 @@ set(libs
 
 set(sources
     main.cpp
+    building.cpp
+    building.h
 )
 
 #

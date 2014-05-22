@@ -1,5 +1,5 @@
 
-set(target df-rendering)
+set(target font-preprocessing)
 message(STATUS "Example ${target}")
 
 #
@@ -27,6 +27,7 @@ include_directories(
 include_directories(
 	BEFORE
     ${CMAKE_SOURCE_DIR}/source/glat/include
+    ${CMAKE_SOURCE_DIR}/source/glat_preprocessor/include
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 

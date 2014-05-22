@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glat/DirtyFlagObject.h>
+#include <glat/glat_api.h>
 
 #include <glm/glm.hpp>
 
@@ -10,7 +11,7 @@
 #include <glow/Buffer.h>
 
 namespace glat {
-	class AbstractDrawingPrimitive : public glow::Referenced {
+	class GLAT_API AbstractDrawingPrimitive : public glow::Referenced {
 	public:
 		AbstractDrawingPrimitive();
 		virtual ~AbstractDrawingPrimitive();
