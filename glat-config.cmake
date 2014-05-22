@@ -114,7 +114,7 @@ set(LIB_PATHS
 
 # Find libraries
 find(glat glat/glat_api.h ${LIB_PATHS})
-find(glat_preprocessor glat_preprocessor/preprocessor_api.h ${LIB_PATHS})
+find(glat_preprocessor glat_preprocessor/glat_preprocessor_api.h ${LIB_PATHS})
 
 
 # DEBUG
