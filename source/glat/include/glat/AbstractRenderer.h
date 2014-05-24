@@ -11,6 +11,7 @@ namespace glat {
 	class AbstractRenderer : public glat::DirtyFlagObject {
 		friend class ViewportState;
 		friend class InternalState;
+		friend class InternalPathState;
 		friend class ExternalBoxState;
 		friend class ExternalLabelState;
 	public:
@@ -19,6 +20,7 @@ namespace glat {
 	protected:
 		virtual void drawSetupState(const glat::ViewportState& state) const = 0;
 		virtual void drawSetupState(const glat::InternalState& state) const = 0;
+		virtual void drawSetupState(const glat::InternalPathState& state) const = 0;
 		virtual void drawSetupState(const glat::ExternalBoxState& state) const = 0;
 		virtual void drawSetupState(const glat::ExternalLabelState& state) const = 0;
 	};

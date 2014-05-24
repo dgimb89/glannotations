@@ -95,13 +95,14 @@ set(api_includes
 	${include_path}/ExternalLabelState.h
 	${include_path}/ViewportState.h
 	${include_path}/InternalState.h
+	${include_path}/InternalPathState.h
+	${include_path}/BSpline.h
 	
 	${include_path}/AbstractDrawingPrimitive.h
-	${include_path}/Quad.h
 	${include_path}/Prismoid.h
+	${include_path}/Box.h
 	${include_path}/AbstractTexturedPrimitive.h
 	${include_path}/QuadStrip.h
-	${include_path}/Box.h
 
 	${include_path}/Utility.h
 )
@@ -142,13 +143,14 @@ set(sources
 	${source_path}/ExternalLabelState.cpp
 	${source_path}/ViewportState.cpp
 	${source_path}/InternalState.cpp
+	${source_path}/InternalPathState.cpp
+	${source_path}/BSpline.cpp
 	
 	${source_path}/AbstractDrawingPrimitive.cpp
-	${source_path}/Quad.cpp
 	${source_path}/Prismoid.cpp
+	${source_path}/Box.cpp
 	${source_path}/AbstractTexturedPrimitive.cpp
 	${source_path}/QuadStrip.cpp
-	${source_path}/Box.cpp
 	
 	${source_path}/Utility.cpp
 	${source_path}/ShaderSources.hpp

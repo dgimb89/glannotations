@@ -199,11 +199,9 @@ void glat::QuadStrip::clearQuads() {
 
 void glat::QuadStrip::draw() {
 	m_program->release();
-	if (m_texture)
-	{
+	if (m_texture) {
 		glActiveTexture(GL_TEXTURE0);
 		CheckGLError();
-
 		m_texture->bind();
 	}
 
@@ -211,8 +209,9 @@ void glat::QuadStrip::draw() {
 	m_vao->drawArrays(GL_POINTS, 0, m_vertexCount);
 	m_program->release();
 
-	if (m_texture)
+	if (m_texture) {
 		m_texture->unbind();
+	}
 }
 
 void glat::QuadStrip::updateQuadRanges() {

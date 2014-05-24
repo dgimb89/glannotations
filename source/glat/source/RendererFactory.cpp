@@ -70,7 +70,8 @@ glat::AbstractRenderer* glat::RendererFactory::createRenderer(const glat::SVGAnn
 	else
 #endif
 	{
-		// not yet implemented		
+		// todo
+		throw std::logic_error("The method or operation is not implemented.");
 		return nullptr;
 	}
 }

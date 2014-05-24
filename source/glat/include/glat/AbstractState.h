@@ -15,6 +15,7 @@ namespace glat {
 	class AbstractAnnotation;
 	class ViewportState;
 	class InternalState;
+	class InternalPathState;
 	class ExternalBoxState;
 	class ExternalLabelState;
 
