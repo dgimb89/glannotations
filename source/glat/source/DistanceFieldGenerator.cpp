@@ -68,7 +68,7 @@ glow::ref_ptr<glat::PNGImage> glat::DistanceFieldGenerator::bicubicResize(const 
 
 glow::ref_ptr<glat::PNGImage> glat::DistanceFieldGenerator::distanceTransform(const glat::PNGImage& original) {
 	double* distances = new double[original.getHeight() * original.getWidth()];
-	std::fill_n(distances, original.getHeight() * original.getWidth(), INFINITY);
+	std::fill_n(distances, original.getHeight() * original.getWidth(), std::numeric_limits<double>::infinity());
 	// top-left to bottom-right
 	for (unsigned y = 0; y < original.getHeight(); ++y) {
 		for (unsigned x = 0; x < original.getWidth(); ++x) {

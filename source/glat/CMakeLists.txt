@@ -90,13 +90,14 @@ set(api_includes
 	${include_path}/DistanceFieldFontRenderer.h
 
 	${include_path}/AbstractState.h
-	${include_path}/AbstractExternalState.h
-	${include_path}/ExternalBoxState.h
-	${include_path}/ExternalLabelState.h
+	${include_path}/AbstractExternalReference.h
 	${include_path}/ViewportState.h
 	${include_path}/InternalState.h
 	${include_path}/InternalPathState.h
+	${include_path}/BoxReference.h
+	${include_path}/LabelReference.h
 	${include_path}/BSpline.h
+	${include_path}/InterpolationManager.h
 	
 	${include_path}/AbstractDrawingPrimitive.h
 	${include_path}/Prismoid.h
@@ -138,13 +139,14 @@ set(sources
 	${source_path}/DistanceFieldFontRenderer.cpp
 
 	${source_path}/AbstractState.cpp
-	${source_path}/AbstractExternalState.cpp
-	${source_path}/ExternalBoxState.cpp
-	${source_path}/ExternalLabelState.cpp
+	${source_path}/AbstractExternalReference.cpp
 	${source_path}/ViewportState.cpp
 	${source_path}/InternalState.cpp
 	${source_path}/InternalPathState.cpp
+	${source_path}/BoxReference.cpp
+	${source_path}/LabelReference.cpp
 	${source_path}/BSpline.cpp
+	${source_path}/InterpolationManager.cpp
 	
 	${source_path}/AbstractDrawingPrimitive.cpp
 	${source_path}/Prismoid.cpp

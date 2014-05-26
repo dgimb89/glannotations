@@ -27,19 +27,19 @@ const glm::vec4 glat::FontAnnotation::getColor() {
 	return m_color;
 }
 
-glat::FontAnnotation::FontAnnotation(glat::AbstractState* initialState, std::string text, glm::vec4 color, const glat::RendererFactory& factory)
+glat::FontAnnotation::FontAnnotation(const glow::ref_ptr<glat::AbstractState>& initialState, std::string text, glm::vec4 color, const glat::RendererFactory& factory)
 : FontAnnotation(initialState, factory) {
 	setText(text);
 	setColor(color);
 }
 
-glat::FontAnnotation::FontAnnotation(glat::AbstractState* initialState, std::string text, const glat::RendererFactory& factory)
+glat::FontAnnotation::FontAnnotation(const glow::ref_ptr<glat::AbstractState>& initialState, std::string text, const glat::RendererFactory& factory)
 	: FontAnnotation(initialState, factory) {
 	setText(text);
 	setColor(glm::vec4(0.f, 0.f, 0.f, 1.f));
 }
 
-glat::FontAnnotation::FontAnnotation(glat::AbstractState* initialState, const glat::RendererFactory& factory)
+glat::FontAnnotation::FontAnnotation(const glow::ref_ptr<glat::AbstractState>& initialState, const glat::RendererFactory& factory)
 	: AbstractAnnotation(initialState) {
 	m_renderer = factory.createRenderer(*this);
 	setColor(glm::vec4(0.f, 0.f, 0.f, 1.f));

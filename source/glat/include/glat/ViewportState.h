@@ -18,13 +18,13 @@ namespace glat {
 
 		virtual bool isValid();
 
-		virtual void interpolate(const AbstractAnnotation& annotation, AbstractState* secondState, float interpolate) const;
-		virtual void interpolate(const AbstractAnnotation& annotation, const ViewportState& viewState, float interpolate) const;
-		virtual void interpolate(const AbstractAnnotation& annotation, const InternalState& internalState, float interpolate) const;
-		virtual void interpolate(const AbstractAnnotation& annotation, const ExternalBoxState& externalState, float interpolate) const;
-
 	protected:
-		virtual void draw(const AbstractRenderer& renderer) const;
+		virtual void draw(const AbstractRenderer& renderer) override;
+
+		virtual glow::ref_ptr<AbstractState> interpolateWith(const InternalState& mixState, float mix);
+		virtual glow::ref_ptr<AbstractState> interpolateWith(const InternalPathState& mixState, float mix);
+		virtual glow::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix);
+
 		glm::vec2 m_ll, m_ur;
 	};
 }

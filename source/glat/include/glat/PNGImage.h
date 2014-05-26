@@ -12,7 +12,7 @@ namespace glat {
 	class GLAT_API PNGImage : public glat::DirtyFlagObject {
 	public:
 		typedef unsigned char colorVal_t;
-		typedef struct image_t : public glow::Referenced{
+		typedef struct GLAT_API image_t : public glow::Referenced{
 			image_t(size_t size);
 			~image_t();
 			colorVal_t *data;

@@ -7,23 +7,7 @@ bool glat::ExternalLabelState::isValid() {
 	return m_width > 0.f && m_height > 0.f;
 }
 
-void glat::ExternalLabelState::interpolate(const AbstractAnnotation& annotation, AbstractState* secondState, float interpolate) const {
-	throw std::logic_error("The method or operation is not implemented.");
-}
-
-void glat::ExternalLabelState::interpolate(const AbstractAnnotation& annotation, const ViewportState& viewState, float interpolate) const {
-	throw std::logic_error("The method or operation is not implemented.");
-}
-
-void glat::ExternalLabelState::interpolate(const AbstractAnnotation& annotation, const InternalState& internalState, float interpolate) const {
-	throw std::logic_error("The method or operation is not implemented.");
-}
-
-void glat::ExternalLabelState::interpolate(const AbstractAnnotation& annotation, const ExternalBoxState& externalState, float interpolate) const {
-	throw std::logic_error("The method or operation is not implemented.");
-}
-
-void glat::ExternalLabelState::draw(const AbstractRenderer& renderer) const {
+void glat::ExternalLabelState::draw(const AbstractRenderer& renderer) {
 	renderer.drawSetupState(*this);
 }
 

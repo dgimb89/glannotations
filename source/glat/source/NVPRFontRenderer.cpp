@@ -78,15 +78,6 @@ void glat::NVPRFontRenderer::drawSetupState(const glat::InternalState& state) co
 	glPopMatrix();	
 	}
 
-void glat::NVPRFontRenderer::drawSetupState(const glat::ExternalBoxState& state) const {
-	glEnable(GL_DEPTH_TEST);
-	throw std::logic_error("The method or operation is not implemented.");
-}
-
-void glat::NVPRFontRenderer::drawSetupState(const glat::ExternalLabelState& state) const {
-	throw std::logic_error("The method or operation is not implemented.");
-}
-
 void glat::NVPRFontRenderer::drawSetupState(const glat::InternalPathState& state) const {
 	throw std::logic_error("The method or operation is not implemented.");
 }
@@ -96,7 +87,7 @@ void glat::NVPRFontRenderer::initializeFont(glat::FontAnnotation* annotation) {
 	glPathCommandsNV(pathSettings, 0, NULL, 0, GL_FLOAT, NULL);
 	glPathParameteriNV(pathSettings, GL_PATH_JOIN_STYLE_NV, GL_MITER_TRUNCATE_NV);
 	glPathParameterfNV(pathSettings, GL_PATH_MITER_LIMIT_NV, 1.0);
-	setupOutline(pathSettings, annotation->getState()->getStyling("Outline"), emScale*0.01f);
+	setupOutline(pathSettings, annotation->getRenderState()->getStyling("Outline"), emScale*0.01f);
 
 	/* Create a range of path objects corresponding to Latin-1 character codes. */
 	glDeletePathsNV(m_pathBase, numChars);

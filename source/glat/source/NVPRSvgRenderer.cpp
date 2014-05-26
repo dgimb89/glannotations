@@ -11,7 +11,7 @@ void glat::NVPRSvgRenderer::draw(glat::AbstractAnnotation* annotation) {
 		m_width = currentAnnotation->getWidth();
 		clearStencilBuffer();
 		initializeSVG(currentAnnotation->getPathString().c_str());
-		setupOutline(m_pathBase, annotation->getState()->getStyling("Outline"));
+		setupOutline(m_pathBase, annotation->getRenderState()->getStyling("Outline"));
 	}
 
 	glat::NVPRRenderer::draw(annotation);
@@ -76,18 +76,6 @@ void glat::NVPRSvgRenderer::drawPath() const {
 		glColor3f(0.2f, 0.2f, 0.2f); // yellow
 		glCoverStrokePathNV(m_pathBase, GL_CONVEX_HULL_NV);
 	}
-}
-
-void glat::NVPRSvgRenderer::drawSetupState(const glat::ExternalBoxState& state) const {
-	glEnable(GL_DEPTH_TEST);
-	// TODO
-	throw std::logic_error("The method or operation is not implemented.");
-}
-
-void glat::NVPRSvgRenderer::drawSetupState(const glat::ExternalLabelState& state) const {
-	glEnable(GL_DEPTH_TEST);
-	// TODO
-	throw std::logic_error("The method or operation is not implemented.");
 }
 
 void glat::NVPRSvgRenderer::drawSetupState(const glat::InternalPathState& state) const {

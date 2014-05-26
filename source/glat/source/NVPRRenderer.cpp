@@ -12,7 +12,7 @@ void glat::NVPRRenderer::draw(glat::AbstractAnnotation* annotation) {
 	glStencilOp(GL_KEEP, GL_KEEP, GL_ZERO);
 	clearStencilBuffer();
 	// double dispatch to draw specific state
-	annotation->getState()->draw(*this);
+	annotation->getRenderState()->draw(*this);
 	// disable stencil test when finished
 	glDisable(GL_STENCIL_TEST);
 }

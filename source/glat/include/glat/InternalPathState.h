@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glat/AbstractState.h>
+#include <glat/AbstractExternalReference.h>
 #include <glat/BSpline.h>
 #include <glat/glat_api.h>
 
@@ -9,13 +10,14 @@ namespace glat {
 	public:
 		virtual bool isValid();
 
-		virtual void interpolate(const AbstractAnnotation& annotation, AbstractState* secondState, float interpolate) const;
-		virtual void interpolate(const AbstractAnnotation& annotation, const ViewportState& viewState, float interpolate) const;
-		virtual void interpolate(const AbstractAnnotation& annotation, const InternalState& internalState, float interpolate) const;
-		virtual void interpolate(const AbstractAnnotation& annotation, const ExternalBoxState& externalState, float interpolate) const;
-
 	protected:
-		virtual void draw(const AbstractRenderer& renderer) const;
+		virtual void draw(const AbstractRenderer& renderer) override;
+
+		virtual glow::ref_ptr<AbstractState> interpolateWith(const InternalState& mixState, float mix);
+		virtual glow::ref_ptr<AbstractState> interpolateWith(const InternalPathState& mixState, float mix);
+		virtual glow::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix);
+
 		std::shared_ptr<glat::BSpline> m_path;
+		glow::ref_ptr<glat::AbstractExternalReference> m_externalReference = nullptr;
 	};
 }

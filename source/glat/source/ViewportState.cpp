@@ -1,6 +1,7 @@
 #include <glat/ViewportState.h>
 #include <glat/AbstractRenderer.h>
 #include <glat/AbstractAnnotation.h>
+#include <glat/InterpolationManager.h>
 
 glat::ViewportState::ViewportState(glm::vec2 llf, glm::vec2 urb) {
 	setExtends(llf, urb);
@@ -20,7 +21,7 @@ const glm::vec2& glat::ViewportState::getUR() const {
 	return m_ur;
 }
 
-void glat::ViewportState::draw(const AbstractRenderer& renderer) const {
+void glat::ViewportState::draw(const AbstractRenderer& renderer) {
 	renderer.drawSetupState(*this);
 }
 
@@ -32,18 +33,14 @@ const glm::vec2 glat::ViewportState::getLR() const {
 	return glm::vec2(m_ur.x, m_ll.y);
 }
 
-void glat::ViewportState::interpolate(const AbstractAnnotation& annotation, AbstractState* secondState, float interpolate) const {
-	secondState->interpolate(annotation, *this, interpolate);
+glow::ref_ptr<glat::AbstractState> glat::ViewportState::interpolateWith(const InternalState& mixState, float mix) {
+	return glat::InterpolationManager::interpolate(*this, mixState, mix);
 }
 
-void glat::ViewportState::interpolate(const AbstractAnnotation& annotation, const ViewportState& viewState, float interpolate) const {
-	annotation.interpolate(viewState, *this, interpolate);
+glow::ref_ptr<glat::AbstractState> glat::ViewportState::interpolateWith(const InternalPathState& mixState, float mix) {
+	return glat::InterpolationManager::interpolate(*this, mixState, mix);
 }
 
-void glat::ViewportState::interpolate(const AbstractAnnotation& annotation, const InternalState& internalState, float interpolate) const {
-	annotation.interpolate(*this, internalState, 1.f - interpolate);
-}
-
-void glat::ViewportState::interpolate(const AbstractAnnotation& annotation, const ExternalBoxState& externalState, float interpolate) const {
-	annotation.interpolate(*this, externalState, 1.f - interpolate);
+glow::ref_ptr<glat::AbstractState> glat::ViewportState::interpolateWith(const ViewportState& mixState, float mix) {
+	return glat::InterpolationManager::interpolate(*this, mixState, mix);
 }

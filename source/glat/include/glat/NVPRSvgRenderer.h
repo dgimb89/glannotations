@@ -11,8 +11,6 @@ namespace glat {
 		virtual void drawSetupState(const glat::ViewportState& state) const override;
 		virtual void drawSetupState(const glat::InternalState& state) const override;
 		virtual void drawSetupState(const glat::InternalPathState& state) const override;
-		virtual void drawSetupState(const glat::ExternalBoxState& state) const override;
-		virtual void drawSetupState(const glat::ExternalLabelState& state) const override;
 
 		void initializeSVG(const char* pathString);
 		void drawPath() const;

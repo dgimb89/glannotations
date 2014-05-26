@@ -20,7 +20,7 @@ glat::GlyphSetConfig::GlyphSetConfig(std::string fontFileName) {
 	rapidjson::Document document;	
 	document.Parse<0>(getFileContent().c_str());
 	if (document.HasMember(fontFileName.c_str())) {
-		// deserialize begins here
+		// deserialization begins here
 		const rapidjson::Value& fontObject = document[fontFileName.c_str()];
 
 		m_startGlyph = fontObject["startGlyph"].GetUint();

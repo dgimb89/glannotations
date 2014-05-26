@@ -22,13 +22,8 @@ namespace glat {
 		virtual const glm::vec3& getHeight() const;
 		virtual const glm::vec3& getDepth() const;
 
-		virtual void interpolate(const AbstractAnnotation& annotation, AbstractState* secondState, float interpolate) const override;
-		virtual void interpolate(const AbstractAnnotation& annotation, const ViewportState& viewState, float interpolate) const override;
-		virtual void interpolate(const AbstractAnnotation& annotation, const InternalState& internalState, float interpolate) const override;
-		virtual void interpolate(const AbstractAnnotation& annotation, const ExternalBoxState& externalState, float interpolate) const override;
-
 	protected:
-		virtual void draw(const AbstractRenderer& renderer) const;
+		virtual void draw(const AbstractRenderer& renderer) override;
 		inline void updatePositions(glm::vec3 ll, glm::vec3 widthSpan, glm::vec3 heightSpan, glm::vec3 depthSpan, bool backside) const;
 		glm::vec3 m_llf, m_widthSpan, m_heightSpan, m_depthSpan;
 

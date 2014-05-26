@@ -40,13 +40,12 @@ namespace glat {
 		void setAnchor(State::PositionAnchor anchor);
 		void setAutoExtend(State::AutoExtend extensionBehaviour);
 
-		virtual void interpolate(const AbstractAnnotation& annotation, AbstractState* secondState, float interpolate) const = 0;
-		virtual void interpolate(const AbstractAnnotation& annotation, const ViewportState& viewState, float interpolate) const = 0;
-		virtual void interpolate(const AbstractAnnotation& annotation, const InternalState& internalState, float interpolate) const = 0;
-		virtual void interpolate(const AbstractAnnotation& annotation, const ExternalBoxState& externalState, float interpolate) const = 0;
+		virtual glow::ref_ptr<AbstractState> interpolateWith(const InternalState& mixState, float mix) = 0;
+		virtual glow::ref_ptr<AbstractState> interpolateWith(const InternalPathState& mixState, float mix) = 0;
+		virtual glow::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix) = 0;
 
 	protected:
-		virtual void draw(const AbstractRenderer& renderer) const = 0;
+		virtual void draw(const AbstractRenderer& renderer) = 0;
 		AbstractState();
 		StylingList m_stylings;
 		State::PositionAnchor m_anchor;

@@ -39,30 +39,6 @@ void glat::AbstractPrimitiveRenderer::drawSetupState(const InternalState& state)
 	m_drawingPrimitive->draw();
 }
 
-void glat::AbstractPrimitiveRenderer::draw(glat::AbstractAnnotation* annotation) {
-	throw std::logic_error("The method or operation is not implemented.");
-}
-
-void glat::AbstractPrimitiveRenderer::drawSetupState(const glat::ExternalBoxState& state) const {
-	drawGenericExternalState(state);
-}
-
-void glat::AbstractPrimitiveRenderer::drawSetupState(const glat::ExternalLabelState& state) const {
-	drawGenericExternalState(state);
-}
-
 void glat::AbstractPrimitiveRenderer::drawSetupState(const glat::InternalPathState& state) const {
 	throw std::logic_error("The method or operation is not implemented.");
-}
-
-void glat::AbstractPrimitiveRenderer::drawGenericExternalState(const glat::AbstractExternalState& state) const {
-	if (state.isDirty()) {
-		state.updateInternalPosition();
-		m_drawingPrimitive->setPosition(state.getLL(), state.getLR(), state.getUR(), state.getViewProjection());
-		state.setupExternalPrimitives();
-		state.setDirty(false);
-	}
-	glEnable(GL_DEPTH_TEST);
-	state.drawExternalPrimitives();
-	m_drawingPrimitive->draw();
 }

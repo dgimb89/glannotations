@@ -12,23 +12,7 @@ bool glat::ExternalBoxState::isValid() {
 			&& glm::cross(m_heightSpan, m_depthSpan).length() > 0.0;
 }
 
-void glat::ExternalBoxState::interpolate(const AbstractAnnotation& annotation, AbstractState* secondState, float interpolate) const {
-	secondState->interpolate(annotation, *this, interpolate);
-}
-
-void glat::ExternalBoxState::interpolate(const AbstractAnnotation& annotation, const ViewportState& viewState, float interpolate) const {
-	annotation.interpolate(viewState, *this, interpolate);
-}
-
-void glat::ExternalBoxState::interpolate(const AbstractAnnotation& annotation, const InternalState& internalState, float interpolate) const {
-	annotation.interpolate(internalState, *this, interpolate);
-}
-
-void glat::ExternalBoxState::interpolate(const AbstractAnnotation& annotation, const ExternalBoxState& externalState, float interpolate) const {
-	annotation.interpolate(externalState, *this, interpolate);
-}
-
-void glat::ExternalBoxState::draw(const AbstractRenderer& renderer) const {
+void glat::ExternalBoxState::draw(const AbstractRenderer& renderer) {
 	renderer.drawSetupState(*this);
 }
 

@@ -11,25 +11,29 @@
 #include <glat/AbstractState.h>
 
 namespace glat {
+
+	// forward declaration
+	class InternalState;
+	class InternalPathState;
+	class ViewportState;
+
 	class GLAT_API AbstractAnnotation : public glat::DirtyFlagObject {
 	public:
 		void draw();
-		void setState(unsigned statePosition);
-		void setInterpolatedState(unsigned firstStatePos, unsigned secondStatePos, float interpolate);
-		unsigned addState(glat::AbstractState* state);
-		glow::ref_ptr<glat::AbstractState> getState();
+		void setState(const glow::ref_ptr<glat::AbstractState>& state);
+		glow::ref_ptr<glat::AbstractState> getState() const;
+		glow::ref_ptr<glat::AbstractState> getRenderState() const;
 
-		void interpolate(const ViewportState& firstState, const ViewportState& secondState, float interpolate) const;
-		void interpolate(const ViewportState& firstState, const InternalState& secondState, float interpolate) const;
-		void interpolate(const InternalState& firstState, const InternalState& secondState, float interpolate) const;
-		void interpolate(const ViewportState& firstState, const ExternalBoxState& secondState, float interpolate) const;
-		void interpolate(const InternalState& firstState, const ExternalBoxState& secondState, float interpolate) const;
-		void interpolate(const ExternalBoxState& firstState, const ExternalBoxState& secondState, float interpolate) const;
+		virtual void interpolateState(const InternalState& mixState, float mix);
+		virtual void interpolateState(const InternalPathState& mixState, float mix);
+		virtual void interpolateState(const ViewportState& mixState, float mix);
+
+		void resetInterpolation();
 
 	protected:
-		AbstractAnnotation(glat::AbstractState* initialState);
+		AbstractAnnotation(const glow::ref_ptr<glat::AbstractState>& state);
 		glow::ref_ptr<glat::AbstractRenderer> m_renderer;
-		std::vector<glow::ref_ptr<glat::AbstractState> > m_states;
-		mutable glow::ref_ptr<glat::AbstractState> m_activeState;
+		glow::ref_ptr<glat::AbstractState> m_state;
+		glow::ref_ptr<glat::AbstractState> m_interpolatedState;
 	};
 }

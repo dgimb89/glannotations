@@ -116,23 +116,23 @@ public:
 		m_dfInternalFontAnnotation->setFontName("calibri.ttf");
 		m_dfInternalFontAnnotation->setText("DistanceField");
 		m_dfInternalFontAnnotation->setColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
-		m_dfInternalFontAnnotation->addState(new glat::ViewportState(glm::vec2(-.75f, -.5f), glm::vec2(0.75f, 0.5f)));
+		//m_dfInternalFontAnnotation->addState(new glat::ViewportState(glm::vec2(-.75f, -.5f), glm::vec2(0.75f, 0.5f)));
 
-		m_dfExternalBoxAnnotation = new glat::FontAnnotation(new glat::ExternalBoxState(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(2.f, 0.f, 0.f), glm::vec3(0.f, 2.f, 0.f), glm::vec3(0.f, 0.f, -2.f), &m_camera, true), dfFactory);
+		/*m_dfExternalBoxAnnotation = new glat::FontAnnotation(new glat::ExternalBoxState(glm::vec3(-1.f, -1.f, 1.f), glm::vec3(2.f, 0.f, 0.f), glm::vec3(0.f, 2.f, 0.f), glm::vec3(0.f, 0.f, -2.f), &m_camera, true), dfFactory);
 		m_dfExternalBoxAnnotation->setFontName("calibri.ttf");
 		m_dfExternalBoxAnnotation->setText("Box");
-		m_dfExternalBoxAnnotation->getState()->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 1.f, 0.25f)));
+		m_dfExternalBoxAnnotation->getState()->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 1.f, 0.25f)));*/
 
 		//m_dfExternalBoxAnnotation->addState(new glat::InternalState(glm::vec3(-3.f, -1.f, -5.f), glm::vec3(3.f, -1.f, -5.f), glm::vec3(3.f, 1.0f, -5.f), &m_camera));
 
 		glow::ref_ptr<glat::AbstractState> state = new glat::ViewportState(glm::vec2(-.4f, -.4f), glm::vec2(0.4f, 0.4f));
-		m_dfExternalBoxAnnotation->addState(state);
+		//m_dfExternalBoxAnnotation->addState(state);
 
-		m_dfLabelAnnotation = new glat::FontAnnotation(new glat::ExternalLabelState(glm::vec3(1.f, 1.f, -1.f), glm::vec3(10.f, 5.f, -5.f), 5.f, 2.f, &m_camera, true), dfFactory);
+		/*m_dfLabelAnnotation = new glat::FontAnnotation(new glat::ExternalLabelState(glm::vec3(1.f, 1.f, -1.f), glm::vec3(10.f, 5.f, -5.f), 5.f, 2.f, &m_camera, true), dfFactory);
 		m_dfLabelAnnotation->setText("ExternalAnnotation");
 		m_dfLabelAnnotation->setFontName("calibri.ttf");
 		m_dfLabelAnnotation->setColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
-		m_dfLabelAnnotation->getState()->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 0.f, 1.f)));
+		m_dfLabelAnnotation->getState()->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 0.f, 1.f)));*/
 
 		window.addTimer(0, 0, false);
 	}
@@ -171,8 +171,8 @@ public:
 
 		m_dfInternalFontAnnotation->draw();
 		m_dfViewportPNGAnnotation->draw();
-		m_dfExternalBoxAnnotation->draw();
-		m_dfLabelAnnotation->draw();
+		//m_dfExternalBoxAnnotation->draw();
+		//m_dfLabelAnnotation->draw();
 	}
 
 	virtual void timerEvent(TimerEvent & event) override
