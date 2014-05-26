@@ -5,8 +5,8 @@
 #include <glat/Styles.h>
 #include "glat-version.h"
 
-void glat::NVPRFontRenderer::draw(glat::AbstractAnnotation* annotation) {
-	glat::FontAnnotation* currentAnnotation = reinterpret_cast<glat::FontAnnotation*>(annotation);
+void glat::NVPRFontRenderer::draw(const glow::ref_ptr<glat::AbstractAnnotation>& annotation) {
+	glat::FontAnnotation* currentAnnotation = reinterpret_cast<glat::FontAnnotation*>(annotation.get());
 	if (currentAnnotation->isDirty()) {
 		clearStencilBuffer();
 		initializeFont(currentAnnotation);

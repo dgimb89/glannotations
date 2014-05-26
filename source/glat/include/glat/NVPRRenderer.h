@@ -10,7 +10,7 @@ namespace glat {
 	class NVPRRenderer : public glat::AbstractRenderer {
 	public:
 		NVPRRenderer();
-		virtual void draw(glat::AbstractAnnotation* annotation);
+		virtual void draw(const glow::ref_ptr<glat::AbstractAnnotation>& annotation);
 
 	protected:
 		void clearStencilBuffer();

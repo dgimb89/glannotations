@@ -7,7 +7,7 @@
 namespace glat {
 	class DistanceFieldFontRenderer : public glat::AbstractPrimitiveRenderer {
 	public:
-		virtual void draw(glat::AbstractAnnotation* annotation);
+		virtual void draw(const glow::ref_ptr<glat::AbstractAnnotation>& annotation);
 
 	protected:
 		glow::ref_ptr<glat::GlyphSetConfig> m_glyphConfig;

@@ -32,7 +32,7 @@ namespace glat {
 		friend class DistanceFieldPNGRenderer;
 
 	public:
-		void setStyling(glat::Styling* style);
+		void setStyling(const glow::ref_ptr<glat::Styling>& style);
 
 		// returns nullptr if style does not exist
 		const glat::Styling* getStyling(std::string ID) const;

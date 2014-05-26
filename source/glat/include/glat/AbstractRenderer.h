@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glowbase/ref_ptr.h>
+
 #include <glat/DirtyFlagObject.h>
 
 namespace glat {
@@ -13,7 +15,7 @@ namespace glat {
 		friend class InternalState;
 		friend class InternalPathState;
 	public:
-		virtual void draw(glat::AbstractAnnotation* annotation) = 0;
+		virtual void draw(const glow::ref_ptr<glat::AbstractAnnotation>& annotation) = 0;
 
 	protected:
 		virtual void drawSetupState(const glat::ViewportState& state) const = 0;

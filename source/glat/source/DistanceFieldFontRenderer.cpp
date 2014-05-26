@@ -5,8 +5,8 @@
 #include <glat/TextureManager.h>
 #include <glat/QuadStrip.h>
 
-void glat::DistanceFieldFontRenderer::draw(AbstractAnnotation* annotation) {
-	FontAnnotation* currentAnnotation = dynamic_cast<FontAnnotation*>(annotation);
+void glat::DistanceFieldFontRenderer::draw(const glow::ref_ptr<glat::AbstractAnnotation>& annotation) {
+	FontAnnotation* currentAnnotation = dynamic_cast<FontAnnotation*>(annotation.get());
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

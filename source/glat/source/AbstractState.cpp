@@ -1,6 +1,6 @@
 #include <glat/AbstractState.h>
 
-void glat::AbstractState::setStyling(glat::Styling* style) {
+void glat::AbstractState::setStyling(const glow::ref_ptr<glat::Styling>& style) {
 	setDirty(true); 
 	m_stylings[style->getID()] = style;
 }

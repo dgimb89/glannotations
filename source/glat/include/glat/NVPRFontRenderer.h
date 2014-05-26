@@ -10,7 +10,7 @@ namespace glat{
 
 	class NVPRFontRenderer : public NVPRRenderer {
 	public:
-		virtual void draw(glat::AbstractAnnotation* annotation);
+		virtual void draw(const glow::ref_ptr<glat::AbstractAnnotation>& annotation);
 	protected:
 		virtual void drawSetupState(const glat::ViewportState& state) const override;
 		virtual void drawSetupState(const glat::InternalState& state) const override;

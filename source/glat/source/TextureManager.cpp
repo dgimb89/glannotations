@@ -33,6 +33,9 @@ std::shared_ptr<glow::Texture> glat::TextureManager::getTexture(std::string file
 	return texture;
 }
 
+glat::TextureManager::TextureManager() {
+}
+
 glat::ManagedTexture::~ManagedTexture() {
 	glow::Texture::~Texture();
 }

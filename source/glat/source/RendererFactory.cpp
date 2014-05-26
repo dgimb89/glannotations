@@ -50,7 +50,7 @@ void glat::RendererFactory::useNVpr(bool useNVpr) {
 
 glat::RendererFactory::RendererFactory() : m_useNVpr(true) {}
 
-glat::AbstractRenderer* glat::RendererFactory::createRenderer(const glat::FontAnnotation& annotation) const {
+glow::ref_ptr<glat::AbstractRenderer> glat::RendererFactory::createRenderer(const glat::FontAnnotation& annotation) const {
 #ifdef OPTION_USE_NVPR
 	if (usesNVpr()) {
 		return new glat::NVPRFontRenderer();
@@ -62,7 +62,7 @@ glat::AbstractRenderer* glat::RendererFactory::createRenderer(const glat::FontAn
 	}
 }
 
-glat::AbstractRenderer* glat::RendererFactory::createRenderer(const glat::SVGAnnotation& annotation) const {
+glow::ref_ptr<glat::AbstractRenderer> glat::RendererFactory::createRenderer(const glat::SVGAnnotation& annotation) const {
 #ifdef OPTION_USE_NVPR
 	if (usesNVpr()) {
 		return new glat::NVPRSvgRenderer();
@@ -76,6 +76,6 @@ glat::AbstractRenderer* glat::RendererFactory::createRenderer(const glat::SVGAnn
 	}
 }
 
-glat::AbstractRenderer* glat::RendererFactory::createRenderer(const glat::PNGAnnotation& annotation) const {
+glow::ref_ptr<glat::AbstractRenderer> glat::RendererFactory::createRenderer(const glat::PNGAnnotation& annotation) const {
 	return new glat::DistanceFieldPNGRenderer();
 }

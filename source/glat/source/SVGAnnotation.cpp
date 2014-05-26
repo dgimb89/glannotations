@@ -1,11 +1,11 @@
 #include <glat/SVGAnnotation.h>
 
-glat::SVGAnnotation::SVGAnnotation(glat::AbstractState* initialState, const glat::RendererFactory& factory /*= RendererFactory()*/)
+glat::SVGAnnotation::SVGAnnotation(const glow::ref_ptr<glat::AbstractState>& initialState, const glat::RendererFactory& factory /*= RendererFactory()*/)
 : AbstractAnnotation(initialState){
 	m_renderer = factory.createRenderer(*this);
 }
 
-glat::SVGAnnotation::SVGAnnotation(glat::AbstractState* initialState, std::string svgPathString, unsigned width, unsigned height, const glat::RendererFactory& factory /*= RendererFactory()*/)
+glat::SVGAnnotation::SVGAnnotation(const glow::ref_ptr<glat::AbstractState>& initialState, std::string svgPathString, unsigned width, unsigned height, const glat::RendererFactory& factory /*= RendererFactory()*/)
 	: SVGAnnotation(initialState, factory) {
 	setPathString(svgPathString);
 	setWidth(width);

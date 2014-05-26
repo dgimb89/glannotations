@@ -4,8 +4,7 @@
 #include <glat/Styles/BumpMap.h>
 #include <glat/ViewportState.h>
 #include <glat/InternalState.h>
-#include <glat/ExternalBoxState.h>
-#include <glat/ExternalLabelState.h>
+#include <glat/InternalPathState.h>
 
 void glat::AbstractPrimitiveRenderer::setupOutline(const Styling* outline) {
 	if (outline == nullptr) return;

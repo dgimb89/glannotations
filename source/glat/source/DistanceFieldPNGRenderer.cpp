@@ -5,8 +5,8 @@
 #include <glat/TextureManager.h>
 #include <glat/QuadStrip.h>
 
-void glat::DistanceFieldPNGRenderer::draw(AbstractAnnotation* annotation) {
-	PNGAnnotation* currentAnnotation = dynamic_cast<PNGAnnotation*>(annotation);
+void glat::DistanceFieldPNGRenderer::draw(const glow::ref_ptr<glat::AbstractAnnotation>& annotation) {
+	PNGAnnotation* currentAnnotation = dynamic_cast<PNGAnnotation*>(annotation.get());
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

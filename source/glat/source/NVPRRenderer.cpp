@@ -4,13 +4,12 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-void glat::NVPRRenderer::draw(glat::AbstractAnnotation* annotation) {
+void glat::NVPRRenderer::draw(const glow::ref_ptr<glat::AbstractAnnotation>& annotation) {
 	// enable stencil test as needed by nvpr
 	glEnable(GL_STENCIL_TEST);
 	// TODO: do we have to clear stencil buffer with every draw?
 	glStencilFunc(GL_NOTEQUAL, 0, 0x1F);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_ZERO);
-	clearStencilBuffer();
 	// double dispatch to draw specific state
 	annotation->getRenderState()->draw(*this);
 	// disable stencil test when finished

@@ -21,7 +21,7 @@ namespace glat {
 		static glow::ref_ptr<TextureManager> getInstance();
 		std::shared_ptr<glow::Texture> getTexture(std::string fileName);
 	protected:
-		TextureManager() {};
+		TextureManager();
 		std::map<std::string, std::weak_ptr<glat::ManagedTexture>> m_textures;
 	private:
 		static glow::ref_ptr<TextureManager> _instance;
