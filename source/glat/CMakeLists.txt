@@ -85,7 +85,7 @@ set(api_includes
 
 	${include_path}/PNGImage.h
 	${include_path}/AbstractPrimitiveRenderer.h
-	${include_path}/DistanceFieldGenerator.h
+	${include_path}/DistanceFieldGeneration.h
 	${include_path}/DistanceFieldPNGRenderer.h
 	${include_path}/DistanceFieldFontRenderer.h
 
@@ -97,7 +97,7 @@ set(api_includes
 	${include_path}/BoxReference.h
 	${include_path}/LabelReference.h
 	${include_path}/BSpline.h
-	${include_path}/InterpolationManager.h
+	${include_path}/StateInterpolation.h
 	
 	${include_path}/AbstractDrawingPrimitive.h
 	${include_path}/Prismoid.h
@@ -134,7 +134,7 @@ set(sources
 
 	${source_path}/PNGImage.cpp
 	${source_path}/AbstractPrimitiveRenderer.cpp
-	${source_path}/DistanceFieldGenerator.cpp
+	${source_path}/DistanceFieldGeneration.cpp
 	${source_path}/DistanceFieldPNGRenderer.cpp	
 	${source_path}/DistanceFieldFontRenderer.cpp
 
@@ -146,7 +146,7 @@ set(sources
 	${source_path}/BoxReference.cpp
 	${source_path}/LabelReference.cpp
 	${source_path}/BSpline.cpp
-	${source_path}/InterpolationManager.cpp
+	${source_path}/StateInterpolation.cpp
 	
 	${source_path}/AbstractDrawingPrimitive.cpp
 	${source_path}/Prismoid.cpp

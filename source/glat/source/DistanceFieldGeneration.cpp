@@ -1,4 +1,4 @@
-#include <glat/DistanceFieldGenerator.h>
+#include <glat/DistanceFieldGeneration.h>
 #include <algorithm>
 
 const double kernel[] = {	0.0, 	1.0, 									2.0,
@@ -8,13 +8,13 @@ const double kernel[] = {	0.0, 	1.0, 									2.0,
 #define SWAPIFLOWER(y,x,swapVal) if((x) >= 0 && (x) < original.getWidth() && (y) >= 0 && (y) < original.getHeight()) \
 	distances[(y)*original.getWidth() + (x)] = (original.isColored(x, y) ? -1.0 : 1.0) * std::min(std::abs(distances[(y)*original.getWidth() + (x)]), std::abs(swapVal))
 
-bool glat::DistanceFieldGenerator::selfColoredNeighborsNot(const glat::PNGImage& original, unsigned x, unsigned y) {
+bool glat::DistanceFieldGeneration::detail::selfColoredNeighborsNot(const glat::PNGImage& original, unsigned x, unsigned y) {
 	return original.isColored(x, y) && 
 		((x > 0 ? !original.isColored(x - 1, y) : true) || (y > 0 ? !original.isColored(x, y - 1) : true) || 
 		(x < original.getWidth() ? !original.isColored(x + 1, y) : true) || (y < original.getHeight() ? !original.isColored(x, y + 1) : true));
 }
 
-glow::ref_ptr<glat::PNGImage> glat::DistanceFieldGenerator::bilinearResize(const glat::PNGImage& inImage, unsigned scaledWidth, unsigned scaledHeight) {
+glow::ref_ptr<glat::PNGImage> glat::DistanceFieldGeneration::bilinearResize(const glat::PNGImage& inImage, unsigned scaledWidth, unsigned scaledHeight) {
 	glow::ref_ptr<glat::PNGImage> scaledResult = new glat::PNGImage(scaledWidth, scaledHeight, inImage.getNumComponents());
 
 	const double tx = double(inImage.getWidth()) / scaledWidth;
@@ -41,7 +41,7 @@ inline double cubicInterpolate(double p, double cur, double n1, double n2, doubl
 	return cur + 0.5 * frac *(n1 - p + frac*(2.0*p - 5.0*cur + 4.0*n1 - n2 + frac*(3.0*(cur - n1) + n2 - p)));
 }
 
-glow::ref_ptr<glat::PNGImage> glat::DistanceFieldGenerator::bicubicResize(const glat::PNGImage& inImage, unsigned scaledWidth, unsigned scaledHeight) {
+glow::ref_ptr<glat::PNGImage> glat::DistanceFieldGeneration::bicubicResize(const glat::PNGImage& inImage, unsigned scaledWidth, unsigned scaledHeight) {
 	glow::ref_ptr<glat::PNGImage> scaledResult = new glat::PNGImage(scaledWidth, scaledHeight, inImage.getNumComponents());
 
 	const double tx = double(inImage.getWidth()) / scaledWidth;
@@ -66,13 +66,13 @@ glow::ref_ptr<glat::PNGImage> glat::DistanceFieldGenerator::bicubicResize(const 
 	return scaledResult;
 }
 
-glow::ref_ptr<glat::PNGImage> glat::DistanceFieldGenerator::distanceTransform(const glat::PNGImage& original) {
+glow::ref_ptr<glat::PNGImage> glat::DistanceFieldGeneration::distanceTransform(const glat::PNGImage& original) {
 	double* distances = new double[original.getHeight() * original.getWidth()];
 	std::fill_n(distances, original.getHeight() * original.getWidth(), std::numeric_limits<double>::infinity());
 	// top-left to bottom-right
 	for (unsigned y = 0; y < original.getHeight(); ++y) {
 		for (unsigned x = 0; x < original.getWidth(); ++x) {
-			if (selfColoredNeighborsNot(original, x, y)) {
+			if (detail::selfColoredNeighborsNot(original, x, y)) {
 				distances[y * original.getWidth() + x] = kernel[0];
 			}
 			// apply kernel
@@ -128,7 +128,7 @@ glow::ref_ptr<glat::PNGImage> glat::DistanceFieldGenerator::distanceTransform(co
 	return distanceField;
 }
 
-glat::PNGImage::colorVal_t glat::DistanceFieldGenerator::colorValueFromFloat(double val) {
+glat::PNGImage::colorVal_t glat::DistanceFieldGeneration::colorValueFromFloat(double val) {
 	double clampedVal = std::max(-127.0, std::min(128.0, ((val < 0.0)? -1.0 : 1.0) *  std::sqrt(std::abs(val)) * 128)); // clamp to [-127 | 128]
 	return static_cast<glat::PNGImage::colorVal_t>(127.0 + clampedVal); // map to [0 | 255]
 }

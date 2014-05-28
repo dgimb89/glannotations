@@ -3,7 +3,7 @@
 #include <algorithm>
 
 #include <glat/PNGImage.h>
-#include <glat/DistanceFieldGenerator.h>
+#include <glat/DistanceFieldGeneration.h>
 #include "glat-version.h"
 
 // internal data wrapper
@@ -40,7 +40,7 @@ bool glat::PNGImage::distanceTransformFromPNG(std::string pngFileName) {
 
 	// load source image
 	if (!loadImage(pngFileName)) return false;
-	glow::ref_ptr<glat::PNGImage> distanceTransform = glat::DistanceFieldGenerator::distanceTransform(*this);
+	glow::ref_ptr<glat::PNGImage> distanceTransform = glat::DistanceFieldGeneration::distanceTransform(*this);
 
 	// set new image info data
 	m_image = distanceTransform->getImage();
@@ -53,7 +53,7 @@ bool glat::PNGImage::distanceTransformFromPNG(std::string pngFileName) {
 
 void glat::PNGImage::distanceTransform() {
 	// load source image
-	replaceImageWith(glat::DistanceFieldGenerator::distanceTransform(*this));
+	replaceImageWith(glat::DistanceFieldGeneration::distanceTransform(*this));
 }
 
 bool glat::PNGImage::loadImage(std::string pngFileName) {
@@ -230,15 +230,15 @@ unsigned short glat::PNGImage::getNumComponents() const {
 }
 
 void glat::PNGImage::scaleToWidth(size_t scaledWidth) {
-	replaceImageWith(glat::DistanceFieldGenerator::bicubicResize(*this, scaledWidth, getHeight() * scaledWidth / getWidth()));
+	replaceImageWith(glat::DistanceFieldGeneration::bicubicResize(*this, scaledWidth, getHeight() * scaledWidth / getWidth()));
 }
 
 void glat::PNGImage::scaleToHeight(size_t scaledHeight) {
-	replaceImageWith(glat::DistanceFieldGenerator::bicubicResize(*this, getWidth() * scaledHeight / getHeight(), scaledHeight));
+	replaceImageWith(glat::DistanceFieldGeneration::bicubicResize(*this, getWidth() * scaledHeight / getHeight(), scaledHeight));
 }
 
 void glat::PNGImage::scale(double scaleFactor) {
-	replaceImageWith(glat::DistanceFieldGenerator::bicubicResize(*this, getWidth() * scaleFactor, getHeight() * scaleFactor));
+	replaceImageWith(glat::DistanceFieldGeneration::bicubicResize(*this, getWidth() * scaleFactor, getHeight() * scaleFactor));
 }
 
 unsigned short glat::PNGImage::getComponentBitdepth() const {

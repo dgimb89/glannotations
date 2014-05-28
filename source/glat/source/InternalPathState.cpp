@@ -1,7 +1,7 @@
 #include <glat/InternalPathState.h>
 #include <glat/AbstractRenderer.h>
 #include <glat/AbstractAnnotation.h>
-#include <glat/InterpolationManager.h>
+#include <glat/StateInterpolation.h>
 
 
 bool glat::InternalPathState::isValid() {
@@ -17,13 +17,13 @@ void glat::InternalPathState::draw(const AbstractRenderer& renderer) {
 }
 
 glow::ref_ptr<glat::AbstractState> glat::InternalPathState::interpolateWith(const InternalState& mixState, float mix) {
-	return glat::InterpolationManager::interpolate(*this, mixState, mix);
+	return glat::Interpolation::interpolate(*this, mixState, mix);
 }
 
 glow::ref_ptr<glat::AbstractState> glat::InternalPathState::interpolateWith(const InternalPathState& mixState, float mix) {
-	return glat::InterpolationManager::interpolate(*this, mixState, mix);
+	return glat::Interpolation::interpolate(*this, mixState, mix);
 }
 
 glow::ref_ptr<glat::AbstractState> glat::InternalPathState::interpolateWith(const ViewportState& mixState, float mix) {
-	return glat::InterpolationManager::interpolate(*this, mixState, mix);
+	return glat::Interpolation::interpolate(*this, mixState, mix);
 }

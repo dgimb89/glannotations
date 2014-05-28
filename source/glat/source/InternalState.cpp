@@ -1,7 +1,7 @@
 #include <glat/InternalState.h>
 #include <glat/AbstractRenderer.h>
 #include <glat/AbstractAnnotation.h>
-#include <glat/InterpolationManager.h>
+#include <glat/StateInterpolation.h>
 
 glat::InternalState::InternalState(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur, glowutils::Camera* camera) {
 	setExtends(ll, lr, ur);
@@ -61,13 +61,13 @@ bool glat::InternalState::isDirty() const {
 }
 
 glow::ref_ptr<glat::AbstractState> glat::InternalState::interpolateWith(const InternalState& mixState, float mix) {
-	return glat::InterpolationManager::interpolate(*this, mixState, mix);
+	return glat::Interpolation::interpolate(*this, mixState, mix);
 }
 
 glow::ref_ptr<glat::AbstractState> glat::InternalState::interpolateWith(const InternalPathState& mixState, float mix) {
-	return glat::InterpolationManager::interpolate(*this, mixState, mix);
+	return glat::Interpolation::interpolate(*this, mixState, mix);
 }
 
 glow::ref_ptr<glat::AbstractState> glat::InternalState::interpolateWith(const ViewportState& mixState, float mix) {
-	return glat::InterpolationManager::interpolate(*this, mixState, mix);
+	return glat::Interpolation::interpolate(*this, mixState, mix);
 }
