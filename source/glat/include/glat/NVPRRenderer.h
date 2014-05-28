@@ -1,10 +1,10 @@
 #pragma once
 
+#include "nvpr_init.h"
 #include <glm/glm.hpp>
 
 #include <glat/AbstractRenderer.h>
 #include <glat/Styling.h>
-#include "nvpr_init.h"
 
 namespace glat {
 	class NVPRRenderer : public glat::AbstractRenderer {

@@ -1,14 +1,13 @@
 #pragma once
 
-#include <glat/DirtyFlagObject.h>
-#include <glat/glat_api.h>
-
-#include <glm/glm.hpp>
-
 #include <glow/Shader.h>
 #include <glow/Program.h>
 #include <glow/VertexArrayObject.h>
 #include <glow/Buffer.h>
+#include <glm/glm.hpp>
+
+#include <glat/DirtyFlagObject.h>
+#include <glat/glat_api.h>
 
 namespace glat {
 	class GLAT_API AbstractDrawingPrimitive : public glow::Referenced {
