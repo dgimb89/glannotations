@@ -1,9 +1,9 @@
 #pragma once
 
+#include <glm/glm.hpp>
+
 #include <glat/NVPRRenderer.h>
 #include <glat/Styling.h>
-
-#include <glm/glm.hpp>
 
 namespace glat{
 	class FontAnnotation;

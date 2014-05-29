@@ -3,13 +3,12 @@
 #include <glowutils/Camera.h>
 #include <glm/glm.hpp>
 
-#include <glat/AbstractExternalReference.h>
-#include <glat/AbstractState.h>
+#include <glat/ReferenceableState.h>
 #include <glat/glat_api.h>
 
 namespace glat {
 
-	class GLAT_API InternalState : public glat::AbstractState {
+	class GLAT_API InternalState : public glat::ReferenceableState {
 	public:
 		// lower left, lower right, upper right
 		InternalState(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur, glowutils::Camera* camera);
@@ -25,7 +24,9 @@ namespace glat {
 		const glm::mat4& getViewProjection() const;
 
 		virtual bool isDirty() const;
-		virtual bool isValid();
+		virtual bool isValid() const;
+
+		virtual glow::ref_ptr<glat::AbstractState> clone() const;
 
 	protected:
 		virtual void draw(const AbstractRenderer& renderer) override;
@@ -37,6 +38,5 @@ namespace glat {
 		glm::vec3 m_ll, m_ur, m_lr;
 		glowutils::Camera* m_camera;
 		mutable glm::mat4 m_camProjection;
-		glow::ref_ptr<glat::AbstractExternalReference> m_externalReference = nullptr;
 	};
 }

@@ -172,6 +172,11 @@ public:
 		m_building13->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
 		m_building14->setColor(buildingColor + temp);
 
+		m_glatBox = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-1.01f, -4.f, -1.f), glm::vec3(-1.01f, -4.f, 1.f), glm::vec3(-1.01f, -3.f, 1.f), &m_camera), dfFactory);
+		m_glatBox->setFontName("calibri.ttf");
+		m_glatBox->setText("GLAT");
+		m_glatBox->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
+		m_glatBox->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
 		/*m_glatBox = new glat::FontAnnotation(new glat::ExternalBoxState(glm::vec3(-1.f, -4.f, -1.f), glm::vec3(0.f, 0.f, 2.f), glm::vec3(0.f, 1.f, 0.f), glm::vec3(2.f, 0.f, 0.f), &m_camera, false), dfFactory);
 		m_glatBox->setFontName("calibri.ttf");
 		m_glatBox->setText("GLAT");
@@ -293,8 +298,8 @@ public:
 		m_building14->draw();
 
 		m_hpilogo->draw();
-		/*m_glatBox->draw();
-		m_treevisBox->draw();
+		m_glatBox->draw();
+		/*m_treevisBox->draw();
 		m_glowText->draw();*/
 		m_hpicgs->draw();
 	}

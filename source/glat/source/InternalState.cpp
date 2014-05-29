@@ -45,7 +45,7 @@ void glat::InternalState::draw(const AbstractRenderer& renderer) {
 	renderer.drawSetupState(*this);
 }
 
-bool glat::InternalState::isValid() {
+bool glat::InternalState::isValid() const {
 	return (m_ur - m_ll).length() > 0;
 }
 
@@ -70,4 +70,10 @@ glow::ref_ptr<glat::AbstractState> glat::InternalState::interpolateWith(const In
 
 glow::ref_ptr<glat::AbstractState> glat::InternalState::interpolateWith(const ViewportState& mixState, float mix) {
 	return glat::Interpolation::interpolate(*this, mixState, mix);
+}
+
+glow::ref_ptr<glat::AbstractState> glat::InternalState::clone() const {
+	glow::ref_ptr<glat::InternalState> clonedState(new InternalState(m_ll, m_lr, m_ur, m_camera));
+	ReferenceableState::copyState(*clonedState);
+	return clonedState;
 }

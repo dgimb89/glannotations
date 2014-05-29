@@ -25,7 +25,7 @@ void glat::ViewportState::draw(const AbstractRenderer& renderer) {
 	renderer.drawSetupState(*this);
 }
 
-bool glat::ViewportState::isValid() {
+bool glat::ViewportState::isValid() const {
 	return (m_ur - m_ll).length() > 0;
 }
 

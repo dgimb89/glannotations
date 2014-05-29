@@ -1,14 +1,15 @@
 #pragma once
 
-#include <glat/AbstractState.h>
+#include <glat/ReferenceableState.h>
 #include <glat/AbstractExternalReference.h>
 #include <glat/BSpline.h>
 #include <glat/glat_api.h>
 
 namespace glat {
-	class GLAT_API InternalPathState : public glat::AbstractState {
+	class GLAT_API InternalPathState : public glat::ReferenceableState {
 	public:
 		virtual bool isValid();
+		virtual glow::ref_ptr<glat::AbstractState> clone();
 
 	protected:
 		virtual void draw(const AbstractRenderer& renderer) override;

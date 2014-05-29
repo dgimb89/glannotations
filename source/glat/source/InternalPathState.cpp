@@ -27,3 +27,7 @@ glow::ref_ptr<glat::AbstractState> glat::InternalPathState::interpolateWith(cons
 glow::ref_ptr<glat::AbstractState> glat::InternalPathState::interpolateWith(const ViewportState& mixState, float mix) {
 	return glat::Interpolation::interpolate(*this, mixState, mix);
 }
+
+glow::ref_ptr<glat::AbstractState> glat::InternalPathState::clone() {
+	throw std::logic_error("The method or operation is not implemented.");
+}

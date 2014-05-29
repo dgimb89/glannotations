@@ -1,9 +1,8 @@
 #pragma once
 
-#include <glowbase/Referenced.h>
-#include <glowbase/ref_ptr.h>
+#include <glowutils/Camera.h>
 
-#include <glat/AbstractDrawingPrimitive.h>
+#include <glat/DirtyFlagObject.h>
 #include <glat/glat_api.h>
 
 namespace glat {
@@ -11,15 +10,21 @@ namespace glat {
 	class InternalState;
 	class InternalPathState;
 
-	class GLAT_API AbstractExternalReference : public glow::Referenced {
+	class GLAT_API AbstractExternalReference : public glat::DirtyFlagObject {
 	public:
-		virtual void draw();
+		AbstractExternalReference(glowutils::Camera* camera, bool positioningOnly);
+
+		virtual void draw() = 0;
+		inline void setCamera(glowutils::Camera* camera);
+		inline void setPositioningOnly(bool positioningOnly);
+		bool isPositioningOnly();
 
 		// updates positioning of given state
 		virtual void updatePositioning(InternalState& state) = 0;
 		virtual void updatePositioning(InternalPathState& state) = 0;
 
 	protected:
-		glow::ref_ptr<glat::AbstractDrawingPrimitive> m_externalPrimitives;
+		glowutils::Camera* m_camera;
+		bool m_positioningOnly;
 	};
 }

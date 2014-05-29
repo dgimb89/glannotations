@@ -91,6 +91,7 @@ set(api_includes
 
 	${include_path}/AbstractState.h
 	${include_path}/AbstractExternalReference.h
+	${include_path}/ReferenceableState.h
 	${include_path}/ViewportState.h
 	${include_path}/InternalState.h
 	${include_path}/InternalPathState.h
@@ -140,6 +141,7 @@ set(sources
 
 	${source_path}/AbstractState.cpp
 	${source_path}/AbstractExternalReference.cpp
+	${source_path}/ReferenceableState.cpp
 	${source_path}/ViewportState.cpp
 	${source_path}/InternalState.cpp
 	${source_path}/InternalPathState.cpp

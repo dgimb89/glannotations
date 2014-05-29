@@ -1,8 +1,9 @@
 #pragma once
 
-#include <glat/AbstractDrawingPrimitive.h>
 #include <glow/Texture.h>
 #include <memory>
+
+#include <glat/AbstractDrawingPrimitive.h>
 
 namespace glat {
 	class AbstractTexturedPrimitive : public glat::AbstractDrawingPrimitive {

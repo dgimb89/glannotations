@@ -1,8 +1,9 @@
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 #include <glat/NVPRRenderer.h>
 #include <glat/AbstractAnnotation.h>
 #include <glat/Styles/Outline.h>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 
 void glat::NVPRRenderer::draw(const glow::ref_ptr<glat::AbstractAnnotation>& annotation) {
 	// enable stencil test as needed by nvpr

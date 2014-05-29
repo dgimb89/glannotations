@@ -32,8 +32,9 @@ namespace glat {
 
 	protected:
 		AbstractAnnotation(const glow::ref_ptr<glat::AbstractState>& state);
+		void setupRenderState() const;
 		glow::ref_ptr<glat::AbstractRenderer> m_renderer;
 		glow::ref_ptr<glat::AbstractState> m_state;
-		glow::ref_ptr<glat::AbstractState> m_interpolatedState;
+		mutable glow::ref_ptr<glat::AbstractState> m_renderState;
 	};
 }

@@ -26,3 +26,25 @@ void glat::AbstractState::setAutoExtend(State::AutoExtend extendBehaviour) {
 glat::AbstractState::AbstractState() {
 	setDirty(true);
 }
+
+glat::State::PositionAnchor glat::AbstractState::getAnchor() const {
+	return m_anchor;
+}
+
+glat::State::AutoExtend glat::AbstractState::getAutoExtend() const {
+	return m_autoExtend;
+}
+
+void glat::AbstractState::copyState(AbstractState& copyTo) const {
+	copyTo.setAutoExtend(getAutoExtend());
+	copyTo.setAnchor(getAnchor());
+	copyTo.setStylings(getStylings());
+}
+
+void glat::AbstractState::setStylings(const StylingList& stylings) {
+	m_stylings = stylings;
+}
+
+const glat::StylingList& glat::AbstractState::getStylings() const {
+	return m_stylings;
+}
