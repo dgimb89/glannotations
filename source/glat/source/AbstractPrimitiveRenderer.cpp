@@ -4,7 +4,7 @@
 #include <glat/Styles/BumpMap.h>
 #include <glat/ViewportState.h>
 #include <glat/InternalState.h>
-#include <glat/InternalPathState.h>
+#include <glat/PathState.h>
 
 void glat::AbstractPrimitiveRenderer::setupOutline(const Styling* outline) {
 	if (outline == nullptr) return;
@@ -38,6 +38,6 @@ void glat::AbstractPrimitiveRenderer::drawSetupState(const InternalState& state)
 	m_drawingPrimitive->draw();
 }
 
-void glat::AbstractPrimitiveRenderer::drawSetupState(const glat::InternalPathState& state) const {
+void glat::AbstractPrimitiveRenderer::drawSetupState(const glat::PathState& state) const {
 	throw std::logic_error("The method or operation is not implemented.");
 }

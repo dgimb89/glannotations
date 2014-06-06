@@ -8,6 +8,6 @@ void glat::LabelReference::updatePositioning(InternalState& state) {
 	// todo
 }
 
-void glat::LabelReference::updatePositioning(InternalPathState& state) {
+void glat::LabelReference::updatePositioning(PathState& state) {
 	// todo
 }

@@ -22,9 +22,9 @@ void glat::DistanceFieldFontRenderer::draw(const glow::ref_ptr<glat::AbstractAnn
 		m_drawingPrimitive->setColor(currentAnnotation->getColor());
 		setupOutline(annotation->getRenderState()->getStyling("Outline"));
 		setupBumpMap(annotation->getRenderState()->getStyling("BumpMap"));
+		annotation->setDirty(false);
 	}
 
 	annotation->getRenderState()->draw(*this);
-
 	glDisable(GL_BLEND);
 }

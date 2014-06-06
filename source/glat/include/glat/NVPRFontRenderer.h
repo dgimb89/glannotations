@@ -5,7 +5,7 @@
 #include <glat/NVPRRenderer.h>
 #include <glat/Styling.h>
 
-namespace glat{
+namespace glat {
 	class FontAnnotation;
 
 	class NVPRFontRenderer : public NVPRRenderer {
@@ -14,7 +14,7 @@ namespace glat{
 	protected:
 		virtual void drawSetupState(const glat::ViewportState& state) const override;
 		virtual void drawSetupState(const glat::InternalState& state) const override;
-		virtual void drawSetupState(const glat::InternalPathState& state) const override;
+		virtual void drawSetupState(const glat::PathState& state) const override;
 
 		void initializeFont(glat::FontAnnotation* annotation);
 		void getTextStencelingDimensions(const char* text, const size_t& messageLen, GLfloat* &xtranslate, GLfloat& totalAdvance, GLfloat& yMin, GLfloat& yMax, GLfloat& underline_position, GLfloat& underline_thickness) const;

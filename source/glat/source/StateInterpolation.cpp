@@ -4,7 +4,7 @@ const glow::ref_ptr<glat::AbstractState> glat::Interpolation::interpolate(const 
 	return nullptr;
 }
 
-const glow::ref_ptr<glat::AbstractState> glat::Interpolation::interpolate(const InternalState& first, const InternalPathState& second, float mix) {
+const glow::ref_ptr<glat::AbstractState> glat::Interpolation::interpolate(const InternalState& first, const PathState& second, float mix) {
 	return nullptr;
 }
 
@@ -12,15 +12,15 @@ const glow::ref_ptr<glat::AbstractState> glat::Interpolation::interpolate(const 
 	return nullptr;
 }
 
-const glow::ref_ptr<glat::AbstractState> glat::Interpolation::interpolate(const InternalPathState& first, const InternalState& second, float mix) {
+const glow::ref_ptr<glat::AbstractState> glat::Interpolation::interpolate(const PathState& first, const InternalState& second, float mix) {
 	return nullptr;
 }
 
-const glow::ref_ptr<glat::AbstractState> glat::Interpolation::interpolate(const InternalPathState& first, const InternalPathState& second, float mix) {
+const glow::ref_ptr<glat::AbstractState> glat::Interpolation::interpolate(const PathState& first, const PathState& second, float mix) {
 	return nullptr;
 }
 
-const glow::ref_ptr<glat::AbstractState> glat::Interpolation::interpolate(const InternalPathState& first, const ViewportState& second, float mix) {
+const glow::ref_ptr<glat::AbstractState> glat::Interpolation::interpolate(const PathState& first, const ViewportState& second, float mix) {
 	return nullptr;
 }
 
@@ -28,7 +28,7 @@ const glow::ref_ptr<glat::AbstractState> glat::Interpolation::interpolate(const 
 	return nullptr;
 }
 
-const glow::ref_ptr<glat::AbstractState> glat::Interpolation::interpolate(const ViewportState& first, const InternalPathState& second, float mix) {
+const glow::ref_ptr<glat::AbstractState> glat::Interpolation::interpolate(const ViewportState& first, const PathState& second, float mix) {
 	return nullptr;
 }
 

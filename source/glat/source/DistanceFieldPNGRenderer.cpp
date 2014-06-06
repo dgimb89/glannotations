@@ -8,9 +8,6 @@
 void glat::DistanceFieldPNGRenderer::draw(const glow::ref_ptr<glat::AbstractAnnotation>& annotation) {
 	PNGAnnotation* currentAnnotation = dynamic_cast<PNGAnnotation*>(annotation.get());
 
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 	if (currentAnnotation->isDirty()) {
 		auto quadstrip = new QuadStrip(
 			glat::TextureManager::getInstance()->getTexture(currentAnnotation->getFileName()),
@@ -24,7 +21,11 @@ void glat::DistanceFieldPNGRenderer::draw(const glow::ref_ptr<glat::AbstractAnno
 			setupOutline(annotation->getRenderState()->getStyling("Outline"));
 			setupBumpMap(annotation->getRenderState()->getStyling("BumpMap"));
 		}
+		annotation->setDirty(false);
 	}
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	annotation->getRenderState()->draw(*this);
 

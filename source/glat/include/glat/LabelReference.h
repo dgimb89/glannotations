@@ -8,6 +8,6 @@ namespace glat {
 	public:
 		virtual void draw();
 		virtual void updatePositioning(InternalState& state);
-		virtual void updatePositioning(InternalPathState& state);
+		virtual void updatePositioning(PathState& state);
 	};
 }

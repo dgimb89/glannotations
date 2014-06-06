@@ -14,7 +14,7 @@ namespace glat {
 
 	// forward declaration
 	class InternalState;
-	class InternalPathState;
+	class PathState;
 	class ViewportState;
 
 	class GLAT_API AbstractAnnotation : public glat::DirtyFlagObject {
@@ -22,10 +22,11 @@ namespace glat {
 		void draw();
 		void setState(const glow::ref_ptr<glat::AbstractState>& state);
 		glow::ref_ptr<glat::AbstractState> getState() const;
+
 		glow::ref_ptr<glat::AbstractState> getRenderState() const;
 
 		virtual void interpolateState(const InternalState& mixState, float mix);
-		virtual void interpolateState(const InternalPathState& mixState, float mix);
+		virtual void interpolateState(const PathState& mixState, float mix);
 		virtual void interpolateState(const ViewportState& mixState, float mix);
 
 		void resetInterpolation();

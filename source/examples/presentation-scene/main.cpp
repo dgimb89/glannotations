@@ -50,6 +50,7 @@
 #include <glat/PNGAnnotation.h>
 #include <glat/ViewportState.h>
 #include <glat/InternalState.h>
+#include <glat/BoxReference.h>
 #include <glat/Styles.h>
 
 #include "building.h"
@@ -177,6 +178,7 @@ public:
 		m_glatBox->setText("GLAT");
 		m_glatBox->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 		m_glatBox->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
+		m_glatBox->getState()->asInternalState().setExternalReference(new glat::BoxReference(glm::vec3(0.f, 0.f, 2.05f), glm::vec3(0.f, 1.05f, 0.f), glm::vec3(2.05f, 0.f, 0.f), &m_camera, true));
 		/*m_glatBox = new glat::FontAnnotation(new glat::ExternalBoxState(glm::vec3(-1.f, -4.f, -1.f), glm::vec3(0.f, 0.f, 2.f), glm::vec3(0.f, 1.f, 0.f), glm::vec3(2.f, 0.f, 0.f), &m_camera, false), dfFactory);
 		m_glatBox->setFontName("calibri.ttf");
 		m_glatBox->setText("GLAT");
@@ -184,7 +186,7 @@ public:
 		m_glatBox->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
 
 		glat::AbstractState* state = new glat::ViewportState(glm::vec2(-.4f, -.4f), glm::vec2(0.4f, 0.4f));
-		m_glatBox->addState(state);
+		m_glatBox->addState(state); 
 
 		m_treevisBox = new glat::FontAnnotation(new glat::ExternalBoxState(glm::vec3(-1.f, -4.f, 9.f), glm::vec3(0.f, 5.f, 0.f), glm::vec3(2.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 2.f), &m_camera, false), dfFactory);
 		m_treevisBox->setFontName("calibri.ttf");

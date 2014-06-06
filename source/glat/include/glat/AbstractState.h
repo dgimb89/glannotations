@@ -15,7 +15,7 @@ namespace glat {
 	class AbstractAnnotation;
 	class ViewportState;
 	class InternalState;
-	class InternalPathState;
+	class PathState;
 
 	typedef GLAT_API std::map<std::string, glow::ref_ptr<glat::Styling> > StylingList;
 
@@ -40,6 +40,10 @@ namespace glat {
 		virtual bool isValid() const = 0;
 		virtual glow::ref_ptr<glat::AbstractState> clone() const = 0;
 
+		glat::InternalState& asInternalState();
+		glat::PathState& asPathState();
+		glat::ViewportState& asViewportState();
+
 		glat::State::PositionAnchor getAnchor() const;
 		void setAnchor(State::PositionAnchor anchor);
 
@@ -47,7 +51,7 @@ namespace glat {
 		void setAutoExtend(State::AutoExtend extensionBehaviour);
 
 		virtual glow::ref_ptr<AbstractState> interpolateWith(const InternalState& mixState, float mix) = 0;
-		virtual glow::ref_ptr<AbstractState> interpolateWith(const InternalPathState& mixState, float mix) = 0;
+		virtual glow::ref_ptr<AbstractState> interpolateWith(const PathState& mixState, float mix) = 0;
 		virtual glow::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix) = 0;
 
 	protected:

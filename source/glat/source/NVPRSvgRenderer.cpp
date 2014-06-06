@@ -12,6 +12,7 @@ void glat::NVPRSvgRenderer::draw(const glow::ref_ptr<glat::AbstractAnnotation>& 
 		clearStencilBuffer();
 		initializeSVG(currentAnnotation->getPathString().c_str());
 		setupOutline(m_pathBase, annotation->getRenderState()->getStyling("Outline"));
+		annotation->setDirty(false);
 	}
 
 	glat::NVPRRenderer::draw(annotation);
@@ -78,6 +79,6 @@ void glat::NVPRSvgRenderer::drawPath() const {
 	}
 }
 
-void glat::NVPRSvgRenderer::drawSetupState(const glat::InternalPathState& state) const {
+void glat::NVPRSvgRenderer::drawSetupState(const glat::PathState& state) const {
 	throw std::logic_error("The method or operation is not implemented.");
 }

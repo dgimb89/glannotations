@@ -4,9 +4,9 @@
 #include <glat/AbstractExternalReference.h>
 
 namespace glat {
-	class ReferenceableState : public glat::AbstractState {
+	class GLAT_API ReferenceableState : public glat::AbstractState {
 	public:
-		void setExternalReference(const glow::ref_ptr<glat::AbstractExternalReference>& reference);
+		virtual void setExternalReference(const glow::ref_ptr<glat::AbstractExternalReference>& reference);
 		glow::ref_ptr<glat::AbstractExternalReference> getExternalReference() const;
 
 	protected:

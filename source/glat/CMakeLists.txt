@@ -94,7 +94,7 @@ set(api_includes
 	${include_path}/ReferenceableState.h
 	${include_path}/ViewportState.h
 	${include_path}/InternalState.h
-	${include_path}/InternalPathState.h
+	${include_path}/PathState.h
 	${include_path}/BoxReference.h
 	${include_path}/LabelReference.h
 	${include_path}/BSpline.h
@@ -107,6 +107,8 @@ set(api_includes
 	${include_path}/QuadStrip.h
 
 	${include_path}/Utility.h
+	${include_path}/Segment.h
+	${include_path}/Triangle.h
 )
 
 set(sources
@@ -144,7 +146,7 @@ set(sources
 	${source_path}/ReferenceableState.cpp
 	${source_path}/ViewportState.cpp
 	${source_path}/InternalState.cpp
-	${source_path}/InternalPathState.cpp
+	${source_path}/PathState.cpp
 	${source_path}/BoxReference.cpp
 	${source_path}/LabelReference.cpp
 	${source_path}/BSpline.cpp
@@ -157,6 +159,8 @@ set(sources
 	${source_path}/QuadStrip.cpp
 	
 	${source_path}/Utility.cpp
+	${source_path}/Segment.cpp
+	${source_path}/Triangle.cpp
 	${source_path}/ShaderSources.hpp
 )
 

@@ -64,7 +64,7 @@ glow::ref_ptr<glat::AbstractState> glat::InternalState::interpolateWith(const In
 	return glat::Interpolation::interpolate(*this, mixState, mix);
 }
 
-glow::ref_ptr<glat::AbstractState> glat::InternalState::interpolateWith(const InternalPathState& mixState, float mix) {
+glow::ref_ptr<glat::AbstractState> glat::InternalState::interpolateWith(const PathState& mixState, float mix) {
 	return glat::Interpolation::interpolate(*this, mixState, mix);
 }
 
@@ -76,4 +76,9 @@ glow::ref_ptr<glat::AbstractState> glat::InternalState::clone() const {
 	glow::ref_ptr<glat::InternalState> clonedState(new InternalState(m_ll, m_lr, m_ur, m_camera));
 	ReferenceableState::copyState(*clonedState);
 	return clonedState;
+}
+
+void glat::InternalState::setExternalReference(const glow::ref_ptr<glat::AbstractExternalReference>& reference) {
+	ReferenceableState::setExternalReference(reference);
+	m_externalReference->setupExternalReference(*this);
 }

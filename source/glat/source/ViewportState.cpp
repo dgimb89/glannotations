@@ -37,10 +37,16 @@ glow::ref_ptr<glat::AbstractState> glat::ViewportState::interpolateWith(const In
 	return glat::Interpolation::interpolate(*this, mixState, mix);
 }
 
-glow::ref_ptr<glat::AbstractState> glat::ViewportState::interpolateWith(const InternalPathState& mixState, float mix) {
+glow::ref_ptr<glat::AbstractState> glat::ViewportState::interpolateWith(const PathState& mixState, float mix) {
 	return glat::Interpolation::interpolate(*this, mixState, mix);
 }
 
 glow::ref_ptr<glat::AbstractState> glat::ViewportState::interpolateWith(const ViewportState& mixState, float mix) {
 	return glat::Interpolation::interpolate(*this, mixState, mix);
+}
+
+glow::ref_ptr<glat::AbstractState> glat::ViewportState::clone() const {
+	glow::ref_ptr<glat::ViewportState> clonedState(new ViewportState(m_ll, m_ur));
+	AbstractState::copyState(*clonedState);
+	return clonedState;
 }

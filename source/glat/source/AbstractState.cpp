@@ -1,5 +1,9 @@
 #include <glat/AbstractState.h>
 
+#include <glat/ViewportState.h>
+#include <glat/InternalState.h>
+#include <glat/PathState.h>
+
 void glat::AbstractState::setStyling(const glow::ref_ptr<glat::Styling>& style) {
 	setDirty(true); 
 	m_stylings[style->getID()] = style;
@@ -47,4 +51,16 @@ void glat::AbstractState::setStylings(const StylingList& stylings) {
 
 const glat::StylingList& glat::AbstractState::getStylings() const {
 	return m_stylings;
+}
+
+glat::InternalState& glat::AbstractState::asInternalState() {
+	return dynamic_cast<glat::InternalState&>(*this);
+}
+
+glat::PathState& glat::AbstractState::asPathState() {
+	return dynamic_cast<glat::PathState&>(*this);
+}
+
+glat::ViewportState& glat::AbstractState::asViewportState() {
+	return dynamic_cast<glat::ViewportState&>(*this);
 }

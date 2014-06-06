@@ -10,6 +10,7 @@ void glat::NVPRFontRenderer::draw(const glow::ref_ptr<glat::AbstractAnnotation>&
 	if (currentAnnotation->isDirty()) {
 		clearStencilBuffer();
 		initializeFont(currentAnnotation);
+		annotation->setDirty(false);
 	}
 	m_currentText = currentAnnotation->getText().c_str();
 	m_textColor = currentAnnotation->getColor();
@@ -78,7 +79,7 @@ void glat::NVPRFontRenderer::drawSetupState(const glat::InternalState& state) co
 	glPopMatrix();	
 	}
 
-void glat::NVPRFontRenderer::drawSetupState(const glat::InternalPathState& state) const {
+void glat::NVPRFontRenderer::drawSetupState(const glat::PathState& state) const {
 	throw std::logic_error("The method or operation is not implemented.");
 }
 

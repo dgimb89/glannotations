@@ -5,6 +5,9 @@
 #include <glm/glm.hpp>
 #include <limits>
 
+#include <glat/Segment.h>
+#include <glat/Triangle.h>
+
 namespace glat {
 	namespace Utility {
 		template <typename genType>

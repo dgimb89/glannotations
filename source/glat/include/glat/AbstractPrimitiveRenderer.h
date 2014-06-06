@@ -15,7 +15,7 @@ namespace glat {
 
 		virtual void drawSetupState(const glat::ViewportState& state) const override;
 		virtual void drawSetupState(const glat::InternalState& state) const override;
-		virtual void drawSetupState(const glat::InternalPathState& state) const override;
+		virtual void drawSetupState(const glat::PathState& state) const override;
 
 		// we set the primitive to mutable because there is no outside interference at all - the quad is JUST used for rendering for this specific Renderer
 		mutable glow::ref_ptr<glat::AbstractTexturedPrimitive> m_drawingPrimitive;
