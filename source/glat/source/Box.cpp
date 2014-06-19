@@ -110,26 +110,26 @@ static const char* fragShader = R"(
 
 glat::Box::Box() : glat::AbstractDrawingPrimitive() {
 	setupShader(fragShader, vertShader);
-	m_geometryShader = glow::Shader::fromString(GL_GEOMETRY_SHADER, geomShader);
+	m_geometryShader = glow::Shader::fromString(gl::GL_GEOMETRY_SHADER, geomShader);
 	m_program->attach(m_geometryShader);
 
 	m_vao->binding(0)->setAttribute(0);
-	m_vao->binding(0)->setFormat(3, GL_FLOAT, GL_FALSE, 0);
+	m_vao->binding(0)->setFormat(3, gl::GL_FLOAT, gl::GL_FALSE, 0);
 	m_vao->enable(0);
 }
 
 void glat::Box::draw() {
 	m_program->release();
 	m_program->use();
-	m_vao->drawArrays(GL_LINES, 0, 2);
+	m_vao->drawArrays(gl::GL_LINES, 0, 2);
 	m_program->release();
 }
 
 void glat::Box::setPosition(glm::vec3 llf, glm::vec3 urb) {
 	std::array<glm::vec3, 2> vertexArray{ { llf, urb } };
 	m_vao->binding(0)->setAttribute(0);
-	m_vao->binding(0)->setFormat(3, GL_FLOAT, GL_FALSE, 0);
+	m_vao->binding(0)->setFormat(3, gl::GL_FLOAT, gl::GL_FALSE, 0);
 	m_vao->enable(0);
-	m_positions->setData(vertexArray, GL_STATIC_DRAW);
+	m_positions->setData(vertexArray, gl::GL_STATIC_DRAW);
 	m_vao->binding(0)->setBuffer(m_positions, 0, sizeof(glm::vec3));
 }

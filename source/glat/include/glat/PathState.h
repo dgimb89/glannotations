@@ -19,6 +19,7 @@ namespace glat {
 		virtual glow::ref_ptr<AbstractState> interpolateWith(const PathState& mixState, float mix);
 		virtual glow::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix);
 
+	private:
 		std::shared_ptr<glat::BSpline> m_path;
 		glow::ref_ptr<glat::AbstractExternalReference> m_externalReference = nullptr;
 	};

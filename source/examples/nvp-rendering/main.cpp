@@ -1,6 +1,3 @@
-
-#include <GL/glew.h>
-
 #include <algorithm>
 #include <random>
 #include <cassert>
@@ -26,8 +23,7 @@
 #include <glowutils/AbstractCoordinateProvider.h>
 #include <glowutils/WorldInHandNavigation.h>
 #include <glowutils/FlightNavigation.h>
-#include <glowutils/File.h>
-#include <glowutils/File.h>
+#include <glowbase/File.h>
 #include <glowutils/glowutils.h>
 #include <glowutils/StringTemplate.h>
 
@@ -79,16 +75,14 @@ public:
 	void createAndSetupShaders();
 	void createAndSetupGeometry();
 
-	virtual void initialize(Window & window) override
-	{
+	virtual void initialize(Window & window) override {
+		ExampleWindowEventHandler::initialize(window);
 		glow::debugmessageoutput::enable();
-
-		glClearColor(1.0f, 1.0f, 1.0f, 0.f);
-		CheckGLError();
+		gl::glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
 		m_sphere = new glow::Program();
-		glowutils::StringTemplate* vertexShaderSource = new glowutils::StringTemplate(new glowutils::File("data/adaptive-grid/sphere.vert"));
-		glowutils::StringTemplate* fragmentShaderSource = new glowutils::StringTemplate(new glowutils::File("data/adaptive-grid/sphere.frag"));
+		glowutils::StringTemplate* vertexShaderSource = new glowutils::StringTemplate(new glow::File("data/adaptive-grid/sphere.vert"));
+		glowutils::StringTemplate* fragmentShaderSource = new glowutils::StringTemplate(new glow::File("data/adaptive-grid/sphere.frag"));
 
 #ifdef MAC_OS
 		vertexShaderSource->replace("#version 140", "#version 150");
@@ -96,8 +90,8 @@ public:
 #endif
 
 		m_sphere->attach(
-			new glow::Shader(GL_VERTEX_SHADER, vertexShaderSource)
-			, new glow::Shader(GL_FRAGMENT_SHADER, fragmentShaderSource));
+			new glow::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource)
+			, new glow::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource));
 
 
 		m_icosahedron = new glowutils::Icosahedron(2);
@@ -140,16 +134,14 @@ public:
 
 	virtual void framebufferResizeEvent(ResizeEvent & event) override
 	{
-		glViewport(0, 0, event.width(), event.height());
-		CheckGLError();
+		gl::glViewport(0, 0, event.width(), event.height());
 
 		m_camera.setViewport(event.width(), event.height());
 	}
 
 	virtual void paintEvent(PaintEvent &) override
 	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		CheckGLError();
+		gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 
 		m_agrid->update();
 		m_sphere->setUniform("transform", m_camera.viewProjection());
@@ -183,7 +175,7 @@ public:
 		switch (event.key())
 		{
 		case GLFW_KEY_F5:
-			glowutils::File::reloadAll();
+			glow::File::reloadAll();
 			break;
 		case GLFW_KEY_1:
 			m_flightEnabled = !m_flightEnabled;
@@ -321,12 +313,12 @@ public:
 
 	virtual float depthAt(const ivec2 & windowCoordinates) const override
 	{
-		return AbstractCoordinateProvider::depthAt(m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
+		return AbstractCoordinateProvider::depthAt(m_camera, gl::GL_DEPTH_COMPONENT, windowCoordinates);
 	}
 
 	virtual vec3 objAt(const ivec2 & windowCoordinates) const override
 	{
-		return unproject(m_camera, static_cast<GLenum>(GL_DEPTH_COMPONENT), windowCoordinates);
+		return unproject(m_camera, static_cast<gl::GLenum>(gl::GL_DEPTH_COMPONENT), windowCoordinates);
 	}
 
 	virtual vec3 objAt(const ivec2 & windowCoordinates, const float depth) const override

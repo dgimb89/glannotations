@@ -42,7 +42,6 @@
 #   endif
 #endif
 
-
 /**
  * \namespace glat
  *

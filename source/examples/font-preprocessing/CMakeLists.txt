@@ -7,7 +7,6 @@ message(STATUS "Example ${target}")
 #
 
 find_package(OpenGL REQUIRED)
-find_package(GLEW REQUIRED)
 find_package(GLFW REQUIRED)
 find_package(GLM REQUIRED)
 find_package(GLOW REQUIRED)
@@ -19,7 +18,6 @@ find_package(GLOW REQUIRED)
 include_directories(
     ${OPENGL_INCLUDE_DIR}
     ${GLM_INCLUDE_DIR}
-    ${GLEW_INCLUDE_DIR}
     ${GLFW_INCLUDE_DIR}
     ${GLOW_INCLUDES}
 )
@@ -37,7 +35,6 @@ include_directories(
 
 set(libs
     ${OPENGL_LIBRARIES}
-    ${GLEW_LIBRARY}
     ${GLFW_LIBRARY}
     ${GLOW_LIBRARIES}
     ${EXAMPLE_COMMON}

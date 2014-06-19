@@ -1,18 +1,4 @@
 if(OPTION_BUILD_EXAMPLES)
-	if(WIN32)
-		install(FILES ${GLEW_INCLUDE_DIR}/../bin/glew32.dll DESTINATION ${INSTALL_BIN})
-	endif()
-
-	include_directories(
-	    ${GLOW_INCLUDES}
-	    ${GLM_INCLUDE_DIR}
-	)
-
-	include_directories(
-	    BEFORE
-	    ${CMAKE_SOURCE_DIR}/source/glat/include
-	    ${CMAKE_SOURCE_DIR}/source/glat_preprocessor/include
-	)
 
 	get_property(GENERATED_HEADER_PATH GLOBAL PROPERTY GENERATED_HEADER_PATH_PROPERTY)
 

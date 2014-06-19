@@ -59,9 +59,9 @@ glat::BoxReference::BoxReference(glm::vec3 widthSpan, glm::vec3 heightSpan, glm:
 void glat::BoxReference::draw() {
 	if (!isPositioningOnly()) {
 		m_box->setModelViewProjection(m_camera->viewProjection());
-		glDepthMask(GL_FALSE);
+		gl::glDepthMask(gl::GL_FALSE);
 		m_box->draw();
-		glDepthMask(GL_TRUE);
+		gl::glDepthMask(gl::GL_TRUE);
 	}
 }
 

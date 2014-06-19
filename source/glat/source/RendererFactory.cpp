@@ -1,6 +1,3 @@
-#define NOMINMAX
-#include <GL/glew.h>
-
 #include <glat/RendererFactory.h>
 #include <glat/SVGAnnotation.h>
 #include <glat/PNGAnnotation.h>

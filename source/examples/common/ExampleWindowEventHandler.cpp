@@ -1,7 +1,7 @@
-
-#include <GL/glew.h>
-
 #include "ExampleWindowEventHandler.h"
+
+#include <glow/glow.h>
+
 #include <glowwindow/events.h>
 #include <glowwindow/Window.h>
 
@@ -10,8 +10,8 @@
 
 
 ExampleWindowEventHandler::ExampleWindowEventHandler()
-:   m_swapElapsedTime(0.0)
-,   m_swapCount(0)
+	: m_swapElapsedTime(0.0)
+	, m_swapCount(0)
 {
 }
 
@@ -19,90 +19,94 @@ ExampleWindowEventHandler::~ExampleWindowEventHandler()
 {
 }
 
+void ExampleWindowEventHandler::initialize(glowwindow::Window & /*window*/)
+{
+	glow::init();
+}
 
 void ExampleWindowEventHandler::handleEvent(glowwindow::WindowEvent & event)
 {
-    WindowEventHandler::handleEvent(event);
+	WindowEventHandler::handleEvent(event);
 
-    if (!event.window())
-        return;
+	if (!event.window())
+		return;
 
-    switch (event.type())
-    {
-        case glowwindow::WindowEvent::FrameBufferResize:
-            setViewport(static_cast<glowwindow::ResizeEvent&>(event));
-            break;
+	switch (event.type())
+	{
+	case glowwindow::WindowEvent::FrameBufferResize:
+		setViewport(static_cast<glowwindow::ResizeEvent&>(event));
+		break;
 
-        case glowwindow::WindowEvent::Paint:
-            computeFps(static_cast<glowwindow::PaintEvent&>(event));
-            break;
+	case glowwindow::WindowEvent::Paint:
+		computeFps(static_cast<glowwindow::PaintEvent&>(event));
+		break;
 
-        case glowwindow::WindowEvent::KeyPress:
-            handleDefaultKeys(static_cast<glowwindow::KeyEvent&>(event));
-            break;
+	case glowwindow::WindowEvent::KeyPress:
+		handleDefaultKeys(static_cast<glowwindow::KeyEvent&>(event));
+		break;
 
-        default:
-            break;
-    }
+	default:
+		break;
+	}
 }
 
 void ExampleWindowEventHandler::setViewport(glowwindow::ResizeEvent & event)
 {
-    glViewport(0, 0, event.width(), event.height());
+	gl::glViewport(0, 0, event.width(), event.height());
 }
 
 namespace {
 
-bool startsWith(const std::string & str, const std::string str2)
-{
-    return str.compare(0, str2.length(), str2) == 0;
-}
+	bool startsWith(const std::string & str, const std::string str2)
+	{
+		return str.compare(0, str2.length(), str2) == 0;
+	}
 
 }
 
 void ExampleWindowEventHandler::computeFps(glowwindow::PaintEvent & event)
 {
-       m_timer.update();
+	m_timer.update();
 
-       ++m_swapCount;
+	++m_swapCount;
 
-       if (m_timer.elapsed().count() - m_swapElapsedTime >= 1e+9)
-       {
-           const float fps = 1e+9f * static_cast<float>(static_cast<long double>(m_swapCount) / (m_timer.elapsed().count() - m_swapElapsedTime));
+	if (m_timer.elapsed().count() - m_swapElapsedTime >= 1e+9)
+	{
+		const float fps = 1e+9f * static_cast<float>(static_cast<long double>(m_swapCount) / (m_timer.elapsed().count() - m_swapElapsedTime));
 
-           std::string title = event.window()->title();
-           if (!startsWith(title, m_baseTitle) || m_baseTitle.length() == 0)
-           {
-               m_baseTitle = title;
-           }
+		std::string title = event.window()->title();
+		if (!startsWith(title, m_baseTitle) || m_baseTitle.length() == 0)
+		{
+			m_baseTitle = title;
+		}
 
-           std::stringstream stream;
-           stream << m_baseTitle << " (" << std::fixed << std::setprecision(2) << fps << " fps)";
+		std::stringstream stream;
+		stream << m_baseTitle << " (" << std::fixed << std::setprecision(2) << fps << " fps)";
 
-           event.window()->setTitle(stream.str());
+		event.window()->setTitle(stream.str());
 
-           m_swapElapsedTime = static_cast<long double>(m_timer.elapsed().count());
-           m_swapCount = 0;
-       }
+		m_swapElapsedTime = static_cast<long double>(m_timer.elapsed().count());
+		m_swapCount = 0;
+	}
 }
 
 void ExampleWindowEventHandler::handleDefaultKeys(glowwindow::KeyEvent & event)
 {
-    switch (event.key())
-    {
-    case GLFW_KEY_ESCAPE:
-        event.window()->close();
-        break;
-    case GLFW_KEY_ENTER:
-        if ((event.modifiers() & GLFW_MOD_ALT) == 0)
-        {
-            break;
-        }
-        // fall through
-    case GLFW_KEY_F11:
-        event.window()->toggleMode();
-        break;
-    default:
-        break;
-    }
+	switch (event.key())
+	{
+	case GLFW_KEY_ESCAPE:
+		event.window()->close();
+		break;
+	case GLFW_KEY_ENTER:
+		if ((event.modifiers() & GLFW_MOD_ALT) == 0)
+		{
+			break;
+		}
+		// fall through
+	case GLFW_KEY_F11:
+		event.window()->toggleMode();
+		break;
+	default:
+		break;
+	}
 }

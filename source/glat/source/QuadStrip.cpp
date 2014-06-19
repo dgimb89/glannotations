@@ -181,11 +181,11 @@ glat::QuadStrip::QuadStrip(std::shared_ptr<glow::Texture> texture, bool isDistan
 	m_texAdvance = new glow::Buffer();
 
 
-	m_geometryShader = glow::Shader::fromString(GL_GEOMETRY_SHADER, geomQuadStripShaderSource);
+	m_geometryShader = glow::Shader::fromString(gl::GL_GEOMETRY_SHADER, geomQuadStripShaderSource);
 	m_program->attach(m_geometryShader);
 
 	m_vao->binding(0)->setAttribute(0);
-	m_vao->binding(0)->setFormat(3, GL_FLOAT, GL_FALSE, 0);
+	m_vao->binding(0)->setFormat(3, gl::GL_FLOAT, gl::GL_FALSE, 0);
 	m_vao->enable(0);
 }
 
@@ -200,13 +200,12 @@ void glat::QuadStrip::clearQuads() {
 void glat::QuadStrip::draw() {
 	m_program->release();
 	if (m_texture) {
-		glActiveTexture(GL_TEXTURE0);
-		CheckGLError();
+		gl::glActiveTexture(gl::GL_TEXTURE0);
 		m_texture->bind();
 	}
 
 	m_program->use();
-	m_vao->drawArrays(GL_POINTS, 0, m_vertexCount);
+	m_vao->drawArrays(gl::GL_POINTS, 0, m_vertexCount);
 	m_program->release();
 
 	if (m_texture) {
@@ -246,34 +245,34 @@ void glat::QuadStrip::updateQuadRanges() {
 		currentLL += currentWidthSpan;
 	}
 
-	m_positions->setData(vertexVector, GL_STATIC_DRAW);
+	m_positions->setData(vertexVector, gl::GL_STATIC_DRAW);
 	m_vao->binding(0)->setAttribute(0);
-	m_vao->binding(0)->setFormat(3, GL_FLOAT, GL_FALSE, 0);
+	m_vao->binding(0)->setFormat(3, gl::GL_FLOAT, gl::GL_FALSE, 0);
 	m_vao->binding(0)->setBuffer(m_positions, 0, sizeof(glm::vec3));
 	m_vao->enable(0);
 	m_vertexCount = vertexVector.size();
 
-	m_texCoords->setData(textures, GL_STATIC_DRAW);
+	m_texCoords->setData(textures, gl::GL_STATIC_DRAW);
 	m_vao->binding(1)->setAttribute(1);
-	m_vao->binding(1)->setFormat(2, GL_FLOAT, GL_FALSE, 0);
+	m_vao->binding(1)->setFormat(2, gl::GL_FLOAT, gl::GL_FALSE, 0);
 	m_vao->binding(1)->setBuffer(m_texCoords, 0, sizeof(texVec2_t));
 	m_vao->enable(1);
 
-	m_texAdvance->setData(texAdvances, GL_STATIC_DRAW);
+	m_texAdvance->setData(texAdvances, gl::GL_STATIC_DRAW);
 	m_vao->binding(2)->setAttribute(2);
-	m_vao->binding(2)->setFormat(2, GL_FLOAT, GL_FALSE, 0);
+	m_vao->binding(2)->setFormat(2, gl::GL_FLOAT, gl::GL_FALSE, 0);
 	m_vao->binding(2)->setBuffer(m_texAdvance, 0, sizeof(texVec2_t));
 	m_vao->enable(2);
 
-	m_advanceH->setData(vertAdvanceH, GL_STATIC_DRAW);
+	m_advanceH->setData(vertAdvanceH, gl::GL_STATIC_DRAW);
 	m_vao->binding(3)->setAttribute(3);
-	m_vao->binding(3)->setFormat(3, GL_FLOAT, GL_FALSE, 0);
+	m_vao->binding(3)->setFormat(3, gl::GL_FLOAT, gl::GL_FALSE, 0);
 	m_vao->binding(3)->setBuffer(m_advanceH, 0, sizeof(glm::vec3));
 	m_vao->enable(3);
 
-	m_advanceW->setData(vertAdvanceW, GL_STATIC_DRAW);
+	m_advanceW->setData(vertAdvanceW, gl::GL_STATIC_DRAW);
 	m_vao->binding(4)->setAttribute(4);
-	m_vao->binding(4)->setFormat(3, GL_FLOAT, GL_FALSE, 0);
+	m_vao->binding(4)->setFormat(3, gl::GL_FLOAT, gl::GL_FALSE, 0);
 	m_vao->binding(4)->setBuffer(m_advanceW, 0, sizeof(glm::vec3));
 	m_vao->enable(4);
 }

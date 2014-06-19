@@ -1,9 +1,8 @@
 
-#include <GL/glew.h>
-
 #include <algorithm>
 #include <random>
 #include <cassert>
+#include <iostream>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -30,8 +29,7 @@
 #include <glowutils/AbstractCoordinateProvider.h>
 #include <glowutils/WorldInHandNavigation.h>
 #include <glowutils/FlightNavigation.h>
-#include <glowutils/File.h>
-#include <glowutils/File.h>
+#include <glowbase/File.h>
 #include <glowutils/glowutils.h>
 #include <glowutils/StringTemplate.h>
 #include <glowutils/ScreenAlignedQuad.h>
@@ -89,23 +87,24 @@ public:
 
 	virtual void initialize(Window & window) override
 	{
+		ExampleWindowEventHandler::initialize(window);
 		glow::debugmessageoutput::enable();
+
 		glat::RendererFactory dfFactory;
 		dfFactory.useNVpr(false);
-		glow::debugmessageoutput::enable();
 
-		glClearColor(1.0f, 1.0f, 1.0f, 0.f);
+		gl::glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
-		glowutils::StringTemplate* gbufferVertexShader = new glowutils::StringTemplate(new glowutils::File("data/presentation-scene/gbuffer.vert"));
-		glowutils::StringTemplate* gbufferFragmentShader = new glowutils::StringTemplate(new glowutils::File("data/presentation-scene/gbuffer.frag"));
-		glowutils::StringTemplate* phongVertexShader = new glowutils::StringTemplate(new glowutils::File("data/presentation-scene/phong.vert"));
-		glowutils::StringTemplate* phongFragmentShader = new glowutils::StringTemplate(new glowutils::File("data/presentation-scene/phong.frag"));
+		glowutils::StringTemplate* gbufferVertexShader = new glowutils::StringTemplate(new glow::File("data/presentation-scene/gbuffer.vert"));
+		glowutils::StringTemplate* gbufferFragmentShader = new glowutils::StringTemplate(new glow::File("data/presentation-scene/gbuffer.frag"));
+		glowutils::StringTemplate* phongVertexShader = new glowutils::StringTemplate(new glow::File("data/presentation-scene/phong.vert"));
+		glowutils::StringTemplate* phongFragmentShader = new glowutils::StringTemplate(new glow::File("data/presentation-scene/phong.frag"));
 
 		m_gbuffer = new glow::Program();
-		m_gbuffer->attach(new glow::Shader(GL_VERTEX_SHADER, gbufferVertexShader), new glow::Shader(GL_FRAGMENT_SHADER, gbufferFragmentShader));
+		m_gbuffer->attach(new glow::Shader(gl::GL_VERTEX_SHADER, gbufferVertexShader), new glow::Shader(gl::GL_FRAGMENT_SHADER, gbufferFragmentShader));
 
 		m_phong = new glow::Program();
-		m_phong->attach(new glow::Shader(GL_VERTEX_SHADER, phongVertexShader), new glow::Shader(GL_FRAGMENT_SHADER, phongFragmentShader));
+		m_phong->attach(new glow::Shader(gl::GL_VERTEX_SHADER, phongVertexShader), new glow::Shader(gl::GL_FRAGMENT_SHADER, phongFragmentShader));
 
 		m_quad = new glowutils::ScreenAlignedQuad(m_phong);
 
@@ -212,7 +211,6 @@ public:
 
 		m_hpilogo = new glat::PNGAnnotation(new glat::InternalState(glm::vec3(-2.f, -4.f, 2.f), glm::vec3(-2.f, -4.f, 7.f), glm::vec3(-2.f, 1.0f, 7.f), &m_camera), "hpi.png", dfFactory);
 		// m_hpilogo->addState(new glat::ViewportState(glm::vec2(-.25f, -.5f), glm::vec2(0.25f, 0.5f)));
-
 		window.addTimer(0, 0, false);
 
 	}
@@ -248,8 +246,7 @@ public:
 
 	virtual void framebufferResizeEvent(ResizeEvent & event) override
 	{
-		glViewport(0, 0, event.width(), event.height());
-		CheckGLError();
+		gl::glViewport(0, 0, event.width(), event.height());
 
 		m_camera.setViewport(event.width(), event.height());
 	}
@@ -271,16 +268,15 @@ public:
 		m_building12->setModelViewProjection(m_camera.viewProjection());
 		m_building13->setModelViewProjection(m_camera.viewProjection());
 		m_building14->setModelViewProjection(m_camera.viewProjection());
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+		gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT | gl::GL_STENCIL_BUFFER_BIT);
 
 		m_phong->setUniform("transformi", m_camera.viewProjectionInverted());
 
 		//m_fbo->bind();
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glEnable(GL_DEPTH_TEST);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glEnable(GL_BLEND);
-		CheckGLError();
+		gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
+		gl::glEnable(gl::GL_DEPTH_TEST);
+		gl::glBlendFunc(gl::GL_SRC_ALPHA, gl::GL_ONE_MINUS_SRC_ALPHA);
+		gl::glEnable(gl::GL_BLEND);
 
 		//m_gbuffer->use();
 		m_building->draw();
@@ -304,6 +300,7 @@ public:
 		/*m_treevisBox->draw();
 		m_glowText->draw();*/
 		m_hpicgs->draw();
+		//std::cout << "center: " << m_camera.center().x << ", " << m_camera.center().y << ", " << m_camera.center().z << std::endl;
 	}
 
 	virtual void timerEvent(TimerEvent & event) override
@@ -320,7 +317,7 @@ public:
 		switch (event.key())
 		{
 		case GLFW_KEY_F5:
-			glowutils::File::reloadAll();
+			glow::File::reloadAll();
 			break;
 		case GLFW_KEY_1:
 			m_flightEnabled = !m_flightEnabled;
@@ -471,12 +468,12 @@ public:
 
 	virtual float depthAt(const ivec2 & windowCoordinates) const override
 	{
-		return AbstractCoordinateProvider::depthAt(m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
+		return AbstractCoordinateProvider::depthAt(m_camera, gl::GL_DEPTH_COMPONENT, windowCoordinates);
 	}
 
 	virtual vec3 objAt(const ivec2 & windowCoordinates) const override
 	{
-		return unproject(m_camera, static_cast<GLenum>(GL_DEPTH_COMPONENT), windowCoordinates);
+		return unproject(m_camera, static_cast<gl::GLenum>(gl::GL_DEPTH_COMPONENT), windowCoordinates);
 	}
 
 	virtual vec3 objAt(const ivec2 & windowCoordinates, const float depth) const override

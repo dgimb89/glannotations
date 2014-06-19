@@ -1,14 +1,14 @@
 #include <glat/TextureManager.h>
 #include <glat/PNGImage.h>
 
-glow::ref_ptr<glat::TextureManager> glat::TextureManager::_instance = nullptr;
+std::unique_ptr<glat::TextureManager> glat::TextureManager::_instance = nullptr;
 
-glow::ref_ptr<glat::TextureManager> glat::TextureManager::getInstance() {
+glat::TextureManager& glat::TextureManager::getInstance() {
 	if (!_instance) {
-		_instance = new TextureManager;
+		_instance = std::move(std::unique_ptr<TextureManager>(new TextureManager));
 	}
 
-	return _instance;
+	return *_instance;
 }
 
 std::shared_ptr<glow::Texture> glat::TextureManager::getTexture(std::string fileName) {
@@ -20,15 +20,15 @@ std::shared_ptr<glow::Texture> glat::TextureManager::getTexture(std::string file
 	}
 
 	// load texture
-	auto texture = std::make_shared<glat::ManagedTexture>(GL_TEXTURE_2D);
-	texture->setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	texture->setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	texture->setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	texture->setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	texture->setParameter(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	auto texture = std::make_shared<glat::ManagedTexture>(gl::GL_TEXTURE_2D);
+	texture->setParameter(gl::GL_TEXTURE_MIN_FILTER, gl::GL_LINEAR);
+	texture->setParameter(gl::GL_TEXTURE_MAG_FILTER, gl::GL_LINEAR);
+	texture->setParameter(gl::GL_TEXTURE_WRAP_S, gl::GL_CLAMP_TO_EDGE);
+	texture->setParameter(gl::GL_TEXTURE_WRAP_T, gl::GL_CLAMP_TO_EDGE);
+	texture->setParameter(gl::GL_TEXTURE_WRAP_R, gl::GL_CLAMP_TO_EDGE);
 	glat::PNGImage image(fileName);
-	GLenum format = image.getNumComponents() == 1 ? GL_RED : (image.getNumComponents() == 3 ? GL_RGB : GL_RGBA);
-	texture->image2D(0, format, image.getWidth(), image.getHeight(), 0, format, GL_UNSIGNED_BYTE, image.getImage()->data);
+	gl::GLenum format = image.getNumComponents() == 1 ? gl::GL_RED : (image.getNumComponents() == 3 ? gl::GL_RGB : gl::GL_RGBA);
+	texture->image2D(0, format, image.getWidth(), image.getHeight(), 0, format, gl::GL_UNSIGNED_BYTE, image.getImage()->data);
 	m_textures[fileName] = texture;
 	return texture;
 }
@@ -40,5 +40,5 @@ glat::ManagedTexture::~ManagedTexture() {
 	glow::Texture::~Texture();
 }
 
-glat::ManagedTexture::ManagedTexture(GLenum target /*= GL_TEXTURE_2D*/) : glow::Texture(target) {
+glat::ManagedTexture::ManagedTexture(gl::GLenum target /*= GL_TEXTURE_2D*/) : glow::Texture(target) {
 }

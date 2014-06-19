@@ -91,7 +91,7 @@ static const char* fragPrismoidShaderSource = R"(
 void glat::Prismoid::draw() {
 	m_program->release();
 	m_program->use();
-	m_vao->drawArrays(GL_LINE_STRIP_ADJACENCY, 0, m_numVert);
+	m_vao->drawArrays(gl::GL_LINE_STRIP_ADJACENCY, 0, m_numVert);
 	m_program->release();
 }
 
@@ -105,7 +105,7 @@ void glat::Prismoid::setPosition(const std::vector<glm::vec3>& linestrip, glm::m
 	vertexArray.push_back(vertexArray.back() + glm::normalize(linestrip.back() - linestrip.at(linestrip.size() - 2)));
 
 	m_numVert = vertexArray.size();
-	m_positions->setData(vertexArray, GL_STATIC_DRAW);
+	m_positions->setData(vertexArray, gl::GL_STATIC_DRAW);
 	m_vao->binding(0)->setBuffer(m_positions, 0, sizeof(glm::vec3));
 
 	setModelViewProjection(modelViewProjection);
@@ -113,12 +113,12 @@ void glat::Prismoid::setPosition(const std::vector<glm::vec3>& linestrip, glm::m
 
 glat::Prismoid::Prismoid() {
 	setupShader(fragPrismoidShaderSource, vertPrismoidShaderSource);
-	m_geomShader = glow::Shader::fromString(GL_GEOMETRY_SHADER, geomPrismoidShaderSource);
+	m_geomShader = glow::Shader::fromString(gl::GL_GEOMETRY_SHADER, geomPrismoidShaderSource);
 	m_program->attach(m_geomShader);
 
 	// Position
 	m_vao->binding(0)->setAttribute(0);
-	m_vao->binding(0)->setFormat(3, GL_FLOAT, GL_FALSE, 0);
+	m_vao->binding(0)->setFormat(3, gl::GL_FLOAT, gl::GL_FALSE, 0);
 	m_vao->enable(0);
 }
 

@@ -59,6 +59,7 @@ namespace glat {
 		virtual void draw(const AbstractRenderer& renderer) = 0;
 		AbstractState();
 
+	private:
 		StylingList m_stylings;
 		State::PositionAnchor m_anchor;
 		State::AutoExtend m_autoExtend;
