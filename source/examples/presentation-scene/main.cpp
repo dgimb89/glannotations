@@ -177,7 +177,7 @@ public:
 		m_glatBox->setText("GLAT");
 		m_glatBox->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 		m_glatBox->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
-		m_glatBox->getState()->asInternalState().setExternalReference(new glat::BoxReference(glm::vec3(0.f, 0.f, 2.05f), glm::vec3(0.f, 1.05f, 0.f), glm::vec3(2.05f, 0.f, 0.f), &m_camera, true));
+		m_glatBox->getState()->asInternalState().setExternalReference(new glat::BoxReference(glm::vec2(0.f, 0.f), glm::vec2(0.f, 2.f), glm::vec3(2.f, 0.f, 0.f), &m_camera, false));
 		/*m_glatBox = new glat::FontAnnotation(new glat::ExternalBoxState(glm::vec3(-1.f, -4.f, -1.f), glm::vec3(0.f, 0.f, 2.f), glm::vec3(0.f, 1.f, 0.f), glm::vec3(2.f, 0.f, 0.f), &m_camera, false), dfFactory);
 		m_glatBox->setFontName("calibri.ttf");
 		m_glatBox->setText("GLAT");
@@ -300,7 +300,6 @@ public:
 		/*m_treevisBox->draw();
 		m_glowText->draw();*/
 		m_hpicgs->draw();
-		//std::cout << "center: " << m_camera.center().x << ", " << m_camera.center().y << ", " << m_camera.center().z << std::endl;
 	}
 
 	virtual void timerEvent(TimerEvent & event) override
@@ -569,7 +568,7 @@ int main(int /*argc*/, char* /*argv*/[])
 
 	ContextFormat format;
 	format.setVersion(3, 0);
-	format.setSamples(16);
+	format.setSamples(24);
 	Window window;
 
 	window.setEventHandler(new EventHandler());

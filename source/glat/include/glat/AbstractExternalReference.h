@@ -12,22 +12,27 @@ namespace glat {
 
 	class GLAT_API AbstractExternalReference : public glat::DirtyFlagObject {
 	public:
+		friend class InternalState;
+		friend class PathState;
 		AbstractExternalReference(glowutils::Camera* camera, bool positioningOnly);
-		
-		inline void setCamera(glowutils::Camera* camera);
-		inline void setPositioningOnly(bool positioningOnly);
 		bool isPositioningOnly();
 
+	protected:
+		inline void setCamera(glowutils::Camera* camera);
+		inline void setPositioningOnly(bool positioningOnly);
+
 		virtual void draw() = 0;
-		virtual void setupExternalReference(const InternalState& state) = 0;
-		virtual void setupExternalReference(const PathState& state) = 0;
+		virtual void setupExternalReference(const InternalState& state);
+		virtual void setupExternalReference(const PathState& state);
 
 		// updates positioning of given state
 		virtual void updatePositioning(InternalState& state) = 0;
 		virtual void updatePositioning(PathState& state) = 0;
 
-	protected:
 		glowutils::Camera* m_camera;
 		bool m_positioningOnly;
+
+	private:
+		void assertNotReused();
 	};
 }

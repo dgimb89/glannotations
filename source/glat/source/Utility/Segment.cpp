@@ -1,9 +1,11 @@
-#include <glat/Segment.h>
-#include <glat/Triangle.h>
+#include <glat/Utility/Segment.h>
+#include <glat/Utility/Triangle.h>
+#include <glat/Utility/Plane.h>
+#include <algorithm>
 
 #define SMALL_NUM   0.00000001f // anything that avoids division overflow
 
-int glat::Segment::intersect(const glat::Triangle& T, glm::vec3& point) const {
+int glat::Utility::Segment::intersect(const glat::Utility::Triangle& T, glm::vec3& point) const {
 	// http://geomalgorithms.com/a06-_intersect-2.html
 	glm::vec3	u, v, n;              // triangle vectors
 	glm::vec3	dir, w0, w;           // ray vectors
@@ -58,7 +60,27 @@ int glat::Segment::intersect(const glat::Triangle& T, glm::vec3& point) const {
 	return 1;                       // I is in T
 }
 
-glat::Segment::Segment(glm::vec3 A, glm::vec3 B) {
+glat::Utility::Segment::Segment(glm::vec3 A, glm::vec3 B) {
 	P0 = A;
 	P1 = B;
+}
+
+float glat::Utility::Segment::minDistanceToEndpoint(const glm::vec3& point) {
+	return std::min(glm::distance(point, P0), glm::distance(point, P1));
+}
+
+int glat::Utility::Segment::orthographicProjection(const glm::vec3& point, glm::vec3& projectionPoint) const {
+	glm::vec3 u(P1 - P0);
+	float r = glm::dot((point - P0), u) / glm::dot(u, u);
+	if (r < 0.f) {
+		// before segment
+		return 0;
+	}
+	else if (r > 1.f) {
+		// after segment
+		return 0;
+	}
+
+	projectionPoint = P0 + r*u;
+	return 1;
 }

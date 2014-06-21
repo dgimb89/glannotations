@@ -10,7 +10,7 @@ glow::ref_ptr<glat::AbstractExternalReference> glat::ReferenceableState::getExte
 
 void glat::ReferenceableState::copyState(ReferenceableState& copyTo) const {
 	if (getExternalReference()) {
-		copyTo.setExternalReference(getExternalReference());
+		copyTo.m_externalReference = getExternalReference(); // we set the data directly to avoid reinitialization
 	}
 	AbstractState::copyState(copyTo);
 }

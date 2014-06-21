@@ -51,6 +51,9 @@ else()
     add_definitions("-DGLAT_EXPORTS")
 endif()
 
+# force radians to avoid deprecated glm functionality
+add_definitions("-DGLM_FORCE_RADIANS")
+
 #
 # Sources
 #
@@ -106,9 +109,10 @@ set(api_includes
 	${include_path}/AbstractTexturedPrimitive.h
 	${include_path}/QuadStrip.h
 
-	${include_path}/Utility.h
-	${include_path}/Segment.h
-	${include_path}/Triangle.h
+	${include_path}/Utility/Utility.h
+	${include_path}/Utility/Segment.h
+	${include_path}/Utility/Triangle.h
+	${include_path}/Utility/Plane.h
 )
 
 set(sources
@@ -158,9 +162,11 @@ set(sources
 	${source_path}/AbstractTexturedPrimitive.cpp
 	${source_path}/QuadStrip.cpp
 	
-	${source_path}/Utility.cpp
-	${source_path}/Segment.cpp
-	${source_path}/Triangle.cpp
+	${source_path}/Utility/Utility.cpp
+	${source_path}/Utility/Segment.cpp
+	${source_path}/Utility/Triangle.cpp
+	${source_path}/Utility/Plane.cpp
+
 	${source_path}/ShaderSources.hpp
 )
 
