@@ -42,6 +42,7 @@
 
 #include <ExampleWindowEventHandler.h>
 
+#include <glat/AnnotationGroup.h>
 #include <glat/RendererFactory.h>
 #include <glat/FontAnnotation.h>
 #include <glat/SVGAnnotation.h>
@@ -85,13 +86,13 @@ public:
 	void createAndSetupShaders();
 	void createAndSetupGeometry();
 
-	virtual void initialize(Window & window) override
-	{
+	virtual void initialize(Window & window) override {
 		ExampleWindowEventHandler::initialize(window);
 		glow::debugmessageoutput::enable();
 
 		glat::RendererFactory dfFactory;
 		dfFactory.useNVpr(false);
+		dfFactory.setMatricesBindingIndex(2);
 
 		gl::glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
@@ -114,21 +115,21 @@ public:
 		m_camera.setEye(vec3(-17.f, 12.f, -15.0f));
 		m_camera.setUp(vec3(0, 1, 0));
 
-		m_building = new glat::Building();
-		m_building1 = new glat::Building();
-		m_building2 = new glat::Building();
-		m_building3 = new glat::Building();
-		m_building4 = new glat::Building();
-		m_building5 = new glat::Building();
-		m_building6 = new glat::Building();
-		m_building7 = new glat::Building();
-		m_building8 = new glat::Building();
-		m_building9 = new glat::Building();
-		m_building10 = new glat::Building();
-		m_building11 = new glat::Building();
-		m_building12 = new glat::Building();
-		m_building13 = new glat::Building();
-		m_building14 = new glat::Building();
+		m_building = new glat::Building(2);
+		m_building1 = new glat::Building(2);
+		m_building2 = new glat::Building(2);
+		m_building3 = new glat::Building(2);
+		m_building4 = new glat::Building(2);
+		m_building5 = new glat::Building(2);
+		m_building6 = new glat::Building(2);
+		m_building7 = new glat::Building(2);
+		m_building8 = new glat::Building(2);
+		m_building9 = new glat::Building(2);
+		m_building10 = new glat::Building(2);
+		m_building11 = new glat::Building(2);
+		m_building12 = new glat::Building(2);
+		m_building13 = new glat::Building(2);
+		m_building14 = new glat::Building(2);
 
 		float color;
 		srand(time(NULL));
@@ -172,12 +173,13 @@ public:
 		m_building13->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
 		m_building14->setColor(buildingColor + temp);
 
-		m_glatBox = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-1.01f, -4.f, -1.f), glm::vec3(-1.01f, -4.f, 1.f), glm::vec3(-1.01f, -3.f, 1.f), &m_camera), dfFactory);
-		m_glatBox->setFontName("calibri.ttf");
-		m_glatBox->setText("GLAT");
-		m_glatBox->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
-		m_glatBox->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
-		m_glatBox->getState()->asInternalState().setExternalReference(new glat::BoxReference(glm::vec2(0.f, 0.f), glm::vec2(0.f, 2.f), glm::vec3(2.f, 0.f, 0.f), &m_camera, false));
+		auto glatBox = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-1.01f, -4.f, -1.f), glm::vec3(-1.01f, -4.f, 1.f), glm::vec3(-1.01f, -3.f, 1.f)), dfFactory);
+		m_annotations.addAnnotation(glatBox);
+		glatBox->setFontName("calibri.ttf");
+		glatBox->setText("GLAT");
+		glatBox->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
+		glatBox->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
+		glatBox->getState()->asInternalState().setExternalReference(new glat::BoxReference(glm::vec2(0.f, 0.f), glm::vec2(0.f, 2.f), glm::vec3(2.f, 0.f, 0.f), &m_camera, false));
 		/*m_glatBox = new glat::FontAnnotation(new glat::ExternalBoxState(glm::vec3(-1.f, -4.f, -1.f), glm::vec3(0.f, 0.f, 2.f), glm::vec3(0.f, 1.f, 0.f), glm::vec3(2.f, 0.f, 0.f), &m_camera, false), dfFactory);
 		m_glatBox->setFontName("calibri.ttf");
 		m_glatBox->setText("GLAT");
@@ -200,16 +202,17 @@ public:
 		m_glowText->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(1.f, 1.f, 1.f)));
 		m_glowText->getState()->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 0.f, 1.f)));*/
 
-		m_hpicgs = new glat::FontAnnotation(new glat::InternalState(glm::vec3(2.f, -1.f, -1.01f), glm::vec3(2.f, 3.f, -1.01f), glm::vec3(4.f, 3.f, -1.01f), &m_camera), dfFactory);
-		m_hpicgs->setFontName("calibri.ttf");
-		m_hpicgs->setText("GLOW");
-		m_hpicgs->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
-		m_hpicgs->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
+		auto hpicgs = new glat::FontAnnotation(new glat::InternalState(glm::vec3(2.f, -1.f, -1.01f), glm::vec3(2.f, 3.f, -1.01f), glm::vec3(4.f, 3.f, -1.01f)), dfFactory);
+		m_annotations.addAnnotation(hpicgs);
+		hpicgs->setFontName("calibri.ttf");
+		hpicgs->setText("GLOW");
+		hpicgs->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
+		hpicgs->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
 		/*glat::ExternalBoxState* extBox = new glat::ExternalBoxState(glm::vec3(), glm::vec3(1.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f), glm::vec3(0.f, 0.f, 1.f), &m_camera, true);
 		extBox->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 0.f, 1.f)));
 		m_hpicgs->addState(extBox);*/
 
-		m_hpilogo = new glat::PNGAnnotation(new glat::InternalState(glm::vec3(-2.f, -4.f, 2.f), glm::vec3(-2.f, -4.f, 7.f), glm::vec3(-2.f, 1.0f, 7.f), &m_camera), "hpi.png", dfFactory);
+		m_annotations.addAnnotation(new glat::PNGAnnotation(new glat::InternalState(glm::vec3(-2.f, -4.f, 2.f), glm::vec3(-2.f, -4.f, 7.f), glm::vec3(-2.f, 1.0f, 7.f)), "hpi.png", dfFactory));
 		// m_hpilogo->addState(new glat::ViewportState(glm::vec2(-.25f, -.5f), glm::vec2(0.25f, 0.5f)));
 		window.addTimer(0, 0, false);
 
@@ -219,15 +222,8 @@ public:
 		m_quad = nullptr;
 		m_gbuffer = nullptr;
 		m_phong = nullptr;
-
-		m_hpilogo = nullptr;
-		m_glatBox = nullptr;
-		m_treevisBox = nullptr;
-		m_glowText = nullptr;
-		m_nvprViewportSVGAnnotation = nullptr;
-		m_hpicgs = nullptr;
+		
 		m_building = nullptr;
-
 		m_building1 = nullptr;
 		m_building2 = nullptr;
 		m_building3 = nullptr;
@@ -244,16 +240,14 @@ public:
 		m_building14 = nullptr;
 	}
 
-	virtual void framebufferResizeEvent(ResizeEvent & event) override
-	{
+	virtual void framebufferResizeEvent(ResizeEvent & event) override {
 		gl::glViewport(0, 0, event.width(), event.height());
-
 		m_camera.setViewport(event.width(), event.height());
 	}
 
 	virtual void paintEvent(PaintEvent &) override
 	{
-		m_building->setModelViewProjection(m_camera.viewProjection());
+		/*m_building->setModelViewProjection(m_camera.viewProjection());
 		m_building1->setModelViewProjection(m_camera.viewProjection());
 		m_building2->setModelViewProjection(m_camera.viewProjection());
 		m_building3->setModelViewProjection(m_camera.viewProjection());
@@ -267,11 +261,11 @@ public:
 		m_building11->setModelViewProjection(m_camera.viewProjection());
 		m_building12->setModelViewProjection(m_camera.viewProjection());
 		m_building13->setModelViewProjection(m_camera.viewProjection());
-		m_building14->setModelViewProjection(m_camera.viewProjection());
+		m_building14->setModelViewProjection(m_camera.viewProjection());*/
 		gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT | gl::GL_STENCIL_BUFFER_BIT);
 
 		m_phong->setUniform("transformi", m_camera.viewProjectionInverted());
-
+		glat::updateMatricesFromCamera(m_camera, 2);
 		//m_fbo->bind();
 		gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 		gl::glEnable(gl::GL_DEPTH_TEST);
@@ -295,11 +289,7 @@ public:
 		m_building13->draw();
 		m_building14->draw();
 
-		m_hpilogo->draw();
-		m_glatBox->draw();
-		/*m_treevisBox->draw();
-		m_glowText->draw();*/
-		m_hpicgs->draw();
+		m_annotations.draw();
 	}
 
 	virtual void timerEvent(TimerEvent & event) override
@@ -489,15 +479,10 @@ public:
 	}
 
 protected:
-	glow::ref_ptr<glat::PNGAnnotation> m_hpilogo;
-	glow::ref_ptr<glat::FontAnnotation> m_glatBox;
-	glow::ref_ptr<glat::FontAnnotation> m_treevisBox;
-	glow::ref_ptr<glat::FontAnnotation> m_glowText;
-	glow::ref_ptr<glat::SVGAnnotation> m_nvprViewportSVGAnnotation;
-	glow::ref_ptr<glat::FontAnnotation> m_hpicgs;
-	glow::ref_ptr<glat::Building> m_building;
+	glat::AnnotationGroup m_annotations;
 	bool m_drawViewport;
 
+	glow::ref_ptr<glat::Building> m_building;
 	glow::ref_ptr<glat::Building> m_building1;
 	glow::ref_ptr<glat::Building> m_building2;
 	glow::ref_ptr<glat::Building> m_building3;

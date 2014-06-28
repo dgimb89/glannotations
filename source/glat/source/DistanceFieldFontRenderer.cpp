@@ -12,7 +12,7 @@ void glat::DistanceFieldFontRenderer::draw(const glow::ref_ptr<glat::AbstractAnn
 
 	if (currentAnnotation->isDirty()) {
 		m_glyphConfig = new glat::GlyphSetConfig(currentAnnotation->getFontName());		
-		auto quadStrip = new QuadStrip(glat::TextureManager::getInstance().getTexture(m_glyphConfig->getGlyphsetImageName()));
+		auto quadStrip = new QuadStrip(glat::TextureManager::getInstance().getTexture(m_glyphConfig->getGlyphsetImageName()), m_globalMatricesBindingIndex, true);
 		for (unsigned i = 0; i < currentAnnotation->getText().length(); ++i) {
 			quadStrip->addQuad(	m_glyphConfig->getGlyphConfigForCharcode(currentAnnotation->getText().at(i))._ll, 
 								m_glyphConfig->getGlyphConfigForCharcode(currentAnnotation->getText().at(i))._advance);
@@ -27,4 +27,8 @@ void glat::DistanceFieldFontRenderer::draw(const glow::ref_ptr<glat::AbstractAnn
 
 	annotation->getRenderState()->draw(*this);
 	gl::glDisable(gl::GL_BLEND);
+}
+
+glat::DistanceFieldFontRenderer::DistanceFieldFontRenderer(gl::GLuint matricesBindingIndex) : AbstractPrimitiveRenderer(matricesBindingIndex) {
+
 }

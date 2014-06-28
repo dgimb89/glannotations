@@ -11,6 +11,7 @@ void glat::DistanceFieldPNGRenderer::draw(const glow::ref_ptr<glat::AbstractAnno
 	if (currentAnnotation->isDirty()) {
 		auto quadstrip = new QuadStrip(
 			glat::TextureManager::getInstance().getTexture(currentAnnotation->getFileName()),
+			m_globalMatricesBindingIndex,
 			currentAnnotation->isDistanceField()
 		);
 		quadstrip->addQuad(glat::QuadStrip::texVec2_t(0.f, 0.f), glat::QuadStrip::texVec2_t(1.f, 1.f));
@@ -29,4 +30,8 @@ void glat::DistanceFieldPNGRenderer::draw(const glow::ref_ptr<glat::AbstractAnno
 	annotation->getRenderState()->draw(*this);
 
 	gl::glDisable(gl::GL_BLEND);
+}
+
+glat::DistanceFieldPNGRenderer::DistanceFieldPNGRenderer(gl::GLuint globalMatricesBindingIndex) : AbstractPrimitiveRenderer(globalMatricesBindingIndex) {
+
 }

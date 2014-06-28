@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include <glat/BoxReference.h>
+#include <glat/AbstractAnnotation.h>
 #include <glat/PathState.h>
 #include <glat/InternalState.h>
 #include <glat/Utility/Segment.h>
@@ -81,11 +82,11 @@ glat::BoxReference::BoxReference(glm::vec2 widthOverflow, glm::vec2 heightOverfl
 
 void glat::BoxReference::draw() {
 	if (!isPositioningOnly()) {
-		m_box->setModelViewProjection(m_camera->viewProjection());
 		gl::glDepthMask(gl::GL_FALSE);
 		m_box->draw();
 		gl::glDepthMask(gl::GL_TRUE);
 	}
+	setDirty(false);
 }
 
 void glat::BoxReference::setupExternalReference(const InternalState& state) {
@@ -107,7 +108,6 @@ void glat::BoxReference::setupExternalReference(const InternalState& state) {
 		m_box->setColor(glm::vec4(1.f, 0.f, 0.f, .5f));
 		m_box->setPosition(m_frontLLF, m_frontLLF + m_widthSpan + m_heightSpan + m_depthSpan);
 	}
-	setDirty(false);
 }
 
 void glat::BoxReference::setupExternalReference(const PathState& state) {
@@ -170,4 +170,10 @@ inline void glat::BoxReference::determineViewdependantSpans(glm::vec3& widthSpan
 		hOverflow = 0.f;
 	}
 	heightSpan = glm::cross(widthSpan, bottom ? m_heightSpan : -m_heightSpan);
+}
+
+void glat::BoxReference::updateBindings(const glat::AbstractRenderer& renderer) {
+	if (isDirty()) {
+		m_box->setMatricesBlockBinding(renderer.getMatricesBindingIndex());
+	}
 }

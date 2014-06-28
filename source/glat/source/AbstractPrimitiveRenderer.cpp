@@ -31,7 +31,7 @@ void glat::AbstractPrimitiveRenderer::drawSetupState(const ViewportState& state)
 
 void glat::AbstractPrimitiveRenderer::drawSetupState(const InternalState& state) const {
 	if (state.isDirty()) {
-		m_drawingPrimitive->setPosition(state.getLL(), state.getLR(), state.getUR(), state.getViewProjection());
+		m_drawingPrimitive->setPosition(state.getLL(), state.getLR(), state.getUR());
 		state.setDirty(false);
 	}
 	gl::glEnable(gl::GL_DEPTH_TEST);
@@ -40,4 +40,8 @@ void glat::AbstractPrimitiveRenderer::drawSetupState(const InternalState& state)
 
 void glat::AbstractPrimitiveRenderer::drawSetupState(const glat::PathState& state) const {
 	throw std::logic_error("The method or operation is not implemented.");
+}
+
+glat::AbstractPrimitiveRenderer::AbstractPrimitiveRenderer(gl::GLuint globalMatricesBindingIndex) : AbstractRenderer(globalMatricesBindingIndex) {
+
 }

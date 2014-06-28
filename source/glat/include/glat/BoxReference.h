@@ -33,6 +33,8 @@ namespace glat {
 		inline float calculateOverflow(const glm::vec3& a, const glm::vec3& b, const glm::vec3& point, float overflowLimit);
 		inline void determineViewdependantSpans(glm::vec3& widthSpan, glm::vec3& heightSpan, bool bottom, float& vOverflow, float& hOverflow);
 
+		virtual void updateBindings(const glat::AbstractRenderer& renderer);
+
 		glm::vec3 m_widthSpan, m_heightSpan, m_depthSpan, m_frontLLF;
 		float m_halfAnnotWidth, m_halfAnnotHeight;
 		glow::ref_ptr<glat::Box> m_box;

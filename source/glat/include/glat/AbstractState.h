@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <memory>
+#include <glm/glm.hpp>
 
 #include <glat/DirtyFlagObject.h>
 #include <glat/Styling.h>

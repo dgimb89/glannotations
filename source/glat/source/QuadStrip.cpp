@@ -1,9 +1,8 @@
 #include <glat/QuadStrip.h>
 #include <glow/VertexAttributeBinding.h>
 
-static const char*	vertQuadStripShaderSource = R"(
+static const char*	vertShader = R"(
 	#version 330
-	uniform mat4 modelViewProjection;
 
 	layout (location = 0) in vec3 position;
 	layout (location = 1) in vec2 texCoord;
@@ -16,7 +15,6 @@ static const char*	vertQuadStripShaderSource = R"(
 		vec2 texAdvance;
 		vec3 advanceH;
 		vec3 advanceW;
-		mat4 mvp;
 	} quad;
 
 	void main()
@@ -25,13 +23,13 @@ static const char*	vertQuadStripShaderSource = R"(
 		quad.advanceH = advanceH;
 		quad.advanceW = advanceW;
 		quad.texAdvance = texAdvance;
-		quad.mvp = modelViewProjection;
 		gl_Position = vec4(position, 1.0);
 	}
 	)";
 
-static const char* geomQuadStripShaderSource = R"(
+static const char* geomShader = R"(
 	#version 330
+	### MATRIX_BLOCK ###
 
 	layout(points) in;
 	layout(triangle_strip, max_vertices = 4) out;
@@ -41,7 +39,6 @@ static const char* geomQuadStripShaderSource = R"(
 		vec2 texAdvance;
 		vec3 advanceH;
 		vec3 advanceW;
-		mat4 mvp;
 	} quad[];
 
 	out VertexData {
@@ -49,32 +46,37 @@ static const char* geomQuadStripShaderSource = R"(
 	} vertex;
 
 	void setVertexData(in float upper, in float right, out vec4 position, out vec2 texCoord) {
-		position = quad[0].mvp * vec4(gl_in[0].gl_Position.xyz + upper * quad[0].advanceH + right * quad[0].advanceW, 1.0);
+		position = vec4(gl_in[0].gl_Position.xyz + upper * quad[0].advanceH + right * quad[0].advanceW, 1.0);
 		texCoord = quad[0].texCoord + vec2(right * quad[0].texAdvance.x, upper * quad[0].texAdvance.y);
 	}
 
 	void main() {
+		mat4 viewProjection = projectionMatrix * viewMatrix;
 		// ll
 		setVertexData(0.0, 0.0, gl_Position, vertex.texCoord);
+		gl_Position = viewProjection * gl_Position;
 		EmitVertex();
 
 		// ul
 		setVertexData(1.0, 0.0, gl_Position, vertex.texCoord);
+		gl_Position = viewProjection * gl_Position;
 		EmitVertex();
 
 		// lr
 		setVertexData(0.0, 1.0, gl_Position, vertex.texCoord);
+		gl_Position = viewProjection * gl_Position;
 		EmitVertex();
 
 		// ur
 		setVertexData(1.0, 1.0, gl_Position, vertex.texCoord);
+		gl_Position = viewProjection * gl_Position;
 		EmitVertex();
 
 		EndPrimitive();
 	}
 	)";
 
-static const char* fragDFQuadStripShaderSource = R"(
+static const char* dfFragShader = R"(
 	#version 330
 	uniform sampler2D source;
 	uniform int style;
@@ -148,7 +150,7 @@ static const char* fragDFQuadStripShaderSource = R"(
 
 	)";
 
-static const char* fragQuadStripShaderSource = R"(
+static const char* texturingFragShader = R"(
 	#version 330
 	uniform sampler2D source;
 
@@ -166,23 +168,18 @@ static const char* fragQuadStripShaderSource = R"(
 
 	)";
 
-glat::QuadStrip::QuadStrip(std::shared_ptr<glow::Texture> texture, bool isDistanceField /* = true */) : glat::AbstractTexturedPrimitive(texture) {
+glat::QuadStrip::QuadStrip(std::shared_ptr<glow::Texture> texture, gl::GLuint matricesBindingIndex, bool isDistanceField) : glat::AbstractTexturedPrimitive(texture) {
 	if (isDistanceField) {
-		setupShader(fragDFQuadStripShaderSource, vertQuadStripShaderSource);
-	}
-	else {
-		setupShader(fragQuadStripShaderSource, vertQuadStripShaderSource);
+		setupShader(vertShader, geomShader, dfFragShader, matricesBindingIndex);
+	} else {
+		setupShader(vertShader, geomShader, texturingFragShader, matricesBindingIndex);
 	}
 	// initial position
 	m_ll = m_lr = m_ur = glm::vec3(0.0f, 0.0f, 0.0f);
 	m_vertexCount = 0;
-	m_advanceH = new glow::Buffer();
-	m_advanceW = new glow::Buffer();
-	m_texAdvance = new glow::Buffer();
-
-
-	m_geometryShader = glow::Shader::fromString(gl::GL_GEOMETRY_SHADER, geomQuadStripShaderSource);
-	m_program->attach(m_geometryShader);
+	m_advanceH = new glow::Buffer;
+	m_advanceW = new glow::Buffer;
+	m_texAdvance = new glow::Buffer;
 
 	m_vao->binding(0)->setAttribute(0);
 	m_vao->binding(0)->setFormat(3, gl::GL_FLOAT, gl::GL_FALSE, 0);
@@ -277,14 +274,13 @@ void glat::QuadStrip::updateQuadRanges() {
 	m_vao->enable(4);
 }
 
-void glat::QuadStrip::setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur, glm::mat4 modelViewProjection /*= glm::mat4()*/) {
+void glat::QuadStrip::setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur) {
 	if (ll != m_ll || lr != m_lr || ur != m_ur) {
 		m_ll = ll;
 		m_lr = lr;
 		m_ur = ur;
 		updateQuadRanges();
 	}
-	setModelViewProjection(modelViewProjection);
 }
 
 glat::QuadStrip::texVec2_t glat::QuadStrip::getUL(const textureRange_t& textureRange) {

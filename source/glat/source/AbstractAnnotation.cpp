@@ -1,3 +1,6 @@
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include <glat/AbstractAnnotation.h>
 #include <glat/ViewportState.h>
 #include <glat/InternalState.h>
@@ -54,4 +57,8 @@ void glat::AbstractAnnotation::setupRenderState() const {
 	if (!m_renderState) {
 		m_renderState = m_state->clone();
 	}
+}
+
+const glow::ref_ptr<glat::AbstractRenderer>& glat::AbstractAnnotation::getRenderer() {
+	return m_renderer;
 }

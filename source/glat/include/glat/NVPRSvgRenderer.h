@@ -6,6 +6,7 @@ namespace glat {
 	class SVGAnnotation;
 	class NVPRSvgRenderer : public glat::NVPRRenderer {
 	public:
+		NVPRSvgRenderer(gl::GLuint globalMatricesBindingIndex);
 		virtual void draw(const glow::ref_ptr<glat::AbstractAnnotation>& annotation) override;
 	protected:
 		virtual void drawSetupState(const glat::ViewportState& state) const override;

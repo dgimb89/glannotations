@@ -1,33 +1,13 @@
 #include <glat/Prismoid.h>
 #include <glow/VertexAttributeBinding.h>
+#include "ShaderSources.hpp"
 
-static const char*	vertPrismoidShaderSource = R"(
+static const char* geomShader = R"(
 				#version 330
-
-				uniform mat4 modelViewProjection;
-				uniform mat4 lookAt;
-
-				layout (location = 0) in vec3 position;
-
-				out PrismoidData {
-					mat4 mvp;
-				} prism;
-
-				void main() {
-					prism.mvp = modelViewProjection;
-					gl_Position = vec4(position, 1.0);
-				}
-				)";
-
-static const char* geomPrismoidShaderSource = R"(
-				#version 330
+				### MATRIX_BLOCK ###
 
 				layout(lines_adjacency) in;
 				layout(triangle_strip, max_vertices = 24) out;
-
-				in PrismoidData {
-					mat4 mvp;
-				} prism[];
 			
 				vec4 prismoid[8]; // Scratch space for the eight corners of the prismoid
 
@@ -40,6 +20,7 @@ static const char* geomPrismoidShaderSource = R"(
 				}
 
 				void main() {
+					mat4 viewProjection = projectionMatrix * viewMatrix;
 					// Compute orientation vectors for the two connecting faces:
 					vec3 p0, p1, p2, p3;
 					p0 = gl_in[0].gl_Position.xyz; p1 = gl_in[1].gl_Position.xyz;
@@ -57,17 +38,17 @@ static const char* geomPrismoidShaderSource = R"(
 					// Compute face 1 of 2:
 					// normals i need to be adjusted (TODO)
 					j = u; i = normalize(vec3(1.0, 0.0, 1.0)); k = cross(i, j); i *= r; k *= r;
-					prismoid[0] = prism[0].mvp * vec4(p1 + i + k, 1.0);
-					prismoid[1] = prism[0].mvp * vec4(p1 + i - k, 1.0);
-					prismoid[2] = prism[0].mvp * vec4(p1 - i - k, 1.0);
-					prismoid[3] = prism[0].mvp * vec4(p1 - i + k, 1.0);
+					prismoid[0] = viewProjection * vec4(p1 + i + k, 1.0);
+					prismoid[1] = viewProjection * vec4(p1 + i - k, 1.0);
+					prismoid[2] = viewProjection * vec4(p1 - i - k, 1.0);
+					prismoid[3] = viewProjection * vec4(p1 - i + k, 1.0);
 
 					// Compute face 2 of 2:
 					j = v; i = vec3(1.0, 0.0, 0.0); k = cross(i, j); i *= r; k *= r;
-					prismoid[4] = prism[0].mvp * vec4(p2 + i + k, 1.0);
-					prismoid[5] = prism[0].mvp * vec4(p2 + i - k, 1.0);
-					prismoid[6] = prism[0].mvp * vec4(p2 - i - k, 1.0);
-					prismoid[7] = prism[0].mvp * vec4(p2 - i + k, 1.0);
+					prismoid[4] = viewProjection * vec4(p2 + i + k, 1.0);
+					prismoid[5] = viewProjection * vec4(p2 + i - k, 1.0);
+					prismoid[6] = viewProjection * vec4(p2 - i - k, 1.0);
+					prismoid[7] = viewProjection * vec4(p2 - i + k, 1.0);
 
 					// Emit the six faces of the prismoid:
 					emit(0, 1, 3, 2); emit(5, 4, 6, 7);
@@ -77,7 +58,7 @@ static const char* geomPrismoidShaderSource = R"(
 				)";
 
 
-static const char* fragPrismoidShaderSource = R"(
+static const char* texturingFragShader = R"(
 				#version 330
 				uniform vec4 color;
 
@@ -95,7 +76,7 @@ void glat::Prismoid::draw() {
 	m_program->release();
 }
 
-void glat::Prismoid::setPosition(const std::vector<glm::vec3>& linestrip, glm::mat4 modelViewProjection /* = glm::mat4()*/ ) {
+void glat::Prismoid::setPosition(const std::vector<glm::vec3>& linestrip) {
 	assert(linestrip.size() > 1);
 	std::vector<glm::vec3> vertexArray;
 
@@ -107,14 +88,10 @@ void glat::Prismoid::setPosition(const std::vector<glm::vec3>& linestrip, glm::m
 	m_numVert = vertexArray.size();
 	m_positions->setData(vertexArray, gl::GL_STATIC_DRAW);
 	m_vao->binding(0)->setBuffer(m_positions, 0, sizeof(glm::vec3));
-
-	setModelViewProjection(modelViewProjection);
 }
 
-glat::Prismoid::Prismoid() {
-	setupShader(fragPrismoidShaderSource, vertPrismoidShaderSource);
-	m_geomShader = glow::Shader::fromString(gl::GL_GEOMETRY_SHADER, geomPrismoidShaderSource);
-	m_program->attach(m_geomShader);
+glat::Prismoid::Prismoid(gl::GLuint matricesBindingIndex) {
+	setupShader(glat::ShaderSources::passThroughVS, geomShader, texturingFragShader, matricesBindingIndex);
 
 	// Position
 	m_vao->binding(0)->setAttribute(0);

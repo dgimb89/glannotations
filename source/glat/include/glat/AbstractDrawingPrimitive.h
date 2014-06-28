@@ -17,15 +17,14 @@ namespace glat {
 
 		virtual void draw() = 0;
 		virtual void setColor(glm::vec4 color);
-
-		virtual void setModelViewProjection(glm::mat4 modelViewProjection = glm::mat4());
-		void setupShader(const char* fragShader, const char* vertShader);
+		// important: bind matrices AFTER you've setup shader
+		void setMatricesBlockBinding(gl::GLuint bindingIndex);
+		void setupShader(const char* vertShader, const char* fragShader, gl::GLuint matricesBindingIndex);
+		void setupShader(const char* vertShader, const char* geomShader, const char* fragShader, gl::GLuint matricesBindingIndex);
 
 	protected:
+		glow::Shader* replacePlaceholderAndGetShader(gl::GLenum shaderType, const char* shader);
 		void initialize();
-
-		glow::ref_ptr<glow::Shader> m_vertexShader;
-		glow::ref_ptr<glow::Shader> m_fragmentShader;
 
 		glow::ref_ptr<glow::Program> m_program;
 

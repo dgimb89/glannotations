@@ -109,7 +109,7 @@ public:
 		m_nvprViewportFontAnnotation->setText("0");
 		m_nvprViewportFontAnnotation->setFontName("calibri.ttf");
 
-		m_nvprInternalFontAnnotation = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-3.f, -2.f, -5.f), glm::vec3(3.f, -2.f, -5.f), glm::vec3(3.f, 2.0f, -5.f), &m_camera));
+		m_nvprInternalFontAnnotation = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-3.f, -2.f, -5.f), glm::vec3(3.f, -2.f, -5.f), glm::vec3(3.f, 2.0f, -5.f)));
 		m_nvprInternalFontAnnotation->setFontName("calibri.ttf");
 		m_nvprInternalFontAnnotation->setText("Nvidia PR");
 		m_nvprInternalFontAnnotation->setColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));

@@ -11,7 +11,7 @@ namespace glat {
 	class GLAT_API InternalState : public glat::ReferenceableState {
 	public:
 		// lower left, lower right, upper right
-		InternalState(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur, glowutils::Camera* camera);
+		InternalState(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur);
 
 		// Extends in world coordinates
 		void setExtends(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur);
@@ -19,12 +19,7 @@ namespace glat {
 		const glm::vec3& getUR() const;
 		const glm::vec3& getLR() const;
 
-		void setCamera(glowutils::Camera* camera);
-		glowutils::Camera* getCamera() const;
-		const glm::mat4& getViewProjection() const;
-
-		virtual bool isDirty() const;
-		virtual bool isValid() const;
+		virtual bool isValid() const override;
 
 		virtual glow::ref_ptr<glat::AbstractState> clone() const;
 		virtual void setExternalReference(const glow::ref_ptr<glat::AbstractExternalReference>& reference);
@@ -37,7 +32,5 @@ namespace glat {
 		virtual glow::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix);
 
 		glm::vec3 m_ll, m_ur, m_lr;
-		glowutils::Camera* m_camera;
-		mutable glm::mat4 m_camProjection;
 	};
 }

@@ -63,10 +63,12 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(api_includes
     ${include_path}/glat_api.h
+	${include_path}/globals.h
 
 	${include_path}/DirtyFlagObject.h
 	${include_path}/GlyphSetConfig.h
 
+	${include_path}/AnnotationGroup.h
 	${include_path}/AbstractAnnotation.h
 	${include_path}/FontAnnotation.h
 	${include_path}/SVGAnnotation.h
@@ -116,9 +118,12 @@ set(api_includes
 )
 
 set(sources
+	${source_path}/globals.cpp
+
 	${source_path}/DirtyFlagObject.cpp
 	${source_path}/GlyphSetConfig.cpp
 
+	${source_path}/AnnotationGroup.cpp
 	${source_path}/AbstractAnnotation.cpp
 	${source_path}/FontAnnotation.cpp
 	${source_path}/SVGAnnotation.cpp
@@ -131,9 +136,7 @@ set(sources
 
 	${source_path}/TextureManager.cpp
 	${source_path}/RendererFactory.cpp
-
-	${source_path}/nvpr_init.h
-	${source_path}/nvpr_init.c
+	${source_path}/AbstractRenderer.cpp
 
 	${source_path}/NVPRRenderer.cpp
 	${source_path}/NVPRFontRenderer.cpp

@@ -7,13 +7,13 @@ namespace glat {
 	public:
 		typedef glm::vec2 texVec2_t;
 		typedef std::pair<texVec2_t, texVec2_t> textureRange_t;
-		QuadStrip(std::shared_ptr<glow::Texture> texture, bool isDistanceField = true);
+		QuadStrip(std::shared_ptr<glow::Texture> texture, gl::GLuint matricesBindingIndex, bool isDistanceField);
 
 		void addQuad(texVec2_t texture_ll, texVec2_t texture_advance);
 		void clearQuads();
 
 		virtual void draw();
-		virtual void setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur, glm::mat4 modelViewProjection = glm::mat4());
+		virtual void setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur);
 
 	protected:
 		void updateQuadRanges();
@@ -28,7 +28,5 @@ namespace glat {
 		glow::ref_ptr<glow::Buffer> m_advanceH;
 		glow::ref_ptr<glow::Buffer> m_advanceW; 
 		glow::ref_ptr<glow::Buffer> m_texAdvance;
-
-		glow::ref_ptr<glow::Shader> m_geometryShader;
 	};
 }

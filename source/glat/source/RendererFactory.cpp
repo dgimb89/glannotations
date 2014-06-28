@@ -1,4 +1,5 @@
 #include <glat/RendererFactory.h>
+#include <glat/globals.h>
 #include <glat/SVGAnnotation.h>
 #include <glat/PNGAnnotation.h>
 #include <glat/FontAnnotation.h>
@@ -13,19 +14,19 @@
 
 bool glat::RendererFactory::isExtensionSupported(const char *extension) {
 	return true;
-	const GLubyte *extensions = nullptr;
-	const GLubyte *start;
-	GLubyte *where, *terminator;
+	const gl::GLubyte *extensions = nullptr;
+	const gl::GLubyte *start;
+	gl::GLubyte *where, *terminator;
 
 	/* Extension names should not have spaces. */
-	where = (GLubyte *)strchr(extension, ' ');
+	where = (gl::GLubyte *)strchr(extension, ' ');
 	if (where || *extension == '\0')
 		return false;
-	extensions = glGetString(GL_EXTENSIONS);
+	extensions = gl::glGetString(gl::GL_EXTENSIONS);
 
 	start = extensions;
 	for (;;) {
-		where = (GLubyte *)strstr((const char *)start, extension);
+		where = (gl::GLubyte *)strstr((const char *)start, extension);
 		if (!where)
 			break;
 		terminator = where + strlen(extension);
@@ -45,24 +46,28 @@ void glat::RendererFactory::useNVpr(bool useNVpr) {
 	m_useNVpr = useNVpr;
 }
 
-glat::RendererFactory::RendererFactory() : m_useNVpr(true) {}
-
 glow::ref_ptr<glat::AbstractRenderer> glat::RendererFactory::createRenderer(const glat::FontAnnotation& annotation) const {
+	if (autoInitializesMatricesBuffer()) {
+		validateMatricesUBO(m_globalMatricesBindingIndex);
+	}
 #ifdef OPTION_USE_NVPR
 	if (usesNVpr()) {
-		return new glat::NVPRFontRenderer();
+		return new glat::NVPRFontRenderer(m_globalMatricesBindingIndex);
 	}
 	else
 #endif
 	{
-		return new glat::DistanceFieldFontRenderer();
+		return new glat::DistanceFieldFontRenderer(m_globalMatricesBindingIndex);
 	}
 }
 
 glow::ref_ptr<glat::AbstractRenderer> glat::RendererFactory::createRenderer(const glat::SVGAnnotation& annotation) const {
+	if (autoInitializesMatricesBuffer()) {
+		validateMatricesUBO(m_globalMatricesBindingIndex);
+	}
 #ifdef OPTION_USE_NVPR
 	if (usesNVpr()) {
-		return new glat::NVPRSvgRenderer();
+		return new glat::NVPRSvgRenderer(m_globalMatricesBindingIndex);
 	}
 	else
 #endif
@@ -74,5 +79,30 @@ glow::ref_ptr<glat::AbstractRenderer> glat::RendererFactory::createRenderer(cons
 }
 
 glow::ref_ptr<glat::AbstractRenderer> glat::RendererFactory::createRenderer(const glat::PNGAnnotation& annotation) const {
-	return new glat::DistanceFieldPNGRenderer();
+	if (autoInitializesMatricesBuffer()) {
+		validateMatricesUBO(m_globalMatricesBindingIndex);
+	}
+	return new glat::DistanceFieldPNGRenderer(m_globalMatricesBindingIndex);
+}
+
+void glat::RendererFactory::setAutoInitializeMatricesBuffer(bool autoInitialize) {
+	m_autoInitializeMatricesBuffer = autoInitialize;
+}
+
+bool glat::RendererFactory::autoInitializesMatricesBuffer() const {
+	return m_autoInitializeMatricesBuffer;
+}
+
+void glat::RendererFactory::setMatricesBindingIndex(gl::GLuint bindingIndex) {
+	m_globalMatricesBindingIndex = bindingIndex;
+}
+
+gl::GLuint glat::RendererFactory::getMatricesBindingIndex() const {
+	return m_globalMatricesBindingIndex;
+}
+
+void glat::RendererFactory::validateMatricesUBO(gl::GLuint bindingIndex) {
+	if (!glat::isMatricesUBOInitialiced(bindingIndex)) {
+		glat::initializeMatricesUBO(bindingIndex);
+	}
 }

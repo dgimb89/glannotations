@@ -1,3 +1,5 @@
+#include <glbinding/functions.h>
+
 #include <glat/NVPRSvgRenderer.h>
 #include <glat/SVGAnnotation.h>
 #include <glat/ViewportState.h>
@@ -19,66 +21,70 @@ void glat::NVPRSvgRenderer::draw(const glow::ref_ptr<glat::AbstractAnnotation>& 
 }
 
 void glat::NVPRSvgRenderer::initializeSVG(const char* pathString) {
-	glDeletePathsNV(m_pathBase, 1);
-	m_pathBase = glGenPathsNV(1);
-	glPathStringNV(m_pathBase, GL_PATH_FORMAT_SVG_NV, (GLsizei)strlen(pathString), pathString);
-	glPathParameteriNV(m_pathBase, GL_PATH_JOIN_STYLE_NV, GL_ROUND_NV);
+	gl::glDeletePathsNV(m_pathBase, 1);
+	m_pathBase = gl::glGenPathsNV(1);
+	gl::glPathStringNV(m_pathBase, gl::GL_PATH_FORMAT_SVG_NV, (gl::GLsizei)strlen(pathString), pathString);
+	gl::glPathParameteriNV(m_pathBase, gl::GL_PATH_JOIN_STYLE_NV, (gl::GLint)gl::GL_ROUND_NV);
 }
 
 void glat::NVPRSvgRenderer::drawSetupState(const glat::ViewportState& state) const {
-	glDisable(GL_DEPTH_TEST);
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
+	gl::glDisable(gl::GL_DEPTH_TEST);
+	gl::glMatrixMode(gl::GL_PROJECTION);
+	gl::glPushMatrix();
+	gl::glLoadIdentity();
 	setupOrthoProjection(state.getLL(), state.getUR(), m_width, m_height);
 	
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glLoadIdentity();
+	gl::glMatrixMode(gl::GL_MODELVIEW);
+	gl::glPushMatrix();
+	gl::glLoadIdentity();
 
 	drawPath();
 	state.setDirty(false);
 
 	// cleanup
-	glPopMatrix();
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
+	gl::glPopMatrix();
+	gl::glMatrixMode(gl::GL_PROJECTION);
+	gl::glPopMatrix();
 }
 
 void glat::NVPRSvgRenderer::drawSetupState(const glat::InternalState& state) const {
-	glEnable(GL_DEPTH_TEST);
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
+	gl::glEnable(gl::GL_DEPTH_TEST);
+	gl::glMatrixMode(gl::GL_PROJECTION);
+	gl::glPushMatrix();
+	gl::glLoadIdentity();
 	setupInternalProjection(state.getViewProjection(), state.getLL());
 
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glLoadIdentity();
+	gl::glMatrixMode(gl::GL_MODELVIEW);
+	gl::glPushMatrix();
+	gl::glLoadIdentity();
 	setupInternalModelview(state.getLL(), state.getLR(), state.getUR(), m_width, m_height);
 
 	drawPath();
 	state.setDirty(false);
 
 	// cleanup
-	glPopMatrix();
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
+	gl::glPopMatrix();
+	gl::glMatrixMode(gl::GL_PROJECTION);
+	gl::glPopMatrix();
 }
 
 void glat::NVPRSvgRenderer::drawPath() const {
-	glStencilFillPathNV(m_pathBase, GL_COUNT_UP_NV, 0x1);
-	glColor3f(0.4f, 0.6f, 1.0f); // green
-	glCoverFillPathNV(m_pathBase, GL_BOUNDING_BOX_NV);
+	gl::glStencilFillPathNV(m_pathBase, gl::GL_COUNT_UP_NV, 0x1);
+	gl::glColor3f(0.4f, 0.6f, 1.0f); // green
+	gl::glCoverFillPathNV(m_pathBase, gl::GL_BOUNDING_BOX_NV);
 
 	//outline
 	if (m_drawOutline) {
-		glStencilStrokePathNV(m_pathBase, 0x1, ~0);
-		glColor3f(0.2f, 0.2f, 0.2f); // yellow
-		glCoverStrokePathNV(m_pathBase, GL_CONVEX_HULL_NV);
+		gl::glStencilStrokePathNV(m_pathBase, 0x1, ~0);
+		gl::glColor3f(0.2f, 0.2f, 0.2f); // yellow
+		gl::glCoverStrokePathNV(m_pathBase, gl::GL_CONVEX_HULL_NV);
 	}
 }
 
 void glat::NVPRSvgRenderer::drawSetupState(const glat::PathState& state) const {
 	throw std::logic_error("The method or operation is not implemented.");
+}
+
+glat::NVPRSvgRenderer::NVPRSvgRenderer(gl::GLuint globalMatricesBindingIndex) : NVPRRenderer(globalMatricesBindingIndex) {
+
 }

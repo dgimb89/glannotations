@@ -10,6 +10,7 @@ namespace glat {
 
 	class NVPRFontRenderer : public NVPRRenderer {
 	public:
+		NVPRFontRenderer(gl::GLuint globalMatricesBindingIndex);
 		virtual void draw(const glow::ref_ptr<glat::AbstractAnnotation>& annotation);
 	protected:
 		virtual void drawSetupState(const glat::ViewportState& state) const override;
@@ -17,9 +18,9 @@ namespace glat {
 		virtual void drawSetupState(const glat::PathState& state) const override;
 
 		void initializeFont(glat::FontAnnotation* annotation);
-		void getTextStencelingDimensions(const char* text, const size_t& messageLen, GLfloat* &xtranslate, GLfloat& totalAdvance, GLfloat& yMin, GLfloat& yMax, GLfloat& underline_position, GLfloat& underline_thickness) const;
-		void stencilThenCoverText(const size_t& messageLen, const GLfloat* xtranslate) const;
-		void drawOutline(const size_t& messageLen, const GLfloat* xtranslate, const glat::Styling* outline) const;
+		void getTextStencelingDimensions(const char* text, const size_t& messageLen, gl::GLfloat* &xtranslate, gl::GLfloat& totalAdvance, gl::GLfloat& yMin, gl::GLfloat& yMax, gl::GLfloat& underline_position, gl::GLfloat& underline_thickness) const;
+		void stencilThenCoverText(const size_t& messageLen, const gl::GLfloat* xtranslate) const;
+		void drawOutline(const size_t& messageLen, const gl::GLfloat* xtranslate, const glat::Styling* outline) const;
 		const char* m_currentText;
 		glm::vec4 m_textColor;
 		const float emScale = 2048;

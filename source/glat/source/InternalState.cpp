@@ -3,9 +3,8 @@
 #include <glat/AbstractAnnotation.h>
 #include <glat/StateInterpolation.h>
 
-glat::InternalState::InternalState(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur, glowutils::Camera* camera) {
+glat::InternalState::InternalState(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur) {
 	setExtends(ll, lr, ur);
-	setCamera(camera);
 }
 
 void glat::InternalState::setExtends(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur) {
@@ -28,18 +27,10 @@ const glm::vec3& glat::InternalState::getUR() const {
 	return m_ur;
 }
 
-void glat::InternalState::setCamera(glowutils::Camera* camera) {
-	setDirty(true);
-	m_camera = camera;
-}
-
-glowutils::Camera* glat::InternalState::getCamera() const {
-	return m_camera;
-}
-
 void glat::InternalState::draw(const AbstractRenderer& renderer) {
 	if (m_externalReference) {
 		m_externalReference->updatePositioning(*this);
+		m_externalReference->updateBindings(renderer);
 		m_externalReference->draw();
 	}
 	renderer.drawSetupState(*this);
@@ -47,17 +38,6 @@ void glat::InternalState::draw(const AbstractRenderer& renderer) {
 
 bool glat::InternalState::isValid() const {
 	return (m_ur - m_ll).length() > 0;
-}
-
-const glm::mat4& glat::InternalState::getViewProjection() const {
-	return m_camProjection = m_camera->viewProjection();	
-}
-
-bool glat::InternalState::isDirty() const {
-	if (m_camera->viewProjection() != m_camProjection) {
-		return true;
-	}
-	return glat::AbstractState::isDirty();
 }
 
 glow::ref_ptr<glat::AbstractState> glat::InternalState::interpolateWith(const InternalState& mixState, float mix) {
@@ -73,7 +53,7 @@ glow::ref_ptr<glat::AbstractState> glat::InternalState::interpolateWith(const Vi
 }
 
 glow::ref_ptr<glat::AbstractState> glat::InternalState::clone() const {
-	glow::ref_ptr<glat::InternalState> clonedState(new InternalState(m_ll, m_lr, m_ur, m_camera));
+	glow::ref_ptr<glat::InternalState> clonedState(new InternalState(m_ll, m_lr, m_ur));
 	ReferenceableState::copyState(*clonedState);
 	return clonedState;
 }

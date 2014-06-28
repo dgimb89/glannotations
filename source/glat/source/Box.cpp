@@ -1,50 +1,34 @@
 #include <glat/Box.h>
 #include <glow/VertexAttributeBinding.h>
 #include <array>
+#include "ShaderSources.hpp"
 
 /// -------------------- Shader ---------------------
-static const char*	vertShader = R"(
-				#version 330
-				uniform mat4 modelViewProjection;
-
-				layout (location = 0) in vec3 position;
-				layout (location = 1) in vec3 widthSpan;
-				layout (location = 2) in vec3 heightSpan;
-				layout (location = 3) in vec3 depthSpan;
-				
-				out mat4 mvp;
-
-				void main()
-				{
-					mvp = modelViewProjection;
-					gl_Position = vec4(position, 1.0);
-				}
-				)";
 
 static const char* geomShader = R"(
 				#version 330
+				### MATRIX_BLOCK ###
 
 				layout(lines) in;
-				layout(triangle_strip, max_vertices = 18) out;
-
-				in mat4 mvp[];				
+				layout(triangle_strip, max_vertices = 18) out;		
 
 				out vec3 v_normal;
 				out vec3 v_vertex;
 
 				void main() {
+					mat4 viewProjection = projectionMatrix * viewMatrix;
 					vec4 vertices[8];
 					// front face
-					vertices[0] = mvp[0] * vec4(gl_in[0].gl_Position.x, gl_in[0].gl_Position.y, gl_in[0].gl_Position.z, 1.0);
-					vertices[1] = mvp[0] * vec4(gl_in[0].gl_Position.x, gl_in[1].gl_Position.y, gl_in[0].gl_Position.z, 1.0);
-					vertices[2] = mvp[0] * vec4(gl_in[1].gl_Position.x, gl_in[0].gl_Position.y, gl_in[0].gl_Position.z, 1.0);
-					vertices[3] = mvp[0] * vec4(gl_in[1].gl_Position.x, gl_in[1].gl_Position.y, gl_in[0].gl_Position.z, 1.0);
+					vertices[0] = viewProjection * vec4(gl_in[0].gl_Position.x, gl_in[0].gl_Position.y, gl_in[0].gl_Position.z, 1.0);
+					vertices[1] = viewProjection * vec4(gl_in[0].gl_Position.x, gl_in[1].gl_Position.y, gl_in[0].gl_Position.z, 1.0);
+					vertices[2] = viewProjection * vec4(gl_in[1].gl_Position.x, gl_in[0].gl_Position.y, gl_in[0].gl_Position.z, 1.0);
+					vertices[3] = viewProjection * vec4(gl_in[1].gl_Position.x, gl_in[1].gl_Position.y, gl_in[0].gl_Position.z, 1.0);
 
 					// back face
-					vertices[4] = mvp[0] * vec4(gl_in[1].gl_Position.x, gl_in[0].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
-					vertices[5] = mvp[0] * vec4(gl_in[1].gl_Position.x, gl_in[1].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
-					vertices[6] = mvp[0] * vec4(gl_in[0].gl_Position.x, gl_in[0].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
-					vertices[7] = mvp[0] * vec4(gl_in[0].gl_Position.x, gl_in[1].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
+					vertices[4] = viewProjection * vec4(gl_in[1].gl_Position.x, gl_in[0].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
+					vertices[5] = viewProjection * vec4(gl_in[1].gl_Position.x, gl_in[1].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
+					vertices[6] = viewProjection * vec4(gl_in[0].gl_Position.x, gl_in[0].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
+					vertices[7] = viewProjection * vec4(gl_in[0].gl_Position.x, gl_in[1].gl_Position.y, gl_in[1].gl_Position.z, 1.0);
 
 					// lateral surface
 					gl_Position = vertices[0];
@@ -95,7 +79,7 @@ static const char* geomShader = R"(
 				}
 				)";
 
-static const char* fragShader = R"(
+static const char* texturingFragShader = R"(
 				#version 330
 				uniform vec4 color;
 
@@ -108,10 +92,8 @@ static const char* fragShader = R"(
 				)";
 
 
-glat::Box::Box() : glat::AbstractDrawingPrimitive() {
-	setupShader(fragShader, vertShader);
-	m_geometryShader = glow::Shader::fromString(gl::GL_GEOMETRY_SHADER, geomShader);
-	m_program->attach(m_geometryShader);
+glat::Box::Box(gl::GLuint matricesBindingIndex) {
+	setupShader(glat::ShaderSources::passThroughVS, geomShader, texturingFragShader, matricesBindingIndex);
 
 	m_vao->binding(0)->setAttribute(0);
 	m_vao->binding(0)->setFormat(3, gl::GL_FLOAT, gl::GL_FALSE, 0);
