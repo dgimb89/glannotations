@@ -1,5 +1,6 @@
 #pragma once
 
+#include <glbinding/types.h>
 #include <glowutils/Camera.h>
 
 #include <glat/DirtyFlagObject.h>
@@ -16,12 +17,13 @@ namespace glat {
 		friend class ReferenceableState;
 		friend class InternalState;
 		friend class PathState;
-		AbstractExternalReference(glowutils::Camera* camera, bool positioningOnly);
+		AbstractExternalReference(bool positioningOnly);
 		bool isPositioningOnly();
 
 	protected:
-		inline void setCamera(glowutils::Camera* camera);
 		inline void setPositioningOnly(bool positioningOnly);
+		inline void setBindingIndex(gl::GLuint bindingIndex);
+		inline gl::GLuint getBindingIndex() const;
 
 		virtual void draw() = 0;
 		virtual void updateBindings(const glat::AbstractRenderer& renderer) = 0;
@@ -32,8 +34,8 @@ namespace glat {
 		virtual void updatePositioning(InternalState& state) = 0;
 		virtual void updatePositioning(PathState& state) = 0;
 
-		glowutils::Camera* m_camera;
 		bool m_positioningOnly;
+		gl::GLuint m_bindingIndex;
 
 	private:
 		void assertNotReused();

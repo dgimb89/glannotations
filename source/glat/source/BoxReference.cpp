@@ -15,7 +15,7 @@ const float MAX_ROTATION_ANGLE = M_PI * 45.f / 180.f;
 const float ANTI_FLICKERING = 0.01f;
 
 void glat::BoxReference::updatePositioning(InternalState& state) {
-	Utility::Segment camToBoxCenter(m_camera->eye(), m_frontLLF + (m_widthSpan + m_heightSpan + m_depthSpan) / 2.f);
+	Utility::Segment camToBoxCenter(glat::getEye(getBindingIndex()), m_frontLLF + (m_widthSpan + m_heightSpan + m_depthSpan) / 2.f);
 	glm::vec3 intersection, widthSpan, heightSpan;
 	float vOverflow, hOverflow;
 	bool ignoreWidthSpanRot = false;
@@ -70,8 +70,8 @@ void glat::BoxReference::updatePositioning(PathState& state) {
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
-glat::BoxReference::BoxReference(glm::vec2 widthOverflow, glm::vec2 heightOverflow, glm::vec3 depthSpan, glowutils::Camera* camera, bool onlyPositioning /* = true */)
-	: glat::AbstractExternalReference(camera, onlyPositioning) {
+glat::BoxReference::BoxReference(glm::vec2 widthOverflow, glm::vec2 heightOverflow, glm::vec3 depthSpan, bool onlyPositioning /* = true */)
+	: glat::AbstractExternalReference(onlyPositioning) {
 	setDirty(true);
 	// we use internal span vectors to save overflow ranges for now
 	m_widthSpan = glm::vec3(widthOverflow, 0.f);
@@ -152,18 +152,19 @@ void glat::BoxReference::fixFlickering() {
 }
 
 inline void glat::BoxReference::determineViewdependantSpans(glm::vec3& widthSpan, glm::vec3& heightSpan, bool bottom, float& vOverflow, float& hOverflow) {
-	glm::vec3 cameraRight = glm::vec3(m_camera->viewInverted() * glm::vec4(1.f, 0.f, 0.f, 0.f));
+	glm::vec3 cameraRight = glat::getRight(getBindingIndex());
 	// project cameraRight on top plane
-	glm::vec3 n = glm::normalize(glm::cross(bottom ? -m_widthSpan : m_widthSpan, bottom? -m_depthSpan : m_depthSpan));
+	glm::vec3 n = glm::normalize(glm::cross(bottom ? -m_widthSpan : m_widthSpan, bottom ? -m_depthSpan : m_depthSpan));
 	cameraRight = glm::normalize(cameraRight - glm::dot(cameraRight, n) * n);
-	float widthDot = glm::dot(cameraRight, bottom ? - m_widthSpan : m_widthSpan);
-	float depthDot = glm::dot(cameraRight, bottom ? - m_depthSpan : m_depthSpan);
+	float widthDot = glm::dot(cameraRight, bottom ? -m_widthSpan : m_widthSpan);
+	float depthDot = glm::dot(cameraRight, bottom ? -m_depthSpan : m_depthSpan);
 	if (std::fabsf(widthDot) > std::fabsf(depthDot)) {
 		widthSpan = std::signbit(widthDot) ^ bottom ? -m_widthSpan : m_widthSpan;
 		heightSpan = std::signbit(depthDot) ^ bottom ? -m_depthSpan : m_depthSpan;
 		vOverflow = std::signbit(widthDot) ^ bottom ? -vOverflow : vOverflow;
 		hOverflow = 0.f;
-	} else {
+	}
+	else {
 		widthSpan = std::signbit(depthDot) ^ bottom ? -m_depthSpan : m_depthSpan;
 		heightSpan = std::signbit(widthDot) ^ bottom ? -m_widthSpan : m_widthSpan;
 		vOverflow = std::signbit(depthDot) ? hOverflow : -hOverflow;
@@ -174,6 +175,7 @@ inline void glat::BoxReference::determineViewdependantSpans(glm::vec3& widthSpan
 
 void glat::BoxReference::updateBindings(const glat::AbstractRenderer& renderer) {
 	if (isDirty()) {
-		m_box->setMatricesBlockBinding(renderer.getMatricesBindingIndex());
+		setBindingIndex(renderer.getMatricesBindingIndex());
+		m_box->setMatricesBlockBinding(getBindingIndex());
 	}
 }

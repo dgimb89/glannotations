@@ -12,7 +12,7 @@ namespace glat {
 	class GLAT_API BoxReference : public glat::AbstractExternalReference {
 	public:
 		// overflow given as vec2 range: (left, right), (bottom, up)
-		BoxReference(glm::vec2 widthOverflow, glm::vec2 heightOverflow, glm::vec3 depthSpan, glowutils::Camera* camera, bool onlyPositioning = true);
+		BoxReference(glm::vec2 widthOverflow, glm::vec2 heightOverflow, glm::vec3 depthSpan, bool onlyPositioning = true);
 
 	protected:
 		void setWidth(glm::vec3 widthSpan);
@@ -20,6 +20,7 @@ namespace glat {
 		void setDepth(glm::vec3 depthSpan);
 
 		virtual void draw() override;
+		virtual void updateBindings(const glat::AbstractRenderer& renderer) override;
 
 		virtual void setupExternalReference(const InternalState& state) override;
 		virtual void setupExternalReference(const PathState& state) override;
@@ -32,8 +33,6 @@ namespace glat {
 		inline bool intersectionSegmentQuad(const glat::Utility::Segment& ray, const glm::vec3& a, const glm::vec3& b, const glm::vec3& c, const glm::vec3& d, glm::vec3& point, float& vOverflow, float& hOverflow);
 		inline float calculateOverflow(const glm::vec3& a, const glm::vec3& b, const glm::vec3& point, float overflowLimit);
 		inline void determineViewdependantSpans(glm::vec3& widthSpan, glm::vec3& heightSpan, bool bottom, float& vOverflow, float& hOverflow);
-
-		virtual void updateBindings(const glat::AbstractRenderer& renderer);
 
 		glm::vec3 m_widthSpan, m_heightSpan, m_depthSpan, m_frontLLF;
 		float m_halfAnnotWidth, m_halfAnnotHeight;

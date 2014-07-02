@@ -3,19 +3,28 @@
 #include <unordered_map>
 
 #include <glat/globals.h>
+#include <iostream>
 
-std::unordered_map<gl::GLuint, glow::ref_ptr<glow::Buffer> > g_matricesBufferMap;
+struct MatrizesBuffer {
+	glow::ref_ptr < glow::Buffer > buffer;
+	glm::mat4 view;
+	glm::mat4 projection;
+};
+
+std::unordered_map<gl::GLuint, MatrizesBuffer > g_matricesBufferMap;
 
 gl::GLsizeiptr matrixBlockSize() {
 	return sizeof(glm::mat4) * 2;
 }
 
 void glat::setView(const glm::mat4& view, gl::GLuint bindingIndex /*= 0*/) {
-	g_matricesBufferMap[bindingIndex]->setSubData(0, sizeof(glm::mat4), glm::value_ptr(view));
+	g_matricesBufferMap[bindingIndex].buffer->setSubData(0, sizeof(glm::mat4), glm::value_ptr(view));
+	g_matricesBufferMap[bindingIndex].view = view;
 }
 
 void glat::setProjection(const glm::mat4& projection, gl::GLuint bindingIndex /*= 0*/) {
-	g_matricesBufferMap[bindingIndex]->setSubData(sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(projection));
+	g_matricesBufferMap[bindingIndex].buffer->setSubData(sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(projection));
+	g_matricesBufferMap[bindingIndex].projection = projection;
 }
 
 void glat::updateMatricesFromCamera(const glowutils::Camera& camera, gl::GLuint bindingIndex /*= 0*/) {
@@ -24,11 +33,33 @@ void glat::updateMatricesFromCamera(const glowutils::Camera& camera, gl::GLuint 
 }
 
 void glat::initializeMatricesUBO(gl::GLuint bindingIndex /*= 0*/) {
-	g_matricesBufferMap[bindingIndex] = new glow::Buffer;
-	g_matricesBufferMap[bindingIndex]->setData(matrixBlockSize(), nullptr, gl::GL_STREAM_DRAW);
-	g_matricesBufferMap[bindingIndex]->bindRange(gl::GL_UNIFORM_BUFFER, bindingIndex, 0, matrixBlockSize());
+	g_matricesBufferMap[bindingIndex].buffer = new glow::Buffer;
+	g_matricesBufferMap[bindingIndex].buffer->setData(matrixBlockSize(), nullptr, gl::GL_STREAM_DRAW);
+	g_matricesBufferMap[bindingIndex].buffer->bindRange(gl::GL_UNIFORM_BUFFER, bindingIndex, 0, matrixBlockSize());
 }
 
-bool GLAT_API glat::isMatricesUBOInitialiced(gl::GLuint bindingIndex /*= 0*/) {
+bool glat::isMatricesUBOInitialiced(gl::GLuint bindingIndex /*= 0*/) {
 	return g_matricesBufferMap.count(bindingIndex) > 0;
+}
+
+const glm::mat4& glat::getView(gl::GLuint bindingIndex /*= 0*/) {
+	if (!isMatricesUBOInitialiced(bindingIndex))
+		return glm::mat4(1);
+	return g_matricesBufferMap[bindingIndex].view;
+}
+
+glm::vec3 GLAT_API glat::getRight(gl::GLuint bindingIndex /*= 0*/) {
+	return glm::vec3(glm::inverse(glat::getView(bindingIndex)) * glm::vec4(1.f, 0.f, 0.f, 0.f));
+}
+
+glm::vec3 GLAT_API glat::getUp(gl::GLuint bindingIndex /*= 0*/) {
+	return glm::vec3(glat::getView(bindingIndex) * glm::vec4(0.f, 1.f, 0.f, 0.f));
+}
+
+glm::vec3 GLAT_API glat::getLookAt(gl::GLuint bindingIndex /*= 0*/) {
+	return glm::vec3(glat::getView(bindingIndex) * glm::vec4(0.f, 0.f, 1.f, 0.f));
+}
+
+glm::vec3 GLAT_API glat::getEye(gl::GLuint bindingIndex /*= 0*/) {
+	return glm::vec3(glm::inverse(getView(bindingIndex))[3]);
 }

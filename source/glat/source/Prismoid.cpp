@@ -6,8 +6,8 @@ static const char* geomShader = R"(
 				#version 330
 				### MATRIX_BLOCK ###
 
-				layout(lines_adjacency) in;
-				layout(triangle_strip, max_vertices = 24) out;
+				layout(lines) in;
+				layout(triangle_strip, max_vertices = 4) out;
 			
 				vec4 prismoid[8]; // Scratch space for the eight corners of the prismoid
 

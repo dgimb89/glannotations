@@ -179,7 +179,7 @@ public:
 		glatBox->setText("GLAT");
 		glatBox->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 		glatBox->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
-		glatBox->getState()->asInternalState().setExternalReference(new glat::BoxReference(glm::vec2(0.f, 0.f), glm::vec2(0.f, 2.f), glm::vec3(2.f, 0.f, 0.f), &m_camera, false));
+		glatBox->getState()->asInternalState().setExternalReference(new glat::BoxReference(glm::vec2(0.f, 0.f), glm::vec2(0.f, 2.f), glm::vec3(2.f, 0.f, 0.f), false));
 		/*m_glatBox = new glat::FontAnnotation(new glat::ExternalBoxState(glm::vec3(-1.f, -4.f, -1.f), glm::vec3(0.f, 0.f, 2.f), glm::vec3(0.f, 1.f, 0.f), glm::vec3(2.f, 0.f, 0.f), &m_camera, false), dfFactory);
 		m_glatBox->setFontName("calibri.ttf");
 		m_glatBox->setText("GLAT");

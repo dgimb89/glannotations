@@ -1,18 +1,12 @@
 #include <glat/AbstractExternalReference.h>
 #include <stdexcept>
 
-void glat::AbstractExternalReference::setCamera(glowutils::Camera* camera) {
-	setDirty(true);
-	m_camera = camera;
-}
-
 void glat::AbstractExternalReference::setPositioningOnly(bool positioningOnly) {
 	setDirty(true);
 	m_positioningOnly = positioningOnly;
 }
 
-glat::AbstractExternalReference::AbstractExternalReference(glowutils::Camera* camera, bool positioningOnly) {
-	setCamera(camera);
+glat::AbstractExternalReference::AbstractExternalReference(bool positioningOnly) {
 	setPositioningOnly(positioningOnly);
 }
 
@@ -32,4 +26,12 @@ void glat::AbstractExternalReference::assertNotReused() {
 	if (!isDirty()) {
 		throw std::runtime_error("External References can not be reused for different annotations!");
 	}
+}
+
+void glat::AbstractExternalReference::setBindingIndex(gl::GLuint bindingIndex) {
+	m_bindingIndex = bindingIndex;
+}
+
+gl::GLuint glat::AbstractExternalReference::getBindingIndex() const {
+	return m_bindingIndex;
 }
