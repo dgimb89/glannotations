@@ -16,7 +16,7 @@ namespace glat {
 		virtual ~AbstractDrawingPrimitive();
 
 		virtual void draw() = 0;
-		virtual void setColor(glm::vec4 color);
+		virtual void setColor(glm::vec4 color); // does this need to be virtual?
 		// important: bind matrices AFTER you've setup shader
 		void setMatricesBlockBinding(gl::GLuint bindingIndex);
 		void setupShader(const char* vertShader, const char* fragShader, gl::GLuint matricesBindingIndex);

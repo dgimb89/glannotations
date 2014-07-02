@@ -8,7 +8,7 @@ namespace glat {
 	public:
 		Prismoid(gl::GLuint matricesBindingIndex);
 		virtual void draw();
-		virtual void setPosition(const std::vector<glm::vec3>& linestrip);
+		void setPosition(const std::vector<glm::vec3>& linestrip);
 
 	protected:
 		size_t m_numVert;
