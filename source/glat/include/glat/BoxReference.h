@@ -20,7 +20,6 @@ namespace glat {
 		void setDepth(glm::vec3 depthSpan);
 
 		virtual void draw() override;
-		virtual void updateBindings(const glat::AbstractRenderer& renderer) override;
 
 		virtual void setupExternalReference(const InternalState& state) override;
 		virtual void setupExternalReference(const PathState& state) override;
@@ -36,7 +35,6 @@ namespace glat {
 
 		glm::vec3 m_widthSpan, m_heightSpan, m_depthSpan, m_frontLLF;
 		float m_halfAnnotWidth, m_halfAnnotHeight;
-		glow::ref_ptr<glat::Box> m_box;
 
 	};
 }

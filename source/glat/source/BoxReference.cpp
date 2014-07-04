@@ -81,12 +81,9 @@ glat::BoxReference::BoxReference(glm::vec2 widthOverflow, glm::vec2 heightOverfl
 }
 
 void glat::BoxReference::draw() {
-	if (!isPositioningOnly()) {
-		gl::glDepthMask(gl::GL_FALSE);
-		m_box->draw();
-		gl::glDepthMask(gl::GL_TRUE);
-	}
-	setDirty(false);
+	gl::glDepthMask(gl::GL_FALSE);
+	AbstractExternalReference::draw();
+	gl::glDepthMask(gl::GL_TRUE);
 }
 
 void glat::BoxReference::setupExternalReference(const InternalState& state) {
@@ -104,9 +101,10 @@ void glat::BoxReference::setupExternalReference(const InternalState& state) {
 	m_halfAnnotHeight = glm::distance(state.getUR(), state.getLR()) / 2.f;
 
 	if (isDirty() && !isPositioningOnly()) {
-		m_box = new glat::Box;
-		m_box->setColor(glm::vec4(1.f, 0.f, 0.f, .5f));
-		m_box->setPosition(m_frontLLF, m_frontLLF + m_widthSpan + m_heightSpan + m_depthSpan);
+		auto box = new glat::Box;
+		box->setColor(glm::vec4(1.f, 0.f, 0.f, .5f));
+		box->setPosition(m_frontLLF, m_frontLLF + m_widthSpan + m_heightSpan + m_depthSpan);
+		m_externalPrimitive = box;
 	}
 }
 
@@ -171,11 +169,4 @@ inline void glat::BoxReference::determineViewdependantSpans(glm::vec3& widthSpan
 		hOverflow = 0.f;
 	}
 	heightSpan = glm::cross(widthSpan, bottom ? m_heightSpan : -m_heightSpan);
-}
-
-void glat::BoxReference::updateBindings(const glat::AbstractRenderer& renderer) {
-	if (isDirty()) {
-		setBindingIndex(renderer.getMatricesBindingIndex());
-		m_box->setMatricesBlockBinding(getBindingIndex());
-	}
 }

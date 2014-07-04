@@ -19,7 +19,7 @@ gl::GLsizeiptr matrixBlockSize() {
 
 void glat::setView(const glm::mat4& view, gl::GLuint bindingIndex /*= 0*/) {
 	g_matricesBufferMap[bindingIndex].buffer->setSubData(0, sizeof(glm::mat4), glm::value_ptr(view));
-	g_matricesBufferMap[bindingIndex].view = view;
+	g_matricesBufferMap[bindingIndex].view = glm::inverse(view);
 }
 
 void glat::setProjection(const glm::mat4& projection, gl::GLuint bindingIndex /*= 0*/) {
@@ -49,17 +49,17 @@ const glm::mat4& glat::getView(gl::GLuint bindingIndex /*= 0*/) {
 }
 
 glm::vec3 GLAT_API glat::getRight(gl::GLuint bindingIndex /*= 0*/) {
-	return glm::vec3(glm::inverse(glat::getView(bindingIndex)) * glm::vec4(1.f, 0.f, 0.f, 0.f));
+	return glm::vec3(glat::getView(bindingIndex)[0]);
 }
 
 glm::vec3 GLAT_API glat::getUp(gl::GLuint bindingIndex /*= 0*/) {
-	return glm::vec3(glat::getView(bindingIndex) * glm::vec4(0.f, 1.f, 0.f, 0.f));
+	return glm::vec3(glat::getView(bindingIndex)[1]);
 }
 
 glm::vec3 GLAT_API glat::getLookAt(gl::GLuint bindingIndex /*= 0*/) {
-	return glm::vec3(glat::getView(bindingIndex) * glm::vec4(0.f, 0.f, 1.f, 0.f));
+	return glm::vec3(glat::getView(bindingIndex)[2]);
 }
 
 glm::vec3 GLAT_API glat::getEye(gl::GLuint bindingIndex /*= 0*/) {
-	return glm::vec3(glm::inverse(getView(bindingIndex))[3]);
+	return glm::vec3(getView(bindingIndex)[3]);
 }

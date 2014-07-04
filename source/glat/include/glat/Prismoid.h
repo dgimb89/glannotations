@@ -6,11 +6,9 @@
 namespace glat {
 	class Prismoid : public glat::AbstractDrawingPrimitive {
 	public:
-		Prismoid(gl::GLuint matricesBindingIndex);
+		Prismoid();
 		virtual void draw();
-		void setPosition(const std::vector<glm::vec3>& linestrip);
-
-	protected:
-		size_t m_numVert;
+		void setPosition(const glm::vec3& a, const glm::vec3& b);
+		void setReference(const glm::vec3 reference);
 	};
 }

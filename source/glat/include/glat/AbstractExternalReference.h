@@ -1,9 +1,11 @@
 #pragma once
 
 #include <glbinding/types.h>
+#include <glowbase/ref_ptr.h>
 #include <glowutils/Camera.h>
 
 #include <glat/DirtyFlagObject.h>
+#include <glat/AbstractDrawingPrimitive.h>
 #include <glat/glat_api.h>
 
 namespace glat {
@@ -19,14 +21,16 @@ namespace glat {
 		friend class PathState;
 		AbstractExternalReference(bool positioningOnly);
 		bool isPositioningOnly();
+		void setColor(glm::vec4 color);
 
 	protected:
+		inline void setDirty(bool) const override;
 		inline void setPositioningOnly(bool positioningOnly);
 		inline void setBindingIndex(gl::GLuint bindingIndex);
 		inline gl::GLuint getBindingIndex() const;
 
-		virtual void draw() = 0;
-		virtual void updateBindings(const glat::AbstractRenderer& renderer) = 0;
+		virtual void draw();
+		virtual void updateBindings(const glat::AbstractRenderer& renderer);
 		virtual void setupExternalReference(const InternalState& state);
 		virtual void setupExternalReference(const PathState& state);
 
@@ -36,6 +40,7 @@ namespace glat {
 
 		bool m_positioningOnly;
 		gl::GLuint m_bindingIndex;
+		glow::ref_ptr<glat::AbstractDrawingPrimitive> m_externalPrimitive;
 
 	private:
 		void assertNotReused();

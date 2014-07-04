@@ -7,14 +7,19 @@
 namespace glat {
 	class GLAT_API LabelReference : public glat::AbstractExternalReference {
 	public:
+		LabelReference(glm::vec3 reference);
 	protected:
-		virtual void draw() override;
 		virtual void updatePositioning(InternalState& state) override;
 		virtual void updatePositioning(PathState& state) override;
 
-		virtual void updateBindings(const glat::AbstractRenderer& renderer) override;
-	
+		virtual void setupExternalReference(const InternalState& state) override;
+		virtual void setupExternalReference(const PathState& state) override;
+
+		inline void updatePrismoid(const glm::vec3& a, const glm::vec3& b);
+
 	private:
 		glow::ref_ptr<glat::Prismoid> m_prismoid;
+		glm::vec3 m_annotationCenter;
+		float m_width, m_height;
 	};
 }

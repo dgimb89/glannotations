@@ -27,9 +27,10 @@ namespace glat {
 		glow::ref_ptr<glat::AbstractState> getState() const;
 		glow::ref_ptr<glat::AbstractState> getRenderState() const;
 
-		virtual void interpolateState(const InternalState& mixState, float mix);
-		virtual void interpolateState(const PathState& mixState, float mix);
-		virtual void interpolateState(const ViewportState& mixState, float mix);
+		// should internal interpolation be offered? - maybe just at state level, but user has to keep the both final states
+		void interpolateState(const InternalState& mixState, float mix);
+		void interpolateState(const PathState& mixState, float mix);
+		void interpolateState(const ViewportState& mixState, float mix);
 
 		void resetInterpolation();
 

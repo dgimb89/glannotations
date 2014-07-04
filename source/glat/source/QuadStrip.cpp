@@ -76,7 +76,7 @@ static const char* geomShader = R"(
 	}
 	)";
 
-static const char* dfFragShader = R"(
+	static const char* dfFragShader = R"(
 	#version 330
 	uniform sampler2D source;
 	uniform int style;
@@ -133,8 +133,7 @@ static const char* dfFragShader = R"(
 		return dot(n, lightSource);
 	}
 
-	void main()
-	{
+	void main() {
 		if (style == 1) {
 			fragColor = getTextWithOutline();
 		} else if (style == 2) {
@@ -170,9 +169,11 @@ static const char* texturingFragShader = R"(
 
 glat::QuadStrip::QuadStrip(std::shared_ptr<glow::Texture> texture, gl::GLuint matricesBindingIndex, bool isDistanceField) : glat::AbstractTexturedPrimitive(texture) {
 	if (isDistanceField) {
-		setupShader(vertShader, geomShader, dfFragShader, matricesBindingIndex);
+		setupShader(vertShader, geomShader, dfFragShader);
+		setMatricesBlockBinding(matricesBindingIndex);
 	} else {
-		setupShader(vertShader, geomShader, texturingFragShader, matricesBindingIndex);
+		setupShader(vertShader, geomShader, texturingFragShader);
+		setMatricesBlockBinding(matricesBindingIndex);
 	}
 	// initial position
 	m_ll = m_lr = m_ur = glm::vec3(0.0f, 0.0f, 0.0f);

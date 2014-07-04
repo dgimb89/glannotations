@@ -1,4 +1,5 @@
 #include <glat/AbstractExternalReference.h>
+#include <glat/AbstractRenderer.h>
 #include <stdexcept>
 
 void glat::AbstractExternalReference::setPositioningOnly(bool positioningOnly) {
@@ -34,4 +35,26 @@ void glat::AbstractExternalReference::setBindingIndex(gl::GLuint bindingIndex) {
 
 gl::GLuint glat::AbstractExternalReference::getBindingIndex() const {
 	return m_bindingIndex;
+}
+
+void glat::AbstractExternalReference::updateBindings(const glat::AbstractRenderer& renderer) {
+	if (isDirty()) {
+		setBindingIndex(renderer.getMatricesBindingIndex());
+		m_externalPrimitive->setMatricesBlockBinding(getBindingIndex());
+	}
+}
+
+void glat::AbstractExternalReference::draw() {
+	if (!isPositioningOnly()) {
+		m_externalPrimitive->draw();
+	}
+	setDirty(false);
+}
+
+void glat::AbstractExternalReference::setDirty(bool dirtyValue) const  {
+	DirtyFlagObject::setDirty(dirtyValue);
+}
+
+void glat::AbstractExternalReference::setColor(glm::vec4 color) {
+	m_externalPrimitive->setColor(color);
 }

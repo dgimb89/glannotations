@@ -50,6 +50,7 @@
 #include <glat/ViewportState.h>
 #include <glat/InternalState.h>
 #include <glat/BoxReference.h>
+#include <glat/LabelReference.h>
 #include <glat/Styles.h>
 
 #include "building.h"
@@ -180,27 +181,11 @@ public:
 		glatBox->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 		glatBox->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
 		glatBox->getState()->asInternalState().setExternalReference(new glat::BoxReference(glm::vec2(0.f, 0.f), glm::vec2(0.f, 2.f), glm::vec3(2.f, 0.f, 0.f), false));
-		/*m_glatBox = new glat::FontAnnotation(new glat::ExternalBoxState(glm::vec3(-1.f, -4.f, -1.f), glm::vec3(0.f, 0.f, 2.f), glm::vec3(0.f, 1.f, 0.f), glm::vec3(2.f, 0.f, 0.f), &m_camera, false), dfFactory);
-		m_glatBox->setFontName("calibri.ttf");
-		m_glatBox->setText("GLAT");
-		m_glatBox->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
-		m_glatBox->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
 
-		glat::AbstractState* state = new glat::ViewportState(glm::vec2(-.4f, -.4f), glm::vec2(0.4f, 0.4f));
-		m_glatBox->addState(state); 
-
-		m_treevisBox = new glat::FontAnnotation(new glat::ExternalBoxState(glm::vec3(-1.f, -4.f, 9.f), glm::vec3(0.f, 5.f, 0.f), glm::vec3(2.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 2.f), &m_camera, false), dfFactory);
-		m_treevisBox->setFontName("calibri.ttf");
-		m_treevisBox->setText("TreeVis");
-		m_treevisBox->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
-		m_treevisBox->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
-
-		m_glowText = new glat::FontAnnotation(new glat::ExternalLabelState(glm::vec3(.75f, 3.f, 3.f), glm::vec3(-3.f, 4.f, 12.f), 3.5f, 2.f, &m_camera, true), dfFactory);
-		m_glowText->setText("Demo");
-		m_glowText->setFontName("calibri.ttf");
-		m_glowText->setColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
-		m_glowText->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(1.f, 1.f, 1.f)));
-		m_glowText->getState()->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 0.f, 1.f)));*/
+		auto glowLabel = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-4.75f, 3.f, 12.f), glm::vec3(-1.25f, 3.f, 12.f), glm::vec3(-1.25f, 5.f, 12.f)), "GLOW", dfFactory);
+		glowLabel->setFontName("calibri.ttf");
+		glowLabel->getState()->asInternalState().setExternalReference(new glat::LabelReference(glm::vec3(.75f, 3.f, 3.f)));
+		m_annotations.addAnnotation(glowLabel);
 
 		auto hpicgs = new glat::FontAnnotation(new glat::InternalState(glm::vec3(2.f, -1.f, -1.01f), glm::vec3(2.f, 3.f, -1.01f), glm::vec3(4.f, 3.f, -1.01f)), dfFactory);
 		m_annotations.addAnnotation(hpicgs);

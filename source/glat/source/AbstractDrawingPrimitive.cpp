@@ -22,21 +22,17 @@ AbstractDrawingPrimitive::~AbstractDrawingPrimitive() {
 	m_program->release();
 }
 
-void glat::AbstractDrawingPrimitive::setupShader(const char* vertShader, const char* fragShader, gl::GLuint matricesBindingIndex) {
+void glat::AbstractDrawingPrimitive::setupShader(const char* vertShader, const char* fragShader) {
 	m_program = new glow::Program;
 	m_program->attach(replacePlaceholderAndGetShader(gl::GL_VERTEX_SHADER, vertShader), glow::Shader::fromString(gl::GL_FRAGMENT_SHADER, fragShader));
-
-	setMatricesBlockBinding(matricesBindingIndex);
 }
 
-void glat::AbstractDrawingPrimitive::setupShader(const char* vertShader, const char* geomShader, const char* fragShader, gl::GLuint matricesBindingIndex) {
+void glat::AbstractDrawingPrimitive::setupShader(const char* vertShader, const char* geomShader, const char* fragShader) {
 	m_program = new glow::Program;
 	m_program->attach(replacePlaceholderAndGetShader(gl::GL_VERTEX_SHADER, vertShader),
 		replacePlaceholderAndGetShader(gl::GL_GEOMETRY_SHADER, geomShader),
 		glow::Shader::fromString(gl::GL_FRAGMENT_SHADER, fragShader)
 	);
-
-	setMatricesBlockBinding(matricesBindingIndex);
 }
 
 void glat::AbstractDrawingPrimitive::setMatricesBlockBinding(gl::GLuint bindingIndex) {
