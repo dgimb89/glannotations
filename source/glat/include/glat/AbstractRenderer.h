@@ -9,7 +9,9 @@ namespace glat {
 
 	// forward declaration 
 	class AbstractAnnotation;
-	class AbstractExternalState;
+	class AbstractExternalState; class ViewportState;
+	class InternalState;
+	class PathState;
 
 	class AbstractRenderer : public glat::DirtyFlagObject {
 		friend class ViewportState;

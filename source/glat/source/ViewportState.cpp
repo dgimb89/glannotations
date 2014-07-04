@@ -46,7 +46,7 @@ glow::ref_ptr<glat::AbstractState> glat::ViewportState::interpolateWith(const Vi
 }
 
 glow::ref_ptr<glat::AbstractState> glat::ViewportState::clone() const {
-	glow::ref_ptr<glat::ViewportState> clonedState(new ViewportState(m_ll, m_ur));
+	glow::ref_ptr<glat::AbstractState> clonedState(new ViewportState(m_ll, m_ur));
 	AbstractState::copyState(*clonedState);
 	return clonedState;
 }

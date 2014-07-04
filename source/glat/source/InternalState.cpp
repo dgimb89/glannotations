@@ -53,8 +53,8 @@ glow::ref_ptr<glat::AbstractState> glat::InternalState::interpolateWith(const Vi
 }
 
 glow::ref_ptr<glat::AbstractState> glat::InternalState::clone() const {
-	glow::ref_ptr<glat::InternalState> clonedState(new InternalState(m_ll, m_lr, m_ur));
-	ReferenceableState::copyState(*clonedState);
+	glow::ref_ptr<glat::AbstractState> clonedState(new InternalState(m_ll, m_lr, m_ur));
+	ReferenceableState::copyState(dynamic_cast<ReferenceableState&> (*clonedState));
 	return clonedState;
 }
 
