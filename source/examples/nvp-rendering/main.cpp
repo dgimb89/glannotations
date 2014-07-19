@@ -40,8 +40,6 @@
 #include <glat/SVGAnnotation.h>
 #include <glat/ViewportState.h>
 #include <glat/InternalState.h>
-#include <glat/ExternalBoxState.h>
-#include <glat/ExternalLabelState.h>
 #include <glat/Styles.h>
 
 using namespace glowwindow;

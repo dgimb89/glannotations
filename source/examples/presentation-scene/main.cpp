@@ -182,10 +182,10 @@ public:
 		glatBox->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
 		glatBox->getState()->asInternalState().setExternalReference(new glat::BoxReference(glm::vec2(0.f, 0.f), glm::vec2(0.f, 2.f), glm::vec3(2.f, 0.f, 0.f), false));
 
-		auto glowLabel = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-4.75f, 3.f, 12.f), glm::vec3(-1.25f, 3.f, 12.f), glm::vec3(-1.25f, 5.f, 12.f)), "GLOW", dfFactory);
-		glowLabel->setFontName("calibri.ttf");
-		glowLabel->getState()->asInternalState().setExternalReference(new glat::LabelReference(glm::vec3(.75f, 3.f, 3.f)));
-		m_annotations.addAnnotation(glowLabel);
+		auto cgsLabel = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-4.75f, 3.f, 12.f), glm::vec3(-1.25f, 3.f, 12.f), glm::vec3(-1.25f, 5.f, 12.f)), "CGS", dfFactory);
+		cgsLabel->setFontName("calibri.ttf");
+		cgsLabel->getState()->asInternalState().setExternalReference(new glat::LabelReference(glm::vec3(0.f, -3.f, 10.f)));
+		m_annotations.addAnnotation(cgsLabel);
 
 		auto hpicgs = new glat::FontAnnotation(new glat::InternalState(glm::vec3(2.f, -1.f, -1.01f), glm::vec3(2.f, 3.f, -1.01f), glm::vec3(4.f, 3.f, -1.01f)), dfFactory);
 		m_annotations.addAnnotation(hpicgs);
@@ -193,9 +193,6 @@ public:
 		hpicgs->setText("GLOW");
 		hpicgs->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 		hpicgs->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
-		/*glat::ExternalBoxState* extBox = new glat::ExternalBoxState(glm::vec3(), glm::vec3(1.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f), glm::vec3(0.f, 0.f, 1.f), &m_camera, true);
-		extBox->setStyling(new glat::Styles::ExternalColor(glm::vec4(0.f, 0.f, 0.f, 1.f)));
-		m_hpicgs->addState(extBox);*/
 
 		m_annotations.addAnnotation(new glat::PNGAnnotation(new glat::InternalState(glm::vec3(-2.f, -4.f, 2.f), glm::vec3(-2.f, -4.f, 7.f), glm::vec3(-2.f, 1.0f, 7.f)), "hpi.png", dfFactory));
 		// m_hpilogo->addState(new glat::ViewportState(glm::vec2(-.25f, -.5f), glm::vec2(0.25f, 0.5f)));
@@ -232,21 +229,6 @@ public:
 
 	virtual void paintEvent(PaintEvent &) override
 	{
-		/*m_building->setModelViewProjection(m_camera.viewProjection());
-		m_building1->setModelViewProjection(m_camera.viewProjection());
-		m_building2->setModelViewProjection(m_camera.viewProjection());
-		m_building3->setModelViewProjection(m_camera.viewProjection());
-		m_building4->setModelViewProjection(m_camera.viewProjection());
-		m_building5->setModelViewProjection(m_camera.viewProjection());
-		m_building6->setModelViewProjection(m_camera.viewProjection());
-		m_building7->setModelViewProjection(m_camera.viewProjection());
-		m_building8->setModelViewProjection(m_camera.viewProjection());
-		m_building9->setModelViewProjection(m_camera.viewProjection());
-		m_building10->setModelViewProjection(m_camera.viewProjection());
-		m_building11->setModelViewProjection(m_camera.viewProjection());
-		m_building12->setModelViewProjection(m_camera.viewProjection());
-		m_building13->setModelViewProjection(m_camera.viewProjection());
-		m_building14->setModelViewProjection(m_camera.viewProjection());*/
 		gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT | gl::GL_STENCIL_BUFFER_BIT);
 
 		m_phong->setUniform("transformi", m_camera.viewProjectionInverted());

@@ -20,7 +20,6 @@ void glat::LabelReference::setupExternalReference(const InternalState& state) {
 	m_annotationCenter = (state.getLL() + state.getLR()) / 2.f + (state.getUR() - state.getLR()) / 2.f;
 	m_width = glm::distance(state.getLR(), state.getLL());
 	m_height = glm::distance(state.getUR(), state.getLR());
-	reinterpret_cast<glat::Prismoid*>(m_externalPrimitive.get())->setReference(m_annotationCenter);
 }
 
 void glat::LabelReference::setupExternalReference(const PathState& state) {
@@ -28,8 +27,10 @@ void glat::LabelReference::setupExternalReference(const PathState& state) {
 }
 
 glat::LabelReference::LabelReference(glm::vec3 reference) : AbstractExternalReference(false) {
-	m_externalPrimitive = new glat::Prismoid;
-	m_externalPrimitive->setColor(glm::vec4(0.f, 0.f, 0.f, 1.f));
+	auto prismoid = new glat::Prismoid;
+	prismoid->setColor(glm::vec4(0.f, 0.f, 0.f, 1.f));
+	prismoid->setReference(reference);
+	m_externalPrimitive = prismoid;
 }
 
 inline void glat::LabelReference::updatePrismoid(const glm::vec3& a, const glm::vec3& b) {
