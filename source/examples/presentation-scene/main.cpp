@@ -1,4 +1,4 @@
-
+#include <glbinding/gl/bitfield.h>
 #include <algorithm>
 #include <random>
 #include <cassert>
@@ -19,7 +19,6 @@
 #include <glow/FrameBufferAttachment.h>
 #include <glow/Texture.h>
 #include <glow/VertexArrayObject.h>
-#include <glow/debugmessageoutput.h>
 
 #include <glowutils/Timer.h>
 #include <glowutils/AxisAlignedBoundingBox.h>
@@ -89,7 +88,6 @@ public:
 
 	virtual void initialize(Window & window) override {
 		ExampleWindowEventHandler::initialize(window);
-		glow::debugmessageoutput::enable();
 
 		glat::RendererFactory dfFactory;
 		dfFactory.useNVpr(false);
@@ -174,23 +172,18 @@ public:
 		m_building13->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
 		m_building14->setColor(buildingColor + temp);
 
-		auto glatBox = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-1.01f, -4.f, -1.f), glm::vec3(-1.01f, -4.f, 1.f), glm::vec3(-1.01f, -3.f, 1.f)), dfFactory);
+		auto glatBox = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-1.01f, -4.f, -1.f), glm::vec3(-1.01f, -4.f, 1.f), glm::vec3(-1.01f, -3.f, 1.f)), "GLAT", "calibri.ttf", dfFactory);
 		m_annotations.addAnnotation(glatBox);
-		glatBox->setFontName("calibri.ttf");
-		glatBox->setText("GLAT");
 		glatBox->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 		glatBox->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
 		glatBox->getState()->asInternalState().setExternalReference(new glat::BoxReference(glm::vec2(0.f, 0.f), glm::vec2(0.f, 2.f), glm::vec3(2.f, 0.f, 0.f), false));
 
-		auto cgsLabel = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-4.75f, 3.f, 12.f), glm::vec3(-1.25f, 3.f, 12.f), glm::vec3(-1.25f, 5.f, 12.f)), "CGS", dfFactory);
-		cgsLabel->setFontName("calibri.ttf");
+		auto cgsLabel = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-4.75f, 3.f, 12.f), glm::vec3(-1.25f, 3.f, 12.f), glm::vec3(-1.25f, 5.f, 12.f)), "CGS", "calibri.ttf", dfFactory);
 		cgsLabel->getState()->asInternalState().setExternalReference(new glat::LabelReference(glm::vec3(0.f, -3.f, 10.f)));
 		m_annotations.addAnnotation(cgsLabel);
 
-		auto hpicgs = new glat::FontAnnotation(new glat::InternalState(glm::vec3(2.f, -1.f, -1.01f), glm::vec3(2.f, 3.f, -1.01f), glm::vec3(4.f, 3.f, -1.01f)), dfFactory);
+		auto hpicgs = new glat::FontAnnotation(new glat::InternalState(glm::vec3(2.f, -1.f, -1.01f), glm::vec3(2.f, 3.f, -1.01f), glm::vec3(4.f, 3.f, -1.01f)), "GLOW", "calibri.ttf", dfFactory);
 		m_annotations.addAnnotation(hpicgs);
-		hpicgs->setFontName("calibri.ttf");
-		hpicgs->setText("GLOW");
 		hpicgs->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 		hpicgs->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
 
@@ -256,6 +249,7 @@ public:
 		m_building13->draw();
 		m_building14->draw();
 
+		m_camera.viewProjectionInverted();
 		m_annotations.draw();
 	}
 

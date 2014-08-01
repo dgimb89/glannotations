@@ -16,7 +16,8 @@ void glat::DistanceFieldPNGRenderer::draw(const glow::ref_ptr<glat::AbstractAnno
 		);
 		quadstrip->addQuad(glat::QuadStrip::texVec2_t(0.f, 0.f), glat::QuadStrip::texVec2_t(1.f, 1.f));
 		m_drawingPrimitive = quadstrip;
-
+		// TODO: avoid importing source image twice
+		annotation->getRenderState()->setSourceDimensions(glat::TextureManager::getInstance().getTextureSize(currentAnnotation->getFileName()), m_globalMatricesBindingIndex);
 		if (currentAnnotation->isDistanceField()) {
 			m_drawingPrimitive->setColor(currentAnnotation->getColor());
 			setupOutline(annotation->getRenderState()->getStyling("Outline"));

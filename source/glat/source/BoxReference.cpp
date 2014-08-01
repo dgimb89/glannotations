@@ -1,5 +1,6 @@
 ﻿#define _USE_MATH_DEFINES
 #include <cmath>
+#include <glbinding/gl/boolean.h>
 #include <algorithm>
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>

@@ -1,5 +1,5 @@
 #pragma once
-
+#include <glm/glm.hpp>
 #include <glowbase/Referenced.h>
 #include <glowbase/ref_ptr.h>
 #include <glow/Texture.h>
@@ -12,7 +12,6 @@ namespace glat {
 	class ManagedTexture : public glow::Texture {
 	public:
 		ManagedTexture(gl::GLenum target = gl::GL_TEXTURE_2D);
-		virtual ~ManagedTexture();
 	};
 
 	/// Singleton Texture Manager
@@ -20,6 +19,7 @@ namespace glat {
 	public:
 		static TextureManager& getInstance();
 		std::shared_ptr<glow::Texture> getTexture(std::string fileName);
+		glm::ivec2 getTextureSize(std::string fileName);
 	protected:
 		TextureManager();
 		std::map<std::string, std::weak_ptr<glat::ManagedTexture>> m_textures;

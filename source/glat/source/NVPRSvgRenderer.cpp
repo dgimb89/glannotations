@@ -1,4 +1,4 @@
-#include <glbinding/functions.h>
+#include <glbinding/gl/functions.h>
 
 #include <glat/NVPRSvgRenderer.h>
 #include <glat/SVGAnnotation.h>

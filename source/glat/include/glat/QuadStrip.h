@@ -12,6 +12,11 @@ namespace glat {
 		void addQuad(texVec2_t texture_ll, texVec2_t texture_advance);
 		void clearQuads();
 
+		float getUniformQuadHeight();
+		size_t getQuadstripRowCount();
+		float getQuadStripHeight();
+		float getQuadStripWidth();
+
 		virtual void draw();
 		virtual void setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur);
 

@@ -95,9 +95,8 @@ static const char* geomShader = R"(
 		float distance = texture2D(source, vertex.texCoord);
 		if(distance > 0.5) {
 			discard;
-		} else {
-			return vec4(color.rgb, color.a * (1.0 - smoothstep(0.49, 0.5, distance)));
 		}
+		return vec4(color.rgb, color.a * (1.0 - smoothstep(0.49, 0.5, distance)));
 	}
 
 	vec4 getTextWithOutline() {
@@ -297,4 +296,24 @@ void glat::QuadStrip::pushTextureCoords(std::vector<texVec2_t>& textureVec, cons
 	textureVec.push_back(getUL(textureRange));
 	textureVec.push_back(getLR(textureRange));
 	textureVec.push_back(textureRange.second);
+}
+
+float glat::QuadStrip::getUniformQuadHeight() {
+	return m_textureRanges.front().second.y; // returning random texture advance y
+}
+
+size_t glat::QuadStrip::getQuadstripRowCount() {
+	// TODO: support multiple rows
+	return 1u;
+}
+
+float glat::QuadStrip::getQuadStripHeight() {
+	return getQuadstripRowCount() * getUniformQuadHeight();
+}
+
+float glat::QuadStrip::getQuadStripWidth() {
+	// TODO: adapt when multiple row support is added
+	float resultWidth = 0.f;
+	std::for_each(m_textureRanges.begin(), m_textureRanges.end(), [&](textureRange_t elem){ resultWidth += elem.second.x; });
+	return resultWidth;
 }

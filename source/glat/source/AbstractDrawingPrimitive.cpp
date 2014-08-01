@@ -1,3 +1,4 @@
+#include <glbinding/gl/values.h>
 #include <glowutils/StringTemplate.h>
 #include <glowbase/StaticStringSource.h>
 #include "ShaderSources.hpp"

@@ -1,5 +1,5 @@
-#include <glbinding/bitfields.h>
-#include <glbinding/functions.h>
+#include <glbinding/gl/bitfield.h>
+#include <glbinding/gl/functions.h>
 
 #include <glat/NVPRFontRenderer.h>
 #include <glat/FontAnnotation.h>
@@ -101,7 +101,7 @@ void glat::NVPRFontRenderer::initializeFont(glat::FontAnnotation* annotation) {
 	fontfile.append(annotation->getFontName());
 
 	gl::glPathGlyphRangeNV(m_pathBase,
-		gl::GL_FILE_NAME_NV, fontfile.c_str(), 0,
+		gl::GL_FILE_NAME_NV, fontfile.c_str(), gl::GLbitfield(0),
 		0, numChars,
 		gl::GL_SKIP_MISSING_GLYPH_NV, pathSettings, emScale);
 

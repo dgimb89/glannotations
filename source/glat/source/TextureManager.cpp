@@ -36,8 +36,9 @@ std::shared_ptr<glow::Texture> glat::TextureManager::getTexture(std::string file
 glat::TextureManager::TextureManager() {
 }
 
-glat::ManagedTexture::~ManagedTexture() {
-	glow::Texture::~Texture();
+glm::ivec2 glat::TextureManager::getTextureSize(std::string fileName) {
+	glat::PNGImage image(fileName);
+	return glm::ivec2(image.getWidth(), image.getHeight());
 }
 
 glat::ManagedTexture::ManagedTexture(gl::GLenum target /*= GL_TEXTURE_2D*/) : glow::Texture(target) {

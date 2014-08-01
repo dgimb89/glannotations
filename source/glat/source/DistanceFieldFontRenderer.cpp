@@ -4,6 +4,7 @@
 #include <glat/FontAnnotation.h>
 #include <glat/TextureManager.h>
 #include <glat/QuadStrip.h>
+#include <glat/GlyphSetConfig.h>
 
 void glat::DistanceFieldFontRenderer::draw(const glow::ref_ptr<glat::AbstractAnnotation>& annotation) {
 	FontAnnotation* currentAnnotation = dynamic_cast<FontAnnotation*>(annotation.get());
@@ -11,14 +12,7 @@ void glat::DistanceFieldFontRenderer::draw(const glow::ref_ptr<glat::AbstractAnn
 	gl::glBlendFunc(gl::GL_SRC_ALPHA, gl::GL_ONE_MINUS_SRC_ALPHA);
 
 	if (currentAnnotation->isDirty()) {
-		m_glyphConfig = new glat::GlyphSetConfig(currentAnnotation->getFontName());		
-		auto quadStrip = new QuadStrip(glat::TextureManager::getInstance().getTexture(m_glyphConfig->getGlyphsetImageName()), m_globalMatricesBindingIndex, true);
-		for (unsigned i = 0; i < currentAnnotation->getText().length(); ++i) {
-			quadStrip->addQuad(	m_glyphConfig->getGlyphConfigForCharcode(currentAnnotation->getText().at(i))._ll, 
-								m_glyphConfig->getGlyphConfigForCharcode(currentAnnotation->getText().at(i))._advance);
-		}
-		m_drawingPrimitive = quadStrip;
-
+		setupGlyphQuadstrip(currentAnnotation);
 		m_drawingPrimitive->setColor(currentAnnotation->getColor());
 		setupOutline(annotation->getRenderState()->getStyling("Outline"));
 		setupBumpMap(annotation->getRenderState()->getStyling("BumpMap"));
@@ -31,4 +25,16 @@ void glat::DistanceFieldFontRenderer::draw(const glow::ref_ptr<glat::AbstractAnn
 
 glat::DistanceFieldFontRenderer::DistanceFieldFontRenderer(gl::GLuint matricesBindingIndex) : AbstractPrimitiveRenderer(matricesBindingIndex) {
 
+}
+
+void glat::DistanceFieldFontRenderer::setupGlyphQuadstrip(glat::FontAnnotation* annotation) {
+	glat::GlyphSetConfig glyphConfig(annotation->getFontName());
+	auto quadStrip = new QuadStrip(glat::TextureManager::getInstance().getTexture(glyphConfig.getGlyphsetImageName()), m_globalMatricesBindingIndex, true);
+	for (unsigned i = 0; i < annotation->getText().length(); ++i) {
+		quadStrip->addQuad(glyphConfig.getGlyphConfigForCharcode(annotation->getText().at(i))._ll,
+			glyphConfig.getGlyphConfigForCharcode(annotation->getText().at(i))._advance);
+	}
+	float pixelHeight = annotation->getFontSize() * quadStrip->getQuadstripRowCount() * 4.f / 3.f; // 1 zoll = 72 pt = 96 px
+	annotation->getRenderState()->setSourceDimensions(static_cast<unsigned short>((quadStrip->getQuadStripWidth() / quadStrip->getQuadStripHeight()) * pixelHeight), static_cast<unsigned short>(pixelHeight), m_globalMatricesBindingIndex);
+	m_drawingPrimitive = quadStrip;
 }

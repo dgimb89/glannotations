@@ -1,6 +1,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <glbinding/functions.h>
+#include <glbinding/gl/functions.h>
+#include <glbinding/gl/bitfield.h>
 
 #include <glat/NVPRRenderer.h>
 #include <glat/AbstractAnnotation.h>

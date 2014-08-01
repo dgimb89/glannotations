@@ -1,3 +1,4 @@
+#include <glbinding/gl/bitfield.h>
 #include <algorithm>
 #include <random>
 #include <cassert>
@@ -13,7 +14,6 @@
 #include <glow/Buffer.h>
 #include <glow/logging.h>
 #include <glow/VertexArrayObject.h>
-#include <glow/debugmessageoutput.h>
 
 #include <glowutils/Timer.h>
 #include <glowutils/AxisAlignedBoundingBox.h>
@@ -75,7 +75,6 @@ public:
 
 	virtual void initialize(Window & window) override {
 		ExampleWindowEventHandler::initialize(window);
-		glow::debugmessageoutput::enable();
 		gl::glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
 		m_sphere = new glow::Program();
@@ -100,16 +99,12 @@ public:
 
 		m_agrid->setCamera(&m_camera);
 
-		m_nvprViewportFontAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(0.8f, -1.f), glm::vec2(1.f, 0.f)));
+		m_nvprViewportFontAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(0.8f, -1.f), glm::vec2(1.f, 0.f)), "0", "calibri.ttf");
 		m_nvprViewportFontAnnotation->getState()->setStyling(new glat::Styles::Outline(3.f, glm::vec3(.3f, .3f, .3f)));
 		m_nvprViewportFontAnnotation->getState()->setStyling(new glat::Styles::BumpMap(1.0f));
 		m_nvprViewportFontAnnotation->setColor(glm::vec4(0.75, 0.75, 0.75, 1.0));
-		m_nvprViewportFontAnnotation->setText("0");
-		m_nvprViewportFontAnnotation->setFontName("calibri.ttf");
 
-		m_nvprInternalFontAnnotation = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-3.f, -2.f, -5.f), glm::vec3(3.f, -2.f, -5.f), glm::vec3(3.f, 2.0f, -5.f)));
-		m_nvprInternalFontAnnotation->setFontName("calibri.ttf");
-		m_nvprInternalFontAnnotation->setText("Nvidia PR");
+		m_nvprInternalFontAnnotation = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-3.f, -2.f, -5.f), glm::vec3(3.f, -2.f, -5.f), glm::vec3(3.f, 2.0f, -5.f)), "Nvidia PR", "calibri.ttf");
 		m_nvprInternalFontAnnotation->setColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
 
 		m_nvprViewportSVGAnnotation = new glat::SVGAnnotation(new glat::ViewportState(glm::vec2(-1.f, -1.f), glm::vec2(-0.3f, 0.f)));

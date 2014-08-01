@@ -1,5 +1,6 @@
 #pragma once
 
+#include <glbinding/gl/types.h>
 #include <glowbase/ref_ptr.h>
 #include <map>
 #include <string>
@@ -21,8 +22,8 @@ namespace glat {
 	typedef GLAT_API std::map<std::string, glow::ref_ptr<glat::Styling> > StylingList;
 
 	namespace State {
-		enum GLAT_API PositionAnchor { NO_ANCHOR, TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT };
-		enum GLAT_API AutoExtend{ OFF, WIDTH, HEIGHT };
+		enum GLAT_API VerticalAnchor { MIDDLE, BOTTOM, TOP, SCALE_HEIGHT};
+		enum GLAT_API HorizontalAnchor { CENTER, LEFT, RIGHT, SCALE_WIDTH };
 	}
 
 	class GLAT_API AbstractState : public glat::DirtyFlagObject {
@@ -45,24 +46,28 @@ namespace glat {
 		glat::PathState& asPathState();
 		glat::ViewportState& asViewportState();
 
-		glat::State::PositionAnchor getAnchor() const;
-		void setAnchor(State::PositionAnchor anchor);
+		glat::State::HorizontalAnchor getHorizontalAnchor() const;
+		void setHorizontalAnchor(glat::State::HorizontalAnchor horizontalAnchor);
 
-		glat::State::AutoExtend getAutoExtend() const;
-		void setAutoExtend(State::AutoExtend extensionBehaviour);
+		glat::State::VerticalAnchor getVerticalAnchor() const;
+		void setVerticalAnchor(glat::State::VerticalAnchor verticalAnchor);
 
 		virtual glow::ref_ptr<AbstractState> interpolateWith(const InternalState& mixState, float mix) = 0;
 		virtual glow::ref_ptr<AbstractState> interpolateWith(const PathState& mixState, float mix) = 0;
 		virtual glow::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix) = 0;
 
 	protected:
+		void setSourceDimensions(glm::ivec2 pixelDimensions, gl::GLuint bindingIndex);
+		void setSourceDimensions(unsigned short widthPixel, unsigned short heightPixel, gl::GLuint bindingIndex);
 		void copyState(AbstractState& copyTo) const;
 		virtual void draw(const AbstractRenderer& renderer) = 0;
 		AbstractState();
 
+		glm::vec2 m_sourceExtends;
+
 	private:
 		StylingList m_stylings;
-		State::PositionAnchor m_anchor;
-		State::AutoExtend m_autoExtend;
+		State::VerticalAnchor m_verticalAnchor = State::VerticalAnchor::MIDDLE;
+		State::HorizontalAnchor m_horizontalAnchor = State::HorizontalAnchor::CENTER;
 	};
 }

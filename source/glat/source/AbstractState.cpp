@@ -1,5 +1,5 @@
 #include <glat/AbstractState.h>
-
+#include <glat/globals.h>
 #include <glat/ViewportState.h>
 #include <glat/InternalState.h>
 #include <glat/PathState.h>
@@ -17,31 +17,13 @@ const glat::Styling* glat::AbstractState::getStyling(std::string ID) const {
 	return itr->second.get();
 }
 
-void glat::AbstractState::setAnchor(State::PositionAnchor anchor) {
-	setDirty(true);
-	m_anchor = anchor;
-}
-
-void glat::AbstractState::setAutoExtend(State::AutoExtend extendBehaviour) {
-	setDirty(true);
-	m_autoExtend = extendBehaviour;
-}
-
 glat::AbstractState::AbstractState() {
 	setDirty(true);
 }
 
-glat::State::PositionAnchor glat::AbstractState::getAnchor() const {
-	return m_anchor;
-}
-
-glat::State::AutoExtend glat::AbstractState::getAutoExtend() const {
-	return m_autoExtend;
-}
-
 void glat::AbstractState::copyState(AbstractState& copyTo) const {
-	copyTo.setAutoExtend(getAutoExtend());
-	copyTo.setAnchor(getAnchor());
+	copyTo.setHorizontalAnchor(getHorizontalAnchor());
+	copyTo.setVerticalAnchor(getVerticalAnchor());
 	copyTo.setStylings(getStylings());
 }
 
@@ -63,4 +45,27 @@ glat::PathState& glat::AbstractState::asPathState() {
 
 glat::ViewportState& glat::AbstractState::asViewportState() {
 	return dynamic_cast<glat::ViewportState&>(*this);
+}
+
+glat::State::VerticalAnchor glat::AbstractState::getVerticalAnchor() const {
+	return m_verticalAnchor;
+}
+
+glat::State::HorizontalAnchor glat::AbstractState::getHorizontalAnchor() const {
+	return m_horizontalAnchor;
+}
+void glat::AbstractState::setVerticalAnchor(glat::State::VerticalAnchor verticalAnchor) {
+	m_verticalAnchor = verticalAnchor;
+}
+
+void glat::AbstractState::setHorizontalAnchor(glat::State::HorizontalAnchor horizontalAnchor) {
+	m_horizontalAnchor = horizontalAnchor;
+}
+
+void glat::AbstractState::setSourceDimensions(unsigned short widthPixel, unsigned short heightPixel, gl::GLuint bindingIndex) {
+	setSourceDimensions(glm::ivec2(widthPixel, heightPixel), bindingIndex);
+}
+
+void glat::AbstractState::setSourceDimensions(glm::ivec2 pixelDimensions, gl::GLuint bindingIndex) {
+	m_sourceExtends = glm::vec2(pixelDimensions) / glm::vec2(glat::getViewport(bindingIndex)) * glat::getViewFrustumVolume(bindingIndex);
 }
