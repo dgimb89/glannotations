@@ -62,3 +62,11 @@ void glat::InternalState::setExternalReference(const glow::ref_ptr<glat::Abstrac
 	ReferenceableState::setExternalReference(reference);
 	m_externalReference->setupExternalReference(*this);
 }
+
+glat::BoundingBox glat::InternalState::getBoundingBox() {
+	glat::BoundingBox bb;
+	bb.extendBy(m_ll);
+	bb.extendBy(m_lr);
+	bb.extendBy(m_ur);
+	return bb;
+}

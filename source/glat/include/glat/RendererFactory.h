@@ -1,6 +1,5 @@
 #pragma once
 
-#include <glbinding/gl/types.h>
 #include <glowbase/ref_ptr.h>
 
 #include <glat/glat_api.h>
@@ -25,14 +24,14 @@ namespace glat {
 		void setAutoInitializeMatricesBuffer(bool autoInitialize);
 		bool autoInitializesMatricesBuffer() const;
 		
-		void setMatricesBindingIndex(gl::GLuint bindingIndex);
-		gl::GLuint getMatricesBindingIndex() const;
+		void setMatricesBindingIndex(unsigned int bindingIndex);
+		unsigned int getMatricesBindingIndex() const;
 
 	protected:
-		static void validateMatricesUBO(gl::GLuint bindingIndex);
+		static void validateMatricesUBO(unsigned int bindingIndex);
 		static bool isExtensionSupported(const char *extension);
 		bool m_useNVpr = true;
 		bool m_autoInitializeMatricesBuffer = true;
-		gl::GLuint m_globalMatricesBindingIndex = 0;
+		unsigned int m_globalMatricesBindingIndex = 0;
 	};
 }

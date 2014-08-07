@@ -13,4 +13,8 @@ if(OPTION_BUILD_EXAMPLES)
 	if (OPTION_BUILD_GLAT_PREPROCESSOR)
 		add_subdirectory(font-preprocessing)
 	endif()
+
+	if (OPTION_BUILD_GLAT_WRAPPER)
+		add_subdirectory(osg-wrapper)
+	endif()
 endif()

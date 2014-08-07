@@ -2,6 +2,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/bitfield.h>
+#include <glbinding/gl/enum.h>
 
 #include <glat/NVPRRenderer.h>
 #include <glat/AbstractAnnotation.h>

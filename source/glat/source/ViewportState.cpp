@@ -50,3 +50,7 @@ glow::ref_ptr<glat::AbstractState> glat::ViewportState::clone() const {
 	AbstractState::copyState(*clonedState);
 	return clonedState;
 }
+
+glat::BoundingBox glat::ViewportState::getBoundingBox() {
+	return glat::BoundingBox(); // will initialize a infinite bounding box -- always visible as intended
+}
