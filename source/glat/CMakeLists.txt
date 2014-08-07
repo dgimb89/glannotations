@@ -18,7 +18,6 @@ find_package(GLM REQUIRED)
 
 include_directories(
     ${LIBPNG_INCLUDE_DIR}
-    ${OPENGL_INCLUDE_DIR}
     ${GLM_INCLUDE_DIR}
     ${GLOW_INCLUDES}
     ${GLBINDING_INCLUDES}
@@ -36,7 +35,6 @@ include_directories(
 
 set(libs
 	${LIBPNG_LIBRARIES}
-	${OPENGL_LIBRARY}
     ${GLOW_LIBRARIES}
     ${GLBINDING_LIBRARIES}
 )
@@ -111,6 +109,8 @@ set(api_includes
 	${include_path}/AbstractTexturedPrimitive.h
 	${include_path}/QuadStrip.h
 
+	${include_path}/BoundingBox.h
+
 	${include_path}/Utility/Utility.h
 	${include_path}/Utility/Segment.h
 	${include_path}/Utility/Triangle.h
@@ -165,6 +165,8 @@ set(sources
 	${source_path}/AbstractTexturedPrimitive.cpp
 	${source_path}/QuadStrip.cpp
 	
+	${source_path}/BoundingBox.cpp
+
 	${source_path}/Utility/Utility.cpp
 	${source_path}/Utility/Segment.cpp
 	${source_path}/Utility/Triangle.cpp

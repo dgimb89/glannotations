@@ -17,6 +17,7 @@ namespace glat {
 		const glm::vec2 getLR() const;
 
 		virtual bool isValid() const;
+		virtual glat::BoundingBox getBoundingBox();
 
 	protected:
 		virtual void draw(const AbstractRenderer& renderer) override;

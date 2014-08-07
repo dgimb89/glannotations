@@ -11,6 +11,10 @@ add_subdirectory(glat)
 if (OPTION_BUILD_GLAT_PREPROCESSOR)
 	add_subdirectory(glat_preprocessor)
 endif()
+if (OPTION_BUILD_GLAT_WRAPPER)
+	add_subdirectory(glat_wrapper)
+endif()
+
 
 # Examples
 set(IDE_FOLDER "Examples")

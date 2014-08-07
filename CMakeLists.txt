@@ -28,6 +28,7 @@ option(OPTION_BUILD_TESTS "Build tests (if gmock and gtest are found)." ON)
 option(OPTION_BUILD_EXAMPLES "Build examples." ON)
 option(OPTION_USE_NVPR "Allow Nvidia Path Rendering usage." ON)
 option(OPTION_BUILD_GLAT_PREPROCESSOR "Build glat preprocessor (required for preprocessing example)" ON)
+option(OPTION_BUILD_GLAT_WRAPPER "Build glat wrapper classes (OSG, ...)" ON)
 set(BUILD_SHARED_LIBS $OPTION_BUILD_SHARED_LIBS)
 
 #

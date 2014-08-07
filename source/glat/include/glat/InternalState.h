@@ -20,6 +20,7 @@ namespace glat {
 		const glm::vec3& getLR() const;
 
 		virtual bool isValid() const override;
+		virtual glat::BoundingBox getBoundingBox() override;
 
 		virtual glow::ref_ptr<glat::AbstractState> clone() const;
 		virtual void setExternalReference(const glow::ref_ptr<glat::AbstractExternalReference>& reference);
@@ -30,6 +31,7 @@ namespace glat {
 		virtual glow::ref_ptr<AbstractState> interpolateWith(const InternalState& mixState, float mix);
 		virtual glow::ref_ptr<AbstractState> interpolateWith(const PathState& mixState, float mix);
 		virtual glow::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix);
+
 
 		glm::vec3 m_ll, m_ur, m_lr;
 	};

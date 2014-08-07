@@ -1,6 +1,5 @@
 #pragma once
 
-#include <glbinding/gl/types.h>
 #include <glowbase/ref_ptr.h>
 #include <map>
 #include <string>
@@ -9,6 +8,7 @@
 
 #include <glat/DirtyFlagObject.h>
 #include <glat/Styling.h>
+#include <glat/BoundingBox.h>
 #include <glat/glat_api.h>
 
 namespace glat {
@@ -41,6 +41,7 @@ namespace glat {
 
 		virtual bool isValid() const = 0;
 		virtual glow::ref_ptr<glat::AbstractState> clone() const = 0;
+		virtual glat::BoundingBox getBoundingBox() = 0;
 
 		glat::InternalState& asInternalState();
 		glat::PathState& asPathState();
@@ -57,8 +58,8 @@ namespace glat {
 		virtual glow::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix) = 0;
 
 	protected:
-		void setSourceDimensions(glm::ivec2 pixelDimensions, gl::GLuint bindingIndex);
-		void setSourceDimensions(unsigned short widthPixel, unsigned short heightPixel, gl::GLuint bindingIndex);
+		void setSourceDimensions(glm::ivec2 pixelDimensions, unsigned int bindingIndex);
+		void setSourceDimensions(unsigned short widthPixel, unsigned short heightPixel, unsigned int bindingIndex);
 		void copyState(AbstractState& copyTo) const;
 		virtual void draw(const AbstractRenderer& renderer) = 0;
 		AbstractState();

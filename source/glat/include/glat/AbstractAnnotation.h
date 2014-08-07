@@ -3,7 +3,6 @@
 #include <vector>
 #include <memory>
 #include <glowbase/ref_ptr.h>
-#include <glow/Buffer.h>
 #include <glowutils/Camera.h>
 
 #include "globals.h"

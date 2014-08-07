@@ -1,6 +1,5 @@
 #pragma once
 
-#include <glbinding/gl/types.h>
 #include <glowbase/ref_ptr.h>
 
 #include <glat/DirtyFlagObject.h>
@@ -18,12 +17,12 @@ namespace glat {
 		friend class InternalState;
 		friend class PathState;
 	public:
-		AbstractRenderer(gl::GLuint globalMatricesBindingIndex);
+		AbstractRenderer(unsigned int globalMatricesBindingIndex);
 		virtual void draw(const glow::ref_ptr<glat::AbstractAnnotation>& annotation) = 0;
-		gl::GLuint getMatricesBindingIndex() const;
+		unsigned int getMatricesBindingIndex() const;
 
 	protected:
-		gl::GLuint m_globalMatricesBindingIndex;
+		unsigned int m_globalMatricesBindingIndex;
 		virtual void drawSetupState(const glat::ViewportState& state) const = 0;
 		virtual void drawSetupState(const glat::InternalState& state) const = 0;
 		virtual void drawSetupState(const glat::PathState& state) const = 0;
