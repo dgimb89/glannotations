@@ -29,18 +29,18 @@ void glat::AbstractExternalReference::assertNotReused() {
 	}
 }
 
-void glat::AbstractExternalReference::setBindingIndex(gl::GLuint bindingIndex) {
+inline void glat::AbstractExternalReference::setBindingIndex(unsigned int bindingIndex) {
 	m_bindingIndex = bindingIndex;
 }
 
-gl::GLuint glat::AbstractExternalReference::getBindingIndex() const {
+inline unsigned int glat::AbstractExternalReference::getBindingIndex() const {
 	return m_bindingIndex;
 }
 
 void glat::AbstractExternalReference::updateBindings(const glat::AbstractRenderer& renderer) {
 	if (isDirty()) {
 		setBindingIndex(renderer.getMatricesBindingIndex());
-		m_externalPrimitive->setMatricesBlockBinding(getBindingIndex());
+		m_externalPrimitive->setBindingIndex(getBindingIndex());
 	}
 }
 

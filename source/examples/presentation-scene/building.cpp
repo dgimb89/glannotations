@@ -179,9 +179,9 @@ static const char* geomShader = R"(
 				)";
 
 
-glat::Building::Building(gl::GLuint matricesBindingIndex) {
+glat::Building::Building(unsigned int matricesBindingIndex) {
 	setupShader(glat::ShaderSources::passThroughVS, geomShader, fragShader);
-	setMatricesBlockBinding(matricesBindingIndex);
+	setBindingIndex(matricesBindingIndex);
 	m_vao->binding(0)->setAttribute(0);
 	m_vao->binding(0)->setFormat(3, gl::GL_FLOAT, gl::GL_FALSE, 0);
 	m_vao->enable(0);

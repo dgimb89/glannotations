@@ -18,9 +18,9 @@ void glat::wrapper::DrawableAnnotation::drawImplementation(osg::RenderInfo&) con
 	}
 }
 
-osg::BoundingBox glat::wrapper::DrawableAnnotation::computeBoundingBox() const {
+osg::BoundingBox glat::wrapper::DrawableAnnotation::computeBound() const {
 	glat::BoundingBox bb = m_annotation->getRenderState()->getBoundingBox();
-	return osg::BoundingBox(bb.getLLF().x, bb.getLLF().y, bb.getLLF().z, bb.getURB().x, bb.getURB().y, bb.getURB().z);
+	return osg::BoundingBox(-10.f, -10.f, -10.f, 10.f, 10.f, 10.f);
 }
 
 void glat::wrapper::DrawableAnnotation::setAnnotation(glow::ref_ptr<glat::AbstractAnnotation> annotation) {

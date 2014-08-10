@@ -1,8 +1,6 @@
 #pragma once
 
-#include <glbinding/gl/types.h>
 #include <glowbase/ref_ptr.h>
-#include <glowutils/Camera.h>
 
 #include <glat/DirtyFlagObject.h>
 #include <glat/AbstractDrawingPrimitive.h>
@@ -26,8 +24,8 @@ namespace glat {
 	protected:
 		inline void setDirty(bool) const override;
 		inline void setPositioningOnly(bool positioningOnly);
-		inline void setBindingIndex(gl::GLuint bindingIndex);
-		inline gl::GLuint getBindingIndex() const;
+		inline void setBindingIndex(unsigned int bindingIndex);
+		inline unsigned int getBindingIndex() const;
 
 		virtual void draw();
 		virtual void updateBindings(const glat::AbstractRenderer& renderer);
@@ -39,7 +37,7 @@ namespace glat {
 		virtual void updatePositioning(PathState& state) = 0;
 
 		bool m_positioningOnly;
-		gl::GLuint m_bindingIndex;
+		unsigned int m_bindingIndex;
 		glow::ref_ptr<glat::AbstractDrawingPrimitive> m_externalPrimitive;
 
 	private:

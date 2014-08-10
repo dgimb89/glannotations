@@ -104,6 +104,7 @@ set(api_includes
 	${include_path}/StateInterpolation.h
 	
 	${include_path}/AbstractDrawingPrimitive.h
+	${include_path}/DrawingPrimitiveBase.h
 	${include_path}/Prismoid.h
 	${include_path}/Box.h
 	${include_path}/AbstractTexturedPrimitive.h
@@ -159,7 +160,7 @@ set(sources
 	${source_path}/BSpline.cpp
 	${source_path}/StateInterpolation.cpp
 	
-	${source_path}/AbstractDrawingPrimitive.cpp
+	${source_path}/DrawingPrimitiveBase.cpp
 	${source_path}/Prismoid.cpp
 	${source_path}/Box.cpp
 	${source_path}/AbstractTexturedPrimitive.cpp

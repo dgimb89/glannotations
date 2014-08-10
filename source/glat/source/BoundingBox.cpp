@@ -3,8 +3,13 @@
 #include <glat/BoundingBox.h>
 
 glat::BoundingBox::BoundingBox() {
-	m_llf = glm::vec3(std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
-	m_urb = glm::vec3(std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest(), std::numeric_limits<float>::lowest());
+	m_llf = glm::vec3(std::numeric_limits<float>::max());
+	m_urb = glm::vec3(std::numeric_limits<float>::lowest());
+}
+
+glat::BoundingBox::BoundingBox(glm::vec3 llf, glm::vec3 urb) {
+	m_llf = llf;
+	m_urb = urb;
 }
 
 void glat::BoundingBox::extendBy(glm::vec3 vertex) {

@@ -1,10 +1,10 @@
 #pragma once
 
-#include <glat/AbstractDrawingPrimitive.h>
+#include <glat/DrawingPrimitiveBase.h>
 #include <vector>
 
 namespace glat {
-	class Prismoid : public glat::AbstractDrawingPrimitive {
+	class Prismoid : public glat::DrawingPrimitiveBase {
 	public:
 		Prismoid();
 		void setLabelStrength(float strength);

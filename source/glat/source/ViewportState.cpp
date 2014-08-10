@@ -52,5 +52,5 @@ glow::ref_ptr<glat::AbstractState> glat::ViewportState::clone() const {
 }
 
 glat::BoundingBox glat::ViewportState::getBoundingBox() {
-	return glat::BoundingBox(); // will initialize a infinite bounding box -- always visible as intended
+	return glat::BoundingBox(glm::vec3(std::numeric_limits<float>::lowest()), glm::vec3(std::numeric_limits<float>::max())); // will initialize a infinite bounding box -- always visible as intended
 }

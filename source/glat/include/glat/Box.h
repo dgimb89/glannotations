@@ -1,9 +1,9 @@
 #pragma once
 
-#include <glat/AbstractDrawingPrimitive.h>
+#include <glat/DrawingPrimitiveBase.h>
 
 namespace glat {
-	class Box : public glat::AbstractDrawingPrimitive {
+	class Box : public glat::DrawingPrimitiveBase {
 	public:
 		Box();
 		virtual void draw();

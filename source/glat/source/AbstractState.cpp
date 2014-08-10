@@ -62,10 +62,10 @@ void glat::AbstractState::setHorizontalAnchor(glat::State::HorizontalAnchor hori
 	m_horizontalAnchor = horizontalAnchor;
 }
 
-void glat::AbstractState::setSourceDimensions(unsigned short widthPixel, unsigned short heightPixel, gl::GLuint bindingIndex) {
+void glat::AbstractState::setSourceDimensions(unsigned short widthPixel, unsigned short heightPixel, unsigned int bindingIndex) {
 	setSourceDimensions(glm::ivec2(widthPixel, heightPixel), bindingIndex);
 }
 
-void glat::AbstractState::setSourceDimensions(glm::ivec2 pixelDimensions, gl::GLuint bindingIndex) {
+void glat::AbstractState::setSourceDimensions(glm::ivec2 pixelDimensions, unsigned int bindingIndex) {
 	m_sourceExtends = glm::vec2(pixelDimensions) / glm::vec2(glat::getViewport(bindingIndex)) * glat::getViewFrustumVolume(bindingIndex);
 }

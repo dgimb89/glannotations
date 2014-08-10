@@ -3,10 +3,10 @@
 #include <glow/Texture.h>
 #include <memory>
 
-#include <glat/AbstractDrawingPrimitive.h>
+#include <glat/DrawingPrimitiveBase.h>
 
 namespace glat {
-	class AbstractTexturedPrimitive : public glat::AbstractDrawingPrimitive {
+	class AbstractTexturedPrimitive : public glat::DrawingPrimitiveBase {
 	public:
 		AbstractTexturedPrimitive(std::shared_ptr<glow::Texture> texture);
 		virtual void setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur) = 0;

@@ -1,5 +1,6 @@
 #include <glbinding/gl/bitfield.h>
 #include <glbinding/gl/functions.h>
+#include <glbinding/gl/enum.h>
 
 #include <glat/NVPRFontRenderer.h>
 #include <glat/FontAnnotation.h>

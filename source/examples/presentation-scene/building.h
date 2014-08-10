@@ -1,12 +1,12 @@
 #pragma once
 
-#include <glat/AbstractDrawingPrimitive.h>
+#include <glat/DrawingPrimitiveBase.h>
 
 namespace glat {
-	class Building : public glat::AbstractDrawingPrimitive {
+	class Building : public glat::DrawingPrimitiveBase {
 	public:
-		Building(gl::GLuint matricesBindingIndex = 0);
-		virtual void draw();
+		Building(unsigned int matricesBindingIndex = 0);
+		virtual void draw() override;
 		void setPosition(glm::vec3 llf, glm::vec3 urb);
 	};
 }

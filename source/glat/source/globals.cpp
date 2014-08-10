@@ -1,5 +1,6 @@
 #define _USE_MATH_DEFINES
 #include <glm/gtc/type_ptr.hpp>
+#include <glow/glow.h>
 #include <glow/Buffer.h>
 #include <unordered_map>
 
@@ -93,4 +94,8 @@ glm::vec2 GLAT_API glat::getViewFrustumVolume(gl::GLuint bindingIndex /*= 0*/) {
 
 glm::ivec2 GLAT_API glat::getViewport(gl::GLuint bindingIndex /*= 0*/) {
 	return g_matricesBufferMap[bindingIndex].viewport;
+}
+
+void GLAT_API glat::initialize() {
+	glow::init();
 }

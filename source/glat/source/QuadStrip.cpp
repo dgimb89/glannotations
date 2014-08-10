@@ -169,10 +169,10 @@ static const char* texturingFragShader = R"(
 glat::QuadStrip::QuadStrip(std::shared_ptr<glow::Texture> texture, gl::GLuint matricesBindingIndex, bool isDistanceField) : glat::AbstractTexturedPrimitive(texture) {
 	if (isDistanceField) {
 		setupShader(vertShader, geomShader, dfFragShader);
-		setMatricesBlockBinding(matricesBindingIndex);
+		setBindingIndex(matricesBindingIndex);
 	} else {
 		setupShader(vertShader, geomShader, texturingFragShader);
-		setMatricesBlockBinding(matricesBindingIndex);
+		setBindingIndex(matricesBindingIndex);
 	}
 	// initial position
 	m_ll = m_lr = m_ur = glm::vec3(0.0f, 0.0f, 0.0f);

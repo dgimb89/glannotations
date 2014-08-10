@@ -1,6 +1,5 @@
 #pragma once
 
-#include <glowutils/Camera.h>
 #include <glm/glm.hpp>
 
 #include <glat/ReferenceableState.h>

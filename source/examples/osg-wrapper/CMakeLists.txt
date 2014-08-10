@@ -12,6 +12,9 @@ find_package(GLM REQUIRED)
 find_package(GLOW REQUIRED)
 find_package(GLBinding REQUIRED)
 find_package(OpenSceneGraph REQUIRED)
+find_package(osgViewer REQUIRED)
+find_package(osgGA REQUIRED)
+find_package(osgDB REQUIRED)
 
 #
 # Includes
@@ -24,6 +27,9 @@ include_directories(
     ${GLOW_INCLUDES}
     ${GLBINDING_INCLUDES}
     ${OPENSCENEGRAPH_INCLUDE_DIRS}
+    ${OSGVIEWER_INCLUDE_DIRS}
+    ${OSGGA_INCLUDE_DIRS}
+    ${OSGDB_INCLUDE_DIRS}
 )
 
 include_directories(
@@ -42,8 +48,10 @@ set(libs
     ${GLFW_LIBRARY}
     ${GLOW_LIBRARIES}
     ${GLBINDING_LIBRARIES}
-    ${EXAMPLE_COMMON}
     ${OPENSCENEGRAPH_LIBRARIES}
+    ${OSGVIEWER_LIBRARIES}
+    ${OSGGA_LIBRARIES}
+    ${OSGDB_LIBRARIES}
     glat
     glat_wrapper
 )
