@@ -1,6 +1,8 @@
 #include <glat/QuadStrip.h>
 #include <glow/VertexAttributeBinding.h>
 
+#include <algorithm>
+
 static const char*	vertShader = R"(
 	#version 330
 

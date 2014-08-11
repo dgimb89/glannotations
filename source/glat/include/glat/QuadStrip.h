@@ -22,9 +22,9 @@ namespace glat {
 
 	protected:
 		void updateQuadRanges();
-		inline void pushTextureCoords(std::vector<texVec2_t>& textureVec, const textureRange_t& textureRange);
-		inline texVec2_t getUL(const textureRange_t& textureRange);
-		inline texVec2_t getLR(const textureRange_t& textureRange);
+		void pushTextureCoords(std::vector<texVec2_t>& textureVec, const textureRange_t& textureRange);
+		texVec2_t getUL(const textureRange_t& textureRange);
+		texVec2_t getLR(const textureRange_t& textureRange);
 
 		std::vector<textureRange_t> m_textureRanges;
 		glm::vec3 m_ll, m_ur, m_lr;

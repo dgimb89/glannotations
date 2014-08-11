@@ -9,7 +9,7 @@ namespace glat {
 	public:
 		DirtyFlagObject();
 		virtual bool isDirty() const;
-		inline virtual void setDirty(bool) const;
+		virtual void setDirty(bool) const;
 
 	protected: 
 		mutable bool m_dirty;

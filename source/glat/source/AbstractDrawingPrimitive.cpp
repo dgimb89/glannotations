@@ -3,6 +3,8 @@
 #include <glowbase/StaticStringSource.h>
 #include "ShaderSources.hpp"
 
+#include <string.h>
+
 #include <glat/AbstractDrawingPrimitive.h>
 #include <glat/AbstractAnnotation.h>
 

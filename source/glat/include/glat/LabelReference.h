@@ -15,7 +15,7 @@ namespace glat {
 		virtual void setupExternalReference(const InternalState& state) override;
 		virtual void setupExternalReference(const PathState& state) override;
 
-		inline void updatePrismoid(const glm::vec3& a, const glm::vec3& b);
+		void updatePrismoid(const glm::vec3& a, const glm::vec3& b);
 
 	private:
 		glow::ref_ptr<glat::Prismoid> m_prismoid;

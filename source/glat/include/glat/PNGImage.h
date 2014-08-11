@@ -40,7 +40,7 @@ namespace glat {
 		void setImageValue(size_t x, size_t y, unsigned short numComponent, colorVal_t value);
 
 		// clamps for access out of image range
-		inline colorVal_t getImageValue(signed long x, signed long y, unsigned short numComponent) const;
+		colorVal_t getImageValue(signed long x, signed long y, unsigned short numComponent) const;
 		bool isColored(size_t x, size_t y) const;
 		const glow::ref_ptr<image_t> getImage() const;
 
@@ -48,20 +48,20 @@ namespace glat {
 		size_t getHeight() const;
 		unsigned short getNumComponents() const;
 		unsigned short getComponentBitdepth() const;
-		inline size_t getRowStride() const;
+		size_t getRowStride() const;
 
 		void replaceImageWith(glow::ref_ptr<glat::PNGImage> image);
 
 
 	protected:
-		inline void createImage();
+		void createImage();
 
 		glow::ref_ptr<image_t> m_image;
 		size_t m_width = 0, m_height = 0;
 		unsigned short m_bitdepth = 0, m_channels = 4;
 
 	private:
-		inline colorVal_t& imageValue(size_t x, size_t y, unsigned short numComponent) const;
+		colorVal_t& imageValue(size_t x, size_t y, unsigned short numComponent) const;
 
 	};
 }

@@ -2,6 +2,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glow/Buffer.h>
 #include <unordered_map>
+#include <cmath>
 
 #include <glat/globals.h>
 #include <iostream>
@@ -35,8 +36,8 @@ void glat::updateMatricesFromCamera(const glowutils::Camera& camera, gl::GLuint 
 	setProjection(camera.projection(), bindingIndex);
 	setViewport(camera.viewport(), bindingIndex);
 	float fovx = camera.aspectRatio() * camera.fovy();
-	setViewFrustumVolume(glm::vec2(		2 * camera.zNear() / std::sinf(M_PI_2 - fovx) * std::sinf(fovx),
-										2 * camera.zNear() / std::sinf(M_PI_2 - camera.fovy()) * std::sinf(camera.fovy()))
+	setViewFrustumVolume(glm::vec2(		2 * camera.zNear() / std::sin(M_PI_2 - fovx) * std::sin(fovx),
+										2 * camera.zNear() / std::sin(M_PI_2 - camera.fovy()) * std::sin(camera.fovy()))
 	, bindingIndex);
 }
 

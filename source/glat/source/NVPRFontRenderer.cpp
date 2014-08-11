@@ -8,6 +8,8 @@
 #include <glat/Styles.h>
 #include "glat-version.h"
 
+#include <string.h>
+
 void glat::NVPRFontRenderer::draw(const glow::ref_ptr<glat::AbstractAnnotation>& annotation) {
 	glat::FontAnnotation* currentAnnotation = reinterpret_cast<glat::FontAnnotation*>(annotation.get());
 	if (currentAnnotation->isDirty()) {
@@ -118,8 +120,10 @@ void glat::NVPRFontRenderer::getTextStencelingDimensions(const char* text, const
 	gl::GLfloat horizontalAdvance[256];
 
 	/* Query font and glyph metrics. */
-	gl::glGetPathMetricRangeNV(gl::GL_FONT_Y_MIN_BOUNDS_BIT_NV | gl::GL_FONT_Y_MAX_BOUNDS_BIT_NV |
-		gl::GL_FONT_UNDERLINE_POSITION_BIT_NV | gl::GL_FONT_UNDERLINE_THICKNESS_BIT_NV,
+	auto flags = static_cast<gl::PathRenderingMaskNV>(
+		(unsigned)gl::GL_FONT_Y_MIN_BOUNDS_BIT_NV | (unsigned)gl::GL_FONT_Y_MAX_BOUNDS_BIT_NV |
+		(unsigned)gl::GL_FONT_UNDERLINE_POSITION_BIT_NV | (unsigned)gl::GL_FONT_UNDERLINE_THICKNESS_BIT_NV);
+	gl::glGetPathMetricRangeNV(flags,
 		m_pathBase + ' ', /*count*/1,
 		4 * sizeof(gl::GLfloat),
 		font_data);

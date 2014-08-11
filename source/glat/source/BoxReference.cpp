@@ -63,7 +63,7 @@ void glat::BoxReference::updatePositioning(InternalState& state) {
 	heightSpan = glm::vec3(rotationMat * glm::vec4(heightSpan, 1.f));
 
 	// bring annotation forward depending on the angular rotation to avoid occlusion
-	intersection += glm::cross(widthSpan, heightSpan) * 0.5f * std::sqrtf(std::sqrtf(std::max(std::fabsf(vOverflow), std::fabsf(hOverflow))));
+	intersection += glm::cross(widthSpan, heightSpan) * 0.5f * std::sqrt(std::sqrt(std::max(std::fabs(vOverflow), std::fabs(hOverflow))));
 	state.setExtends(intersection - widthSpan - heightSpan, intersection + widthSpan - heightSpan, intersection + widthSpan + heightSpan);
 }
 
@@ -157,7 +157,7 @@ inline void glat::BoxReference::determineViewdependantSpans(glm::vec3& widthSpan
 	cameraRight = glm::normalize(cameraRight - glm::dot(cameraRight, n) * n);
 	float widthDot = glm::dot(cameraRight, bottom ? -m_widthSpan : m_widthSpan);
 	float depthDot = glm::dot(cameraRight, bottom ? -m_depthSpan : m_depthSpan);
-	if (std::fabsf(widthDot) > std::fabsf(depthDot)) {
+	if (std::fabs(widthDot) > std::fabs(depthDot)) {
 		widthSpan = std::signbit(widthDot) ^ bottom ? -m_widthSpan : m_widthSpan;
 		heightSpan = std::signbit(depthDot) ^ bottom ? -m_depthSpan : m_depthSpan;
 		vOverflow = std::signbit(widthDot) ^ bottom ? -vOverflow : vOverflow;

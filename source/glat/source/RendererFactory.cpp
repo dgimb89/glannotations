@@ -7,6 +7,8 @@
 #include <glat/DistanceFieldPNGRenderer.h>
 #include "glat-version.h"
 
+#include <string.h>
+
 #ifdef OPTION_USE_NVPR
 	#include <glat/NVPRFontRenderer.h>
 	#include <glat/NVPRSvgRenderer.h>
