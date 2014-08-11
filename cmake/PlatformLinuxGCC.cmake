@@ -29,11 +29,11 @@ set(DEFAULT_COMPILE_DEFS_RELEASE
     NDEBUG                    # Release build
 )
 
-if (OPTION_ERRORS_AS_EXCEPTION)
-    set(EXCEPTION_FLAG "-fexceptions")
-else()
-    set(EXCEPTION_FLAG "-fno-exceptions")
-endif()
+#if (OPTION_ERRORS_AS_EXCEPTION)
+    #set(EXCEPTION_FLAG "-fexceptions")
+#else()
+    #set(EXCEPTION_FLAG "-fno-exceptions")
+#endif()
 
 set(LINUX_COMPILE_FLAGS "-pthread -pipe -fPIC -Wreturn-type -Wall -Wextra -Wfloat-equal -Wshadow -Wcast-align -Wconversion ${EXCEPTION_FLAG}")
 # pthread       -> use pthread library
