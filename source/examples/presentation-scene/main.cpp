@@ -62,17 +62,16 @@ class EventHandler : public ExampleWindowEventHandler, glowutils::AbstractCoordi
 {
 public:
 	EventHandler()
-		: m_camera(vec3(0.f, 1.f, 4.0f))
-		, m_flightEnabled(false)
+		: m_flightEnabled(false)
 	{
 		m_aabb.extend(vec3(-8.f, -1.f, -8.f));
 		m_aabb.extend(vec3(8.f, 1.f, 8.f));
 
-		m_nav.setCamera(&m_camera);
+		m_camera = new glowutils::Camera(vec3(0.f, 1.f, 4.0f));
+
+		m_nav.setCamera(m_camera);
 		m_nav.setCoordinateProvider(this);
 		m_nav.setBoundaryHint(m_aabb);
-
-		m_flightNav.setCamera(&m_camera);
 
 		m_timer.start();
 		m_interpolation = 0.f;
@@ -80,6 +79,7 @@ public:
 
 	virtual ~EventHandler()
 	{
+		delete m_camera;
 	}
 
 	void createAndSetupTexture();
@@ -95,24 +95,11 @@ public:
 
 		gl::glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
-		glowutils::StringTemplate* gbufferVertexShader = new glowutils::StringTemplate(new glow::File("data/presentation-scene/gbuffer.vert"));
-		glowutils::StringTemplate* gbufferFragmentShader = new glowutils::StringTemplate(new glow::File("data/presentation-scene/gbuffer.frag"));
-		glowutils::StringTemplate* phongVertexShader = new glowutils::StringTemplate(new glow::File("data/presentation-scene/phong.vert"));
-		glowutils::StringTemplate* phongFragmentShader = new glowutils::StringTemplate(new glow::File("data/presentation-scene/phong.frag"));
-
-		m_gbuffer = new glow::Program();
-		m_gbuffer->attach(new glow::Shader(gl::GL_VERTEX_SHADER, gbufferVertexShader), new glow::Shader(gl::GL_FRAGMENT_SHADER, gbufferFragmentShader));
-
-		m_phong = new glow::Program();
-		m_phong->attach(new glow::Shader(gl::GL_VERTEX_SHADER, phongVertexShader), new glow::Shader(gl::GL_FRAGMENT_SHADER, phongFragmentShader));
-
-		m_quad = new glowutils::ScreenAlignedQuad(m_phong);
-
-		m_camera.setZNear(0.1f);
-		m_camera.setZFar(1024.f);
-		m_camera.setCenter(vec3(0.f, 0.f, 5.f));
-		m_camera.setEye(vec3(-17.f, 12.f, -15.0f));
-		m_camera.setUp(vec3(0, 1, 0));
+		m_camera->setZNear(0.1f);
+		m_camera->setZFar(1024.f);
+		m_camera->setCenter(vec3(0.f, 0.f, 5.f));
+		m_camera->setEye(vec3(-17.f, 12.f, -15.0f));
+		m_camera->setUp(vec3(0, 1, 0));
 
 		m_building = new glat::Building(2);
 		m_building1 = new glat::Building(2);
@@ -194,45 +181,23 @@ public:
 	}
 	virtual void finalize(Window &) override
 	{
-		m_quad = nullptr;
-		m_gbuffer = nullptr;
-		m_phong = nullptr;
-		
-		m_building = nullptr;
-		m_building1 = nullptr;
-		m_building2 = nullptr;
-		m_building3 = nullptr;
-		m_building4 = nullptr;
-		m_building5 = nullptr;
-		m_building6 = nullptr;
-		m_building7 = nullptr;
-		m_building8 = nullptr;
-		m_building9 = nullptr;
-		m_building10 = nullptr;
-		m_building11 = nullptr;
-		m_building12 = nullptr;
-		m_building13 = nullptr;
-		m_building14 = nullptr;
 	}
 
 	virtual void framebufferResizeEvent(ResizeEvent & event) override {
 		gl::glViewport(0, 0, event.width(), event.height());
-		m_camera.setViewport(event.width(), event.height());
+		m_camera->setViewport(event.width(), event.height());
 	}
 
 	virtual void paintEvent(PaintEvent &) override
 	{
 		gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT | gl::GL_STENCIL_BUFFER_BIT);
 
-		m_phong->setUniform("transformi", m_camera.viewProjectionInverted());
-		glat::updateMatricesFromCamera(m_camera, 2);
-		//m_fbo->bind();
+		glat::updateMatricesFromCamera(*m_camera, 2);
 		gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 		gl::glEnable(gl::GL_DEPTH_TEST);
 		gl::glBlendFunc(gl::GL_SRC_ALPHA, gl::GL_ONE_MINUS_SRC_ALPHA);
 		gl::glEnable(gl::GL_BLEND);
 
-		//m_gbuffer->use();
 		m_building->draw();
 		m_building1->draw();
 		m_building2->draw();
@@ -249,7 +214,6 @@ public:
 		m_building13->draw();
 		m_building14->draw();
 
-		m_camera.viewProjectionInverted();
 		m_annotations.draw();
 	}
 
@@ -257,7 +221,6 @@ public:
 	{
 		float delta = static_cast<float>(static_cast<float>(m_timer.elapsed().count()) / 1000.0 / 1000.0 / 1000.0);
 		m_timer.reset();
-		m_flightNav.move(delta);
 
 		event.window()->repaint();
 	}
@@ -269,16 +232,10 @@ public:
 		case GLFW_KEY_F5:
 			glow::File::reloadAll();
 			break;
-		case GLFW_KEY_1:
-			m_flightEnabled = !m_flightEnabled;
-			if (!m_flightEnabled)
-				m_flightNav.stopMovement(glowutils::FlightNavigation::All);
-			event.window()->setInputMode(GLFW_CURSOR, m_flightEnabled ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
-			break;
 		case GLFW_KEY_SPACE:
-			m_camera.setCenter(vec3(0.f, 0.f, 5.f));
-			m_camera.setEye(vec3(-17.f, 12.f, -15.0f));
-			m_camera.setUp(vec3(0, 1, 0));
+			m_camera->setCenter(vec3(0.f, 0.f, 5.f));
+			m_camera->setEye(vec3(-17.f, 12.f, -15.0f));
+			m_camera->setUp(vec3(0, 1, 0));
 			break;
 		case GLFW_KEY_N:
 			if (m_interpolation > 0.8)
@@ -292,52 +249,6 @@ public:
 			m_interpolation -= 0.01;
 			m_interpolation = max(m_interpolation, 0.f);
 			//m_hpilogo->setInterpolatedState(0, 1, m_interpolation);
-			break;
-		}
-
-		if (!m_flightEnabled)
-			return;
-		switch (event.key())
-		{
-		case GLFW_KEY_W:
-		case GLFW_KEY_UP:
-			m_flightNav.startMovement(glowutils::FlightNavigation::Forward);
-			break;
-		case GLFW_KEY_A:
-		case GLFW_KEY_LEFT:
-			m_flightNav.startMovement(glowutils::FlightNavigation::Left);
-			break;
-		case GLFW_KEY_S:
-		case GLFW_KEY_DOWN:
-			m_flightNav.startMovement(glowutils::FlightNavigation::Backward);
-			break;
-		case GLFW_KEY_D:
-		case GLFW_KEY_RIGHT:
-			m_flightNav.startMovement(glowutils::FlightNavigation::Right);
-			break;
-		}
-	}
-	virtual void keyReleaseEvent(KeyEvent & event) override
-	{
-		if (!m_flightEnabled)
-			return;
-		switch (event.key())
-		{
-		case GLFW_KEY_W:
-		case GLFW_KEY_UP:
-			m_flightNav.stopMovement(glowutils::FlightNavigation::Forward);
-			break;
-		case GLFW_KEY_A:
-		case GLFW_KEY_LEFT:
-			m_flightNav.stopMovement(glowutils::FlightNavigation::Left);
-			break;
-		case GLFW_KEY_S:
-		case GLFW_KEY_DOWN:
-			m_flightNav.stopMovement(glowutils::FlightNavigation::Backward);
-			break;
-		case GLFW_KEY_D:
-		case GLFW_KEY_RIGHT:
-			m_flightNav.stopMovement(glowutils::FlightNavigation::Right);
 			break;
 		}
 	}
@@ -362,13 +273,6 @@ public:
 	}
 	virtual void mouseMoveEvent(MouseEvent & event) override
 	{
-		if (m_flightEnabled)
-		{
-			m_flightNav.mouseMove((event.pos() - m_lastMousePos));
-			m_lastMousePos = event.pos();
-			event.accept();
-			return;
-		}
 
 		switch (m_nav.mode())
 		{
@@ -418,17 +322,17 @@ public:
 
 	virtual float depthAt(const ivec2 & windowCoordinates) const override
 	{
-		return AbstractCoordinateProvider::depthAt(m_camera, gl::GL_DEPTH_COMPONENT, windowCoordinates);
+		return AbstractCoordinateProvider::depthAt(*m_camera, gl::GL_DEPTH_COMPONENT, windowCoordinates);
 	}
 
 	virtual vec3 objAt(const ivec2 & windowCoordinates) const override
 	{
-		return unproject(m_camera, static_cast<gl::GLenum>(gl::GL_DEPTH_COMPONENT), windowCoordinates);
+		return unproject(*m_camera, static_cast<gl::GLenum>(gl::GL_DEPTH_COMPONENT), windowCoordinates);
 	}
 
 	virtual vec3 objAt(const ivec2 & windowCoordinates, const float depth) const override
 	{
-		return unproject(m_camera, depth, windowCoordinates);
+		return unproject(*m_camera, depth, windowCoordinates);
 	}
 
 	virtual glm::vec3 objAt(
@@ -436,7 +340,7 @@ public:
 		, const float depth
 		, const mat4 & viewProjectionInverted) const override
 	{
-		return unproject(m_camera, viewProjectionInverted, depth, windowCoordinates);
+		return unproject(*m_camera, viewProjectionInverted, depth, windowCoordinates);
 	}
 
 protected:
@@ -460,18 +364,9 @@ protected:
 	glow::ref_ptr<glat::Building> m_building14;
 
 
-	glowutils::Camera m_camera;
-	glow::ref_ptr<glowutils::ScreenAlignedQuad> m_quad;
-	glow::ref_ptr<glow::FrameBufferObject> m_fbo;
-	glow::ref_ptr<glow::Texture> m_colorTex;
-	glow::ref_ptr<glow::Texture> m_normalTex;
-	glow::ref_ptr<glow::Texture> m_geometryTex;
-	glow::ref_ptr<glow::RenderBufferObject> m_depth;
-	glow::ref_ptr<glow::Program> m_gbuffer;
-	glow::ref_ptr<glow::Program> m_phong;
-
+	glowutils::Camera* m_camera;
 	glowutils::WorldInHandNavigation m_nav;
-	glowutils::FlightNavigation m_flightNav;
+
 	glm::ivec2 m_lastMousePos;
 	bool m_flightEnabled;
 	glowutils::Timer m_timer;

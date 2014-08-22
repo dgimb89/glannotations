@@ -3,7 +3,7 @@
 #include <glat/DrawingPrimitiveBase.h>
 
 namespace glat {
-	class Box : public glat::DrawingPrimitiveBase {
+	class GLAT_API Box : public glat::DrawingPrimitiveBase {
 	public:
 		Box();
 		virtual void draw();

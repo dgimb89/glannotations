@@ -8,8 +8,7 @@
 #include <osgGA/TrackballManipulator>
 #include <osgDB/ReadFile>
 
-osg::GraphicsContext * createContext()
-{
+osg::GraphicsContext * createContext() {
 	osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
 	traits->x = 100;
 	traits->y = 100;
@@ -20,15 +19,21 @@ osg::GraphicsContext * createContext()
 	traits->samples = 4;
 	traits->sampleBuffers = 1;
 	traits->stencil = 8; // necessary for NVPR
+	const std::string version("3.1");
+	traits->glContextVersion = version;
 	return osg::GraphicsContext::createGraphicsContext(traits.get());
 }
 
 osg::Geode* createAnnotations() {
 	osg::Geode* geode = new osg::Geode;
 
+	glat::RendererFactory dfFactory;
+	dfFactory.useNVpr(false);
+
 	// setup annotation
 	glat::wrapper::DrawableAnnotation* annotationDrawable = new glat::wrapper::DrawableAnnotation;
-	glow::ref_ptr<glat::AbstractAnnotation> viewportAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(-1.f, -1.f), glm::vec2(0.f, -0.3f)), "osgWrapper", "Segoe UI");
+	auto viewportAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(0.2f, -1.f), glm::vec2(1.f, -0.65f)), "osgWrapper", "calibri.ttf", dfFactory);
+	viewportAnnotation->setColor(glm::vec4(0.75, 0.75, 0.75, 1.0));
 	annotationDrawable->setAnnotation(viewportAnnotation);
 
 	// add drawable to geode and return
@@ -39,6 +44,7 @@ osg::Geode* createAnnotations() {
 int main(int argc, char **argv) {
 	// construct the viewer
 	osgViewer::Viewer viewer;
+	osg::setNotifyLevel(osg::DEBUG_INFO);
 	viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
 	osg::ref_ptr<osg::GraphicsContext> context = createContext();
 	viewer.getCamera()->setGraphicsContext(context);
@@ -49,26 +55,26 @@ int main(int argc, char **argv) {
 	}
 	viewer.init();
 	context->makeCurrent();
-	glat::initialize();
 	osg::Group* root = new osg::Group;
 	root->addChild(osgDB::readNodeFile("data/cessna.osg"));
-	root->addChild(createAnnotations());
 	viewer.setSceneData(root);
 
 	bool initialized = false;
 	while (!viewer.done()) {
-		context->makeCurrent();
 		viewer.frame();
-		/*viewer.advance();
-		viewer.eventTraversal();
-		viewer.updateTraversal();
-		viewer.renderingTraversals();
-		if (context->valid())
-		{
+		if (context->valid()) {
+			context->makeCurrent();
 			if (!initialized) {
+				glat::initialize();
+				//glat::setViewFrustumVolume()
+				//createAnnotations();
+				root->addChild(createAnnotations());
 				initialized = true;
 			}
-		}*/
+			glat::setProjection(glm::mat4(1));
+			glat::setView(glm::mat4());
+			glat::setViewport(glm::ivec2(800, 600));
+		}
 	}
 	return 0;
 }

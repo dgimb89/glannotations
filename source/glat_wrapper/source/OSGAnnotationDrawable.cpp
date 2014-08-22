@@ -4,12 +4,11 @@
 #include <glat/wrapper/OSGAnnotationDrawable.h>
 
 glat::wrapper::DrawableAnnotation::DrawableAnnotation() {
-
 }
 
-glat::wrapper::DrawableAnnotation::DrawableAnnotation(const DrawableAnnotation& teapot, const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/) : osg::Drawable(teapot, copyop) {
+glat::wrapper::DrawableAnnotation::DrawableAnnotation(const DrawableAnnotation& drawable, const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/) : osg::Drawable(drawable, copyop) {
 	// ToDo : Make deep copy possible
-	setAnnotation(teapot.getAnnotation());
+	setAnnotation(drawable.getAnnotation());
 }
 
 void glat::wrapper::DrawableAnnotation::drawImplementation(osg::RenderInfo&) const {

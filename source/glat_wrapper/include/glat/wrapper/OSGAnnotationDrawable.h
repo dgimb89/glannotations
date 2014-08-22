@@ -1,8 +1,8 @@
 #include <glowbase/ref_ptr.h>
+#include <osg/Drawable>
 
 #include <glat/wrapper/glat_wrapper_api.h>
 #include <glat/AbstractAnnotation.h>
-#include <osg/Drawable>
 
 namespace glat {
 namespace wrapper {

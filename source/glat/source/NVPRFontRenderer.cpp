@@ -1,6 +1,7 @@
 #include <glbinding/gl/bitfield.h>
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/enum.h>
+#include <glbinding/gl/types.h>
 
 #include <glat/NVPRFontRenderer.h>
 #include <glat/FontAnnotation.h>
@@ -113,14 +114,17 @@ void glat::NVPRFontRenderer::initializeFont(glat::FontAnnotation* annotation) {
 		gl::GL_USE_MISSING_GLYPH_NV, pathSettings, emScale);
 }
 
+inline gl::PathRenderingMaskNV operator|(gl::PathRenderingMaskNV a, gl::PathRenderingMaskNV b) {
+	return static_cast<gl::PathRenderingMaskNV>(static_cast<int>(a) | static_cast<int>(b));
+}
+
 void glat::NVPRFontRenderer::getTextStencelingDimensions(const char* text, const size_t& messageLen, gl::GLfloat* &xtranslate, gl::GLfloat& totalAdvance, gl::GLfloat& yMin, gl::GLfloat& yMax,
 	gl::GLfloat& underline_position, gl::GLfloat& underline_thickness) const {
 	float font_data[4];
 	gl::GLfloat horizontalAdvance[256];
 
 	/* Query font and glyph metrics. */
-	gl::glGetPathMetricRangeNV(gl::GL_FONT_Y_MIN_BOUNDS_BIT_NV | gl::GL_FONT_Y_MAX_BOUNDS_BIT_NV |
-		gl::GL_FONT_UNDERLINE_POSITION_BIT_NV | gl::GL_FONT_UNDERLINE_THICKNESS_BIT_NV,
+	gl::glGetPathMetricRangeNV(gl::PathRenderingMaskNV::GL_FONT_Y_MIN_BOUNDS_BIT_NV | gl::GL_FONT_Y_MAX_BOUNDS_BIT_NV | gl::GL_FONT_UNDERLINE_POSITION_BIT_NV | gl::GL_FONT_UNDERLINE_THICKNESS_BIT_NV,
 		m_pathBase + ' ', /*count*/1,
 		4 * sizeof(gl::GLfloat),
 		font_data);
