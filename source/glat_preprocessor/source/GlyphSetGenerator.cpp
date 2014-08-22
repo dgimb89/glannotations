@@ -73,7 +73,7 @@ void glat::preprocessor::GlyphSetGenerator::generateGlyphset(std::string fontFil
 	FT_Done_FreeType(library);
 
 	// create final glyphset image
-	size_t finalHeight = std::ceilf(glyphImages.size() / static_cast<float>(GLYPH_GROUP_SIZE)) * SCALEDOWN_HEIGHT;
+	size_t finalHeight = std::ceil(glyphImages.size() / static_cast<float>(GLYPH_GROUP_SIZE)) * SCALEDOWN_HEIGHT;
 	glow::ref_ptr<glat::PNGImage> finalImage = new glat::PNGImage(maxRowWidth, finalHeight, 1);
 	size_t width = 0, height = finalImage->getHeight() - SCALEDOWN_HEIGHT;
 	unsigned glyphIndex = 0;

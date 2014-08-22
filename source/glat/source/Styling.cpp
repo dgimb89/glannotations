@@ -1,3 +1,5 @@
+#include <typeinfo>
+
 #include <glat/Styling.h>
 
 std::string glat::Styling::getID() {

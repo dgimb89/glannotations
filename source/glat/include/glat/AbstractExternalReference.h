@@ -22,10 +22,10 @@ namespace glat {
 		void setColor(glm::vec4 color);
 
 	protected:
-		inline void setDirty(bool) const override;
-		inline void setPositioningOnly(bool positioningOnly);
-		inline void setBindingIndex(unsigned int bindingIndex);
-		inline unsigned int getBindingIndex() const;
+		void setDirty(bool) const override;
+		void setPositioningOnly(bool positioningOnly);
+		void setBindingIndex(unsigned int bindingIndex);
+		unsigned int getBindingIndex() const;
 
 		virtual void draw();
 		virtual void updateBindings(const glat::AbstractRenderer& renderer);

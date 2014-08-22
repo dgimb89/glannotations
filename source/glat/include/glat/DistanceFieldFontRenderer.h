@@ -12,6 +12,6 @@ namespace glat {
 		virtual void draw(const glow::ref_ptr<glat::AbstractAnnotation>& annotation);
 
 	protected:
-		inline void setupGlyphQuadstrip(glat::FontAnnotation* annotation);
+		void setupGlyphQuadstrip(glat::FontAnnotation* annotation);
 	};
 }

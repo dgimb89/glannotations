@@ -28,10 +28,10 @@ namespace glat {
 		virtual void updatePositioning(PathState& state) override;
 
 	private:
-		inline void fixFlickering();
-		inline bool intersectionSegmentQuad(const glat::Utility::Segment& ray, const glm::vec3& a, const glm::vec3& b, const glm::vec3& c, const glm::vec3& d, glm::vec3& point, float& vOverflow, float& hOverflow);
-		inline float calculateOverflow(const glm::vec3& a, const glm::vec3& b, const glm::vec3& point, float overflowLimit);
-		inline void determineViewdependantSpans(glm::vec3& widthSpan, glm::vec3& heightSpan, bool bottom, float& vOverflow, float& hOverflow);
+		void fixFlickering();
+		bool intersectionSegmentQuad(const glat::Utility::Segment& ray, const glm::vec3& a, const glm::vec3& b, const glm::vec3& c, const glm::vec3& d, glm::vec3& point, float& vOverflow, float& hOverflow);
+		float calculateOverflow(const glm::vec3& a, const glm::vec3& b, const glm::vec3& point, float overflowLimit);
+		void determineViewdependantSpans(glm::vec3& widthSpan, glm::vec3& heightSpan, bool bottom, float& vOverflow, float& hOverflow);
 
 		glm::vec3 m_widthSpan, m_heightSpan, m_depthSpan, m_frontLLF;
 		float m_halfAnnotWidth, m_halfAnnotHeight;

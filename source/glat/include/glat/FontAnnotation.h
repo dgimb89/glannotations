@@ -19,7 +19,7 @@ namespace glat {
 		void setFontSize(float ptSize);
 		float getFontSize() const;
 
-		inline virtual void setDirty(bool dirty);
+		virtual void setDirty(bool dirty);
 
 	protected:
 		std::string m_text, m_fontName;

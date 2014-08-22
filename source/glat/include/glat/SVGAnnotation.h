@@ -9,9 +9,9 @@ namespace glat {
 		SVGAnnotation(const glow::ref_ptr<glat::AbstractState>& initialState, const glat::RendererFactory& factory = RendererFactory());
 		SVGAnnotation(const glow::ref_ptr<glat::AbstractState>& initialState, std::string svgPathString, unsigned width, unsigned height, const glat::RendererFactory& factory = RendererFactory());
 
-		inline void setPathString(std::string svgPathString);
-		inline void setWidth(unsigned width);
-		inline void setHeight(unsigned height);
+		void setPathString(std::string svgPathString);
+		void setWidth(unsigned width);
+		void setHeight(unsigned height);
 
 		const std::string& getPathString() const;
 		unsigned getHeight() const;

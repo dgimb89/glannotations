@@ -65,7 +65,7 @@ bool glat::PNGImage::loadImage(std::string pngFileName) {
 	if (pFile == NULL) return false;
 
 	fread(header, 1, 8, pFile);
-	if (png_sig_cmp(reinterpret_cast<png_const_bytep>(header), 0, 8))
+	if (png_sig_cmp(reinterpret_cast<png_bytep>(header), 0, 8))
 		return false;
 	/* initialize stuff */
 	png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);

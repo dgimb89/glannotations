@@ -4,7 +4,7 @@
 
 #include <glat/DrawingPrimitiveBase.h>
 #include "ShaderSources.hpp"
-
+#include <string.h>
 glat::DrawingPrimitiveBase::DrawingPrimitiveBase() {
 	m_vao = new glow::VertexArrayObject();
 	m_positions = new glow::Buffer();

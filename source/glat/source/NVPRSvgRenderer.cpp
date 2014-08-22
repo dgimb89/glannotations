@@ -7,6 +7,8 @@
 #include <glat/InternalState.h>
 #include <glat/Styles/Outline.h>
 
+#include <string.h>
+
 void glat::NVPRSvgRenderer::draw(const glow::ref_ptr<glat::AbstractAnnotation>& annotation) {
 	glat::SVGAnnotation* currentAnnotation = reinterpret_cast<glat::SVGAnnotation*>(annotation.get());
 	if (annotation->isDirty()) {
