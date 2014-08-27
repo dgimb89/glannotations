@@ -8,7 +8,7 @@
 namespace glat {
 	class GLAT_API FontAnnotation : public AbstractAnnotation {
 	public:
-		FontAnnotation(const glow::ref_ptr<glat::AbstractState>& initialState, std::string text, std::string fontName, const glat::RendererFactory& factory = RendererFactory());
+		FontAnnotation(const glo::ref_ptr<glat::AbstractState>& initialState, std::string text, std::string fontName, const glat::RendererFactory& factory = RendererFactory());
 
 		void setText(std::string text);
 		const std::string& getText() const;

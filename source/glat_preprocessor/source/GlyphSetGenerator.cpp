@@ -43,7 +43,7 @@ void glat::preprocessor::GlyphSetGenerator::generateGlyphset(std::string fontFil
 		numGlyphs = face->num_glyphs;
 	}
 
-	std::vector<glow::ref_ptr<glat::PNGImage>> glyphImages;
+	std::vector<glo::ref_ptr<glat::PNGImage>> glyphImages;
 	size_t rowWidth = 0, maxRowWidth = 0;
 
 	handleError(FT_Set_Char_Size(	face,		/* handle to face object */ 
@@ -55,7 +55,7 @@ void glat::preprocessor::GlyphSetGenerator::generateGlyphset(std::string fontFil
 		FT_GlyphSlot slot = face->glyph; // just a shortcut for the current to-be-rendered glyph
 		// we begin with glyph mapped to ascii 33 -- everything before that is whitespace anyway
 		handleError(FT_Load_Char(face, FT_ULong(GLYPHSET_BEGIN + i), FT_LOAD_RENDER)); // automatically rendered to AA 8bit grayscale bitmap
-		glow::ref_ptr<glat::PNGImage> glyphImage = generateGlyphImage(&slot->bitmap, std::abs(slot->bitmap_left), convertFontToPixelSize(face->size->metrics.ascender), convertFontToPixelSize(face->size->metrics.descender), convertFontToPixelSize(slot->metrics.horiBearingY));
+		glo::ref_ptr<glat::PNGImage> glyphImage = generateGlyphImage(&slot->bitmap, std::abs(slot->bitmap_left), convertFontToPixelSize(face->size->metrics.ascender), convertFontToPixelSize(face->size->metrics.descender), convertFontToPixelSize(slot->metrics.horiBearingY));
 		glyphImage->distanceTransform();
 		glyphImage->scaleToHeight(SCALEDOWN_HEIGHT);
 		rowWidth += glyphImage->getWidth();
@@ -74,7 +74,7 @@ void glat::preprocessor::GlyphSetGenerator::generateGlyphset(std::string fontFil
 
 	// create final glyphset image
 	size_t finalHeight = std::ceil(glyphImages.size() / static_cast<float>(GLYPH_GROUP_SIZE)) * SCALEDOWN_HEIGHT;
-	glow::ref_ptr<glat::PNGImage> finalImage = new glat::PNGImage(maxRowWidth, finalHeight, 1);
+	glo::ref_ptr<glat::PNGImage> finalImage = new glat::PNGImage(maxRowWidth, finalHeight, 1);
 	size_t width = 0, height = finalImage->getHeight() - SCALEDOWN_HEIGHT;
 	unsigned glyphIndex = 0;
 	std::vector<glat::GlyphSetConfig::GlyphConfig> glyphConfigs;
@@ -104,11 +104,11 @@ inline int glat::preprocessor::GlyphSetGenerator::convertFontToPixelSize(int inp
 	return input / 64.0; // 1/64th unit
 }
 
-glow::ref_ptr<glat::PNGImage> glat::preprocessor::GlyphSetGenerator::generateGlyphImage(void* bitmap, unsigned marginLeft, int ascender, int descender, int bearingY) {
+glo::ref_ptr<glat::PNGImage> glat::preprocessor::GlyphSetGenerator::generateGlyphImage(void* bitmap, unsigned marginLeft, int ascender, int descender, int bearingY) {
 	FT_Bitmap* bitmapPtr = reinterpret_cast<FT_Bitmap*>(bitmap);
 	unsigned imageHeight = ascender - descender;
 	unsigned imageWidth = bitmapPtr->width + 2*marginLeft;// +marginRight;
-	glow::ref_ptr<glat::PNGImage> result = new glat::PNGImage(imageWidth, imageHeight, 1, 8);
+	glo::ref_ptr<glat::PNGImage> result = new glat::PNGImage(imageWidth, imageHeight, 1, 8);
 
 	for (FT_Int w = 0; w < bitmapPtr->width; ++w) {
 		for (FT_Int h = 0; h < bitmapPtr->rows; ++h) {

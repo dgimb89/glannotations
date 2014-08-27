@@ -12,7 +12,7 @@
 
 #include <string.h>
 
-void glat::NVPRFontRenderer::draw(const glow::ref_ptr<glat::AbstractAnnotation>& annotation) {
+void glat::NVPRFontRenderer::draw(const glo::ref_ptr<glat::AbstractAnnotation>& annotation) {
 	glat::FontAnnotation* currentAnnotation = reinterpret_cast<glat::FontAnnotation*>(annotation.get());
 	if (currentAnnotation->isDirty()) {
 		clearStencilBuffer();

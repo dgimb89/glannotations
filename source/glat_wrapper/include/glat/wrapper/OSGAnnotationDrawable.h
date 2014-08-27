@@ -1,4 +1,4 @@
-#include <glowbase/ref_ptr.h>
+#include <globjects-base/ref_ptr.h>
 #include <osg/Drawable>
 
 #include <glat/wrapper/glat_wrapper_api.h>
@@ -14,11 +14,11 @@ namespace wrapper {
 		virtual void drawImplementation(osg::RenderInfo&) const override;
 		virtual osg::BoundingBox computeBound() const override;
 
-		void setAnnotation(glow::ref_ptr<glat::AbstractAnnotation> annotation);
-		const glow::ref_ptr<glat::AbstractAnnotation>& getAnnotation() const;
+		void setAnnotation(glo::ref_ptr<glat::AbstractAnnotation> annotation);
+		const glo::ref_ptr<glat::AbstractAnnotation>& getAnnotation() const;
 
 	protected:
-		glow::ref_ptr<glat::AbstractAnnotation> m_annotation;
+		glo::ref_ptr<glat::AbstractAnnotation> m_annotation;
 		virtual ~DrawableAnnotation() {}
 	};
 }

@@ -9,7 +9,7 @@ namespace glat {
 	class GLAT_API PNGAnnotation : public AbstractAnnotation
 	{
 	public:
-		PNGAnnotation(const glow::ref_ptr<glat::AbstractState>& initialState, std::string fileName, const glat::RendererFactory& factory = RendererFactory());
+		PNGAnnotation(const glo::ref_ptr<glat::AbstractState>& initialState, std::string fileName, const glat::RendererFactory& factory = RendererFactory());
 		void setPNGFile(std::string filename, bool isDistanceField = false);
 		void setAsDistanceField(glm::vec4 renderColor);
 		void setAsNoDistanceField();

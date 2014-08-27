@@ -6,7 +6,7 @@
 #include <glat/glat_api.h>
 
 namespace glat {
-	class GLAT_API Styling : public glow::Referenced {
+	class GLAT_API Styling : public glo::Referenced {
 	public:
 		std::string getID();
 

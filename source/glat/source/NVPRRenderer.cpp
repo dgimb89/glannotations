@@ -8,7 +8,7 @@
 #include <glat/AbstractAnnotation.h>
 #include <glat/Styles/Outline.h>
 
-void glat::NVPRRenderer::draw(const glow::ref_ptr<glat::AbstractAnnotation>& annotation) {
+void glat::NVPRRenderer::draw(const glo::ref_ptr<glat::AbstractAnnotation>& annotation) {
 	// enable stencil test as needed by nvpr
 	gl::glEnable(gl::GL_STENCIL_TEST);
 	// TODO: do we have to clear stencil buffer with every draw?

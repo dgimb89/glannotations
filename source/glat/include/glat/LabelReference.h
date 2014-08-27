@@ -18,7 +18,7 @@ namespace glat {
 		void updatePrismoid(const glm::vec3& a, const glm::vec3& b);
 
 	private:
-		glow::ref_ptr<glat::Prismoid> m_prismoid;
+		glo::ref_ptr<glat::Prismoid> m_prismoid;
 		glm::vec3 m_annotationCenter;
 		float m_width, m_height;
 	};

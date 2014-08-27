@@ -7,7 +7,7 @@ message(STATUS "Lib ${target}")
 #
 
 find_package(Freetype REQUIRED)
-find_package(GLOW REQUIRED)
+find_package(GLOBJECTS REQUIRED)
 find_package(GLM REQUIRED)
 
 #
@@ -16,7 +16,7 @@ find_package(GLM REQUIRED)
 
 include_directories(
     ${FREETYPE_INCLUDE_DIR}
-    ${GLOW_INCLUDES}
+    ${GLOBJECTS_INCLUDES}
     ${GLM_INCLUDE_DIR}
 )
 
@@ -33,7 +33,7 @@ include_directories(
 set(libs
     glat
     ${FREETYPE_LIBRARIES}
-    ${GLOW_LIBRARIES}
+    ${GLOBJECTS_LIBRARIES}
 )
 
 #

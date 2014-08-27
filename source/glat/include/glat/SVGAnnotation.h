@@ -6,8 +6,8 @@
 namespace glat {
 	class GLAT_API SVGAnnotation : public AbstractAnnotation {
 	public:
-		SVGAnnotation(const glow::ref_ptr<glat::AbstractState>& initialState, const glat::RendererFactory& factory = RendererFactory());
-		SVGAnnotation(const glow::ref_ptr<glat::AbstractState>& initialState, std::string svgPathString, unsigned width, unsigned height, const glat::RendererFactory& factory = RendererFactory());
+		SVGAnnotation(const glo::ref_ptr<glat::AbstractState>& initialState, const glat::RendererFactory& factory = RendererFactory());
+		SVGAnnotation(const glo::ref_ptr<glat::AbstractState>& initialState, std::string svgPathString, unsigned width, unsigned height, const glat::RendererFactory& factory = RendererFactory());
 
 		void setPathString(std::string svgPathString);
 		void setWidth(unsigned width);

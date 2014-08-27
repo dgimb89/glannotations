@@ -8,7 +8,7 @@
 namespace glat {
 	class NVPRRenderer : public glat::AbstractRenderer {
 	public:
-		virtual void draw(const glow::ref_ptr<glat::AbstractAnnotation>& annotation);
+		virtual void draw(const glo::ref_ptr<glat::AbstractAnnotation>& annotation);
 
 	protected:
 		NVPRRenderer(gl::GLuint globalMatricesBindingIndex);

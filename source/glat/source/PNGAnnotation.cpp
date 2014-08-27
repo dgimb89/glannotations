@@ -1,6 +1,6 @@
 #include <glat/PNGAnnotation.h>
 
-glat::PNGAnnotation::PNGAnnotation(const glow::ref_ptr<glat::AbstractState>& initialState, std::string fileName, const glat::RendererFactory& factory /*= RendererFactory()*/) 
+glat::PNGAnnotation::PNGAnnotation(const glo::ref_ptr<glat::AbstractState>& initialState, std::string fileName, const glat::RendererFactory& factory /*= RendererFactory()*/) 
 	: glat::AbstractAnnotation(initialState) {
 	m_fileName = fileName;
 	m_renderer = factory.createRenderer(*this);

@@ -1,7 +1,7 @@
 #define _USE_MATH_DEFINES
 #include <glm/gtc/type_ptr.hpp>
-#include <glow/glow.h>
-#include <glow/Buffer.h>
+#include <globjects/globjects.h>
+#include <globjects/Buffer.h>
 #include <unordered_map>
 #include <cmath>
 
@@ -9,7 +9,7 @@
 #include <iostream>
 
 struct MatrizesBuffer {
-	glow::ref_ptr < glow::Buffer > buffer;
+	glo::ref_ptr < glo::Buffer > buffer;
 	glm::mat4 view = glm::mat4(1);
 	glm::mat4 projection = glm::mat4(1);
 	glm::ivec2 viewport;
@@ -32,7 +32,7 @@ void glat::setProjection(const glm::mat4& projection, gl::GLuint bindingIndex /*
 	g_matricesBufferMap[bindingIndex].projection = projection;
 }
 
-void glat::updateMatricesFromCamera(const glowutils::Camera& camera, gl::GLuint bindingIndex /*= 0*/) {
+void glat::updateMatricesFromCamera(const gloutils::Camera& camera, gl::GLuint bindingIndex /*= 0*/) {
 	setView(camera.view(), bindingIndex);
 	setProjection(camera.projection(), bindingIndex);
 	setViewport(camera.viewport(), bindingIndex);
@@ -43,7 +43,7 @@ void glat::updateMatricesFromCamera(const glowutils::Camera& camera, gl::GLuint 
 }
 
 void glat::initializeMatricesUBO(gl::GLuint bindingIndex /*= 0*/) {
-	g_matricesBufferMap[bindingIndex].buffer = new glow::Buffer;
+	g_matricesBufferMap[bindingIndex].buffer = new glo::Buffer;
 	g_matricesBufferMap[bindingIndex].buffer->setData(matrixBlockSize(), nullptr, gl::GL_STREAM_DRAW);
 	g_matricesBufferMap[bindingIndex].buffer->bindRange(gl::GL_UNIFORM_BUFFER, bindingIndex, 0, matrixBlockSize());
 }
@@ -98,5 +98,5 @@ glm::ivec2 GLAT_API glat::getViewport(gl::GLuint bindingIndex /*= 0*/) {
 }
 
 void GLAT_API glat::initialize() {
-	glow::init();
+	glo::init();
 }

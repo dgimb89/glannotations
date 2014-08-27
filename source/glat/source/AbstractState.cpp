@@ -4,7 +4,7 @@
 #include <glat/InternalState.h>
 #include <glat/PathState.h>
 
-void glat::AbstractState::setStyling(const glow::ref_ptr<glat::Styling>& style) {
+void glat::AbstractState::setStyling(const glo::ref_ptr<glat::Styling>& style) {
 	setDirty(true); 
 	m_stylings[style->getID()] = style;
 }

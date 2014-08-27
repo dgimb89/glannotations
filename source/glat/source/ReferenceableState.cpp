@@ -1,11 +1,11 @@
 #include <glat/ReferenceableState.h>
 
-void glat::ReferenceableState::setExternalReference(const glow::ref_ptr<glat::AbstractExternalReference>& reference) {
+void glat::ReferenceableState::setExternalReference(const glo::ref_ptr<glat::AbstractExternalReference>& reference) {
 	setDirty(true);
 	m_externalReference = reference;
 }
 
-glow::ref_ptr<glat::AbstractExternalReference> glat::ReferenceableState::getExternalReference() const {
+glo::ref_ptr<glat::AbstractExternalReference> glat::ReferenceableState::getExternalReference() const {
 	return m_externalReference;
 }
 

@@ -9,7 +9,7 @@ message(STATUS "Example ${target}")
 find_package(OpenGL REQUIRED)
 find_package(GLFW REQUIRED)
 find_package(GLM REQUIRED)
-find_package(GLOW REQUIRED)
+find_package(GLOBJECTS REQUIRED)
 find_package(GLBinding REQUIRED)
 find_package(OpenSceneGraph REQUIRED)
 find_package(osgViewer REQUIRED)
@@ -24,7 +24,7 @@ include_directories(
     ${OPENGL_INCLUDE_DIR}
     ${GLM_INCLUDE_DIR}
     ${GLFW_INCLUDE_DIR}
-    ${GLOW_INCLUDES}
+    ${GLOBJECTS_INCLUDES}
     ${GLBINDING_INCLUDES}
     ${OPENSCENEGRAPH_INCLUDE_DIRS}
     ${OSGVIEWER_INCLUDE_DIRS}
@@ -46,7 +46,7 @@ include_directories(
 set(libs
     ${OPENGL_LIBRARIES}
     ${GLFW_LIBRARY}
-    ${GLOW_LIBRARIES}
+    ${GLOBJECTS_LIBRARIES}
     ${GLBINDING_LIBRARIES}
     ${OPENSCENEGRAPH_LIBRARIES}
     ${OSGVIEWER_LIBRARIES}

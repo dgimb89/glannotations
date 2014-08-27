@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glowbase/ref_ptr.h>
+#include <globjects-base/ref_ptr.h>
 
 #include <glat/DirtyFlagObject.h>
 #include <glat/AbstractDrawingPrimitive.h>
@@ -38,7 +38,7 @@ namespace glat {
 
 		bool m_positioningOnly;
 		unsigned int m_bindingIndex;
-		glow::ref_ptr<glat::AbstractDrawingPrimitive> m_externalPrimitive;
+		glo::ref_ptr<glat::AbstractDrawingPrimitive> m_externalPrimitive;
 
 	private:
 		void assertNotReused();

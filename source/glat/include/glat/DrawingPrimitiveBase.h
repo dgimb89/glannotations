@@ -1,9 +1,9 @@
 #pragma once
 
-#include <glow/Shader.h>
-#include <glow/Program.h>
-#include <glow/VertexArrayObject.h>
-#include <glow/Buffer.h>
+#include <globjects/Shader.h>
+#include <globjects/Program.h>
+#include <globjects/VertexArrayObject.h>
+#include <globjects/Buffer.h>
 
 #include <glat/AbstractDrawingPrimitive.h>
 
@@ -20,10 +20,10 @@ namespace glat {
 		virtual void setBindingIndex(unsigned int bindingIndex) override;
 
 	protected:
-		glow::Shader* replacePlaceholderAndGetShader(gl::GLenum shaderType, const char* shader);
+		glo::Shader* replacePlaceholderAndGetShader(gl::GLenum shaderType, const char* shader);
 
-		glow::ref_ptr<glow::Program> m_program;
-		glow::ref_ptr<glow::VertexArrayObject> m_vao;
-		glow::ref_ptr<glow::Buffer> m_positions;
+		glo::ref_ptr<glo::Program> m_program;
+		glo::ref_ptr<glo::VertexArrayObject> m_vao;
+		glo::ref_ptr<glo::Buffer> m_positions;
 	};
 }

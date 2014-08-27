@@ -33,20 +33,20 @@ const glm::vec2 glat::ViewportState::getLR() const {
 	return glm::vec2(m_ur.x, m_ll.y);
 }
 
-glow::ref_ptr<glat::AbstractState> glat::ViewportState::interpolateWith(const InternalState& mixState, float mix) {
+glo::ref_ptr<glat::AbstractState> glat::ViewportState::interpolateWith(const InternalState& mixState, float mix) {
 	return glat::Interpolation::interpolate(*this, mixState, mix);
 }
 
-glow::ref_ptr<glat::AbstractState> glat::ViewportState::interpolateWith(const PathState& mixState, float mix) {
+glo::ref_ptr<glat::AbstractState> glat::ViewportState::interpolateWith(const PathState& mixState, float mix) {
 	return glat::Interpolation::interpolate(*this, mixState, mix);
 }
 
-glow::ref_ptr<glat::AbstractState> glat::ViewportState::interpolateWith(const ViewportState& mixState, float mix) {
+glo::ref_ptr<glat::AbstractState> glat::ViewportState::interpolateWith(const ViewportState& mixState, float mix) {
 	return glat::Interpolation::interpolate(*this, mixState, mix);
 }
 
-glow::ref_ptr<glat::AbstractState> glat::ViewportState::clone() const {
-	glow::ref_ptr<glat::AbstractState> clonedState(new ViewportState(m_ll, m_ur));
+glo::ref_ptr<glat::AbstractState> glat::ViewportState::clone() const {
+	glo::ref_ptr<glat::AbstractState> clonedState(new ViewportState(m_ll, m_ur));
 	AbstractState::copyState(*clonedState);
 	return clonedState;
 }

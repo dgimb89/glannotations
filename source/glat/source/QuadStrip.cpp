@@ -1,5 +1,5 @@
 #include <glat/QuadStrip.h>
-#include <glow/VertexAttributeBinding.h>
+#include <globjects/VertexAttributeBinding.h>
 
 #include <algorithm>
 
@@ -168,7 +168,7 @@ static const char* texturingFragShader = R"(
 
 	)";
 
-glat::QuadStrip::QuadStrip(std::shared_ptr<glow::Texture> texture, gl::GLuint matricesBindingIndex, bool isDistanceField) : glat::AbstractTexturedPrimitive(texture) {
+glat::QuadStrip::QuadStrip(std::shared_ptr<glo::Texture> texture, gl::GLuint matricesBindingIndex, bool isDistanceField) : glat::AbstractTexturedPrimitive(texture) {
 	if (isDistanceField) {
 		setupShader(vertShader, geomShader, dfFragShader);
 		setBindingIndex(matricesBindingIndex);
@@ -179,9 +179,9 @@ glat::QuadStrip::QuadStrip(std::shared_ptr<glow::Texture> texture, gl::GLuint ma
 	// initial position
 	m_ll = m_lr = m_ur = glm::vec3(0.0f, 0.0f, 0.0f);
 	m_vertexCount = 0;
-	m_advanceH = new glow::Buffer;
-	m_advanceW = new glow::Buffer;
-	m_texAdvance = new glow::Buffer;
+	m_advanceH = new glo::Buffer;
+	m_advanceW = new glo::Buffer;
+	m_texAdvance = new glo::Buffer;
 
 	m_vao->binding(0)->setAttribute(0);
 	m_vao->binding(0)->setFormat(3, gl::GL_FLOAT, gl::GL_FALSE, 0);

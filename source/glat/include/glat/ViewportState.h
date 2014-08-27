@@ -22,11 +22,11 @@ namespace glat {
 	protected:
 		virtual void draw(const AbstractRenderer& renderer) override;
 
-		virtual glow::ref_ptr<AbstractState> interpolateWith(const InternalState& mixState, float mix);
-		virtual glow::ref_ptr<AbstractState> interpolateWith(const PathState& mixState, float mix);
-		virtual glow::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix);
+		virtual glo::ref_ptr<AbstractState> interpolateWith(const InternalState& mixState, float mix);
+		virtual glo::ref_ptr<AbstractState> interpolateWith(const PathState& mixState, float mix);
+		virtual glo::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix);
 
-		virtual glow::ref_ptr<glat::AbstractState> clone() const;
+		virtual glo::ref_ptr<glat::AbstractState> clone() const;
 
 		glm::vec2 m_ll, m_ur;
 	};

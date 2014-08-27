@@ -22,10 +22,10 @@ osg::BoundingBox glat::wrapper::DrawableAnnotation::computeBound() const {
 	return osg::BoundingBox(-10.f, -10.f, -10.f, 10.f, 10.f, 10.f);
 }
 
-void glat::wrapper::DrawableAnnotation::setAnnotation(glow::ref_ptr<glat::AbstractAnnotation> annotation) {
+void glat::wrapper::DrawableAnnotation::setAnnotation(glo::ref_ptr<glat::AbstractAnnotation> annotation) {
 	m_annotation = annotation;
 }
 
-const glow::ref_ptr<glat::AbstractAnnotation>& glat::wrapper::DrawableAnnotation::getAnnotation() const {
+const glo::ref_ptr<glat::AbstractAnnotation>& glat::wrapper::DrawableAnnotation::getAnnotation() const {
 	return m_annotation;
 }

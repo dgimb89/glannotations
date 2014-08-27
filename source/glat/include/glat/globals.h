@@ -1,8 +1,8 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include <glowutils/Camera.h>
-#include <glowbase/ref_ptr.h>
+#include <globjects-utils/Camera.h>
+#include <globjects-base/ref_ptr.h>
 
 #include <glat/glat_api.h>
 
@@ -17,7 +17,7 @@ namespace glat {
 	void GLAT_API setViewFrustumVolume(glm::vec2 volumeInWorldSpace, unsigned intbindingIndex = 0);
 	void GLAT_API setViewport(const glm::ivec2& viewport, unsigned intbindingIndex = 0);
 
-	void GLAT_API updateMatricesFromCamera(const glowutils::Camera& camera, unsigned intbindingIndex = 0);
+	void GLAT_API updateMatricesFromCamera(const gloutils::Camera& camera, unsigned intbindingIndex = 0);
 
 	const glm::mat4 GLAT_API &getView(unsigned intbindingIndex = 0);
 	const glm::mat4 GLAT_API &getProjection(unsigned intbindingIndex = 0);

@@ -9,7 +9,7 @@ message(STATUS "Example ${target}")
 find_package(OpenGL REQUIRED)
 find_package(GLFW REQUIRED)
 find_package(GLM REQUIRED)
-find_package(GLOW REQUIRED)
+find_package(GLOBJECTS REQUIRED)
 
 #
 # Includes
@@ -19,7 +19,7 @@ include_directories(
     ${OPENGL_INCLUDE_DIR}
     ${GLM_INCLUDE_DIR}
     ${GLFW_INCLUDE_DIR}
-    ${GLOW_INCLUDES}
+    ${GLOBJECTS_INCLUDES}
 )
 
 include_directories(
@@ -36,7 +36,7 @@ include_directories(
 set(libs
     ${OPENGL_LIBRARIES}
     ${GLFW_LIBRARY}
-    ${GLOW_LIBRARIES}
+    ${GLOBJECTS_LIBRARIES}
     ${EXAMPLE_COMMON}
     glat
     glat_preprocessor

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glowbase/ref_ptr.h>
+#include <globjects-base/ref_ptr.h>
 
 #include <glat/DirtyFlagObject.h>
 
@@ -18,7 +18,7 @@ namespace glat {
 		friend class PathState;
 	public:
 		AbstractRenderer(unsigned int globalMatricesBindingIndex);
-		virtual void draw(const glow::ref_ptr<glat::AbstractAnnotation>& annotation) = 0;
+		virtual void draw(const glo::ref_ptr<glat::AbstractAnnotation>& annotation) = 0;
 		unsigned int getMatricesBindingIndex() const;
 
 	protected:

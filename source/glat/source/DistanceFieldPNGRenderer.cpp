@@ -5,7 +5,7 @@
 #include <glat/TextureManager.h>
 #include <glat/QuadStrip.h>
 
-void glat::DistanceFieldPNGRenderer::draw(const glow::ref_ptr<glat::AbstractAnnotation>& annotation) {
+void glat::DistanceFieldPNGRenderer::draw(const glo::ref_ptr<glat::AbstractAnnotation>& annotation) {
 	PNGAnnotation* currentAnnotation = dynamic_cast<PNGAnnotation*>(annotation.get());
 
 	if (currentAnnotation->isDirty()) {

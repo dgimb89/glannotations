@@ -1,11 +1,11 @@
 #include <glat/AbstractExternalState.h>
 #include <glat/Styles/ExternalColor.h>
 
-void glat::AbstractExternalState::setCamera(glowutils::Camera* camera) {
+void glat::AbstractExternalState::setCamera(gloutils::Camera* camera) {
 	m_camera = camera;
 }
 
-glowutils::Camera* glat::AbstractExternalState::getCamera() const {
+gloutils::Camera* glat::AbstractExternalState::getCamera() const {
 	return m_camera;
 }
 
@@ -31,7 +31,7 @@ const glm::mat4& glat::AbstractExternalState::getViewProjection() const {
 	return m_camProjection;
 }
 
-glat::AbstractExternalState::AbstractExternalState(glowutils::Camera* camera) : AbstractState() {
+glat::AbstractExternalState::AbstractExternalState(gloutils::Camera* camera) : AbstractState() {
 	m_internalState = new glat::InternalState(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), camera);
 	m_interpolation = 0.f;
 	setCamera(camera);
@@ -61,7 +61,7 @@ void glat::AbstractExternalState::setupExternalPrimitives() const {
 	setupExternalColor(getStyling("ExternalColor"));
 }
 
-glow::ref_ptr<glat::InternalState> glat::AbstractExternalState::getInternalAnnotation() {
+glo::ref_ptr<glat::InternalState> glat::AbstractExternalState::getInternalAnnotation() {
 	return m_internalState;
 }
 

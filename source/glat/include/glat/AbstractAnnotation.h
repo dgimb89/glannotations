@@ -2,8 +2,8 @@
 
 #include <vector>
 #include <memory>
-#include <glowbase/ref_ptr.h>
-#include <glowutils/Camera.h>
+#include <globjects-base/ref_ptr.h>
+#include <globjects-utils/Camera.h>
 
 #include "globals.h"
 #include <glat/glat_api.h>
@@ -22,9 +22,9 @@ namespace glat {
 	friend class AnnotationGroup;
 	public:
 		void draw();
-		void setState(const glow::ref_ptr<glat::AbstractState>& state);
-		glow::ref_ptr<glat::AbstractState> getState() const;
-		glow::ref_ptr<glat::AbstractState> getRenderState() const;
+		void setState(const glo::ref_ptr<glat::AbstractState>& state);
+		glo::ref_ptr<glat::AbstractState> getState() const;
+		glo::ref_ptr<glat::AbstractState> getRenderState() const;
 
 		// should internal interpolation be offered? - maybe just at state level, but user has to keep the both final states
 		void interpolateState(const InternalState& mixState, float mix);
@@ -34,11 +34,11 @@ namespace glat {
 		void resetInterpolation();
 
 	protected:
-		const glow::ref_ptr<glat::AbstractRenderer>& getRenderer();
-		AbstractAnnotation(const glow::ref_ptr<glat::AbstractState>& state);
+		const glo::ref_ptr<glat::AbstractRenderer>& getRenderer();
+		AbstractAnnotation(const glo::ref_ptr<glat::AbstractState>& state);
 		void setupRenderState() const;
-		glow::ref_ptr<glat::AbstractRenderer> m_renderer;
-		glow::ref_ptr<glat::AbstractState> m_state;
-		mutable glow::ref_ptr<glat::AbstractState> m_renderState;
+		glo::ref_ptr<glat::AbstractRenderer> m_renderer;
+		glo::ref_ptr<glat::AbstractState> m_state;
+		mutable glo::ref_ptr<glat::AbstractState> m_renderState;
 	};
 }

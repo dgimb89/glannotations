@@ -40,7 +40,7 @@ bool glat::PNGImage::distanceTransformFromPNG(std::string pngFileName) {
 
 	// load source image
 	if (!loadImage(pngFileName)) return false;
-	glow::ref_ptr<glat::PNGImage> distanceTransform = glat::DistanceFieldGeneration::distanceTransform(*this);
+	glo::ref_ptr<glat::PNGImage> distanceTransform = glat::DistanceFieldGeneration::distanceTransform(*this);
 
 	// set new image info data
 	m_image = distanceTransform->getImage();
@@ -205,7 +205,7 @@ glat::PNGImage::colorVal_t& glat::PNGImage::imageValue(size_t x, size_t y, unsig
 	return m_image->data[(m_width * y + x) * m_channels + numComponent];
 }
 
-const glow::ref_ptr<glat::PNGImage::image_t> glat::PNGImage::getImage() const {
+const glo::ref_ptr<glat::PNGImage::image_t> glat::PNGImage::getImage() const {
 	return m_image;
 }
 
@@ -245,7 +245,7 @@ unsigned short glat::PNGImage::getComponentBitdepth() const {
 	return m_bitdepth;
 }
 
-void glat::PNGImage::replaceImageWith(glow::ref_ptr<glat::PNGImage> image) {
+void glat::PNGImage::replaceImageWith(glo::ref_ptr<glat::PNGImage> image) {
 	setDirty(true);
 	m_image = image->getImage();
 	m_height = image->getHeight();

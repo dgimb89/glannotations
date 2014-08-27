@@ -48,7 +48,7 @@ void glat::RendererFactory::useNVpr(bool useNVpr) {
 	m_useNVpr = useNVpr;
 }
 
-glow::ref_ptr<glat::AbstractRenderer> glat::RendererFactory::createRenderer(const glat::FontAnnotation& annotation) const {
+glo::ref_ptr<glat::AbstractRenderer> glat::RendererFactory::createRenderer(const glat::FontAnnotation& annotation) const {
 	if (autoInitializesMatricesBuffer()) {
 		validateMatricesUBO(m_globalMatricesBindingIndex);
 	}
@@ -63,7 +63,7 @@ glow::ref_ptr<glat::AbstractRenderer> glat::RendererFactory::createRenderer(cons
 	}
 }
 
-glow::ref_ptr<glat::AbstractRenderer> glat::RendererFactory::createRenderer(const glat::SVGAnnotation& annotation) const {
+glo::ref_ptr<glat::AbstractRenderer> glat::RendererFactory::createRenderer(const glat::SVGAnnotation& annotation) const {
 	if (autoInitializesMatricesBuffer()) {
 		validateMatricesUBO(m_globalMatricesBindingIndex);
 	}
@@ -80,7 +80,7 @@ glow::ref_ptr<glat::AbstractRenderer> glat::RendererFactory::createRenderer(cons
 	}
 }
 
-glow::ref_ptr<glat::AbstractRenderer> glat::RendererFactory::createRenderer(const glat::PNGAnnotation& annotation) const {
+glo::ref_ptr<glat::AbstractRenderer> glat::RendererFactory::createRenderer(const glat::PNGAnnotation& annotation) const {
 	if (autoInitializesMatricesBuffer()) {
 		validateMatricesUBO(m_globalMatricesBindingIndex);
 	}

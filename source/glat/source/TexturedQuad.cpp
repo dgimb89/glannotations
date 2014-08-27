@@ -1,5 +1,5 @@
 #include <glat/TexturedQuad.h>
-#include <glow/VertexAttributeBinding.h>
+#include <globjects/VertexAttributeBinding.h>
 
 
 static const char*	vertQuadShaderSource = R"(
@@ -107,7 +107,7 @@ static const char* fragDFQuadShaderSource = R"(
 				}
 				)";
 
-glat::TexturedQuad::TexturedQuad(std::shared_ptr<glow::Texture> texture, bool isDistanceField) : glat::AbstractTexturedPrimitive(texture) {
+glat::TexturedQuad::TexturedQuad(std::shared_ptr<glo::Texture> texture, bool isDistanceField) : glat::AbstractTexturedPrimitive(texture) {
 	m_style = 0;
 	if (isDistanceField) {
 		setupShader(fragDFQuadShaderSource, vertQuadShaderSource);

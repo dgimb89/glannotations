@@ -1,24 +1,24 @@
 #pragma once
 #include <glm/glm.hpp>
-#include <glowbase/Referenced.h>
-#include <glowbase/ref_ptr.h>
-#include <glow/Texture.h>
+#include <globjects-base/Referenced.h>
+#include <globjects-base/ref_ptr.h>
+#include <globjects/Texture.h>
 #include <map>
 #include <memory>
 
 namespace glat {
 
 	// Wrapper to allow management via TextureManager
-	class ManagedTexture : public glow::Texture {
+	class ManagedTexture : public glo::Texture {
 	public:
 		ManagedTexture(gl::GLenum target = gl::GL_TEXTURE_2D);
 	};
 
 	/// Singleton Texture Manager
-	class TextureManager : public glow::Referenced {
+	class TextureManager : public glo::Referenced {
 	public:
 		static TextureManager& getInstance();
-		std::shared_ptr<glow::Texture> getTexture(std::string fileName);
+		std::shared_ptr<glo::Texture> getTexture(std::string fileName);
 		glm::ivec2 getTextureSize(std::string fileName);
 	protected:
 		TextureManager();

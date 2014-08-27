@@ -1,5 +1,5 @@
 #pragma once
-#include <glowbase/ref_ptr.h>
+#include <globjects-base/ref_ptr.h>
 
 #include <glat/AbstractPrimitiveRenderer.h>
 
@@ -9,7 +9,7 @@ namespace glat {
 	class DistanceFieldFontRenderer : public glat::AbstractPrimitiveRenderer {
 	public:
 		DistanceFieldFontRenderer(gl::GLuint matricesBindingIndex);
-		virtual void draw(const glow::ref_ptr<glat::AbstractAnnotation>& annotation);
+		virtual void draw(const glo::ref_ptr<glat::AbstractAnnotation>& annotation);
 
 	protected:
 		void setupGlyphQuadstrip(glat::FontAnnotation* annotation);

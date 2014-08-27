@@ -1,13 +1,13 @@
 #include <glbinding/gl/values.h>
-#include <glowutils/StringTemplate.h>
-#include <glowbase/StaticStringSource.h>
+#include <globjects-utils/StringTemplate.h>
+#include <globjects-base/StaticStringSource.h>
 
 #include <glat/DrawingPrimitiveBase.h>
 #include "ShaderSources.hpp"
 #include <string.h>
 glat::DrawingPrimitiveBase::DrawingPrimitiveBase() {
-	m_vao = new glow::VertexArrayObject();
-	m_positions = new glow::Buffer();
+	m_vao = new glo::VertexArrayObject();
+	m_positions = new glo::Buffer();
 }
 
 void glat::DrawingPrimitiveBase::setColor(glm::vec4 color) {
@@ -19,15 +19,15 @@ glat::DrawingPrimitiveBase::~DrawingPrimitiveBase() {
 }
 
 void glat::DrawingPrimitiveBase::setupShader(const char* vertShader, const char* fragShader) {
-	m_program = new glow::Program;
-	m_program->attach(replacePlaceholderAndGetShader(gl::GL_VERTEX_SHADER, vertShader), glow::Shader::fromString(gl::GL_FRAGMENT_SHADER, fragShader));
+	m_program = new glo::Program;
+	m_program->attach(replacePlaceholderAndGetShader(gl::GL_VERTEX_SHADER, vertShader), glo::Shader::fromString(gl::GL_FRAGMENT_SHADER, fragShader));
 }
 
 void glat::DrawingPrimitiveBase::setupShader(const char* vertShader, const char* geomShader, const char* fragShader) {
-	m_program = new glow::Program;
+	m_program = new glo::Program;
 	m_program->attach(replacePlaceholderAndGetShader(gl::GL_VERTEX_SHADER, vertShader),
 		replacePlaceholderAndGetShader(gl::GL_GEOMETRY_SHADER, geomShader),
-		glow::Shader::fromString(gl::GL_FRAGMENT_SHADER, fragShader)
+		glo::Shader::fromString(gl::GL_FRAGMENT_SHADER, fragShader)
 		);
 }
 
@@ -40,9 +40,9 @@ void glat::DrawingPrimitiveBase::setBindingIndex(unsigned int bindingIndex) {
 	}
 }
 
-glow::Shader* glat::DrawingPrimitiveBase::replacePlaceholderAndGetShader(gl::GLenum shaderType, const char* shader) {
-	glowutils::StringTemplate* shaderSource = new glowutils::StringTemplate(new glow::StaticStringSource(shader, strlen(shader)));
+glo::Shader* glat::DrawingPrimitiveBase::replacePlaceholderAndGetShader(gl::GLenum shaderType, const char* shader) {
+	gloutils::StringTemplate* shaderSource = new gloutils::StringTemplate(new glo::StaticStringSource(shader, strlen(shader)));
 	shaderSource->replace("### MATRIX_BLOCK ###", glat::ShaderSources::matrixUniformBlock);
 
-	return new glow::Shader(shaderType, shaderSource);
+	return new glo::Shader(shaderType, shaderSource);
 }

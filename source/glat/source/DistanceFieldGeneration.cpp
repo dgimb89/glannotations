@@ -14,8 +14,8 @@ bool glat::DistanceFieldGeneration::detail::selfColoredNeighborsNot(const glat::
 		(x < original.getWidth() ? !original.isColored(x + 1, y) : true) || (y < original.getHeight() ? !original.isColored(x, y + 1) : true));
 }
 
-glow::ref_ptr<glat::PNGImage> glat::DistanceFieldGeneration::bilinearResize(const glat::PNGImage& inImage, unsigned scaledWidth, unsigned scaledHeight) {
-	glow::ref_ptr<glat::PNGImage> scaledResult = new glat::PNGImage(scaledWidth, scaledHeight, inImage.getNumComponents());
+glo::ref_ptr<glat::PNGImage> glat::DistanceFieldGeneration::bilinearResize(const glat::PNGImage& inImage, unsigned scaledWidth, unsigned scaledHeight) {
+	glo::ref_ptr<glat::PNGImage> scaledResult = new glat::PNGImage(scaledWidth, scaledHeight, inImage.getNumComponents());
 
 	const double tx = double(inImage.getWidth()) / scaledWidth;
 	const double ty = double(inImage.getHeight()) / scaledHeight;
@@ -41,8 +41,8 @@ inline double cubicInterpolate(double p, double cur, double n1, double n2, doubl
 	return cur + 0.5 * frac *(n1 - p + frac*(2.0*p - 5.0*cur + 4.0*n1 - n2 + frac*(3.0*(cur - n1) + n2 - p)));
 }
 
-glow::ref_ptr<glat::PNGImage> glat::DistanceFieldGeneration::bicubicResize(const glat::PNGImage& inImage, unsigned scaledWidth, unsigned scaledHeight) {
-	glow::ref_ptr<glat::PNGImage> scaledResult = new glat::PNGImage(scaledWidth, scaledHeight, inImage.getNumComponents());
+glo::ref_ptr<glat::PNGImage> glat::DistanceFieldGeneration::bicubicResize(const glat::PNGImage& inImage, unsigned scaledWidth, unsigned scaledHeight) {
+	glo::ref_ptr<glat::PNGImage> scaledResult = new glat::PNGImage(scaledWidth, scaledHeight, inImage.getNumComponents());
 
 	const double tx = double(inImage.getWidth()) / scaledWidth;
 	const double ty = double(inImage.getHeight()) / scaledHeight;
@@ -66,7 +66,7 @@ glow::ref_ptr<glat::PNGImage> glat::DistanceFieldGeneration::bicubicResize(const
 	return scaledResult;
 }
 
-glow::ref_ptr<glat::PNGImage> glat::DistanceFieldGeneration::distanceTransform(const glat::PNGImage& original) {
+glo::ref_ptr<glat::PNGImage> glat::DistanceFieldGeneration::distanceTransform(const glat::PNGImage& original) {
 	double* distances = new double[original.getHeight() * original.getWidth()];
 	std::fill_n(distances, original.getHeight() * original.getWidth(), std::numeric_limits<double>::infinity());
 	// top-left to bottom-right
@@ -119,7 +119,7 @@ glow::ref_ptr<glat::PNGImage> glat::DistanceFieldGeneration::distanceTransform(c
 
 	// transform float distances to color values
 
-	glow::ref_ptr<glat::PNGImage> distanceField = new glat::PNGImage(original.getWidth(), original.getHeight(), 1);
+	glo::ref_ptr<glat::PNGImage> distanceField = new glat::PNGImage(original.getWidth(), original.getHeight(), 1);
 	for (unsigned y = 0; y < original.getHeight(); ++y) {
 		for (unsigned x = 0; x < original.getWidth(); ++x) {
 			distanceField->setImageValue(x, y, 0, colorValueFromFloat(distances[y * original.getWidth() + x]));

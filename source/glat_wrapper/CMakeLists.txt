@@ -7,7 +7,7 @@ message(STATUS "Lib ${target}")
 #
 
 find_package(OpenSceneGraph REQUIRED)
-find_package(GLOW REQUIRED)
+find_package(GLOBJECTS REQUIRED)
 find_package(GLBinding REQUIRED)
 
 #
@@ -20,7 +20,7 @@ include_directories(
     ${GLBINDING_INCLUDES}
     ${CMAKE_SOURCE_DIR}/source/glat/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${GLOW_INCLUDES}
+    ${GLOBJECTS_INCLUDES}
     ${GLM_INCLUDE_DIR}
 )
 
@@ -38,7 +38,7 @@ if(OSG_FOUND)
 	set(libs
 		${libs}
 		${OPENSCENEGRAPH_LIBRARIES}
-    	${GLOW_LIBRARIES}
+    	${GLOBJECTS_LIBRARIES}
 	)
 endif()
 

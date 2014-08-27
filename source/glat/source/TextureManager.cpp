@@ -11,7 +11,7 @@ glat::TextureManager& glat::TextureManager::getInstance() {
 	return *_instance;
 }
 
-std::shared_ptr<glow::Texture> glat::TextureManager::getTexture(std::string fileName) {
+std::shared_ptr<glo::Texture> glat::TextureManager::getTexture(std::string fileName) {
 	if (m_textures.count(fileName)) {
 		if (auto spt = m_textures[fileName].lock())
 			return spt; // texture resource still valid
@@ -41,5 +41,5 @@ glm::ivec2 glat::TextureManager::getTextureSize(std::string fileName) {
 	return glm::ivec2(image.getWidth(), image.getHeight());
 }
 
-glat::ManagedTexture::ManagedTexture(gl::GLenum target /*= GL_TEXTURE_2D*/) : glow::Texture(target) {
+glat::ManagedTexture::ManagedTexture(gl::GLenum target /*= GL_TEXTURE_2D*/) : glo::Texture(target) {
 }

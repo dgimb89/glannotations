@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glowbase/ref_ptr.h>
+#include <globjects-base/ref_ptr.h>
 
 #include <glat/AbstractTexturedPrimitive.h>
 #include <glat/AbstractRenderer.h>
@@ -19,6 +19,6 @@ namespace glat {
 
 
 		// we set the primitive to mutable because there is no outside interference at all - the quad is JUST used for rendering for this specific Renderer
-		mutable glow::ref_ptr<glat::AbstractTexturedPrimitive> m_drawingPrimitive;
+		mutable glo::ref_ptr<glat::AbstractTexturedPrimitive> m_drawingPrimitive;
 	};
 }

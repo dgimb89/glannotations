@@ -1,5 +1,5 @@
 #include <glat/Box.h>
-#include <glow/VertexAttributeBinding.h>
+#include <globjects/VertexAttributeBinding.h>
 #include <array>
 #include "ShaderSources.hpp"
 

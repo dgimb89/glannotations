@@ -1,6 +1,6 @@
 #include "building.h"
 #include "../../glat/source/ShaderSources.hpp" // dirty hack, but we just do it here
-#include <glow/VertexAttributeBinding.h>
+#include <globjects/VertexAttributeBinding.h>
 #include <array>
 
 /// -------------------- Shader ---------------------

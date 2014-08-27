@@ -9,7 +9,7 @@
 
 #include <string.h>
 
-void glat::NVPRSvgRenderer::draw(const glow::ref_ptr<glat::AbstractAnnotation>& annotation) {
+void glat::NVPRSvgRenderer::draw(const glo::ref_ptr<glat::AbstractAnnotation>& annotation) {
 	glat::SVGAnnotation* currentAnnotation = reinterpret_cast<glat::SVGAnnotation*>(annotation.get());
 	if (annotation->isDirty()) {
 		m_height = currentAnnotation->getHeight();

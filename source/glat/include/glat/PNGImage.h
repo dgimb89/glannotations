@@ -1,7 +1,7 @@
 #pragma once
 
-#include <glowbase/Referenced.h>
-#include <glowbase/ref_ptr.h>
+#include <globjects-base/Referenced.h>
+#include <globjects-base/ref_ptr.h>
 #include <string>
 #include <glm/glm.hpp>
 
@@ -12,7 +12,7 @@ namespace glat {
 	class GLAT_API PNGImage : public glat::DirtyFlagObject {
 	public:
 		typedef unsigned char colorVal_t;
-		typedef struct GLAT_API image_t : public glow::Referenced{
+		typedef struct GLAT_API image_t : public glo::Referenced{
 			image_t(size_t size);
 			~image_t();
 			colorVal_t *data;
@@ -42,7 +42,7 @@ namespace glat {
 		// clamps for access out of image range
 		colorVal_t getImageValue(signed long x, signed long y, unsigned short numComponent) const;
 		bool isColored(size_t x, size_t y) const;
-		const glow::ref_ptr<image_t> getImage() const;
+		const glo::ref_ptr<image_t> getImage() const;
 
 		size_t getWidth() const;
 		size_t getHeight() const;
@@ -50,13 +50,13 @@ namespace glat {
 		unsigned short getComponentBitdepth() const;
 		size_t getRowStride() const;
 
-		void replaceImageWith(glow::ref_ptr<glat::PNGImage> image);
+		void replaceImageWith(glo::ref_ptr<glat::PNGImage> image);
 
 
 	protected:
 		void createImage();
 
-		glow::ref_ptr<image_t> m_image;
+		glo::ref_ptr<image_t> m_image;
 		size_t m_width = 0, m_height = 0;
 		unsigned short m_bitdepth = 0, m_channels = 4;
 

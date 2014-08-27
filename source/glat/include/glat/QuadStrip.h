@@ -7,7 +7,7 @@ namespace glat {
 	public:
 		typedef glm::vec2 texVec2_t;
 		typedef std::pair<texVec2_t, texVec2_t> textureRange_t;
-		QuadStrip(std::shared_ptr<glow::Texture> texture, gl::GLuint matricesBindingIndex, bool isDistanceField);
+		QuadStrip(std::shared_ptr<glo::Texture> texture, gl::GLuint matricesBindingIndex, bool isDistanceField);
 
 		void addQuad(texVec2_t texture_ll, texVec2_t texture_advance);
 		void clearQuads();
@@ -30,8 +30,8 @@ namespace glat {
 		glm::vec3 m_ll, m_ur, m_lr;
 		unsigned m_vertexCount;
 
-		glow::ref_ptr<glow::Buffer> m_advanceH;
-		glow::ref_ptr<glow::Buffer> m_advanceW; 
-		glow::ref_ptr<glow::Buffer> m_texAdvance;
+		glo::ref_ptr<glo::Buffer> m_advanceH;
+		glo::ref_ptr<glo::Buffer> m_advanceW; 
+		glo::ref_ptr<glo::Buffer> m_texAdvance;
 	};
 }

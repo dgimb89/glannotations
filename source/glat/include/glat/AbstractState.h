@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glowbase/ref_ptr.h>
+#include <globjects-base/ref_ptr.h>
 #include <map>
 #include <string>
 #include <memory>
@@ -19,7 +19,7 @@ namespace glat {
 	class InternalState;
 	class PathState;
 
-	typedef GLAT_API std::map<std::string, glow::ref_ptr<glat::Styling> > StylingList;
+	typedef GLAT_API std::map<std::string, glo::ref_ptr<glat::Styling> > StylingList;
 
 	namespace State {
 		enum GLAT_API VerticalAnchor { MIDDLE, BOTTOM, TOP, SCALE_HEIGHT};
@@ -36,11 +36,11 @@ namespace glat {
 		// returns nullptr if style does not exist
 		const glat::Styling* getStyling(std::string ID) const;
 		const glat::StylingList& getStylings() const;
-		void setStyling(const glow::ref_ptr<glat::Styling>& style);
+		void setStyling(const glo::ref_ptr<glat::Styling>& style);
 		void setStylings(const StylingList& stylings);
 
 		virtual bool isValid() const = 0;
-		virtual glow::ref_ptr<glat::AbstractState> clone() const = 0;
+		virtual glo::ref_ptr<glat::AbstractState> clone() const = 0;
 		virtual glat::BoundingBox getBoundingBox() = 0;
 
 		glat::InternalState& asInternalState();
@@ -53,9 +53,9 @@ namespace glat {
 		glat::State::VerticalAnchor getVerticalAnchor() const;
 		void setVerticalAnchor(glat::State::VerticalAnchor verticalAnchor);
 
-		virtual glow::ref_ptr<AbstractState> interpolateWith(const InternalState& mixState, float mix) = 0;
-		virtual glow::ref_ptr<AbstractState> interpolateWith(const PathState& mixState, float mix) = 0;
-		virtual glow::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix) = 0;
+		virtual glo::ref_ptr<AbstractState> interpolateWith(const InternalState& mixState, float mix) = 0;
+		virtual glo::ref_ptr<AbstractState> interpolateWith(const PathState& mixState, float mix) = 0;
+		virtual glo::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix) = 0;
 
 	protected:
 		void setSourceDimensions(glm::ivec2 pixelDimensions, unsigned int bindingIndex);

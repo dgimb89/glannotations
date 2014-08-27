@@ -26,7 +26,7 @@ const glm::vec4 glat::FontAnnotation::getColor() const {
 	return m_color;
 }
 
-glat::FontAnnotation::FontAnnotation(const glow::ref_ptr<glat::AbstractState>& initialState, std::string text, std::string fontName, const glat::RendererFactory& factory /*= RendererFactory()*/)
+glat::FontAnnotation::FontAnnotation(const glo::ref_ptr<glat::AbstractState>& initialState, std::string text, std::string fontName, const glat::RendererFactory& factory /*= RendererFactory()*/)
 : AbstractAnnotation(initialState) {
 	m_renderer = factory.createRenderer(*this);
 	setText(text);

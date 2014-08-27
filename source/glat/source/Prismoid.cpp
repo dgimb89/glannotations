@@ -1,5 +1,5 @@
 #include <glat/Prismoid.h>
-#include <glow/VertexAttributeBinding.h>
+#include <globjects/VertexAttributeBinding.h>
 #include "ShaderSources.hpp"
 
 static const char* geomShader = R"(

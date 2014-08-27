@@ -7,7 +7,7 @@
 #include <glat/PathState.h>
 #include <glat/Styles/ExternalColor.h>
 
-glat::AbstractAnnotation::AbstractAnnotation(const glow::ref_ptr<glat::AbstractState>& state) {
+glat::AbstractAnnotation::AbstractAnnotation(const glo::ref_ptr<glat::AbstractState>& state) {
 	setState(state);
 }
 
@@ -15,18 +15,18 @@ void glat::AbstractAnnotation::draw() {
 	m_renderer->draw(this);
 }
 
-glow::ref_ptr<glat::AbstractState> glat::AbstractAnnotation::getState() const {
+glo::ref_ptr<glat::AbstractState> glat::AbstractAnnotation::getState() const {
 	// todo: implement observer pattern in case of state changes
 	m_renderState = nullptr;
 	return m_state;
 }
 
-void glat::AbstractAnnotation::setState(const glow::ref_ptr<glat::AbstractState>& state) {
+void glat::AbstractAnnotation::setState(const glo::ref_ptr<glat::AbstractState>& state) {
 	m_state = state;
 	m_renderState = nullptr;
 }
 
-glow::ref_ptr<glat::AbstractState> glat::AbstractAnnotation::getRenderState() const {
+glo::ref_ptr<glat::AbstractState> glat::AbstractAnnotation::getRenderState() const {
 	setupRenderState();
 	return m_renderState;
 }
@@ -59,6 +59,6 @@ void glat::AbstractAnnotation::setupRenderState() const {
 	}
 }
 
-const glow::ref_ptr<glat::AbstractRenderer>& glat::AbstractAnnotation::getRenderer() {
+const glo::ref_ptr<glat::AbstractRenderer>& glat::AbstractAnnotation::getRenderer() {
 	return m_renderer;
 }

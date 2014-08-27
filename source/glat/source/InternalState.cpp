@@ -40,25 +40,25 @@ bool glat::InternalState::isValid() const {
 	return (m_ur - m_ll).length() > 0;
 }
 
-glow::ref_ptr<glat::AbstractState> glat::InternalState::interpolateWith(const InternalState& mixState, float mix) {
+glo::ref_ptr<glat::AbstractState> glat::InternalState::interpolateWith(const InternalState& mixState, float mix) {
 	return glat::Interpolation::interpolate(*this, mixState, mix);
 }
 
-glow::ref_ptr<glat::AbstractState> glat::InternalState::interpolateWith(const PathState& mixState, float mix) {
+glo::ref_ptr<glat::AbstractState> glat::InternalState::interpolateWith(const PathState& mixState, float mix) {
 	return glat::Interpolation::interpolate(*this, mixState, mix);
 }
 
-glow::ref_ptr<glat::AbstractState> glat::InternalState::interpolateWith(const ViewportState& mixState, float mix) {
+glo::ref_ptr<glat::AbstractState> glat::InternalState::interpolateWith(const ViewportState& mixState, float mix) {
 	return glat::Interpolation::interpolate(*this, mixState, mix);
 }
 
-glow::ref_ptr<glat::AbstractState> glat::InternalState::clone() const {
-	glow::ref_ptr<glat::AbstractState> clonedState(new InternalState(m_ll, m_lr, m_ur));
+glo::ref_ptr<glat::AbstractState> glat::InternalState::clone() const {
+	glo::ref_ptr<glat::AbstractState> clonedState(new InternalState(m_ll, m_lr, m_ur));
 	ReferenceableState::copyState(dynamic_cast<ReferenceableState&> (*clonedState));
 	return clonedState;
 }
 
-void glat::InternalState::setExternalReference(const glow::ref_ptr<glat::AbstractExternalReference>& reference) {
+void glat::InternalState::setExternalReference(const glo::ref_ptr<glat::AbstractExternalReference>& reference) {
 	ReferenceableState::setExternalReference(reference);
 	m_externalReference->setupExternalReference(*this);
 }

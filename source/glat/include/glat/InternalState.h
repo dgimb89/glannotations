@@ -21,15 +21,15 @@ namespace glat {
 		virtual bool isValid() const override;
 		virtual glat::BoundingBox getBoundingBox() override;
 
-		virtual glow::ref_ptr<glat::AbstractState> clone() const;
-		virtual void setExternalReference(const glow::ref_ptr<glat::AbstractExternalReference>& reference);
+		virtual glo::ref_ptr<glat::AbstractState> clone() const;
+		virtual void setExternalReference(const glo::ref_ptr<glat::AbstractExternalReference>& reference);
 
 	protected:
 		virtual void draw(const AbstractRenderer& renderer) override;
 
-		virtual glow::ref_ptr<AbstractState> interpolateWith(const InternalState& mixState, float mix);
-		virtual glow::ref_ptr<AbstractState> interpolateWith(const PathState& mixState, float mix);
-		virtual glow::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix);
+		virtual glo::ref_ptr<AbstractState> interpolateWith(const InternalState& mixState, float mix);
+		virtual glo::ref_ptr<AbstractState> interpolateWith(const PathState& mixState, float mix);
+		virtual glo::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix);
 
 
 		glm::vec3 m_ll, m_ur, m_lr;

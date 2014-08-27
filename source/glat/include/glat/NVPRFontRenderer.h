@@ -11,7 +11,7 @@ namespace glat {
 	class NVPRFontRenderer : public NVPRRenderer {
 	public:
 		NVPRFontRenderer(gl::GLuint globalMatricesBindingIndex);
-		virtual void draw(const glow::ref_ptr<glat::AbstractAnnotation>& annotation);
+		virtual void draw(const glo::ref_ptr<glat::AbstractAnnotation>& annotation);
 	protected:
 		virtual void drawSetupState(const glat::ViewportState& state) const override;
 		virtual void drawSetupState(const glat::InternalState& state) const override;

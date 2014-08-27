@@ -7,7 +7,7 @@ message(STATUS "Lib ${target}")
 #
 
 find_package(OpenGL REQUIRED)
-find_package(GLOW REQUIRED)
+find_package(GLOBJECTS REQUIRED)
 find_package(GLBinding REQUIRED)
 find_package(Libpng REQUIRED)
 find_package(GLM REQUIRED)
@@ -19,7 +19,7 @@ find_package(GLM REQUIRED)
 include_directories(
     ${LIBPNG_INCLUDE_DIR}
     ${GLM_INCLUDE_DIR}
-    ${GLOW_INCLUDES}
+    ${GLOBJECTS_INCLUDES}
     ${GLBINDING_INCLUDES}
 )
 
@@ -35,7 +35,7 @@ include_directories(
 
 set(libs
 	${LIBPNG_LIBRARIES}
-    ${GLOW_LIBRARIES}
+    ${GLOBJECTS_LIBRARIES}
     ${GLBINDING_LIBRARIES}
 )
 

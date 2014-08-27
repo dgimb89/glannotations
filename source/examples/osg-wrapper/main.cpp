@@ -44,6 +44,7 @@ osg::Geode* createAnnotations() {
 int main(int argc, char **argv) {
 	// construct the viewer
 	osgViewer::Viewer viewer;
+
 	osg::setNotifyLevel(osg::DEBUG_INFO);
 	viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
 	osg::ref_ptr<osg::GraphicsContext> context = createContext();

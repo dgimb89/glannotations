@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glowutils/Camera.h>
+#include <globjects-utils/Camera.h>
 
 #include <glat/AbstractState.h>
 #include <glat/InternalState.h>
@@ -12,13 +12,13 @@ namespace glat {
 	class GLAT_API AbstractExternalState : public glat::AbstractState {
 
 	public:
-		AbstractExternalState(glowutils::Camera* camera);
+		AbstractExternalState(gloutils::Camera* camera);
 
 		// TODO: make return state const
-		glow::ref_ptr<glat::InternalState> getInternalAnnotation();
+		glo::ref_ptr<glat::InternalState> getInternalAnnotation();
 
-		void setCamera(glowutils::Camera* camera);
-		glowutils::Camera* getCamera() const;
+		void setCamera(gloutils::Camera* camera);
+		gloutils::Camera* getCamera() const;
 		const glm::mat4& getViewProjection() const;
 
 		const glm::vec3& getLL() const;
@@ -35,10 +35,10 @@ namespace glat {
 
 	protected:
 		void setupExternalColor(const glat::Styling* externalColor) const;
-		mutable glow::ref_ptr<glat::InternalState> m_internalState;
-		glowutils::Camera* m_camera;
+		mutable glo::ref_ptr<glat::InternalState> m_internalState;
+		gloutils::Camera* m_camera;
 		mutable glm::mat4 m_camProjection;
-		mutable glow::ref_ptr<glat::AbstractDrawingPrimitive> m_externalPrimitive;
+		mutable glo::ref_ptr<glat::AbstractDrawingPrimitive> m_externalPrimitive;
 		bool m_drawExternal;
 		float m_interpolation;
 	};
