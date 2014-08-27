@@ -77,5 +77,6 @@ int main(int argc, char **argv) {
 			glat::setViewport(glm::ivec2(800, 600));
 		}
 	}
+	glat::cleanUp();
 	return 0;
 }

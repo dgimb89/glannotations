@@ -79,6 +79,7 @@ public:
 
 	virtual ~EventHandler()
 	{
+		glat::cleanUp();
 		delete m_camera;
 	}
 

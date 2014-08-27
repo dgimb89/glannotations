@@ -11,6 +11,7 @@ namespace glat {
 	bool GLAT_API isMatricesUBOInitialiced(unsigned int bindingIndex = 0);
 
 	void GLAT_API initialize();
+	void GLAT_API cleanUp();
 
 	void GLAT_API setView(const glm::mat4& view, unsigned int bindingIndex = 0);
 	void GLAT_API setProjection(const glm::mat4& projection, unsigned intbindingIndex = 0);
