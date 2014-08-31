@@ -1,6 +1,6 @@
 #pragma once
 
-#include <list>
+#include <vector>
 #include <glm/glm.hpp>
 #include <globjects-base/Referenced.h>
 #include <globjects-base/ref_ptr.h>
@@ -17,6 +17,6 @@ namespace glat {
 		void draw();
 
 	private:
-		std::list< glo::ref_ptr<glat::AbstractAnnotation> > m_annotations;
+		std::vector< glo::ref_ptr<glat::AbstractAnnotation> > m_annotations;
 	};
 }

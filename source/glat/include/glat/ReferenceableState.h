@@ -8,7 +8,6 @@ namespace glat {
 	public:
 		virtual void setExternalReference(const glo::ref_ptr<glat::AbstractExternalReference>& reference);
 		glo::ref_ptr<glat::AbstractExternalReference> getExternalReference() const;
-		const glm::mat4& getViewProjection() const;
 
 	protected:
 		void copyState(ReferenceableState& copyTo) const;

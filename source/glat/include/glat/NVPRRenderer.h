@@ -6,6 +6,7 @@
 #include <glat/Styling.h>
 
 namespace glat {
+	class InternalState;
 	class NVPRRenderer : public glat::AbstractRenderer {
 	public:
 		virtual void draw(const glo::ref_ptr<glat::AbstractAnnotation>& annotation);
@@ -14,9 +15,12 @@ namespace glat {
 		NVPRRenderer(gl::GLuint globalMatricesBindingIndex);
 		void clearStencilBuffer();
 		virtual void setupOrthoProjection(glm::vec2 llf, glm::vec2 urb, float width, float height, float yMin = 0.f) const;
-		virtual void setupInternalProjection(glm::mat4 mvp, glm::vec3 ll) const;
-		void setupInternalModelview(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur, float stencilWidth, float stencilHeight) const;
+		virtual void setupProjection(glm::mat4 viewProjection) const;
+		void setupModelView(glm::mat4 view, const InternalState& state, float stencilWidth, float stencilHeight) const;
+		void pushEmptyModelViewMatrix() const;
 		void setupOutline(gl::GLuint& pathSettings, const glat::Styling* outline, float scaleFactor = 1.f);
+
+		void cleanMatrixStacks() const;
 
 		bool m_drawOutline = false;
 		gl::GLuint m_pathBase;

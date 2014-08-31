@@ -6,7 +6,6 @@ if(OPTION_BUILD_EXAMPLES)
 	add_subdirectory("common")
 	include_directories("common")
 
-	add_subdirectory(df-rendering)
 	add_subdirectory(nvp-rendering)
 	add_subdirectory(presentation-scene)
 

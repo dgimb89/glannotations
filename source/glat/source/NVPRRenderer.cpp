@@ -7,11 +7,11 @@
 #include <glat/NVPRRenderer.h>
 #include <glat/AbstractAnnotation.h>
 #include <glat/Styles/Outline.h>
+#include <glat/InternalState.h>
 
 void glat::NVPRRenderer::draw(const glo::ref_ptr<glat::AbstractAnnotation>& annotation) {
 	// enable stencil test as needed by nvpr
 	gl::glEnable(gl::GL_STENCIL_TEST);
-	// TODO: do we have to clear stencil buffer with every draw?
 	gl::glStencilFunc(gl::GL_NOTEQUAL, 0, 0x1F);
 	gl::glStencilOp(gl::GL_KEEP, gl::GL_KEEP, gl::GL_ZERO);
 	// double dispatch to draw specific state
@@ -21,12 +21,16 @@ void glat::NVPRRenderer::draw(const glo::ref_ptr<glat::AbstractAnnotation>& anno
 }
 
 void glat::NVPRRenderer::clearStencilBuffer() {
+	// stencil buffer only needs to be cleared when damaged or window resized
 	gl::glClearStencil(0);
 	gl::glStencilMask(~0);
 	gl::glClear(gl::GL_STENCIL_BUFFER_BIT);
 }
 
 void glat::NVPRRenderer::setupOrthoProjection(glm::vec2 llf, glm::vec2 urb, float width, float height, float yMin /*= 0.f*/) const {
+	gl::glMatrixMode(gl::GL_PROJECTION);
+	gl::glPushMatrix();
+	gl::glLoadIdentity();
 	float screenWidth = urb.x - llf.x;
 	float screenHeight = urb.y - llf.y;
 
@@ -45,13 +49,20 @@ void glat::NVPRRenderer::setupOutline(gl::GLuint& pathSettings, const glat::Styl
 	gl::glPathParameterfNV(pathSettings, gl::GL_PATH_STROKE_WIDTH_NV, scaleFactor * outlineStyle->getWidth());
 }
 
-void glat::NVPRRenderer::setupInternalProjection(glm::mat4 mvp, glm::vec3 ll) const {
-	gl::glMultMatrixf(glm::value_ptr(glm::translate(mvp, glm::vec3(ll.x, ll.y * 0.5, ll.z))));
+void glat::NVPRRenderer::setupProjection(glm::mat4 projection) const {
+	gl::glMatrixMode(gl::GL_PROJECTION);
+	gl::glPushMatrix();
+	gl::glLoadIdentity();
+	gl::glMultMatrixf(glm::value_ptr(projection));
 }
 
-void glat::NVPRRenderer::setupInternalModelview(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur, float stencilWidth, float stencilHeight) const {
-	float width = lr.x - ll.x;
-	float height = ur.y - lr.y;
+void glat::NVPRRenderer::setupModelView(glm::mat4 view, const glat::InternalState& state, float stencilWidth, float stencilHeight) const {
+	gl::glMatrixMode(gl::GL_MODELVIEW);
+	gl::glPushMatrix();
+	gl::glLoadIdentity();
+
+	float width = state.getLR().x - state.getLL().x;
+	float height = state.getUR().y - state.getLR().y;
 	glm::mat4 modelMatrix = glm::scale(glm::mat4(1.f), glm::vec3(width / stencilWidth, height / stencilHeight, 1.f));
 	//modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, -yMin, 0.f));
 
@@ -62,9 +73,23 @@ void glat::NVPRRenderer::setupInternalModelview(glm::vec3 ll, glm::vec3 lr, glm:
 	modelMatrix = glm::rotate(modelMatrix, xRot, glm::vec3(1.f, 0.f, 0.f));
 	modelMatrix = glm::rotate(modelMatrix, yRot, glm::vec3(0.f, 1.f, 0.f));
 	modelMatrix = glm::rotate(modelMatrix, zRot, glm::vec3(0.f, 0.f, 1.f));*/
-	gl::glMultMatrixf(glm::value_ptr(modelMatrix));
+	modelMatrix = glm::translate(modelMatrix, glm::vec3(state.getLL().x, state.getLL().y, state.getLL().z));
+	gl::glMultMatrixf(glm::value_ptr(glm::inverse(view) * modelMatrix));
 }
 
 glat::NVPRRenderer::NVPRRenderer(gl::GLuint globalMatricesBindingIndex) : AbstractRenderer(globalMatricesBindingIndex) {
 
+}
+
+void glat::NVPRRenderer::pushEmptyModelViewMatrix() const {
+	gl::glMatrixMode(gl::GL_MODELVIEW);
+	gl::glPushMatrix();
+	gl::glLoadIdentity();
+}
+
+void glat::NVPRRenderer::cleanMatrixStacks() const {
+	gl::glMatrixMode(gl::GL_MODELVIEW);
+	gl::glPopMatrix();
+	gl::glMatrixMode(gl::GL_PROJECTION);
+	gl::glPopMatrix();
 }

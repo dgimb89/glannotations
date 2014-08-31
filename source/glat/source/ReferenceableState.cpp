@@ -15,7 +15,3 @@ void glat::ReferenceableState::copyState(ReferenceableState& copyTo) const {
 	}
 	AbstractState::copyState(copyTo);
 }
-
-const glm::mat4& glat::ReferenceableState::getViewProjection() const {
-	return glm::mat4(1); // todo
-}

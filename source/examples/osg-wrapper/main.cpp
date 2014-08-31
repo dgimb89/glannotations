@@ -28,7 +28,7 @@ osg::Geode* createAnnotations() {
 	osg::Geode* geode = new osg::Geode;
 
 	glat::RendererFactory dfFactory;
-	dfFactory.useNVpr(false);
+	//dfFactory.useNVpr(false);
 
 	// setup annotation
 	glat::wrapper::DrawableAnnotation* annotationDrawable = new glat::wrapper::DrawableAnnotation;

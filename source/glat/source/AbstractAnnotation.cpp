@@ -62,3 +62,13 @@ void glat::AbstractAnnotation::setupRenderState() const {
 const glo::ref_ptr<glat::AbstractRenderer>& glat::AbstractAnnotation::getRenderer() {
 	return m_renderer;
 }
+
+bool glat::AbstractAnnotation::isOnNearplane() const {
+	try {
+		getRenderState()->asViewportState();
+		return true;
+	}
+	catch (std::bad_cast& e) {
+		return false;
+	}
+}

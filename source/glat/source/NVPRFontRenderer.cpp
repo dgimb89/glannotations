@@ -34,16 +34,9 @@ void glat::NVPRFontRenderer::drawSetupState(const glat::ViewportState& state) co
 	gl::GLfloat underline_position, underline_thickness;
 	getTextStencelingDimensions(m_currentText, messageLen, xtranslate, totalAdvance, yMin, yMax, underline_position, underline_thickness);
 
-	gl::glMatrixMode(gl::GL_PROJECTION);
-	gl::glPushMatrix();
-	gl::glLoadIdentity();
-
 	// setting up an ortho projection for viewport placement
 	setupOrthoProjection(state.getLL(), state.getUR(), totalAdvance, yMax - yMin, yMin);
-
-	gl::glMatrixMode(gl::GL_MODELVIEW);
-	gl::glPushMatrix();
-	gl::glLoadIdentity();
+	pushEmptyModelViewMatrix();
 
 	stencilThenCoverText(messageLen, xtranslate);
 	if (m_drawOutline) {
@@ -51,9 +44,8 @@ void glat::NVPRFontRenderer::drawSetupState(const glat::ViewportState& state) co
 	}
 
 	// cleanup
-	gl::glPopMatrix();
-	gl::glMatrixMode(gl::GL_PROJECTION);
-	gl::glPopMatrix();
+	cleanMatrixStacks();
+	gl::glEnable(gl::GL_DEPTH_TEST);
 }
 
 void glat::NVPRFontRenderer::drawSetupState(const glat::InternalState& state) const {
@@ -64,16 +56,9 @@ void glat::NVPRFontRenderer::drawSetupState(const glat::InternalState& state) co
 	gl::GLfloat* xtranslate = NULL;
 	gl::GLfloat underline_position, underline_thickness;
 	getTextStencelingDimensions(m_currentText, messageLen, xtranslate, totalAdvance, yMin, yMax, underline_position, underline_thickness);
-
-	gl::glMatrixMode(gl::GL_PROJECTION);
-	gl::glPushMatrix();
-	gl::glLoadIdentity();
-	setupInternalProjection(state.getViewProjection(), state.getLL());
-
-	gl::glMatrixMode(gl::GL_MODELVIEW);
-	gl::glPushMatrix();
-	gl::glLoadIdentity();
-	setupInternalModelview(state.getLL(), state.getLR(), state.getUR(), totalAdvance, yMax - yMin);
+	
+	setupProjection(glat::getProjection(getMatricesBindingIndex()));
+	setupModelView(glat::getView(getMatricesBindingIndex()), state, totalAdvance, yMax - yMin);
 
 	stencilThenCoverText(messageLen, xtranslate);
 	if (m_drawOutline) {
@@ -81,9 +66,7 @@ void glat::NVPRFontRenderer::drawSetupState(const glat::InternalState& state) co
 	}
 
 	// cleanup
-	gl::glPopMatrix();
-	gl::glMatrixMode(gl::GL_PROJECTION);
-	gl::glPopMatrix();
+	cleanMatrixStacks();
 	}
 
 void glat::NVPRFontRenderer::drawSetupState(const glat::PathState& state) const {
@@ -162,6 +145,7 @@ void glat::NVPRFontRenderer::getTextStencelingDimensions(const char* text, const
 }
 
 void glat::NVPRFontRenderer::stencilThenCoverText(const size_t& messageLen, const gl::GLfloat* xtranslate) const {
+	gl::glPathCoverDepthFuncNV(gl::GL_ALWAYS);
 	// fill
 	gl::glStencilFillPathInstancedNV((gl::GLsizei)messageLen,
 		gl::GL_UNSIGNED_BYTE, m_currentText, m_pathBase,

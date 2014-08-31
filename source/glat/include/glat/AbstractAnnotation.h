@@ -25,6 +25,7 @@ namespace glat {
 		void setState(const glo::ref_ptr<glat::AbstractState>& state);
 		glo::ref_ptr<glat::AbstractState> getState() const;
 		glo::ref_ptr<glat::AbstractState> getRenderState() const;
+		bool isOnNearplane() const;
 
 		// should internal interpolation be offered? - maybe just at state level, but user has to keep the both final states
 		void interpolateState(const InternalState& mixState, float mix);

@@ -103,7 +103,7 @@ void GLAT_API glat::setViewport(const glm::ivec2& viewport, gl::GLuint bindingIn
 
 glm::vec2 GLAT_API glat::getViewFrustumVolume(gl::GLuint bindingIndex /*= 0*/) {
 	return (*getMatricesBufferMap())[bindingIndex].viewFrustumVolume;
-}
+} 
 
 glm::ivec2 GLAT_API glat::getViewport(gl::GLuint bindingIndex /*= 0*/) {
 	return (*getMatricesBufferMap())[bindingIndex].viewport;
@@ -115,4 +115,8 @@ void GLAT_API glat::initialize() {
 
 void GLAT_API glat::cleanUp() {
 	delete getMatricesBufferMap();
+}
+
+glm::mat4 GLAT_API glat::getViewProjection(unsigned int bindingIndex /*= 0*/) {
+	return glm::mat4(getProjection(bindingIndex) * getView(bindingIndex));
 }

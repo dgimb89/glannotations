@@ -1,12 +1,11 @@
 #include <glat/AnnotationGroup.h>
 
 void glat::AnnotationGroup::addAnnotation(const glo::ref_ptr<glat::AbstractAnnotation>& annotation) {
-	// Todo push back if viewport state
-	m_annotations.push_front(annotation);
+	m_annotations.push_back(annotation);
 }
 
 void glat::AnnotationGroup::draw() {
-	for (auto& annotation : m_annotations) {
-		annotation->draw();
+	for (const auto& annotation : m_annotations) {
+			annotation->draw();
 	}
 }

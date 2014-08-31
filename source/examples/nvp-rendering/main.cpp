@@ -148,10 +148,10 @@ public:
 		char clockBuffer[10];
 		sprintf(clockBuffer, "%d", clock() / CLOCKS_PER_SEC);
 		m_nvprViewportFontAnnotation->setText(clockBuffer);
-
+		glat::updateMatricesFromCamera(m_camera);
+		m_nvprInternalFontAnnotation->draw();
 		m_nvprViewportSVGAnnotation->draw();
 		m_nvprViewportFontAnnotation->draw();
-		m_nvprInternalFontAnnotation->draw(); 
 	}
 
 	virtual void timerEvent(TimerEvent & event) override
@@ -384,7 +384,8 @@ int main(int /*argc*/, char* /*argv*/[])
 	ContextFormat format;
 	format.setVersion(3, 0);
 	format.setProfile(ContextFormat::CompatibilityProfile);
-	format.setStencilBufferSize(24);
+	format.setStencilBufferSize(8);
+	format.setSamples(4);
 
 	Window window;
 
