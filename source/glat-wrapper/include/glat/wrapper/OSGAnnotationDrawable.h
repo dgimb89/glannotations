@@ -1,7 +1,7 @@
 #include <globjects-base/ref_ptr.h>
 #include <osg/Drawable>
 
-#include <glat/wrapper/glat_wrapper_api.h>
+#include <glat/wrapper/glat-wrapper_api.h>
 #include <glat/AbstractAnnotation.h>
 
 namespace glat {

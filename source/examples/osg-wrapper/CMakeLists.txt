@@ -35,7 +35,7 @@ include_directories(
 include_directories(
 	BEFORE
     ${CMAKE_SOURCE_DIR}/source/glat/include
-    ${CMAKE_SOURCE_DIR}/source/glat_wrapper/include
+    ${CMAKE_SOURCE_DIR}/source/glat-wrapper/include
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
@@ -53,7 +53,7 @@ set(libs
     ${OSGGA_LIBRARIES}
     ${OSGDB_LIBRARIES}
     glat
-    glat_wrapper
+    glat-wrapper
 )
 
 #

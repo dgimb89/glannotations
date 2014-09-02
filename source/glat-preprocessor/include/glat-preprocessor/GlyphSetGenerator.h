@@ -5,7 +5,7 @@
 #include <globjects-base/ref_ptr.h>
 
 #include <glat/PNGImage.h>
-#include <glat_preprocessor/glat_preprocessor_api.h>
+#include <glat-preprocessor/glat-preprocessor_api.h>
 
 namespace glat {
 	namespace preprocessor {

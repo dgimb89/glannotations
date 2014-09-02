@@ -9,10 +9,10 @@ include_directories(
 set(IDE_FOLDER "")
 add_subdirectory(glat)
 if (OPTION_BUILD_GLAT_PREPROCESSOR)
-	add_subdirectory(glat_preprocessor)
+	add_subdirectory(glat-preprocessor)
 endif()
 if (OPTION_BUILD_GLAT_WRAPPER)
-	add_subdirectory(glat_wrapper)
+	add_subdirectory(glat-wrapper)
 endif()
 
 

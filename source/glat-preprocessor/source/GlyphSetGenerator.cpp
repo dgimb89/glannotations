@@ -2,7 +2,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-#include <glat_preprocessor/GlyphSetGenerator.h>
+#include <glat-preprocessor/GlyphSetGenerator.h>
 #include <glat/GlyphSetConfig.h>
 #include "glat-version.h"
 

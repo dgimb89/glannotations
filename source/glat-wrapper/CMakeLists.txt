@@ -1,65 +1,74 @@
 
-set(target glat_preprocessor)
+set(target glat-wrapper)
 message(STATUS "Lib ${target}")
 
 #
 # External libraries
 #
 
-find_package(Freetype REQUIRED)
+find_package(OpenSceneGraph REQUIRED)
 find_package(GLOBJECTS REQUIRED)
-find_package(GLM REQUIRED)
-
-#
-# Includes
-#
-
-include_directories(
-    ${FREETYPE_INCLUDE_DIR}
-    ${GLOBJECTS_INCLUDES}
-    ${GLM_INCLUDE_DIR}
-)
-
-include_directories(
-    BEFORE
-    ${CMAKE_SOURCE_DIR}/source/glat/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
+find_package(GLBinding REQUIRED)
 
 #
 # Libraries
 #
 
-set(libs
-    glat
-    ${FREETYPE_LIBRARIES}
-    ${GLOBJECTS_LIBRARIES}
+
+include_directories(
+    BEFORE
+    ${GLBINDING_INCLUDES}
+    ${CMAKE_SOURCE_DIR}/source/glat/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${GLOBJECTS_INCLUDES}
+    ${GLM_INCLUDE_DIR}
 )
+
+set(libs
+	glat
+)
+
+#
+# Includes
+#
+if(OSG_FOUND)
+	include_directories(
+		${OPENSCENEGRAPH_INCLUDE_DIRS}
+	)
+	set(libs
+		${libs}
+		${OPENSCENEGRAPH_LIBRARIES}
+    	${GLOBJECTS_LIBRARIES}
+	)
+endif()
 
 #
 # Compiler definitions
 #
 
 if (OPTION_BUILD_STATIC)
-    add_definitions("-DGLAT_PREPROCESSOR_STATIC")
+    add_definitions("-DGLAT_WRAPPER_STATIC")
 else()
-    add_definitions("-DGLAT_PREPROCESSOR_EXPORTS")
+    add_definitions("-DGLAT_WRAPPER_EXPORTS")
 endif()
+
+# force radians to avoid deprecated glm functionality
+add_definitions("-DGLM_FORCE_RADIANS")
 
 #
 # Sources
 #
 
-set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
+set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/glat/wrapper")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(api_includes
-    ${include_path}/glat_preprocessor_api.h
-    ${include_path}/GlyphSetGenerator.h
+    ${include_path}/glat-wrapper_api.h
+	${include_path}/OSGAnnotationDrawable.h
 )
 
 set(sources
-	${source_path}/GlyphSetGenerator.cpp
+	${source_path}/OSGAnnotationDrawable.cpp
 )
 
 # Group source files
@@ -106,4 +115,4 @@ install(TARGETS ${target}
 )
 
 # Header files
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/${target} DESTINATION ${INSTALL_INCLUDE})
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/glat DESTINATION ${INSTALL_INCLUDE})

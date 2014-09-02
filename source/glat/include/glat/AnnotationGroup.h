@@ -13,8 +13,9 @@ namespace glat {
 
 	class GLAT_API AnnotationGroup : public glo::Referenced {
 	public:
+		void clear();
 		void addAnnotation(const glo::ref_ptr<glat::AbstractAnnotation>& annotation);
-		void draw();
+		void draw() const;
 
 	private:
 		std::vector< glo::ref_ptr<glat::AbstractAnnotation> > m_annotations;

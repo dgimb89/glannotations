@@ -25,7 +25,7 @@ include_directories(
 include_directories(
 	BEFORE
     ${CMAKE_SOURCE_DIR}/source/glat/include
-    ${CMAKE_SOURCE_DIR}/source/glat_preprocessor/include
+    ${CMAKE_SOURCE_DIR}/source/glat-preprocessor/include
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
@@ -39,7 +39,7 @@ set(libs
     ${GLOBJECTS_LIBRARIES}
     ${EXAMPLE_COMMON}
     glat
-    glat_preprocessor
+    glat-preprocessor
 )
 
 #
