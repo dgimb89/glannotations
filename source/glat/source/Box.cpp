@@ -94,7 +94,6 @@ static const char* texturingFragShader = R"(
 
 glat::Box::Box() {
 	setupShader(glat::ShaderSources::passThroughVS, geomShader, texturingFragShader);
-
 	m_vao->binding(0)->setAttribute(0);
 	m_vao->binding(0)->setFormat(3, gl::GL_FLOAT, gl::GL_FALSE, 0);
 	m_vao->enable(0);

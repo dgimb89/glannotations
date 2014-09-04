@@ -1,6 +1,7 @@
 #include <glat/QuadStrip.h>
-#include <globjects/VertexAttributeBinding.h>
+#include "ShaderSources.hpp"
 
+#include <globjects/VertexAttributeBinding.h>
 #include <algorithm>
 
 static const char*	vertShader = R"(
@@ -31,6 +32,8 @@ static const char*	vertShader = R"(
 
 static const char* geomShader = R"(
 	#version 330
+	uniform bool onNearplane;
+
 	### MATRIX_BLOCK ###
 
 	layout(points) in;
@@ -53,7 +56,7 @@ static const char* geomShader = R"(
 	}
 
 	void main() {
-		mat4 viewProjection = projectionMatrix * viewMatrix;
+		mat4 viewProjection = (1.0 - float(onNearplane)) * (projectionMatrix * viewMatrix)  +  float(onNearplane) * mat4(1);
 		// ll
 		setVertexData(0.0, 0.0, gl_Position, vertex.texCoord);
 		gl_Position = viewProjection * gl_Position;
@@ -171,11 +174,11 @@ static const char* texturingFragShader = R"(
 glat::QuadStrip::QuadStrip(std::shared_ptr<glo::Texture> texture, gl::GLuint matricesBindingIndex, bool isDistanceField) : glat::AbstractTexturedPrimitive(texture) {
 	if (isDistanceField) {
 		setupShader(vertShader, geomShader, dfFragShader);
-		setBindingIndex(matricesBindingIndex);
 	} else {
 		setupShader(vertShader, geomShader, texturingFragShader);
-		setBindingIndex(matricesBindingIndex);
 	}
+	setBindingIndex(matricesBindingIndex);
+
 	// initial position
 	m_ll = m_lr = m_ur = glm::vec3(0.0f, 0.0f, 0.0f);
 	m_vertexCount = 0;
@@ -276,13 +279,26 @@ void glat::QuadStrip::updateQuadRanges() {
 	m_vao->enable(4);
 }
 
-void glat::QuadStrip::setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur) {
-	if (ll != m_ll || lr != m_lr || ur != m_ur) {
+bool glat::QuadStrip::setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur) {
+	if (positionValid(ll, lr, ur)) {
 		m_ll = ll;
 		m_lr = lr;
 		m_ur = ur;
 		updateQuadRanges();
+		// finalize geom shader for internal rendering
+		m_program->setUniform("onNearplane", false);
+		return true;
 	}
+	return false;
+}
+
+bool glat::QuadStrip::setViewportPosition(glm::vec2 ll, glm::vec2 lr, glm::vec2 ur) {
+	if (setPosition(glm::vec3(ll, 0.f), glm::vec3(lr, 0.f), glm::vec3(ur, 0.f))) {
+		// finalize geom shader for viewport rendering
+		m_program->setUniform("onNearplane", true);
+		return true;
+	}
+	return false;
 }
 
 glat::QuadStrip::texVec2_t glat::QuadStrip::getUL(const textureRange_t& textureRange) {
@@ -318,4 +334,8 @@ float glat::QuadStrip::getQuadStripWidth() {
 	float resultWidth = 0.f;
 	std::for_each(m_textureRanges.begin(), m_textureRanges.end(), [&](textureRange_t elem){ resultWidth += elem.second.x; });
 	return resultWidth;
+}
+
+bool glat::QuadStrip::positionValid( const glm::vec3& ll, const glm::vec3& lr, const glm::vec3& ur ) const {
+	return ll != lr && ll != ur && lr != ur;
 }

@@ -13,14 +13,13 @@ namespace glat {
 		DrawingPrimitiveBase();
 		virtual ~DrawingPrimitiveBase();
 
-		void setupShader(const char* vertShader, const char* fragShader);
 		void setupShader(const char* vertShader, const char* geomShader, const char* fragShader);
 
 		virtual void setColor(glm::vec4 color) override;
 		virtual void setBindingIndex(unsigned int bindingIndex) override;
 
 	protected:
-		glo::Shader* replacePlaceholderAndGetShader(gl::GLenum shaderType, const char* shader);
+		glo::Shader* finalizeGeometryShader(const char* shader);
 
 		glo::ref_ptr<glo::Program> m_program;
 		glo::ref_ptr<glo::VertexArrayObject> m_vao;

@@ -166,6 +166,8 @@ public:
 		glatBox->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
 		glatBox->getState()->asInternalState().setExternalReference(new glat::BoxReference(glm::vec2(0.f, 0.f), glm::vec2(0.f, 2.f), glm::vec3(2.f, 0.f, 0.f), false));
 
+		m_annotations.addAnnotation(new glat::FontAnnotation(new glat::ViewportState(glm::vec2(0.4f, -1.f), glm::vec2(0.9f, -0.7f)), "GLAT", "calibri.ttf", dfFactory));
+
 		auto cgsLabel = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-4.75f, 3.f, 12.f), glm::vec3(-1.25f, 3.f, 12.f), glm::vec3(-1.25f, 5.f, 12.f)), "CGS", "calibri.ttf", dfFactory);
 		cgsLabel->getState()->asInternalState().setExternalReference(new glat::LabelReference(glm::vec3(0.f, -3.f, 10.f)));
 		m_annotations.addAnnotation(cgsLabel);

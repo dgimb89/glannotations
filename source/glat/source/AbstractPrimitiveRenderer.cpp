@@ -21,11 +21,12 @@ void glat::AbstractPrimitiveRenderer::setupBumpMap(const Styling* bumpMap) {
 
 void glat::AbstractPrimitiveRenderer::drawSetupState(const ViewportState& state) const {
 	if (state.isDirty()) {
-		m_drawingPrimitive->setPosition(glm::vec3(state.getLL(), 0.0), glm::vec3(state.getLR(), 0.0), glm::vec3(state.getUR(), 0.0));
+		m_drawingPrimitive->setViewportPosition(state.getLL(), state.getLR(), state.getUR());
 		state.setDirty(false);
 	}
 	gl::glDisable(gl::GL_DEPTH_TEST);
 	m_drawingPrimitive->draw();
+	gl::glEnable(gl::GL_DEPTH_TEST);
 }
 
 
@@ -34,7 +35,6 @@ void glat::AbstractPrimitiveRenderer::drawSetupState(const InternalState& state)
 		m_drawingPrimitive->setPosition(state.getLL(), state.getLR(), state.getUR());
 		state.setDirty(false);
 	}
-	gl::glEnable(gl::GL_DEPTH_TEST);
 	m_drawingPrimitive->draw();
 }
 

@@ -18,17 +18,11 @@ glat::DrawingPrimitiveBase::~DrawingPrimitiveBase() {
 	m_program->release();
 }
 
-void glat::DrawingPrimitiveBase::setupShader(const char* vertShader, const char* fragShader) {
-	m_program = new glo::Program;
-	m_program->attach(replacePlaceholderAndGetShader(gl::GL_VERTEX_SHADER, vertShader), glo::Shader::fromString(gl::GL_FRAGMENT_SHADER, fragShader));
-}
-
 void glat::DrawingPrimitiveBase::setupShader(const char* vertShader, const char* geomShader, const char* fragShader) {
 	m_program = new glo::Program;
-	m_program->attach(replacePlaceholderAndGetShader(gl::GL_VERTEX_SHADER, vertShader),
-		replacePlaceholderAndGetShader(gl::GL_GEOMETRY_SHADER, geomShader),
-		glo::Shader::fromString(gl::GL_FRAGMENT_SHADER, fragShader)
-		);
+	m_program->attach(	glo::Shader::fromString(gl::GL_VERTEX_SHADER, vertShader), 
+						finalizeGeometryShader(geomShader),
+						glo::Shader::fromString(gl::GL_FRAGMENT_SHADER, fragShader));
 }
 
 void glat::DrawingPrimitiveBase::setBindingIndex(unsigned int bindingIndex) {
@@ -40,9 +34,8 @@ void glat::DrawingPrimitiveBase::setBindingIndex(unsigned int bindingIndex) {
 	}
 }
 
-glo::Shader* glat::DrawingPrimitiveBase::replacePlaceholderAndGetShader(gl::GLenum shaderType, const char* shader) {
+glo::Shader* glat::DrawingPrimitiveBase::finalizeGeometryShader(const char* shader) {
 	gloutils::StringTemplate* shaderSource = new gloutils::StringTemplate(new glo::StaticStringSource(shader, strlen(shader)));
 	shaderSource->replace("### MATRIX_BLOCK ###", glat::ShaderSources::matrixUniformBlock);
-
-	return new glo::Shader(shaderType, shaderSource);
+	return new glo::Shader(gl::GL_GEOMETRY_SHADER, shaderSource);
 }

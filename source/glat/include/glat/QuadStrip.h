@@ -18,13 +18,16 @@ namespace glat {
 		float getQuadStripWidth();
 
 		virtual void draw();
-		virtual void setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur);
+		virtual bool setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur) override;
+		virtual bool setViewportPosition(glm::vec2 ll, glm::vec2 lr, glm::vec2 ur) override;
 
 	protected:
 		void updateQuadRanges();
 		void pushTextureCoords(std::vector<texVec2_t>& textureVec, const textureRange_t& textureRange);
+		bool positionValid(const glm::vec3& ll, const glm::vec3& lr, const glm::vec3& ur) const;
 		texVec2_t getUL(const textureRange_t& textureRange);
 		texVec2_t getLR(const textureRange_t& textureRange);
+
 
 		std::vector<textureRange_t> m_textureRanges;
 		glm::vec3 m_ll, m_ur, m_lr;
