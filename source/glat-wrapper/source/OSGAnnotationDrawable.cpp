@@ -13,13 +13,16 @@ glat::wrapper::DrawableAnnotation::DrawableAnnotation(const DrawableAnnotation& 
 
 void glat::wrapper::DrawableAnnotation::drawImplementation(osg::RenderInfo&) const {
 	if (m_annotation) {
+		// try hard ... but doesn't work ... todo
+		glPushAttrib(GL_ALL_ATTRIB_BITS);
 		m_annotation->draw();
+		glPopAttrib();
 	}
 }
 
 osg::BoundingBox glat::wrapper::DrawableAnnotation::computeBound() const {
 	glat::BoundingBox bb = m_annotation->getRenderState()->getBoundingBox();
-	return osg::BoundingBox(-10.f, -10.f, -10.f, 10.f, 10.f, 10.f);
+	return osg::BoundingBox(bb.getLLF().x, bb.getLLF().y, bb.getLLF().z, bb.getURB().x, bb.getURB().y, bb.getURB().z);
 }
 
 void glat::wrapper::DrawableAnnotation::setAnnotation(glo::ref_ptr<glat::AbstractAnnotation> annotation) {

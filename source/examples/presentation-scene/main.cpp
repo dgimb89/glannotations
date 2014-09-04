@@ -196,10 +196,11 @@ public:
 		gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT | gl::GL_STENCIL_BUFFER_BIT);
 
 		glat::updateMatricesFromCamera(*m_camera, 2);
+		gl::glEnable(gl::GL_CULL_FACE);
 		gl::glClear(gl::GL_COLOR_BUFFER_BIT | gl::GL_DEPTH_BUFFER_BIT);
 		gl::glEnable(gl::GL_DEPTH_TEST);
-		gl::glBlendFunc(gl::GL_SRC_ALPHA, gl::GL_ONE_MINUS_SRC_ALPHA);
 		gl::glEnable(gl::GL_BLEND);
+		gl::glBlendFunc(gl::GL_SRC_ALPHA, gl::GL_ONE_MINUS_SRC_ALPHA);
 
 		m_building->draw();
 		m_building1->draw();

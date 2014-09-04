@@ -57,18 +57,19 @@ static const char* geomShader = R"(
 
 	void main() {
 		mat4 viewProjection = (1.0 - float(onNearplane)) * (projectionMatrix * viewMatrix)  +  float(onNearplane) * mat4(1);
+
 		// ll
 		setVertexData(0.0, 0.0, gl_Position, vertex.texCoord);
 		gl_Position = viewProjection * gl_Position;
 		EmitVertex();
 
-		// ul
-		setVertexData(1.0, 0.0, gl_Position, vertex.texCoord);
+		// lr
+		setVertexData(0.0, 1.0, gl_Position, vertex.texCoord);
 		gl_Position = viewProjection * gl_Position;
 		EmitVertex();
 
-		// lr
-		setVertexData(0.0, 1.0, gl_Position, vertex.texCoord);
+		// ul
+		setVertexData(1.0, 0.0, gl_Position, vertex.texCoord);
 		gl_Position = viewProjection * gl_Position;
 		EmitVertex();
 

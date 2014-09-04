@@ -1,5 +1,6 @@
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/enum.h>
+#include <glbinding/gl/bitfield.h>
 
 #include <glat/NVPRSvgRenderer.h>
 #include <glat/SVGAnnotation.h>
@@ -31,6 +32,7 @@ void glat::NVPRSvgRenderer::initializeSVG(const char* pathString) {
 }
 
 void glat::NVPRSvgRenderer::drawSetupState(const glat::ViewportState& state) const {
+	gl::glPushAttrib(gl::GL_DEPTH_BUFFER_BIT);
 	gl::glDisable(gl::GL_DEPTH_TEST);
 
 	setupOrthoProjection(state.getLL(), state.getUR(), m_width, m_height);
@@ -41,12 +43,10 @@ void glat::NVPRSvgRenderer::drawSetupState(const glat::ViewportState& state) con
 
 	// cleanup
 	cleanMatrixStacks();
-	gl::glEnable(gl::GL_DEPTH_TEST);
+	gl::glPopAttrib();
 }
 
 void glat::NVPRSvgRenderer::drawSetupState(const glat::InternalState& state) const {
-	gl::glEnable(gl::GL_DEPTH_TEST);
-
 	setupProjection(glat::getProjection(getMatricesBindingIndex()));
 	setupModelView(glat::getView(getMatricesBindingIndex()), state, m_width, m_height);
 

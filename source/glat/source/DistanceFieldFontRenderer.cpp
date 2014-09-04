@@ -1,3 +1,5 @@
+#include <glbinding/gl/bitfield.h>
+
 #include <glat/DistanceFieldFontRenderer.h>
 #include <glat/ViewportState.h>
 #include <glat/InternalState.h>
@@ -8,6 +10,8 @@
 
 void glat::DistanceFieldFontRenderer::draw(const glo::ref_ptr<glat::AbstractAnnotation>& annotation) {
 	FontAnnotation* currentAnnotation = dynamic_cast<FontAnnotation*>(annotation.get());
+	gl::glPushAttrib(gl::GL_COLOR_BUFFER_BIT);
+
 	gl::glEnable(gl::GL_BLEND);
 	gl::glBlendFunc(gl::GL_SRC_ALPHA, gl::GL_ONE_MINUS_SRC_ALPHA);
 
@@ -20,7 +24,8 @@ void glat::DistanceFieldFontRenderer::draw(const glo::ref_ptr<glat::AbstractAnno
 	}
 
 	annotation->getRenderState()->draw(*this);
-	gl::glDisable(gl::GL_BLEND);
+
+	gl::glPopAttrib();
 }
 
 glat::DistanceFieldFontRenderer::DistanceFieldFontRenderer(gl::GLuint matricesBindingIndex) : AbstractPrimitiveRenderer(matricesBindingIndex) {

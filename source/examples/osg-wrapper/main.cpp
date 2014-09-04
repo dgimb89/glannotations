@@ -28,11 +28,11 @@ osg::Geode* createAnnotations() {
 	osg::Geode* geode = new osg::Geode;
 
 	glat::RendererFactory dfFactory;
-	//dfFactory.useNVpr(false);
+	dfFactory.useNVpr(false);
 
 	// setup annotation
 	glat::wrapper::DrawableAnnotation* annotationDrawable = new glat::wrapper::DrawableAnnotation;
-	auto viewportAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(0.2f, -1.f), glm::vec2(1.f, -0.65f)), "osgWrapper", "calibri.ttf", dfFactory);
+	auto viewportAnnotation = new glat::FontAnnotation(new glat::InternalState(glm::vec3(0.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f), glm::vec3(1.f, 1.f, 0.f)), "osgWrapper", "calibri.ttf", dfFactory);
 	viewportAnnotation->setColor(glm::vec4(0.75, 0.75, 0.75, 1.0));
 	annotationDrawable->setAnnotation(viewportAnnotation);
 
@@ -57,7 +57,7 @@ int main(int argc, char **argv) {
 	viewer.init();
 	context->makeCurrent();
 	osg::Group* root = new osg::Group;
-	root->addChild(osgDB::readNodeFile("data/cessna.osg"));
+	//root->addChild(osgDB::readNodeFile("data/cessna.osg"));
 	viewer.setSceneData(root);
 
 	bool initialized = false;

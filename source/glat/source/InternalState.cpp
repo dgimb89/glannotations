@@ -8,10 +8,12 @@ glat::InternalState::InternalState(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur) {
 }
 
 void glat::InternalState::setExtends(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur) {
-	setDirty(true);
-	m_ll = ll;
-	m_lr = lr;
-	m_ur = ur;
+	if (ll != m_ll || lr != m_lr || ur != m_ur) {
+		setDirty(true);
+		m_ll = ll;
+		m_lr = lr;
+		m_ur = ur;
+	}
 }
 
 const glm::vec3& glat::InternalState::getLL() const {

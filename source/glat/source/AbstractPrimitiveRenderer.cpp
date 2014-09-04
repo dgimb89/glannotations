@@ -1,5 +1,7 @@
-#include <glat/AbstractPrimitiveRenderer.h>
+#include <glbinding/gl/bitfield.h>
+#include <glbinding/gl/boolean.h>
 
+#include <glat/AbstractPrimitiveRenderer.h>
 #include <glat/Styles/Outline.h>
 #include <glat/Styles/BumpMap.h>
 #include <glat/ViewportState.h>
@@ -24,9 +26,12 @@ void glat::AbstractPrimitiveRenderer::drawSetupState(const ViewportState& state)
 		m_drawingPrimitive->setViewportPosition(state.getLL(), state.getLR(), state.getUR());
 		state.setDirty(false);
 	}
+
+	gl::glPushAttrib(gl::GL_DEPTH_BUFFER_BIT);
 	gl::glDisable(gl::GL_DEPTH_TEST);
+	gl::glDepthMask(gl::GL_TRUE);
 	m_drawingPrimitive->draw();
-	gl::glEnable(gl::GL_DEPTH_TEST);
+	gl::glPopAttrib();
 }
 
 
