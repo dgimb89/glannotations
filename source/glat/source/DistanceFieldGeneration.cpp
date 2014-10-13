@@ -1,9 +1,10 @@
 #include <glat/DistanceFieldGeneration.h>
 #include <algorithm>
 
-const double kernel[] = {	0.0, 	1.0, 									2.0,
-							1.0, 	1.4142135623730950488016887242097, 		2.2360679774997896964091736687313,
-							2.0,	2.2360679774997896964091736687313,		2.8284271247461900976033774484194 };
+// use fixed kernel distances - thanks pythagoras
+const double kernel[] = {	0.0, 	1.0, 					2.0,
+							1.0, 	std::sqrt(1 + 1), 		std::sqrt(4 + 1),
+							2.0,	std::sqrt(4 + 1),		std::sqrt(8) };
 
 #define SWAPIFLOWER(y,x,swapVal) if((x) >= 0 && (x) < original.getWidth() && (y) >= 0 && (y) < original.getHeight()) \
 	distances[(y)*original.getWidth() + (x)] = (original.isColored(x, y) ? -1.0 : 1.0) * std::min(std::abs(distances[(y)*original.getWidth() + (x)]), std::abs(swapVal))

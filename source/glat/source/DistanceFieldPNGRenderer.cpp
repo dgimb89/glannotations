@@ -27,13 +27,12 @@ void glat::DistanceFieldPNGRenderer::draw(const glo::ref_ptr<glat::AbstractAnnot
 		}
 		annotation->setDirty(false);
 	}
-	gl::glPushAttrib(gl::GL_COLOR_BUFFER_BIT);
 	gl::glEnable(gl::GL_BLEND);
 	gl::glBlendFunc(gl::GL_SRC_ALPHA, gl::GL_ONE_MINUS_SRC_ALPHA);
 
 	annotation->getRenderState()->draw(*this);
 
-	gl::glPopAttrib();
+	gl::glDisable(gl::GL_BLEND);
 }
 
 glat::DistanceFieldPNGRenderer::DistanceFieldPNGRenderer(gl::GLuint globalMatricesBindingIndex) : AbstractPrimitiveRenderer(globalMatricesBindingIndex) {

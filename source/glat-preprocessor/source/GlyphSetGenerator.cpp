@@ -8,7 +8,7 @@
 
 #define PT_SIZE 196
 #define GLYPHSET_BEGIN 33
-#define SCALEDOWN_HEIGHT 256
+#define SCALEDOWN_HEIGHT 512
 #define GLYPH_GROUP_SIZE 16
 
 inline void handleError(const FT_Error& ftError) {
@@ -91,7 +91,7 @@ void glat::preprocessor::GlyphSetGenerator::generateGlyphset(std::string fontFil
 			height -= SCALEDOWN_HEIGHT;
 		}
 	}
-	//finalImage->scaleToWidth(1024);
+	finalImage->scaleToWidth(1024);
 	finalImage->saveDistanceField(jsonConfig.getGlyphsetImageName());
 
 	jsonConfig.setStartGlyph(GLYPHSET_BEGIN);

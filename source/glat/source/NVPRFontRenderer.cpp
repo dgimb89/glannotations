@@ -26,7 +26,6 @@ void glat::NVPRFontRenderer::draw(const glo::ref_ptr<glat::AbstractAnnotation>& 
 }
 
 void glat::NVPRFontRenderer::drawSetupState(const glat::ViewportState& state) const {
-	gl::glPushAttrib(gl::GL_DEPTH_BUFFER_BIT);
 	gl::glDisable(gl::GL_DEPTH_TEST);
 	gl::GLfloat yMin, yMax;
 	size_t messageLen = strlen(m_currentText);
@@ -46,7 +45,7 @@ void glat::NVPRFontRenderer::drawSetupState(const glat::ViewportState& state) co
 
 	// cleanup
 	cleanMatrixStacks();
-	gl::glPopAttrib();
+	gl::glEnable(gl::GL_DEPTH_TEST);
 }
 
 void glat::NVPRFontRenderer::drawSetupState(const glat::InternalState& state) const {

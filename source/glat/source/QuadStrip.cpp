@@ -46,9 +46,7 @@ static const char* geomShader = R"(
 		vec3 advanceW;
 	} quad[];
 
-	out VertexData {
-		vec2 texCoord;
-	} vertex;
+	out vec2 v_uv;
 
 	void setVertexData(in float upper, in float right, out vec4 position, out vec2 texCoord) {
 		position = vec4(gl_in[0].gl_Position.xyz + upper * quad[0].advanceH + right * quad[0].advanceW, 1.0);
@@ -59,22 +57,22 @@ static const char* geomShader = R"(
 		mat4 viewProjection = (1.0 - float(onNearplane)) * (projectionMatrix * viewMatrix)  +  float(onNearplane) * mat4(1);
 
 		// ll
-		setVertexData(0.0, 0.0, gl_Position, vertex.texCoord);
+		setVertexData(0.0, 0.0, gl_Position, v_uv);
 		gl_Position = viewProjection * gl_Position;
 		EmitVertex();
 
 		// lr
-		setVertexData(0.0, 1.0, gl_Position, vertex.texCoord);
+		setVertexData(0.0, 1.0, gl_Position, v_uv);
 		gl_Position = viewProjection * gl_Position;
 		EmitVertex();
 
 		// ul
-		setVertexData(1.0, 0.0, gl_Position, vertex.texCoord);
+		setVertexData(1.0, 0.0, gl_Position, v_uv);
 		gl_Position = viewProjection * gl_Position;
 		EmitVertex();
 
 		// ur
-		setVertexData(1.0, 1.0, gl_Position, vertex.texCoord);
+		setVertexData(1.0, 1.0, gl_Position, v_uv);
 		gl_Position = viewProjection * gl_Position;
 		EmitVertex();
 
@@ -82,91 +80,194 @@ static const char* geomShader = R"(
 	}
 	)";
 
-	static const char* dfFragShader = R"(
-	#version 330
-	uniform sampler2D source;
-	uniform int style;
-	uniform vec4 color;
-	uniform vec3 outlineColor;
-	uniform float outlineSize;
-	uniform float bumpIntensity;
+static const char* dfFragShader = R"(
+		#version 330
 
-	layout (location = 0) out vec4 fragColor;
+		uniform sampler2D source;
+		uniform int style;
+		uniform vec4 color;
+		uniform vec3 outlineColor;
+		uniform float outlineSize;
+		uniform float bumpIntensity;
 
-	in VertexData {
-		vec2 texCoord;
-	} vertex;
+		layout (location = 0) out vec4 fragColor;
 
-	vec4 getText() {
-		float distance = texture2D(source, vertex.texCoord);
-		if(distance > 0.5) {
-			discard;
+		in vec2 v_uv;
+
+		float aastep(float t, float value)  {
+			//float afwidth = length(vec2(dFdx(value), dFdy(value))) * 1.0;
+			float afwidth = fwidth(value);
+			return smoothstep(t - afwidth, t + afwidth, value);
 		}
-		return vec4(color.rgb, color.a * (1.0 - smoothstep(0.49, 0.5, distance)));
-	}
 
-	vec4 getTextWithOutline() {
-		float distance = texture2D(source, vertex.texCoord);
-
-		// Interpolations Faktor zwischen outline und Welt
-		float d_outline = smoothstep(outlineSize + 0.5, 0.5 , distance);
-
-		if (distance < 0.5) {
-			return color;
+		float tex(float t, vec2 uv) {
+			return aastep(t, texture(source, uv).r);
 		}
-		else if (d_outline > 0.0) {
-			return vec4(outlineColor, d_outline);
+
+		float aastep3(float t, vec2 uv) {
+			vec2 dfdy = dFdy(uv);
+
+			vec2 y = dfdy * 1.0 / 3.0;  
+
+			float v = tex(t, uv - y)    ;
+				  v = tex(t, uv    ) + v;
+				  v = tex(t, uv + y) + v;
+
+			return v / 3.0;
 		}
-		else {
-			return vec4(0.0, 0.0, 0.0, 0.0);
+
+		float aastep8(float t, vec2 uv) {
+			vec2 dfdx = dFdx(uv);
+			vec2 dfdy = dFdy(uv);
+
+			vec2 x1 = dfdx * 1.0 / 8.0;
+			vec2 y1 = dfdy * 1.0 / 8.0;  
+			vec2 y2 = dfdy * 3.0 / 8.0;  
+
+			float v = tex(t, uv - x1 - y2)    ;
+				  v = tex(t, uv - x1 - y1) + v;
+				  v = tex(t, uv - x1 + y1) + v;
+				  v = tex(t, uv - x1 + y2) + v;
+
+				  v = tex(t, uv + x1 - y2) + v;
+				  v = tex(t, uv + x1 - y1) + v;
+				  v = tex(t, uv + x1 + y1) + v;
+				  v = tex(t, uv + x1 + y2) + v;
+
+			return v / 8.0;
 		}
-	}
 
-	float getBumpMapEffect() {
-		float dx = dFdx(texture2D(source, vertex.texCoord).x) * 45.0 * bumpIntensity;
-		float dy = dFdy(texture2D(source, vertex.texCoord).x) * 50.0 * bumpIntensity;
+		float aastep12(float t, vec2 uv) {
+			vec2 dfdx = dFdx(uv);
+			vec2 dfdy = dFdy(uv);
 
-		vec3 vx = vec3(1.0, 0.0, dx);
-		vec3 vy = vec3(0.0, 1.0, dy);
+			vec2 x1 = dfdx * 1.0 / 12.0;
+			vec2 y1 = dfdy * 1.0 / 12.0;  
+			vec2 y2 = dfdy * 3.0 / 12.0;  
+			vec2 y3 = dfdy * 5.0 / 12.0;  
 
-		vec3 n = cross(vx, vy);
-		vec3 lightSource = vec3(1.5, 1.5, 3.0);
+			float v = tex(t, uv - x1 - y3)    ;
+				  v = tex(t, uv - x1 - y2) + v;
+				  v = tex(t, uv - x1 - y1) + v;
+				  v = tex(t, uv - x1 + y1) + v;
+				  v = tex(t, uv - x1 + y2) + v;
+				  v = tex(t, uv - x1 + y3) + v;
 
-		n = normalize(n);
-		lightSource = normalize(lightSource);
+				  v = tex(t, uv + x1 - y3) + v;
+				  v = tex(t, uv + x1 - y2) + v;
+				  v = tex(t, uv + x1 - y1) + v;
+				  v = tex(t, uv + x1 + y1) + v;
+				  v = tex(t, uv + x1 + y2) + v;
+				  v = tex(t, uv + x1 + y3) + v;
 
-		return dot(n, lightSource);
-	}
-
-	void main() {
-		if (style == 1) {
-			fragColor = getTextWithOutline();
-		} else if (style == 2) {
-			vec4 text = getText();
-			fragColor = vec4(text.rgb * getBumpMapEffect(), text.a);
-		} else if (style == 3) {
-			vec4 text = getTextWithOutline();
-			fragColor = vec4(text.rgb * getBumpMapEffect(), text.a);
-		} else {
-			fragColor = getText();
+			return v / 12.0;
 		}
-	}
 
+		float aastep3x3(float t, vec2 uv) {
+			vec2 dfdx = dFdx(uv);
+			vec2 dfdy = dFdy(uv);
+
+			vec2 x = dfdx * 1.0 / 3.0;
+			vec2 y = dfdy * 1.0 / 3.0;  
+
+			float v = tex(t, uv - x - y)    ;
+				  v = tex(t, uv - x    ) + v;
+				  v = tex(t, uv - x + y) + v;
+
+				  v = tex(t, uv     - y) + v;
+				  v = tex(t, uv        ) + v;
+				  v = tex(t, uv     + y) + v;
+
+				  v = tex(t, uv + x - y) + v;
+				  v = tex(t, uv + x    ) + v;
+				  v = tex(t, uv + x + y) + v;
+
+			return v / 9.0;
+		}
+
+		float aastep4x4s(float t, vec2 uv) {
+			vec2 dfdx = dFdx(uv);
+			vec2 dfdy = dFdy(uv);
+
+			vec2 x1 = dfdx * 1.0 / 8.0;
+			vec2 y1 = dfdy * 1.0 / 8.0;
+			vec2 x2 = dfdx * 3.0 / 8.0;
+			vec2 y2 = dfdy * 3.0 / 8.0;  
+
+			float v = tex(t, uv - x2 - y2)    ;
+				  v = tex(t, uv - x2 - y1) + v;
+				  v = tex(t, uv - x2 + y1) + v;
+				  v = tex(t, uv - x2 + y2) + v;
+
+				  v = tex(t, uv - x1 - y2) + v;
+				  v = tex(t, uv - x1 - y1) + v;
+				  v = tex(t, uv - x1 + y1) + v;
+				  v = tex(t, uv - x1 + y2) + v;
+
+				  v = tex(t, uv + x1 - y2) + v;
+				  v = tex(t, uv + x1 - y1) + v;
+				  v = tex(t, uv + x1 + y1) + v;
+				  v = tex(t, uv + x1 + y2) + v;
+
+				  v = tex(t, uv + x2 - y2) + v;
+				  v = tex(t, uv + x2 - y1) + v;
+				  v = tex(t, uv + x2 + y1) + v;
+				  v = tex(t, uv + x2 + y2) + v;
+
+			return v / 16.0;
+		}
+
+		vec4 subpix(float r, float g, float b, vec4 fore, vec4 back) {
+			return vec4(mix(back.rgb, fore.rgb, vec3(r, g, b)), mix(back.a, fore.a, (r + b + g) / 3.0));
+		}
+
+		void main() {
+			float s = texture(source, v_uv).r;
+			if(s > 0.6)
+				discard;
+
+			vec4 fc = vec4(color.rgb, 0.0);
+			vec4 bc = color;
+
+			float threshold = 0.6;
+
+			// subpixel variations
+
+			float r, g, b;
+
+			vec2 dfdx = dFdx(v_uv);
+			vec2 dfdy = dFdy(v_uv);
+	
+			vec2 uvr = v_uv;
+			vec2 uvg = v_uv + dfdx * 1.0 / 3.0;
+			vec2 uvb = v_uv + dfdx * 2.0 / 3.0;
+
+			if(true)
+			//if(x > 0.002) // optional: only use if glyph is small (todo: adjust threshold)
+			{	// higher quality - more samples
+				r = aastep12(threshold, uvr);
+				g = aastep12(threshold, uvg);
+				b = aastep12(threshold, uvb);
+			}
+			else
+			{	// lower quality - less samples
+				r = aastep3(threshold, uvr);
+				g = aastep3(threshold, uvg);
+				b = aastep3(threshold, uvb);
+			}
+			fragColor = subpix(r, g, b, fc, bc);
+		}
 	)";
 
-static const char* texturingFragShader = R"(
+		static const char* texturingFragShader = R"(
 	#version 330
 	uniform sampler2D source;
 
 	layout (location = 0) out vec4 fragColor;
-
-	in VertexData {
-		vec2 texCoord;
-	} vertex;
-
+	in vec2 v_uv;
 
 	void main() {
-		fragColor = texture2D(source, vertex.texCoord);
+		fragColor = texture2D(source, v_uv);
 		if(fragColor.a < 0.001) discard;
 	}
 
@@ -206,7 +307,6 @@ void glat::QuadStrip::draw() {
 		gl::glActiveTexture(gl::GL_TEXTURE0);
 		m_texture->bind();
 	}
-
 	m_program->use();
 	m_vao->drawArrays(gl::GL_POINTS, 0, m_vertexCount);
 	m_program->release();

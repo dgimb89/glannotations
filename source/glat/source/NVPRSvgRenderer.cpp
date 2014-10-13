@@ -32,7 +32,6 @@ void glat::NVPRSvgRenderer::initializeSVG(const char* pathString) {
 }
 
 void glat::NVPRSvgRenderer::drawSetupState(const glat::ViewportState& state) const {
-	gl::glPushAttrib(gl::GL_DEPTH_BUFFER_BIT);
 	gl::glDisable(gl::GL_DEPTH_TEST);
 
 	setupOrthoProjection(state.getLL(), state.getUR(), m_width, m_height);
@@ -42,7 +41,7 @@ void glat::NVPRSvgRenderer::drawSetupState(const glat::ViewportState& state) con
 	state.setDirty(false);
 
 	// cleanup
-	cleanMatrixStacks();
+	gl::glEnable(gl::GL_DEPTH_TEST);
 	gl::glPopAttrib();
 }
 

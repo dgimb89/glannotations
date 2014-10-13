@@ -27,11 +27,10 @@ void glat::AbstractPrimitiveRenderer::drawSetupState(const ViewportState& state)
 		state.setDirty(false);
 	}
 
-	gl::glPushAttrib(gl::GL_DEPTH_BUFFER_BIT);
 	gl::glDisable(gl::GL_DEPTH_TEST);
 	gl::glDepthMask(gl::GL_TRUE);
 	m_drawingPrimitive->draw();
-	gl::glPopAttrib();
+	gl::glEnable(gl::GL_DEPTH_TEST);
 }
 
 

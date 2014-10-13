@@ -11,7 +11,6 @@
 
 void glat::NVPRRenderer::draw(const glo::ref_ptr<glat::AbstractAnnotation>& annotation) {
 	// enable stencil test as needed by nvpr
-	gl::glPushAttrib(gl::GL_STENCIL_BUFFER_BIT);
 
 	gl::glEnable(gl::GL_STENCIL_TEST);
 	gl::glStencilFunc(gl::GL_NOTEQUAL, 0, 0x1F);
@@ -20,7 +19,7 @@ void glat::NVPRRenderer::draw(const glo::ref_ptr<glat::AbstractAnnotation>& anno
 	annotation->getRenderState()->draw(*this);
 
 	// disable stencil test when finished
-	gl::glPopAttrib();
+	gl::glDisable(gl::GL_STENCIL_TEST);
 }
 
 void glat::NVPRRenderer::clearStencilBuffer() {

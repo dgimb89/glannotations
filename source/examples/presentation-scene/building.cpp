@@ -190,12 +190,11 @@ glat::Building::Building(unsigned int matricesBindingIndex) {
 
 void glat::Building::draw() {
 	m_program->release();
-	gl::glPushAttrib(gl::GL_POLYGON_BIT);
 	gl::glDisable(gl::GL_CULL_FACE);
 	m_program->use();
 	m_vao->drawArrays(gl::GL_LINES, 0, 2);
 	m_program->release();
-	gl::glPopAttrib();
+	gl::glEnable(gl::GL_CULL_FACE);
 }
 
 void glat::Building::setPosition(glm::vec3 llf, glm::vec3 urb) {
