@@ -20,37 +20,37 @@
 #include <globjects/Texture.h>
 #include <globjects/VertexArrayObject.h>
 
-#include <globjects-utils/Timer.h>
-#include <globjects-utils/AxisAlignedBoundingBox.h>
-#include <globjects-utils/Icosahedron.h>
-#include <globjects-utils/Camera.h>
-#include <globjects-utils/AdaptiveGrid.h>
-#include <globjects-utils/AbstractCoordinateProvider.h>
-#include <globjects-utils/WorldInHandNavigation.h>
-#include <globjects-utils/FlightNavigation.h>
-#include <globjects-base/File.h>
-#include <globjects-utils/globjects-utils.h>
-#include <globjects-utils/StringTemplate.h>
-#include <globjects-utils/ScreenAlignedQuad.h>
+#include <globjects/utils/Timer.h>
+#include <globjects/utils/AxisAlignedBoundingBox.h>
+#include <globjects/utils/Icosahedron.h>
+#include <globjects/utils/Camera.h>
+#include <globjects/utils/AdaptiveGrid.h>
+#include <globjects/utils/AbstractCoordinateProvider.h>
+#include <globjects/utils/WorldInHandNavigation.h>
+#include <globjects/utils/FlightNavigation.h>
+#include <globjects/base/File.h>
+#include <globjects/utils/globjects-utils.h>
+#include <globjects/utils/StringTemplate.h>
+#include <globjects/utils/ScreenAlignedQuad.h>
 
-#include <globjects-window/ContextFormat.h>
-#include <globjects-window/Context.h>
-#include <globjects-window/Window.h>
-#include <globjects-window/WindowEventHandler.h>
-#include <globjects-window/events.h>
+#include <globjects/window/ContextFormat.h>
+#include <globjects/window/Context.h>
+#include <globjects/window/Window.h>
+#include <globjects/window/WindowEventHandler.h>
+#include <globjects/window/events.h>
 
 #include <ExampleWindowEventHandler.h>
 
-#include <glat/AnnotationGroup.h>
-#include <glat/RendererFactory.h>
-#include <glat/FontAnnotation.h>
-#include <glat/SVGAnnotation.h>
-#include <glat/PNGAnnotation.h>
-#include <glat/ViewportState.h>
-#include <glat/InternalState.h>
-#include <glat/BoxReference.h>
-#include <glat/LabelReference.h>
-#include <glat/Styles.h>
+#include <glannotations/AnnotationGroup.h>
+#include <glannotations/RendererFactory.h>
+#include <glannotations/FontAnnotation.h>
+#include <glannotations/SVGAnnotation.h>
+#include <glannotations/PNGAnnotation.h>
+#include <glannotations/ViewportState.h>
+#include <glannotations/InternalState.h>
+#include <glannotations/BoxReference.h>
+#include <glannotations/LabelReference.h>
+#include <glannotations/Styles.h>
 
 #include "building.h"
 
@@ -160,24 +160,24 @@ public:
 		m_building13->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
 		m_building14->setColor(buildingColor + temp);
 
-		auto glatBox = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-1.01f, -4.f, -1.f), glm::vec3(-1.01f, -4.f, 1.f), glm::vec3(-1.01f, -3.f, 1.f)), "GLAT", "calibri.ttf", dfFactory);
+		auto glatBox = new glat::FontAnnotation(new glat::InternalState(glm::vec3(10.01f, -4.f, 1.f), glm::vec3(10.01f, -4.f, -1.f), glm::vec3(10.01f, -2.75f, -1.f)), "Box", "calibri.ttf", dfFactory);
 		m_annotations.addAnnotation(glatBox);
 		glatBox->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 		glatBox->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
-		glatBox->getState()->asInternalState().setExternalReference(new glat::BoxReference(glm::vec2(0.f, 0.f), glm::vec2(0.f, 2.f), glm::vec3(2.f, 0.f, 0.f), false));
+		glatBox->getState()->asInternalState().setExternalReference(new glat::BoxReference(glm::vec2(0.f, 0.f), glm::vec2(0.f, 2.75f), glm::vec3(-5.f, 0.f, 0.f), false));
 
-		m_annotations.addAnnotation(new glat::FontAnnotation(new glat::ViewportState(glm::vec2(0.4f, -1.f), glm::vec2(0.9f, -0.7f)), "GLAT", "calibri.ttf", dfFactory));
-
-		auto cgsLabel = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-4.75f, 3.f, 12.f), glm::vec3(-1.25f, 3.f, 12.f), glm::vec3(-1.25f, 5.f, 12.f)), "CGS", "calibri.ttf", dfFactory);
+		auto cgsLabel = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-4.75f, 3.f, 12.f), glm::vec3(-1.25f, 3.f, 12.f), glm::vec3(-1.25f, 5.f, 12.f)), "Label", "calibri.ttf", dfFactory);
 		cgsLabel->getState()->asInternalState().setExternalReference(new glat::LabelReference(glm::vec3(0.f, -3.f, 10.f)));
 		m_annotations.addAnnotation(cgsLabel);
 
-		auto hpicgs = new glat::FontAnnotation(new glat::InternalState(glm::vec3(2.f, -1.f, -1.01f), glm::vec3(2.f, 3.f, -1.01f), glm::vec3(4.f, 3.f, -1.01f)), "GLOW", "calibri.ttf", dfFactory);
+		auto hpicgs = new glat::FontAnnotation(new glat::InternalState(glm::vec3(2.f, -1.f, -1.01f), glm::vec3(2.f, 3.f, -1.01f), glm::vec3(4.f, 3.f, -1.01f)), "Internal", "calibri.ttf", dfFactory);
 		m_annotations.addAnnotation(hpicgs);
 		hpicgs->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 		hpicgs->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
 
 		m_annotations.addAnnotation(new glat::PNGAnnotation(new glat::InternalState(glm::vec3(-2.f, -4.f, 2.f), glm::vec3(-2.f, -4.f, 7.f), glm::vec3(-2.f, 1.0f, 7.f)), "hpi.png", dfFactory));
+
+		m_annotations.addAnnotation(new glat::FontAnnotation(new glat::ViewportState(glm::vec2(0.4f, -1.f), glm::vec2(0.9f, -0.7f)), "Viewport", "calibri.ttf", dfFactory));
 		// m_hpilogo->addState(new glat::ViewportState(glm::vec2(-.25f, -.5f), glm::vec2(0.25f, 0.5f)));
 		window.addTimer(0, 0, false);
 
@@ -234,7 +234,7 @@ public:
 		switch (event.key())
 		{
 		case GLFW_KEY_F5:
-			glo::File::reloadAll();
+			globjects::File::reloadAll();
 			break;
 		case GLFW_KEY_SPACE:
 			m_camera->setCenter(vec3(0.f, 0.f, 5.f));
@@ -351,21 +351,21 @@ protected:
 	glat::AnnotationGroup m_annotations;
 	bool m_drawViewport;
 
-	glo::ref_ptr<glat::Building> m_building;
-	glo::ref_ptr<glat::Building> m_building1;
-	glo::ref_ptr<glat::Building> m_building2;
-	glo::ref_ptr<glat::Building> m_building3;
-	glo::ref_ptr<glat::Building> m_building4;
-	glo::ref_ptr<glat::Building> m_building5;
-	glo::ref_ptr<glat::Building> m_building6;
-	glo::ref_ptr<glat::Building> m_building7;
-	glo::ref_ptr<glat::Building> m_building8;
-	glo::ref_ptr<glat::Building> m_building9;
-	glo::ref_ptr<glat::Building> m_building10;
-	glo::ref_ptr<glat::Building> m_building11;
-	glo::ref_ptr<glat::Building> m_building12;
-	glo::ref_ptr<glat::Building> m_building13;
-	glo::ref_ptr<glat::Building> m_building14;
+	globjects::ref_ptr<glat::Building> m_building;
+	globjects::ref_ptr<glat::Building> m_building1;
+	globjects::ref_ptr<glat::Building> m_building2;
+	globjects::ref_ptr<glat::Building> m_building3;
+	globjects::ref_ptr<glat::Building> m_building4;
+	globjects::ref_ptr<glat::Building> m_building5;
+	globjects::ref_ptr<glat::Building> m_building6;
+	globjects::ref_ptr<glat::Building> m_building7;
+	globjects::ref_ptr<glat::Building> m_building8;
+	globjects::ref_ptr<glat::Building> m_building9;
+	globjects::ref_ptr<glat::Building> m_building10;
+	globjects::ref_ptr<glat::Building> m_building11;
+	globjects::ref_ptr<glat::Building> m_building12;
+	globjects::ref_ptr<glat::Building> m_building13;
+	globjects::ref_ptr<glat::Building> m_building14;
 
 
 	gloutils::Camera* m_camera;
@@ -385,31 +385,31 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-	glo::info() << "Usage:";
-	glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
-	glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-	glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-	glo::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
-	glo::info() << "\t" << "Space" << "\t\t" << "Reset camera";
-	glo::info() << "\t" << "1" << "\t" << "Toggle flight mode / world in hand navigation";
+	globjects::info() << "Usage:";
+	globjects::info() << "\t" << "ESC" << "\t\t" << "Close example";
+	globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+	globjects::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+	globjects::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+	globjects::info() << "\t" << "Space" << "\t\t" << "Reset camera";
+	globjects::info() << "\t" << "1" << "\t" << "Toggle flight mode / world in hand navigation";
 
-	glo::info();
-	glo::info() << "\t" << "During world in hand navigation";
-	glo::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
-	glo::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
-	glo::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
+	globjects::info();
+	globjects::info() << "\t" << "During world in hand navigation";
+	globjects::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
+	globjects::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
+	globjects::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
 
-	glo::info();
-	glo::info() << "\t" << "During flight mode";
-	glo::info() << "\t" << "Mouse Movement" << "\t" << "Look around";
-	glo::info() << "\t" << "W" << "\t\t" << "Move forward";
-	glo::info() << "\t" << "UP" << "\t\t" << "Move forward";
-	glo::info() << "\t" << "A" << "\t\t" << "Move left";
-	glo::info() << "\t" << "LEFT" << "\t\t" << "Move left";
-	glo::info() << "\t" << "S" << "\t\t" << "Move backward";
-	glo::info() << "\t" << "DOWN" << "\t\t" << "Move backward";
-	glo::info() << "\t" << "D" << "\t\t" << "Move right";
-	glo::info() << "\t" << "RIGHT" << "\t\t" << "Move right";
+	globjects::info();
+	globjects::info() << "\t" << "During flight mode";
+	globjects::info() << "\t" << "Mouse Movement" << "\t" << "Look around";
+	globjects::info() << "\t" << "W" << "\t\t" << "Move forward";
+	globjects::info() << "\t" << "UP" << "\t\t" << "Move forward";
+	globjects::info() << "\t" << "A" << "\t\t" << "Move left";
+	globjects::info() << "\t" << "LEFT" << "\t\t" << "Move left";
+	globjects::info() << "\t" << "S" << "\t\t" << "Move backward";
+	globjects::info() << "\t" << "DOWN" << "\t\t" << "Move backward";
+	globjects::info() << "\t" << "D" << "\t\t" << "Move right";
+	globjects::info() << "\t" << "RIGHT" << "\t\t" << "Move right";
 
 	ContextFormat format;
 	format.setVersion(3, 0);

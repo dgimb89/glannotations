@@ -1,5 +1,5 @@
 # Generate meta-header
-configure_file(glat-version.h.in ${CMAKE_CURRENT_BINARY_DIR}/glat-version.h)
+configure_file(glannotations-version.h.in ${CMAKE_CURRENT_BINARY_DIR}/glannotations-version.h)
 
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
@@ -7,12 +7,12 @@ include_directories(
 
 # Libraries
 set(IDE_FOLDER "")
-add_subdirectory(glat)
-if (OPTION_BUILD_GLAT_PREPROCESSOR)
-	add_subdirectory(glat-preprocessor)
+add_subdirectory(glannotations)
+if (OPTION_BUILD_GLANNOTATIONS_PREPROCESSOR)
+	add_subdirectory(glannotations-preprocessor)
 endif()
-if (OPTION_BUILD_GLAT_WRAPPER)
-	add_subdirectory(glat-wrapper)
+if (OPTION_BUILD_GLANNOTATIONS_WRAPPER)
+	add_subdirectory(glannotations-wrapper)
 endif()
 
 

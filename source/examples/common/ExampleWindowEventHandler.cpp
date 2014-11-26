@@ -2,8 +2,8 @@
 
 #include <globjects/globjects.h>
 
-#include <globjects-window/events.h>
-#include <globjects-window/Window.h>
+#include <globjects/window/events.h>
+#include <globjects/window/Window.h>
 
 #include <sstream>
 #include <iomanip>
@@ -21,7 +21,7 @@ ExampleWindowEventHandler::~ExampleWindowEventHandler()
 
 void ExampleWindowEventHandler::initialize(glowindow::Window & /*window*/)
 {
-	glo::init();
+	globjects::init();
 }
 
 void ExampleWindowEventHandler::handleEvent(glowindow::WindowEvent & event)

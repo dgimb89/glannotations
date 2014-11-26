@@ -15,32 +15,32 @@
 #include <globjects/logging.h>
 #include <globjects/VertexArrayObject.h>
 
-#include <globjects-utils/Timer.h>
-#include <globjects-utils/AxisAlignedBoundingBox.h>
-#include <globjects-utils/Icosahedron.h>
-#include <globjects-utils/Camera.h>
-#include <globjects-utils/AdaptiveGrid.h>
-#include <globjects-utils/AbstractCoordinateProvider.h>
-#include <globjects-utils/WorldInHandNavigation.h>
-#include <globjects-utils/FlightNavigation.h>
-#include <globjects-base/File.h>
-#include <globjects-utils/globjects-utils.h>
-#include <globjects-utils/StringTemplate.h>
+#include <globjects/utils/Timer.h>
+#include <globjects/utils/AxisAlignedBoundingBox.h>
+#include <globjects/utils/Icosahedron.h>
+#include <globjects/utils/Camera.h>
+#include <globjects/utils/AdaptiveGrid.h>
+#include <globjects/utils/AbstractCoordinateProvider.h>
+#include <globjects/utils/WorldInHandNavigation.h>
+#include <globjects/utils/FlightNavigation.h>
+#include <globjects/base/File.h>
+#include <globjects/utils/globjects-utils.h>
+#include <globjects/utils/StringTemplate.h>
 
-#include <globjects-window/ContextFormat.h>
-#include <globjects-window/Context.h>
-#include <globjects-window/Window.h>
-#include <globjects-window/WindowEventHandler.h>
-#include <globjects-window/events.h>
+#include <globjects/window/ContextFormat.h>
+#include <globjects/window/Context.h>
+#include <globjects/window/Window.h>
+#include <globjects/window/WindowEventHandler.h>
+#include <globjects/window/events.h>
 
 #include <ExampleWindowEventHandler.h>
 
-#include <glat/FontAnnotation.h>
-#include <glat/PNGAnnotation.h>
-#include <glat/SVGAnnotation.h>
-#include <glat/ViewportState.h>
-#include <glat/InternalState.h>
-#include <glat/Styles.h>
+#include <glannotations/FontAnnotation.h>
+#include <glannotations/PNGAnnotation.h>
+#include <glannotations/SVGAnnotation.h>
+#include <glannotations/ViewportState.h>
+#include <glannotations/InternalState.h>
+#include <glannotations/Styles.h>
 
 using namespace glowindow;
 using namespace glm;
@@ -77,9 +77,9 @@ public:
 		ExampleWindowEventHandler::initialize(window);
 		gl::glClearColor(1.0f, 1.0f, 1.0f, 0.f);
 
-		m_sphere = new glo::Program();
-		gloutils::StringTemplate* vertexShaderSource = new gloutils::StringTemplate(new glo::File("data/adaptive-grid/sphere.vert"));
-		gloutils::StringTemplate* fragmentShaderSource = new gloutils::StringTemplate(new glo::File("data/adaptive-grid/sphere.frag"));
+		m_sphere = new globjects::Program();
+		gloutils::StringTemplate* vertexShaderSource = new gloutils::StringTemplate(new globjects::File("data/adaptive-grid/sphere.vert"));
+		gloutils::StringTemplate* fragmentShaderSource = new gloutils::StringTemplate(new globjects::File("data/adaptive-grid/sphere.frag"));
 
 #ifdef MAC_OS
 		vertexShaderSource->replace("#version 140", "#version 150");
@@ -87,8 +87,8 @@ public:
 #endif
 
 		m_sphere->attach(
-			new glo::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource)
-			, new glo::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource));
+			new globjects::Shader(gl::GL_VERTEX_SHADER, vertexShaderSource)
+			, new globjects::Shader(gl::GL_FRAGMENT_SHADER, fragmentShaderSource));
 
 
 		m_icosahedron = new gloutils::Icosahedron(2);
@@ -168,7 +168,7 @@ public:
 		switch (event.key())
 		{
 		case GLFW_KEY_F5:
-			glo::File::reloadAll();
+			globjects::File::reloadAll();
 			break;
 		case GLFW_KEY_1:
 			m_flightEnabled = !m_flightEnabled;
@@ -329,14 +329,14 @@ public:
 
 protected:
 
-	glo::ref_ptr<glo::Program> m_sphere;
+	globjects::ref_ptr<globjects::Program> m_sphere;
 
-	glo::ref_ptr<gloutils::Icosahedron> m_icosahedron;
-	glo::ref_ptr<gloutils::AdaptiveGrid> m_agrid;
+	globjects::ref_ptr<gloutils::Icosahedron> m_icosahedron;
+	globjects::ref_ptr<gloutils::AdaptiveGrid> m_agrid;
 
-	glo::ref_ptr<glat::FontAnnotation> m_nvprViewportFontAnnotation;
-	glo::ref_ptr<glat::SVGAnnotation> m_nvprViewportSVGAnnotation;
-	glo::ref_ptr<glat::FontAnnotation> m_nvprInternalFontAnnotation;
+	globjects::ref_ptr<glat::FontAnnotation> m_nvprViewportFontAnnotation;
+	globjects::ref_ptr<glat::SVGAnnotation> m_nvprViewportSVGAnnotation;
+	globjects::ref_ptr<glat::FontAnnotation> m_nvprInternalFontAnnotation;
 
 	long double m_previousTime;
 
@@ -355,31 +355,31 @@ protected:
 */
 int main(int /*argc*/, char* /*argv*/[])
 {
-	glo::info() << "Usage:";
-	glo::info() << "\t" << "ESC" << "\t\t" << "Close example";
-	glo::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
-	glo::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
-	glo::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
-	glo::info() << "\t" << "Space" << "\t\t" << "Reset camera";
-	glo::info() << "\t" << "1" << "\t" << "Toggle flight mode / world in hand navigation";
+	globjects::info() << "Usage:";
+	globjects::info() << "\t" << "ESC" << "\t\t" << "Close example";
+	globjects::info() << "\t" << "ALT + Enter" << "\t" << "Toggle fullscreen";
+	globjects::info() << "\t" << "F11" << "\t\t" << "Toggle fullscreen";
+	globjects::info() << "\t" << "F5" << "\t\t" << "Reload shaders";
+	globjects::info() << "\t" << "Space" << "\t\t" << "Reset camera";
+	globjects::info() << "\t" << "1" << "\t" << "Toggle flight mode / world in hand navigation";
 
-	glo::info();
-	glo::info() << "\t" << "During world in hand navigation";
-	glo::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
-	glo::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
-	glo::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
+	globjects::info();
+	globjects::info() << "\t" << "During world in hand navigation";
+	globjects::info() << "\t" << "Left Mouse" << "\t" << "Pan scene";
+	globjects::info() << "\t" << "Right Mouse" << "\t" << "Rotate scene";
+	globjects::info() << "\t" << "Mouse Wheel" << "\t" << "Zoom scene";
 
-	glo::info();
-	glo::info() << "\t" << "During flight mode";
-	glo::info() << "\t" << "Mouse Movement" << "\t" << "Look around";
-	glo::info() << "\t" << "W" << "\t\t" << "Move forward";
-	glo::info() << "\t" << "UP" << "\t\t" << "Move forward";
-	glo::info() << "\t" << "A" << "\t\t" << "Move left";
-	glo::info() << "\t" << "LEFT" << "\t\t" << "Move left";
-	glo::info() << "\t" << "S" << "\t\t" << "Move backward";
-	glo::info() << "\t" << "DOWN" << "\t\t" << "Move backward";
-	glo::info() << "\t" << "D" << "\t\t" << "Move right";
-	glo::info() << "\t" << "RIGHT" << "\t\t" << "Move right";
+	globjects::info();
+	globjects::info() << "\t" << "During flight mode";
+	globjects::info() << "\t" << "Mouse Movement" << "\t" << "Look around";
+	globjects::info() << "\t" << "W" << "\t\t" << "Move forward";
+	globjects::info() << "\t" << "UP" << "\t\t" << "Move forward";
+	globjects::info() << "\t" << "A" << "\t\t" << "Move left";
+	globjects::info() << "\t" << "LEFT" << "\t\t" << "Move left";
+	globjects::info() << "\t" << "S" << "\t\t" << "Move backward";
+	globjects::info() << "\t" << "DOWN" << "\t\t" << "Move backward";
+	globjects::info() << "\t" << "D" << "\t\t" << "Move right";
+	globjects::info() << "\t" << "RIGHT" << "\t\t" << "Move right";
 
 	ContextFormat format;
 	format.setVersion(3, 0);

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glat/DrawingPrimitiveBase.h>
+#include <glannotations/DrawingPrimitiveBase.h>
 
 namespace glat {
 	class Building : public glat::DrawingPrimitiveBase {

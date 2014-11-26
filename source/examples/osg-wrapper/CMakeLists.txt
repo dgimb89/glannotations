@@ -34,8 +34,8 @@ include_directories(
 
 include_directories(
 	BEFORE
-    ${CMAKE_SOURCE_DIR}/source/glat/include
-    ${CMAKE_SOURCE_DIR}/source/glat-wrapper/include
+    ${CMAKE_SOURCE_DIR}/source/glannotations/include
+    ${CMAKE_SOURCE_DIR}/source/glannotations-wrapper/include
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
@@ -52,8 +52,8 @@ set(libs
     ${OSGVIEWER_LIBRARIES}
     ${OSGGA_LIBRARIES}
     ${OSGDB_LIBRARIES}
-    glat
-    glat-wrapper
+    glannotations
+    glannotations-wrapper
 )
 
 #

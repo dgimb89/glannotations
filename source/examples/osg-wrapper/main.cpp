@@ -1,7 +1,7 @@
-#include <glat/wrapper/OSGAnnotationDrawable.h>
-#include <glat/FontAnnotation.h>
-#include <glat/ViewportState.h>
-#include <glat/InternalState.h>
+#include <glannotations/wrapper/OSGAnnotationDrawable.h>
+#include <glannotations/FontAnnotation.h>
+#include <glannotations/ViewportState.h>
+#include <glannotations/InternalState.h>
 
 #include <osgViewer/Viewer>
 #include <osg/GraphicsContext>

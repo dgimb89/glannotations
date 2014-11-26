@@ -5,14 +5,14 @@ cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
 #
 # Project description and (meta) information
 #
-set(META_PROJECT_NAME        "GLAT")
+set(META_PROJECT_NAME        "glannotations")
 set(META_PROJECT_DESCRIPTION "OpenGL Annotations Toolkit")
-set(META_VERSION_MAJOR       "1")
-set(META_VERSION_MINOR       "0")
+set(META_VERSION_MAJOR       "0")
+set(META_VERSION_MINOR       "2")
 set(META_VERSION_PATCH       "0")
 set(META_VERSION             "${META_VERSION_MAJOR}.${META_VERSION_MINOR}.${META_VERSION_PATCH}")
 set(META_AUTHOR_ORGANIZATION "hpicgs group")
-set(META_AUTHOR_DOMAIN       "https://github.com/hpicgs/glat/")
+set(META_AUTHOR_DOMAIN       "https://github.com/hpicgs/glannotations/")
 set(META_AUTHOR_MAINTAINER   "daniel.gimbatschki@student.hpi.uni-potsdam.de")
 
 # Set project name and type (C/C++)
@@ -27,8 +27,8 @@ option(OPTION_BUILD_SHARED_LIBS "Build shared libraries (affects CMake variable 
 option(OPTION_BUILD_TESTS "Build tests (if gmock and gtest are found)." ON)
 option(OPTION_BUILD_EXAMPLES "Build examples." ON)
 option(OPTION_USE_NVPR "Allow Nvidia Path Rendering usage." ON)
-option(OPTION_BUILD_GLAT_PREPROCESSOR "Build glat preprocessor (required for preprocessing example)" ON)
-option(OPTION_BUILD_GLAT_WRAPPER "Build glat wrapper classes (OSG, ...)" ON)
+option(OPTION_BUILD_GLANNOTATIONS_PREPROCESSOR "Build glannotations preprocessor (required for preprocessing example)" ON)
+option(OPTION_BUILD_GLANNOTATIONS_WRAPPER "Build glannotations wrapper classes (OSG, ...)" ON)
 set(BUILD_SHARED_LIBS $OPTION_BUILD_SHARED_LIBS)
 
 #
@@ -131,7 +131,7 @@ else()
 endif()
 
 # Install the project meta files
-install(FILES glat-config.cmake DESTINATION ${INSTALL_ROOT})
+install(FILES glannotations-config.cmake DESTINATION ${INSTALL_ROOT})
 install(FILES AUTHORS DESTINATION ${INSTALL_ROOT})
 install(FILES LICENSE DESTINATION ${INSTALL_ROOT})
 

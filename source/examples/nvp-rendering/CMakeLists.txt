@@ -26,7 +26,7 @@ include_directories(
 
 include_directories(
 	BEFORE
-    ${CMAKE_SOURCE_DIR}/source/glat/include
+    ${CMAKE_SOURCE_DIR}/source/glannotations/include
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
@@ -40,7 +40,7 @@ set(libs
     ${GLOBJECTS_LIBRARIES}
     ${GLBINDING_LIBRARIES}
     ${EXAMPLE_COMMON}
-    glat
+    glannotations
 )
 
 #
