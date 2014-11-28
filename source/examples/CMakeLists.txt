@@ -2,12 +2,11 @@ if(OPTION_BUILD_EXAMPLES)
 
 	get_property(GENERATED_HEADER_PATH GLOBAL PROPERTY GENERATED_HEADER_PATH_PROPERTY)
 
-	set(EXAMPLE_COMMON examplecommon)
+	set(EXAMPLE_COMMON common)
 	add_subdirectory("common")
 	include_directories("common")
 
-	add_subdirectory(nvp-rendering)
-	add_subdirectory(presentation-scene)
+	add_subdirectory(rendering-example)
 
 	if (OPTION_BUILD_GLAT_PREPROCESSOR)
 		add_subdirectory(font-preprocessing)

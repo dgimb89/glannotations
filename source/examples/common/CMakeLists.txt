@@ -9,8 +9,8 @@ message(STATUS "Helper ${target}")
 find_package(OpenGL REQUIRED)
 find_package(GLM REQUIRED)
 find_package(GLFW REQUIRED)
-find_package(GLOBJECTS REQUIRED)
-find_package(GLBinding REQUIRED)
+find_package(glbinding REQUIRED)
+find_package(globjects REQUIRED)
 
 #
 # Includes
@@ -20,14 +20,15 @@ include_directories(
     ${OPENGL_INCLUDE_DIR}
     ${GLM_INCLUDE_DIR}
     ${GLFW_INCLUDE_DIR}
-    ${GLOBJECTS_INCLUDES}
     ${GLBINDING_INCLUDES}
+    ${GLOBJECTS_INCLUDES}
 )
 
 get_property(GENERATED_HEADER_PATH GLOBAL PROPERTY GENERATED_HEADER_PATH_PROPERTY)
 
 include_directories(
     BEFORE
+    ${CMAKE_SOURCE_DIR}/source/examples
     ${GENERATED_HEADER_PATH}
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
@@ -39,8 +40,8 @@ include_directories(
 set(libs
     ${OPENGL_LIBRARIES}
     ${GLFW_LIBRARY}
-    ${GLOBJECTS_LIBRARIES}
     ${GLBINDING_LIBRARIES}
+    ${GLOBJECTS_LIBRARIES}
 )
 
 #
@@ -51,11 +52,35 @@ set(include_path "${CMAKE_CURRENT_SOURCE_DIR}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(api_includes
-    ${include_path}/ExampleWindowEventHandler.h
+    ${include_path}/AbstractCoordinateProvider.h
+    ${include_path}/AxisAlignedBoundingBox.h
+    ${include_path}/Camera.h
+    ${include_path}/Context.h
+    ${include_path}/ContextFormat.h
+    ${include_path}/events.h
+    ${include_path}/MainLoop.h
+    ${include_path}/navigationmath.h
+    ${include_path}/Timer.h
+    ${include_path}/Window.h
+    ${include_path}/WindowEventDispatcher.h
+    ${include_path}/WindowEventHandler.h
+    ${include_path}/WorldInHandNavigation.h
 )
 
 set(sources
-    ${source_path}/ExampleWindowEventHandler.cpp
+    ${source_path}/AbstractCoordinateProvider.cpp
+    ${source_path}/AxisAlignedBoundingBox.cpp
+    ${source_path}/Camera.cpp
+    ${source_path}/Context.cpp
+    ${source_path}/ContextFormat.cpp
+    ${source_path}/events.cpp
+    ${source_path}/MainLoop.cpp
+    ${source_path}/navigationmath.cpp
+    ${source_path}/Timer.cpp
+    ${source_path}/Window.cpp
+    ${source_path}/WindowEventDispatcher.cpp
+    ${source_path}/WindowEventHandler.cpp
+    ${source_path}/WorldInHandNavigation.cpp
 )
 
 # Group source files

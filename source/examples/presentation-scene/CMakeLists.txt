@@ -7,10 +7,11 @@ message(STATUS "Example ${target}")
 #
 
 find_package(OpenGL REQUIRED)
+find_package(glbinding REQUIRED)
+find_package(globjects REQUIRED)
+find_package(gloperate REQUIRED)
 find_package(GLFW REQUIRED)
 find_package(GLM REQUIRED)
-find_package(GLOBJECTS REQUIRED)
-find_package(GLBinding REQUIRED)
 
 #
 # Includes
@@ -20,8 +21,9 @@ include_directories(
     ${OPENGL_INCLUDE_DIR}
     ${GLM_INCLUDE_DIR}
     ${GLFW_INCLUDE_DIR}
-    ${GLOBJECTS_INCLUDES}
     ${GLBINDING_INCLUDES}
+    ${GLOBJECTS_INCLUDES}
+    ${GLOPERATE_INCLUDES}
 )
 
 include_directories(
@@ -37,8 +39,9 @@ include_directories(
 set(libs
     ${OPENGL_LIBRARIES}
     ${GLFW_LIBRARY}
-    ${GLOBJECTS_LIBRARIES}
     ${GLBINDING_LIBRARIES}
+    ${GLOBJECTS_LIBRARIES}
+    ${GLOPERATE_LIBRARIES}
     ${EXAMPLE_COMMON}
     glannotations
 )

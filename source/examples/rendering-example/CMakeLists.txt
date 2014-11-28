@@ -1,5 +1,5 @@
 
-set(target osg-wrapper)
+set(target rendering-example)
 message(STATUS "Example ${target}")
 
 #
@@ -7,15 +7,11 @@ message(STATUS "Example ${target}")
 #
 
 find_package(OpenGL REQUIRED)
-find_package(GLFW REQUIRED)
-find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(gloperate REQUIRED)
-find_package(OpenSceneGraph REQUIRED)
-find_package(osgViewer REQUIRED)
-find_package(osgGA REQUIRED)
-find_package(osgDB REQUIRED)
+find_package(GLFW REQUIRED)
+find_package(GLM REQUIRED)
 
 #
 # Includes
@@ -25,19 +21,15 @@ include_directories(
     ${OPENGL_INCLUDE_DIR}
     ${GLM_INCLUDE_DIR}
     ${GLFW_INCLUDE_DIR}
-    ${GLOBJECTS_INCLUDES}
     ${GLBINDING_INCLUDES}
-    ${OPENSCENEGRAPH_INCLUDE_DIRS}
-    ${OSGVIEWER_INCLUDE_DIRS}
-    ${OSGGA_INCLUDE_DIRS}
-    ${OSGDB_INCLUDE_DIRS}
+    ${GLOBJECTS_INCLUDES}
     ${GLOPERATE_INCLUDES}
 )
 
 include_directories(
-	BEFORE
+    BEFORE
     ${CMAKE_SOURCE_DIR}/source/glannotations/include
-    ${CMAKE_SOURCE_DIR}/source/glannotations-wrapper/include
+    ${CMAKE_SOURCE_DIR}/source/examples
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
@@ -48,15 +40,11 @@ include_directories(
 set(libs
     ${OPENGL_LIBRARIES}
     ${GLFW_LIBRARY}
-    ${GLOBJECTS_LIBRARIES}
     ${GLBINDING_LIBRARIES}
-    ${OPENSCENEGRAPH_LIBRARIES}
-    ${OSGVIEWER_LIBRARIES}
-    ${OSGGA_LIBRARIES}
-    ${OSGDB_LIBRARIES}
+    ${GLOBJECTS_LIBRARIES}
     ${GLOPERATE_LIBRARIES}
+    ${EXAMPLE_COMMON}
     glannotations
-    glannotations-wrapper
 )
 
 #
@@ -64,6 +52,8 @@ set(libs
 #
 
 set(sources
+    building.h
+    building.cpp
     main.cpp
 )
 
