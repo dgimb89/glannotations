@@ -16,8 +16,8 @@
 const float MAX_ROTATION_ANGLE = M_PI * 45.f / 180.f;
 const float ANTI_FLICKERING = 0.01f;
 
-void glat::BoxReference::updatePositioning(InternalState& state) {
-	Utility::Segment camToBoxCenter(glat::getEye(getBindingIndex()), m_frontLLF + (m_widthSpan + m_heightSpan + m_depthSpan) / 2.f);
+void glannotations::BoxReference::updatePositioning(InternalState& state) {
+	Utility::Segment camToBoxCenter(glannotations::getEye(getBindingIndex()), m_frontLLF + (m_widthSpan + m_heightSpan + m_depthSpan) / 2.f);
 	glm::vec3 intersection, widthSpan, heightSpan;
 	float vOverflow, hOverflow;
 	bool ignoreWidthSpanRot = false;
@@ -68,12 +68,12 @@ void glat::BoxReference::updatePositioning(InternalState& state) {
 	state.setExtends(intersection - widthSpan - heightSpan, intersection + widthSpan - heightSpan, intersection + widthSpan + heightSpan);
 }
 
-void glat::BoxReference::updatePositioning(PathState& state) {
+void glannotations::BoxReference::updatePositioning(PathState& state) {
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
-glat::BoxReference::BoxReference(glm::vec2 widthOverflow, glm::vec2 heightOverflow, glm::vec3 depthSpan, bool onlyPositioning /* = true */)
-	: glat::AbstractExternalReference(onlyPositioning) {
+glannotations::BoxReference::BoxReference(glm::vec2 widthOverflow, glm::vec2 heightOverflow, glm::vec3 depthSpan, bool onlyPositioning /* = true */)
+	: glannotations::AbstractExternalReference(onlyPositioning) {
 	setDirty(true);
 	// we use internal span vectors to save overflow ranges for now
 	m_widthSpan = glm::vec3(widthOverflow, 0.f);
@@ -82,13 +82,13 @@ glat::BoxReference::BoxReference(glm::vec2 widthOverflow, glm::vec2 heightOverfl
 	fixFlickering();
 }
 
-void glat::BoxReference::draw() {
+void glannotations::BoxReference::draw() {
 	gl::glDepthMask(gl::GL_FALSE);
 	AbstractExternalReference::draw();
 	gl::glDepthMask(gl::GL_TRUE);
 }
 
-void glat::BoxReference::setupExternalReference(const InternalState& state) {
+void glannotations::BoxReference::setupExternalReference(const InternalState& state) {
 	AbstractExternalReference::setupExternalReference(state);
 	m_frontLLF = state.getLL() - (m_widthSpan.x * glm::normalize(state.getLR() - state.getLL())) - (m_heightSpan.x * glm::normalize(state.getUR() - state.getLR()));
 
@@ -103,20 +103,20 @@ void glat::BoxReference::setupExternalReference(const InternalState& state) {
 	m_halfAnnotHeight = glm::distance(state.getUR(), state.getLR()) / 2.f;
 
 	if (isDirty() && !isPositioningOnly()) {
-		auto box = new glat::Box;
+		auto box = new glannotations::Box;
 		box->setColor(glm::vec4(1.f, 0.f, 0.f, .35f));
 		box->setPosition(m_frontLLF, m_frontLLF + m_widthSpan + m_heightSpan + m_depthSpan);
 		m_externalPrimitive = box;
 	}
 }
 
-void glat::BoxReference::setupExternalReference(const PathState& state) {
+void glannotations::BoxReference::setupExternalReference(const PathState& state) {
 	AbstractExternalReference::setupExternalReference(state);
 
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
-inline bool glat::BoxReference::intersectionSegmentQuad(const glat::Utility::Segment& ray, const glm::vec3& a, const glm::vec3& b, const glm::vec3& c, const glm::vec3& d, glm::vec3& point, float& vOverflow, float& hOverflow) {
+inline bool glannotations::BoxReference::intersectionSegmentQuad(const glannotations::Utility::Segment& ray, const glm::vec3& a, const glm::vec3& b, const glm::vec3& c, const glm::vec3& d, glm::vec3& point, float& vOverflow, float& hOverflow) {
 	if (ray.intersect(Utility::Triangle(a, b, c), point) || ray.intersect(Utility::Triangle(c, b, d), point)) {
 		vOverflow = calculateOverflow(a, b, point, m_halfAnnotHeight);
 		hOverflow = calculateOverflow(a, c, point, m_halfAnnotWidth);
@@ -125,7 +125,7 @@ inline bool glat::BoxReference::intersectionSegmentQuad(const glat::Utility::Seg
 	return false;
 }
 
-inline float glat::BoxReference::calculateOverflow(const glm::vec3& a, const glm::vec3& b, const glm::vec3& point, float overflowLimit) {
+inline float glannotations::BoxReference::calculateOverflow(const glm::vec3& a, const glm::vec3& b, const glm::vec3& point, float overflowLimit) {
 	glm::vec3 projectedPoint;
 	Utility::Segment segment(a, b);
 	segment.orthographicProjection(point, projectedPoint);
@@ -143,7 +143,7 @@ inline float glat::BoxReference::calculateOverflow(const glm::vec3& a, const glm
 	return -distance2 / overflowLimit;
 }
 
-void glat::BoxReference::fixFlickering() {
+void glannotations::BoxReference::fixFlickering() {
 	m_widthSpan.x += ANTI_FLICKERING;
 	m_widthSpan.y += ANTI_FLICKERING;
 	m_heightSpan.x += ANTI_FLICKERING;
@@ -151,8 +151,8 @@ void glat::BoxReference::fixFlickering() {
 	m_depthSpan *= 1.f + ANTI_FLICKERING;
 }
 
-inline void glat::BoxReference::determineViewdependantSpans(glm::vec3& widthSpan, glm::vec3& heightSpan, bool bottom, float& vOverflow, float& hOverflow) {
-	glm::vec3 cameraRight = glat::getRight(getBindingIndex());
+inline void glannotations::BoxReference::determineViewdependantSpans(glm::vec3& widthSpan, glm::vec3& heightSpan, bool bottom, float& vOverflow, float& hOverflow) {
+	glm::vec3 cameraRight = glannotations::getRight(getBindingIndex());
 	// project cameraRight on top plane
 	glm::vec3 n = glm::normalize(glm::cross(bottom ? -m_widthSpan : m_widthSpan, bottom ? -m_depthSpan : m_depthSpan));
 	cameraRight = glm::normalize(cameraRight - glm::dot(cameraRight, n) * n);

@@ -2,17 +2,17 @@
 
 #include <glannotations/BoundingBox.h>
 
-glat::BoundingBox::BoundingBox() {
+glannotations::BoundingBox::BoundingBox() {
 	m_llf = glm::vec3(std::numeric_limits<float>::max());
 	m_urb = glm::vec3(std::numeric_limits<float>::lowest());
 }
 
-glat::BoundingBox::BoundingBox(glm::vec3 llf, glm::vec3 urb) {
+glannotations::BoundingBox::BoundingBox(glm::vec3 llf, glm::vec3 urb) {
 	m_llf = llf;
 	m_urb = urb;
 }
 
-void glat::BoundingBox::extendBy(glm::vec3 vertex) {
+void glannotations::BoundingBox::extendBy(glm::vec3 vertex) {
 	m_urb.x = std::fmaxf(m_urb.x, vertex.x);
 	m_urb.y = std::fmaxf(m_urb.y, vertex.y);
 	m_urb.z = std::fmaxf(m_urb.z, vertex.z);
@@ -22,11 +22,11 @@ void glat::BoundingBox::extendBy(glm::vec3 vertex) {
 	m_llf.z = std::fminf(m_llf.z, vertex.z);
 }
 
-const glm::vec3& glat::BoundingBox::getLLF() const {
+const glm::vec3& glannotations::BoundingBox::getLLF() const {
 	return m_llf;
 }
 
-const glm::vec3& glat::BoundingBox::getURB() const {
+const glm::vec3& glannotations::BoundingBox::getURB() const {
 	return m_urb;
 }
 

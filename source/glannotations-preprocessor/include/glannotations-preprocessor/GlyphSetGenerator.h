@@ -5,11 +5,11 @@
 #include <globjects/base/ref_ptr.h>
 
 #include <glannotations/PNGImage.h>
-#include <glannotations-preprocessor/glat-preprocessor_api.h>
+#include <glannotations-preprocessor/glannotations-preprocessor_api.h>
 
-namespace glat {
+namespace glannotations {
 	namespace preprocessor {
-		class GLAT_PREPROCESSOR_API GlyphSetGenerator
+		class GLANNOTATIONS_PREPROCESSOR_API GlyphSetGenerator
 		{
 		public:
 			static void generateGlyphset(std::string fontFileName, unsigned numGlyphs, bool overrideExisting = false);

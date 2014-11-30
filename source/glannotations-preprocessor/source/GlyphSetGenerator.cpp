@@ -4,7 +4,7 @@
 
 #include <glannotations-preprocessor/GlyphSetGenerator.h>
 #include <glannotations/GlyphSetConfig.h>
-#include "glat-version.h"
+#include "glannotations-version.h"
 
 #define PT_SIZE 196
 #define GLYPHSET_BEGIN 33
@@ -16,9 +16,9 @@ inline void handleError(const FT_Error& ftError) {
 	std::cerr << "Error: " << ftError << " in " << __FILE__ << ":"<< __LINE__ << std::endl;
 }
 
-void glat::preprocessor::GlyphSetGenerator::generateGlyphset(std::string fontFileName, unsigned numGlyphs, bool overrideExisting /*= false*/) {
+void glannotations::preprocessor::GlyphSetGenerator::generateGlyphset(std::string fontFileName, unsigned numGlyphs, bool overrideExisting /*= false*/) {
 
-	glat::GlyphSetConfig jsonConfig(fontFileName);
+	glannotations::GlyphSetConfig jsonConfig(fontFileName);
 	if (!overrideExisting && !jsonConfig.isDirty() && jsonConfig.getStartGlyph() <= GLYPHSET_BEGIN && jsonConfig.getNumGlyphs() + jsonConfig.getStartGlyph() - GLYPHSET_BEGIN >= numGlyphs) {
 		std::cout << "Existing glyphset already includes requested glyphset" << std::endl;
 		return;
@@ -43,7 +43,7 @@ void glat::preprocessor::GlyphSetGenerator::generateGlyphset(std::string fontFil
 		numGlyphs = face->num_glyphs;
 	}
 
-	std::vector<globjects::ref_ptr<glat::PNGImage>> glyphImages;
+	std::vector<globjects::ref_ptr<glannotations::PNGImage>> glyphImages;
 	size_t rowWidth = 0, maxRowWidth = 0;
 
 	handleError(FT_Set_Char_Size(	face,		/* handle to face object */ 
@@ -55,7 +55,7 @@ void glat::preprocessor::GlyphSetGenerator::generateGlyphset(std::string fontFil
 		FT_GlyphSlot slot = face->glyph; // just a shortcut for the current to-be-rendered glyph
 		// we begin with glyph mapped to ascii 33 -- everything before that is whitespace anyway
 		handleError(FT_Load_Char(face, FT_ULong(GLYPHSET_BEGIN + i), FT_LOAD_RENDER)); // automatically rendered to AA 8bit grayscale bitmap
-		globjects::ref_ptr<glat::PNGImage> glyphImage = generateGlyphImage(&slot->bitmap, std::abs(slot->bitmap_left), convertFontToPixelSize(face->size->metrics.ascender), convertFontToPixelSize(face->size->metrics.descender), convertFontToPixelSize(slot->metrics.horiBearingY));
+		globjects::ref_ptr<glannotations::PNGImage> glyphImage = generateGlyphImage(&slot->bitmap, std::abs(slot->bitmap_left), convertFontToPixelSize(face->size->metrics.ascender), convertFontToPixelSize(face->size->metrics.descender), convertFontToPixelSize(slot->metrics.horiBearingY));
 		glyphImage->distanceTransform();
 		glyphImage->scaleToHeight(SCALEDOWN_HEIGHT);
 		rowWidth += glyphImage->getWidth();
@@ -74,12 +74,12 @@ void glat::preprocessor::GlyphSetGenerator::generateGlyphset(std::string fontFil
 
 	// create final glyphset image
 	size_t finalHeight = std::ceil(glyphImages.size() / static_cast<float>(GLYPH_GROUP_SIZE)) * SCALEDOWN_HEIGHT;
-	globjects::ref_ptr<glat::PNGImage> finalImage = new glat::PNGImage(maxRowWidth, finalHeight, 1);
+	globjects::ref_ptr<glannotations::PNGImage> finalImage = new glannotations::PNGImage(maxRowWidth, finalHeight, 1);
 	size_t width = 0, height = finalImage->getHeight() - SCALEDOWN_HEIGHT;
 	unsigned glyphIndex = 0;
-	std::vector<glat::GlyphSetConfig::GlyphConfig> glyphConfigs;
+	std::vector<glannotations::GlyphSetConfig::GlyphConfig> glyphConfigs;
 	for (auto image : glyphImages) {
-		glyphConfigs.push_back(glat::GlyphSetConfig::GlyphConfig(width, height, image->getWidth() - 1, image->getHeight() - 1));
+		glyphConfigs.push_back(glannotations::GlyphSetConfig::GlyphConfig(width, height, image->getWidth() - 1, image->getHeight() - 1));
 		for (size_t w = 0; w < image->getWidth(); ++w)
 			for (size_t h = 0; h < image->getHeight(); ++h) {
 				finalImage->setImageValue(width + w, height + h, 0, image->getImageValue(w, h, 0));
@@ -100,15 +100,15 @@ void glat::preprocessor::GlyphSetGenerator::generateGlyphset(std::string fontFil
 
 }
 
-inline int glat::preprocessor::GlyphSetGenerator::convertFontToPixelSize(int input) {
+inline int glannotations::preprocessor::GlyphSetGenerator::convertFontToPixelSize(int input) {
 	return input / 64.0; // 1/64th unit
 }
 
-globjects::ref_ptr<glat::PNGImage> glat::preprocessor::GlyphSetGenerator::generateGlyphImage(void* bitmap, unsigned marginLeft, int ascender, int descender, int bearingY) {
+globjects::ref_ptr<glannotations::PNGImage> glannotations::preprocessor::GlyphSetGenerator::generateGlyphImage(void* bitmap, unsigned marginLeft, int ascender, int descender, int bearingY) {
 	FT_Bitmap* bitmapPtr = reinterpret_cast<FT_Bitmap*>(bitmap);
 	unsigned imageHeight = ascender - descender;
 	unsigned imageWidth = bitmapPtr->width + 2*marginLeft;// +marginRight;
-	globjects::ref_ptr<glat::PNGImage> result = new glat::PNGImage(imageWidth, imageHeight, 1, 8);
+	globjects::ref_ptr<glannotations::PNGImage> result = new glannotations::PNGImage(imageWidth, imageHeight, 1, 8);
 
 	for (FT_Int w = 0; w < bitmapPtr->width; ++w) {
 		for (FT_Int h = 0; h < bitmapPtr->rows; ++h) {

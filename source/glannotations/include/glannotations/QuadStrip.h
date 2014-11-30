@@ -2,8 +2,8 @@
 
 #include <glannotations/AbstractTexturedPrimitive.h>
 
-namespace glat {
-	class QuadStrip : public glat::AbstractTexturedPrimitive {
+namespace glannotations {
+	class QuadStrip : public glannotations::AbstractTexturedPrimitive {
 	public:
 		typedef glm::vec2 texVec2_t;
 		typedef std::pair<texVec2_t, texVec2_t> textureRange_t;

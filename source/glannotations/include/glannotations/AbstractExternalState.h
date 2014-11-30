@@ -7,15 +7,15 @@
 #include <glannotations/AbstractDrawingPrimitive.h>
 #include <glannotations/glannotations_api.h>
 
-namespace glat {
+namespace glannotations {
 
-	class GLANNOTATIONS_API AbstractExternalState : public glat::AbstractState {
+	class GLANNOTATIONS_API AbstractExternalState : public glannotations::AbstractState {
 
 	public:
 		AbstractExternalState(gloutils::Camera* camera);
 
 		// TODO: make return state const
-		globjects::ref_ptr<glat::InternalState> getInternalAnnotation();
+		globjects::ref_ptr<glannotations::InternalState> getInternalAnnotation();
 
 		void setCamera(gloutils::Camera* camera);
 		gloutils::Camera* getCamera() const;
@@ -34,11 +34,11 @@ namespace glat {
 		virtual void updateInternalPosition() const = 0;
 
 	protected:
-		void setupExternalColor(const glat::Styling* externalColor) const;
-		mutable globjects::ref_ptr<glat::InternalState> m_internalState;
+		void setupExternalColor(const glannotations::Styling* externalColor) const;
+		mutable globjects::ref_ptr<glannotations::InternalState> m_internalState;
 		gloutils::Camera* m_camera;
 		mutable glm::mat4 m_camProjection;
-		mutable globjects::ref_ptr<glat::AbstractDrawingPrimitive> m_externalPrimitive;
+		mutable globjects::ref_ptr<glannotations::AbstractDrawingPrimitive> m_externalPrimitive;
 		bool m_drawExternal;
 		float m_interpolation;
 	};

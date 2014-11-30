@@ -107,7 +107,7 @@ static const char* fragDFQuadShaderSource = R"(
 				}
 				)";
 
-glat::TexturedQuad::TexturedQuad(std::shared_ptr<globjects::Texture> texture, bool isDistanceField) : glat::AbstractTexturedPrimitive(texture) {
+glannotations::TexturedQuad::TexturedQuad(std::shared_ptr<globjects::Texture> texture, bool isDistanceField) : glannotations::AbstractTexturedPrimitive(texture) {
 	m_style = 0;
 	if (isDistanceField) {
 		setupShader(fragDFQuadShaderSource, vertQuadShaderSource);
@@ -141,7 +141,7 @@ glat::TexturedQuad::TexturedQuad(std::shared_ptr<globjects::Texture> texture, bo
 }
 
 
-void glat::TexturedQuad::setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur, glm::mat4 modelViewProjection /*= glm::mat4()*/) {
+void glannotations::TexturedQuad::setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur, glm::mat4 modelViewProjection /*= glm::mat4()*/) {
 
 	std::array<glm::vec3, 4> vertexArray{ {
 				glm::vec3(lr.x, lr.y, lr.z)
@@ -159,7 +159,7 @@ void glat::TexturedQuad::setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur, g
 }
 
 
-void glat::TexturedQuad::draw() {
+void glannotations::TexturedQuad::draw() {
 	m_program->release();
 	if (m_texture)
 	{

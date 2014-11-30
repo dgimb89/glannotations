@@ -10,8 +10,8 @@
 
 #include <string.h>
 
-void glat::NVPRSvgRenderer::draw(const globjects::ref_ptr<glat::AbstractAnnotation>& annotation) {
-	glat::SVGAnnotation* currentAnnotation = reinterpret_cast<glat::SVGAnnotation*>(annotation.get());
+void glannotations::NVPRSvgRenderer::draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) {
+	glannotations::SVGAnnotation* currentAnnotation = reinterpret_cast<glannotations::SVGAnnotation*>(annotation.get());
 	if (annotation->isDirty()) {
 		m_height = currentAnnotation->getHeight();
 		m_width = currentAnnotation->getWidth();
@@ -21,17 +21,17 @@ void glat::NVPRSvgRenderer::draw(const globjects::ref_ptr<glat::AbstractAnnotati
 		annotation->setDirty(false);
 	}
 
-	glat::NVPRRenderer::draw(annotation);
+	glannotations::NVPRRenderer::draw(annotation);
 }
 
-void glat::NVPRSvgRenderer::initializeSVG(const char* pathString) {
+void glannotations::NVPRSvgRenderer::initializeSVG(const char* pathString) {
 	gl::glDeletePathsNV(m_pathBase, 1);
 	m_pathBase = gl::glGenPathsNV(1);
 	gl::glPathStringNV(m_pathBase, gl::GL_PATH_FORMAT_SVG_NV, (gl::GLsizei)strlen(pathString), pathString);
 	gl::glPathParameteriNV(m_pathBase, gl::GL_PATH_JOIN_STYLE_NV, (gl::GLint)gl::GL_ROUND_NV);
 }
 
-void glat::NVPRSvgRenderer::drawSetupState(const glat::ViewportState& state) const {
+void glannotations::NVPRSvgRenderer::drawSetupState(const glannotations::ViewportState& state) const {
 	gl::glDisable(gl::GL_DEPTH_TEST);
 
 	setupOrthoProjection(state.getLL(), state.getUR(), m_width, m_height);
@@ -45,9 +45,9 @@ void glat::NVPRSvgRenderer::drawSetupState(const glat::ViewportState& state) con
 	gl::glPopAttrib();
 }
 
-void glat::NVPRSvgRenderer::drawSetupState(const glat::InternalState& state) const {
-	setupProjection(glat::getProjection(getMatricesBindingIndex()));
-	setupModelView(glat::getView(getMatricesBindingIndex()), state, m_width, m_height);
+void glannotations::NVPRSvgRenderer::drawSetupState(const glannotations::InternalState& state) const {
+	setupProjection(glannotations::getProjection(getMatricesBindingIndex()));
+	setupModelView(glannotations::getView(getMatricesBindingIndex()), state, m_width, m_height);
 
 	drawPath();
 	state.setDirty(false);
@@ -56,7 +56,7 @@ void glat::NVPRSvgRenderer::drawSetupState(const glat::InternalState& state) con
 	cleanMatrixStacks();
 }
 
-void glat::NVPRSvgRenderer::drawPath() const {
+void glannotations::NVPRSvgRenderer::drawPath() const {
 	gl::glPathCoverDepthFuncNV(gl::GL_ALWAYS);
 	gl::glStencilFillPathNV(m_pathBase, gl::GL_COUNT_UP_NV, 0x1);
 	gl::glColor3f(0.4f, 0.6f, 1.0f); // green
@@ -70,10 +70,10 @@ void glat::NVPRSvgRenderer::drawPath() const {
 	}
 }
 
-void glat::NVPRSvgRenderer::drawSetupState(const glat::PathState& state) const {
+void glannotations::NVPRSvgRenderer::drawSetupState(const glannotations::PathState& state) const {
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
-glat::NVPRSvgRenderer::NVPRSvgRenderer(gl::GLuint globalMatricesBindingIndex) : NVPRRenderer(globalMatricesBindingIndex) {
+glannotations::NVPRSvgRenderer::NVPRSvgRenderer(gl::GLuint globalMatricesBindingIndex) : NVPRRenderer(globalMatricesBindingIndex) {
 
 }

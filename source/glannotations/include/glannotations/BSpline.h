@@ -7,8 +7,8 @@
 #include <glannotations/DirtyFlagObject.h>
 #include <glannotations/glannotations_api.h>
 
-namespace glat {
-	class GLANNOTATIONS_API BSpline : public glat::DirtyFlagObject {
+namespace glannotations {
+	class GLANNOTATIONS_API BSpline : public glannotations::DirtyFlagObject {
 	public:
 		BSpline(std::initializer_list<glm::vec3> ctrlPoints, std::initializer_list<float> knotValues);
 		BSpline(std::initializer_list<glm::vec3> ctrlPoints, unsigned short degree);

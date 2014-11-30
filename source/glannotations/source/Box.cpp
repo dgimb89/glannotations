@@ -96,14 +96,14 @@ static const char* texturingFragShader = R"(
 				)";
 
 
-glat::Box::Box() {
-	setupShader(glat::ShaderSources::passThroughVS, geomShader, texturingFragShader);
+glannotations::Box::Box() {
+	setupShader(glannotations::ShaderSources::passThroughVS, geomShader, texturingFragShader);
 	m_vao->binding(0)->setAttribute(0);
 	m_vao->binding(0)->setFormat(3, gl::GL_FLOAT, gl::GL_FALSE, 0);
 	m_vao->enable(0);
 }
 
-void glat::Box::draw() {
+void glannotations::Box::draw() {
 	m_program->release();
 	gl::glDisable(gl::GL_CULL_FACE);
 	m_program->use();
@@ -112,7 +112,7 @@ void glat::Box::draw() {
 	gl::glEnable(gl::GL_CULL_FACE);
 }
 
-void glat::Box::setPosition(glm::vec3 llf, glm::vec3 urb) {
+void glannotations::Box::setPosition(glm::vec3 llf, glm::vec3 urb) {
 	std::array<glm::vec3, 2> vertexArray{ { llf, urb } };
 	m_vao->binding(0)->setAttribute(0);
 	m_vao->binding(0)->setFormat(3, gl::GL_FLOAT, gl::GL_FALSE, 0);

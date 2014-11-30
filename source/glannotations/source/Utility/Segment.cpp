@@ -5,7 +5,7 @@
 
 #define SMALL_NUM   0.00000001f // anything that avoids division overflow
 
-int glat::Utility::Segment::intersect(const glat::Utility::Triangle& T, glm::vec3& point) const {
+int glannotations::Utility::Segment::intersect(const glannotations::Utility::Triangle& T, glm::vec3& point) const {
 	// http://geomalgorithms.com/a06-_intersect-2.html
 	glm::vec3	u, v, n;              // triangle vectors
 	glm::vec3	dir, w0, w;           // ray vectors
@@ -60,16 +60,16 @@ int glat::Utility::Segment::intersect(const glat::Utility::Triangle& T, glm::vec
 	return 1;                       // I is in T
 }
 
-glat::Utility::Segment::Segment(glm::vec3 A, glm::vec3 B) {
+glannotations::Utility::Segment::Segment(glm::vec3 A, glm::vec3 B) {
 	P0 = A;
 	P1 = B;
 }
 
-float glat::Utility::Segment::minDistanceToEndpoint(const glm::vec3& point) {
+float glannotations::Utility::Segment::minDistanceToEndpoint(const glm::vec3& point) {
 	return std::min(glm::distance(point, P0), glm::distance(point, P1));
 }
 
-int glat::Utility::Segment::orthographicProjection(const glm::vec3& point, glm::vec3& projectionPoint) const {
+int glannotations::Utility::Segment::orthographicProjection(const glm::vec3& point, glm::vec3& projectionPoint) const {
 	glm::vec3 u(P1 - P0);
 	float r = glm::dot((point - P0), u) / glm::dot(u, u);
 	if (r < 0.f) {

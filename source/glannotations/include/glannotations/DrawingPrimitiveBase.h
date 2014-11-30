@@ -7,7 +7,7 @@
 
 #include <glannotations/AbstractDrawingPrimitive.h>
 
-namespace glat {
+namespace glannotations {
 	class GLANNOTATIONS_API DrawingPrimitiveBase : public AbstractDrawingPrimitive {
 	public:
 		DrawingPrimitiveBase();

@@ -1,40 +1,40 @@
 #include <glannotations/BSpline.h>
 
-const std::vector<glm::vec3>& glat::BSpline::getControlPoints() {
+const std::vector<glm::vec3>& glannotations::BSpline::getControlPoints() {
 	return m_ctrlPoints;
 }
 
-const std::vector<float>& glat::BSpline::getKnotValues() {
+const std::vector<float>& glannotations::BSpline::getKnotValues() {
 	return m_knotValues;
 }
 
-unsigned short glat::BSpline::getSplineDegree() {
+unsigned short glannotations::BSpline::getSplineDegree() {
 	return m_degree;
 }
 
-void glat::BSpline::setKnotValues(std::initializer_list<float> knotValues) {
+void glannotations::BSpline::setKnotValues(std::initializer_list<float> knotValues) {
 	setDirty(true);
 	m_knotValues = knotValues;
 }
 
-void glat::BSpline::setControlPoints(std::initializer_list<glm::vec3> ctrlPoints) {
+void glannotations::BSpline::setControlPoints(std::initializer_list<glm::vec3> ctrlPoints) {
 	setDirty(true);
 	m_ctrlPoints = ctrlPoints;
 }
 
-glat::BSpline::BSpline(std::initializer_list<glm::vec3> ctrlPoints, std::initializer_list<float> knotValues) {
+glannotations::BSpline::BSpline(std::initializer_list<glm::vec3> ctrlPoints, std::initializer_list<float> knotValues) {
 	setControlPoints(ctrlPoints);
 	setKnotValues(knotValues);
 	calculateSplineDegree();
 }
 
-glat::BSpline::BSpline(std::initializer_list<glm::vec3> ctrlPoints, unsigned short degree) {
+glannotations::BSpline::BSpline(std::initializer_list<glm::vec3> ctrlPoints, unsigned short degree) {
 	setControlPoints(ctrlPoints);
 	m_degree = degree;
 	calculateUniformKnotValues();
 }
 
-void glat::BSpline::calculateUniformKnotValues() {
+void glannotations::BSpline::calculateUniformKnotValues() {
 	m_knotValues.clear();
 
 	// starting knot -- nonperiodic B-Spline
@@ -54,7 +54,7 @@ void glat::BSpline::calculateUniformKnotValues() {
 	setDirty(true);
 }
 
-void glat::BSpline::calculateSplineDegree() {
+void glannotations::BSpline::calculateSplineDegree() {
 	m_degree = m_knotValues.size() - m_ctrlPoints.size() - 1;
 	setDirty(true);
 }

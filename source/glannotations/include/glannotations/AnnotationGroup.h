@@ -8,15 +8,15 @@
 #include <glannotations/glannotations_api.h>
 #include <glannotations/AbstractAnnotation.h>
 
-namespace glat {
+namespace glannotations {
 
 	class GLANNOTATIONS_API AnnotationGroup : public globjects::Referenced {
 	public:
 		void clear();
-		void addAnnotation(const globjects::ref_ptr<glat::AbstractAnnotation>& annotation);
+		void addAnnotation(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation);
 		void draw() const;
 
 	private:
-		std::vector< globjects::ref_ptr<glat::AbstractAnnotation> > m_annotations;
+		std::vector< globjects::ref_ptr<glannotations::AbstractAnnotation> > m_annotations;
 	};
 }

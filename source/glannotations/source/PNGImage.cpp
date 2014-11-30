@@ -7,17 +7,17 @@
 #include "glannotations-version.h"
 
 // internal data wrapper
-glat::PNGImage::image_t::image_t(size_t size) {
+glannotations::PNGImage::image_t::image_t(size_t size) {
 	data = new colorVal_t[size];
 	std::fill_n(data, size, 255);
 }
 
-glat::PNGImage::image_t::~image_t() {
+glannotations::PNGImage::image_t::~image_t() {
 	delete[] data;
 }
 // ----------------------
 
-glat::PNGImage::PNGImage(size_t width, size_t height, unsigned short numComponents /* = 4 */, unsigned short bitdepth /* = 8 */) {
+glannotations::PNGImage::PNGImage(size_t width, size_t height, unsigned short numComponents /* = 4 */, unsigned short bitdepth /* = 8 */) {
 	m_width = width;
 	m_height = height;
 	m_channels = numComponents;
@@ -25,22 +25,22 @@ glat::PNGImage::PNGImage(size_t width, size_t height, unsigned short numComponen
 	createImage();
 }
 
-glat::PNGImage::PNGImage(std::string pngFileName) {
+glannotations::PNGImage::PNGImage(std::string pngFileName) {
 	loadImage(pngFileName);
 }
 
-glat::PNGImage::PNGImage(std::string pngFileName, std::string destDistanceFieldFile) {
+glannotations::PNGImage::PNGImage(std::string pngFileName, std::string destDistanceFieldFile) {
 	if (!loadImage(destDistanceFieldFile))
 		if (distanceTransformFromPNG(pngFileName))
 			saveDistanceField(destDistanceFieldFile);
 }
 
-bool glat::PNGImage::distanceTransformFromPNG(std::string pngFileName) {
+bool glannotations::PNGImage::distanceTransformFromPNG(std::string pngFileName) {
 	setDirty(true);
 
 	// load source image
 	if (!loadImage(pngFileName)) return false;
-	globjects::ref_ptr<glat::PNGImage> distanceTransform = glat::DistanceFieldGeneration::distanceTransform(*this);
+	globjects::ref_ptr<glannotations::PNGImage> distanceTransform = glannotations::DistanceFieldGeneration::distanceTransform(*this);
 
 	// set new image info data
 	m_image = distanceTransform->getImage();
@@ -51,12 +51,12 @@ bool glat::PNGImage::distanceTransformFromPNG(std::string pngFileName) {
 	return true;
 }
 
-void glat::PNGImage::distanceTransform() {
+void glannotations::PNGImage::distanceTransform() {
 	// load source image
-	replaceImageWith(glat::DistanceFieldGeneration::distanceTransform(*this));
+	replaceImageWith(glannotations::DistanceFieldGeneration::distanceTransform(*this));
 }
 
-bool glat::PNGImage::loadImage(std::string pngFileName) {
+bool glannotations::PNGImage::loadImage(std::string pngFileName) {
 	char header[8];	// 8 is the maximum size that can be checked
 	pngFileName = std::string(RESOURCES_DIR + pngFileName);
 	/* open file */
@@ -130,7 +130,7 @@ bool glat::PNGImage::loadImage(std::string pngFileName) {
 	return true;
 }
 
-bool glat::PNGImage::saveDistanceField(std::string pngFileName) const {
+bool glannotations::PNGImage::saveDistanceField(std::string pngFileName) const {
 	pngFileName = std::string(RESOURCES_DIR + pngFileName);
 	
 	if (m_channels != 1) {
@@ -180,7 +180,7 @@ bool glat::PNGImage::saveDistanceField(std::string pngFileName) const {
 	return true;
 }
 
-bool glat::PNGImage::isColored(size_t x, size_t y) const {
+bool glannotations::PNGImage::isColored(size_t x, size_t y) const {
 	if (m_channels > 3)
 		return getImageValue(x, y, 3) == 255u;
 	size_t result = 0;
@@ -190,62 +190,62 @@ bool glat::PNGImage::isColored(size_t x, size_t y) const {
 	return result != (m_channels * 255);
 }
 
-void glat::PNGImage::setImageValue(size_t x, size_t y, unsigned short numComponent, colorVal_t value) {
+void glannotations::PNGImage::setImageValue(size_t x, size_t y, unsigned short numComponent, colorVal_t value) {
 	imageValue(x, y, numComponent) = value;
 }
 
-glat::PNGImage::colorVal_t glat::PNGImage::getImageValue(signed long x, signed long y, unsigned short numComponent) const {
+glannotations::PNGImage::colorVal_t glannotations::PNGImage::getImageValue(signed long x, signed long y, unsigned short numComponent) const {
 	// clamp x,y access to image ranges
 	x = std::max(0l, std::min(static_cast<signed long>(getWidth() - 1), x));
 	y = std::max(0l, std::min(static_cast<signed long>(getHeight() - 1), y));
 	return imageValue(x, y, numComponent);
 }
 
-glat::PNGImage::colorVal_t& glat::PNGImage::imageValue(size_t x, size_t y, unsigned short numComponent) const {
+glannotations::PNGImage::colorVal_t& glannotations::PNGImage::imageValue(size_t x, size_t y, unsigned short numComponent) const {
 	return m_image->data[(m_width * y + x) * m_channels + numComponent];
 }
 
-const globjects::ref_ptr<glat::PNGImage::image_t> glat::PNGImage::getImage() const {
+const globjects::ref_ptr<glannotations::PNGImage::image_t> glannotations::PNGImage::getImage() const {
 	return m_image;
 }
 
-void glat::PNGImage::createImage() {
+void glannotations::PNGImage::createImage() {
 	m_image = new image_t(m_height * getRowStride());
 }
 
-size_t glat::PNGImage::getWidth() const {
+size_t glannotations::PNGImage::getWidth() const {
 	return m_width;
 }
 
-size_t glat::PNGImage::getRowStride() const {
+size_t glannotations::PNGImage::getRowStride() const {
 	return m_width * m_channels * (m_bitdepth / 8);
 }
 
-size_t glat::PNGImage::getHeight() const {
+size_t glannotations::PNGImage::getHeight() const {
 	return m_height;
 }
 
-unsigned short glat::PNGImage::getNumComponents() const {
+unsigned short glannotations::PNGImage::getNumComponents() const {
 	return m_channels;
 }
 
-void glat::PNGImage::scaleToWidth(size_t scaledWidth) {
-	replaceImageWith(glat::DistanceFieldGeneration::bicubicResize(*this, scaledWidth, getHeight() * scaledWidth / getWidth()));
+void glannotations::PNGImage::scaleToWidth(size_t scaledWidth) {
+	replaceImageWith(glannotations::DistanceFieldGeneration::bicubicResize(*this, scaledWidth, getHeight() * scaledWidth / getWidth()));
 }
 
-void glat::PNGImage::scaleToHeight(size_t scaledHeight) {
-	replaceImageWith(glat::DistanceFieldGeneration::bicubicResize(*this, getWidth() * scaledHeight / getHeight(), scaledHeight));
+void glannotations::PNGImage::scaleToHeight(size_t scaledHeight) {
+	replaceImageWith(glannotations::DistanceFieldGeneration::bicubicResize(*this, getWidth() * scaledHeight / getHeight(), scaledHeight));
 }
 
-void glat::PNGImage::scale(double scaleFactor) {
-	replaceImageWith(glat::DistanceFieldGeneration::bicubicResize(*this, getWidth() * scaleFactor, getHeight() * scaleFactor));
+void glannotations::PNGImage::scale(double scaleFactor) {
+	replaceImageWith(glannotations::DistanceFieldGeneration::bicubicResize(*this, getWidth() * scaleFactor, getHeight() * scaleFactor));
 }
 
-unsigned short glat::PNGImage::getComponentBitdepth() const {
+unsigned short glannotations::PNGImage::getComponentBitdepth() const {
 	return m_bitdepth;
 }
 
-void glat::PNGImage::replaceImageWith(globjects::ref_ptr<glat::PNGImage> image) {
+void glannotations::PNGImage::replaceImageWith(globjects::ref_ptr<glannotations::PNGImage> image) {
 	setDirty(true);
 	m_image = image->getImage();
 	m_height = image->getHeight();

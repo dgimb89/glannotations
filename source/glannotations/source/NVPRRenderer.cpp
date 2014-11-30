@@ -9,7 +9,7 @@
 #include <glannotations/Styles/Outline.h>
 #include <glannotations/InternalState.h>
 
-void glat::NVPRRenderer::draw(const globjects::ref_ptr<glat::AbstractAnnotation>& annotation) {
+void glannotations::NVPRRenderer::draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) {
 	// enable stencil test as needed by nvpr
 
 	gl::glEnable(gl::GL_STENCIL_TEST);
@@ -22,14 +22,14 @@ void glat::NVPRRenderer::draw(const globjects::ref_ptr<glat::AbstractAnnotation>
 	gl::glDisable(gl::GL_STENCIL_TEST);
 }
 
-void glat::NVPRRenderer::clearStencilBuffer() {
+void glannotations::NVPRRenderer::clearStencilBuffer() {
 	// stencil buffer only needs to be cleared when damaged or window resized
 	gl::glClearStencil(0);
 	gl::glStencilMask(~0);
 	gl::glClear(gl::GL_STENCIL_BUFFER_BIT);
 }
 
-void glat::NVPRRenderer::setupOrthoProjection(glm::vec2 llf, glm::vec2 urb, float width, float height, float yMin /*= 0.f*/) const {
+void glannotations::NVPRRenderer::setupOrthoProjection(glm::vec2 llf, glm::vec2 urb, float width, float height, float yMin /*= 0.f*/) const {
 	gl::glMatrixMode(gl::GL_PROJECTION);
 	gl::glPushMatrix();
 	gl::glLoadIdentity();
@@ -43,22 +43,22 @@ void glat::NVPRRenderer::setupOrthoProjection(glm::vec2 llf, glm::vec2 urb, floa
 		-1, 1);
 }
 
-void glat::NVPRRenderer::setupOutline(gl::GLuint& pathSettings, const glat::Styling* outline, float scaleFactor /* = 1.f*/) {
+void glannotations::NVPRRenderer::setupOutline(gl::GLuint& pathSettings, const glannotations::Styling* outline, float scaleFactor /* = 1.f*/) {
 	m_drawOutline = false;
 	if (outline == nullptr) return;
 	m_drawOutline = true;
-	const glat::Styles::Outline* outlineStyle = reinterpret_cast<const glat::Styles::Outline*>(outline);
+	const glannotations::Styles::Outline* outlineStyle = reinterpret_cast<const glannotations::Styles::Outline*>(outline);
 	gl::glPathParameterfNV(pathSettings, gl::GL_PATH_STROKE_WIDTH_NV, scaleFactor * outlineStyle->getWidth());
 }
 
-void glat::NVPRRenderer::setupProjection(glm::mat4 projection) const {
+void glannotations::NVPRRenderer::setupProjection(glm::mat4 projection) const {
 	gl::glMatrixMode(gl::GL_PROJECTION);
 	gl::glPushMatrix();
 	gl::glLoadIdentity();
 	gl::glMultMatrixf(glm::value_ptr(projection));
 }
 
-void glat::NVPRRenderer::setupModelView(glm::mat4 view, const glat::InternalState& state, float stencilWidth, float stencilHeight) const {
+void glannotations::NVPRRenderer::setupModelView(glm::mat4 view, const glannotations::InternalState& state, float stencilWidth, float stencilHeight) const {
 	gl::glMatrixMode(gl::GL_MODELVIEW);
 	gl::glPushMatrix();
 	gl::glLoadIdentity();
@@ -79,17 +79,17 @@ void glat::NVPRRenderer::setupModelView(glm::mat4 view, const glat::InternalStat
 	gl::glMultMatrixf(glm::value_ptr(glm::inverse(view) * modelMatrix));
 }
 
-glat::NVPRRenderer::NVPRRenderer(gl::GLuint globalMatricesBindingIndex) : AbstractRenderer(globalMatricesBindingIndex) {
+glannotations::NVPRRenderer::NVPRRenderer(gl::GLuint globalMatricesBindingIndex) : AbstractRenderer(globalMatricesBindingIndex) {
 
 }
 
-void glat::NVPRRenderer::pushEmptyModelViewMatrix() const {
+void glannotations::NVPRRenderer::pushEmptyModelViewMatrix() const {
 	gl::glMatrixMode(gl::GL_MODELVIEW);
 	gl::glPushMatrix();
 	gl::glLoadIdentity();
 }
 
-void glat::NVPRRenderer::cleanMatrixStacks() const {
+void glannotations::NVPRRenderer::cleanMatrixStacks() const {
 	gl::glMatrixMode(gl::GL_MODELVIEW);
 	gl::glPopMatrix();
 	gl::glMatrixMode(gl::GL_PROJECTION);

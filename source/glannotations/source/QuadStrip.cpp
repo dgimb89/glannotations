@@ -275,7 +275,7 @@ static const char* dfFragShader = R"(
 
 	)";
 
-glat::QuadStrip::QuadStrip(std::shared_ptr<globjects::Texture> texture, gl::GLuint matricesBindingIndex, bool isDistanceField) : glat::AbstractTexturedPrimitive(texture) {
+glannotations::QuadStrip::QuadStrip(std::shared_ptr<globjects::Texture> texture, gl::GLuint matricesBindingIndex, bool isDistanceField) : glannotations::AbstractTexturedPrimitive(texture) {
 	if (isDistanceField) {
 		setupShader(vertShader, geomShader, dfFragShader);
 	} else {
@@ -295,15 +295,15 @@ glat::QuadStrip::QuadStrip(std::shared_ptr<globjects::Texture> texture, gl::GLui
 	m_vao->enable(0);
 }
 
-void glat::QuadStrip::addQuad(texVec2_t texture_ll, texVec2_t texture_advance) {
+void glannotations::QuadStrip::addQuad(texVec2_t texture_ll, texVec2_t texture_advance) {
 	m_textureRanges.push_back(std::make_pair(texture_ll, texture_advance));
 }
 
-void glat::QuadStrip::clearQuads() {
+void glannotations::QuadStrip::clearQuads() {
 	m_textureRanges.clear();
 }
 
-void glat::QuadStrip::draw() {
+void glannotations::QuadStrip::draw() {
 	m_program->release();
 	if (m_texture) {
 		gl::glActiveTexture(gl::GL_TEXTURE0);
@@ -318,7 +318,7 @@ void glat::QuadStrip::draw() {
 	}
 }
 
-void glat::QuadStrip::updateQuadRanges() {
+void glannotations::QuadStrip::updateQuadRanges() {
 	// update texture VBO
 	std::vector<texVec2_t> textures, texAdvances;
 
@@ -382,7 +382,7 @@ void glat::QuadStrip::updateQuadRanges() {
 	m_vao->enable(4);
 }
 
-bool glat::QuadStrip::setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur) {
+bool glannotations::QuadStrip::setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur) {
 	if (positionValid(ll, lr, ur)) {
 		m_ll = ll;
 		m_lr = lr;
@@ -395,7 +395,7 @@ bool glat::QuadStrip::setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur) {
 	return false;
 }
 
-bool glat::QuadStrip::setViewportPosition(glm::vec2 ll, glm::vec2 lr, glm::vec2 ur) {
+bool glannotations::QuadStrip::setViewportPosition(glm::vec2 ll, glm::vec2 lr, glm::vec2 ur) {
 	if (setPosition(glm::vec3(ll, 0.f), glm::vec3(lr, 0.f), glm::vec3(ur, 0.f))) {
 		// finalize geom shader for viewport rendering
 		m_program->setUniform("onNearplane", true);
@@ -404,41 +404,41 @@ bool glat::QuadStrip::setViewportPosition(glm::vec2 ll, glm::vec2 lr, glm::vec2 
 	return false;
 }
 
-glat::QuadStrip::texVec2_t glat::QuadStrip::getUL(const textureRange_t& textureRange) {
+glannotations::QuadStrip::texVec2_t glannotations::QuadStrip::getUL(const textureRange_t& textureRange) {
 	return texVec2_t(textureRange.first.x, textureRange.second.y);
 }
 
-glat::QuadStrip::texVec2_t glat::QuadStrip::getLR(const textureRange_t& textureRange) {
+glannotations::QuadStrip::texVec2_t glannotations::QuadStrip::getLR(const textureRange_t& textureRange) {
 	return texVec2_t(textureRange.second.x, textureRange.first.y);
 }
 
-void glat::QuadStrip::pushTextureCoords(std::vector<texVec2_t>& textureVec, const textureRange_t& textureRange) {
+void glannotations::QuadStrip::pushTextureCoords(std::vector<texVec2_t>& textureVec, const textureRange_t& textureRange) {
 	textureVec.push_back(textureRange.first);
 	textureVec.push_back(getUL(textureRange));
 	textureVec.push_back(getLR(textureRange));
 	textureVec.push_back(textureRange.second);
 }
 
-float glat::QuadStrip::getUniformQuadHeight() {
+float glannotations::QuadStrip::getUniformQuadHeight() {
 	return m_textureRanges.front().second.y; // returning random texture advance y
 }
 
-size_t glat::QuadStrip::getQuadstripRowCount() {
+size_t glannotations::QuadStrip::getQuadstripRowCount() {
 	// TODO: support multiple rows
 	return 1u;
 }
 
-float glat::QuadStrip::getQuadStripHeight() {
+float glannotations::QuadStrip::getQuadStripHeight() {
 	return getQuadstripRowCount() * getUniformQuadHeight();
 }
 
-float glat::QuadStrip::getQuadStripWidth() {
+float glannotations::QuadStrip::getQuadStripWidth() {
 	// TODO: adapt when multiple row support is added
 	float resultWidth = 0.f;
 	std::for_each(m_textureRanges.begin(), m_textureRanges.end(), [&](textureRange_t elem){ resultWidth += elem.second.x; });
 	return resultWidth;
 }
 
-bool glat::QuadStrip::positionValid( const glm::vec3& ll, const glm::vec3& lr, const glm::vec3& ur ) const {
+bool glannotations::QuadStrip::positionValid( const glm::vec3& ll, const glm::vec3& lr, const glm::vec3& ur ) const {
 	return ll != lr && ll != ur && lr != ur;
 }

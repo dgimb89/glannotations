@@ -5,11 +5,11 @@
 #include <glannotations/AbstractAnnotation.h>
 #include <glannotations/glannotations_api.h>
 
-namespace glat {
+namespace glannotations {
 	class GLANNOTATIONS_API PNGAnnotation : public AbstractAnnotation
 	{
 	public:
-		PNGAnnotation(const globjects::ref_ptr<glat::AbstractState>& initialState, std::string fileName, const glat::RendererFactory& factory = RendererFactory());
+		PNGAnnotation(const globjects::ref_ptr<glannotations::AbstractState>& initialState, std::string fileName, const glannotations::RendererFactory& factory = RendererFactory());
 		void setPNGFile(std::string filename, bool isDistanceField = false);
 		void setAsDistanceField(glm::vec4 renderColor);
 		void setAsNoDistanceField();

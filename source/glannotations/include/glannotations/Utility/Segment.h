@@ -4,7 +4,7 @@
 
 #include <glannotations/glannotations_api.h>
 
-namespace glat {
+namespace glannotations {
 namespace Utility {
 	struct Triangle;
 	struct Plane;
@@ -18,7 +18,7 @@ namespace Utility {
 		0 = disjoint (no intersection)
 		1 = intersect (saved in input "point")
 		/************************************************************************/
-		int intersect(const glat::Utility::Triangle& T, glm::vec3& point) const;
+		int intersect(const glannotations::Utility::Triangle& T, glm::vec3& point) const;
 		int orthographicProjection(const glm::vec3& point, glm::vec3& projectionPoint) const;
 		float minDistanceToEndpoint(const glm::vec3& point);
 		glm::vec3 P0, P1;

@@ -3,8 +3,8 @@
 #include <glannotations/DrawingPrimitiveBase.h>
 #include <vector>
 
-namespace glat {
-	class Prismoid : public glat::DrawingPrimitiveBase {
+namespace glannotations {
+	class Prismoid : public glannotations::DrawingPrimitiveBase {
 	public:
 		Prismoid();
 		void setLabelStrength(float strength);

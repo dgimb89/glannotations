@@ -6,7 +6,7 @@
 
 #include <glannotations/glannotations_api.h>
 
-namespace glat {
+namespace glannotations {
 	void GLANNOTATIONS_API initializeMatricesUBO(unsigned int bindingIndex = 0);
 	bool GLANNOTATIONS_API isMatricesUBOInitialiced(unsigned int bindingIndex = 0);
 

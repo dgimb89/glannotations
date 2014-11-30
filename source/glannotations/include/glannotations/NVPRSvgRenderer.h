@@ -2,16 +2,16 @@
 
 #include <glannotations/NVPRRenderer.h>
 
-namespace glat {
+namespace glannotations {
 	class SVGAnnotation;
-	class NVPRSvgRenderer : public glat::NVPRRenderer {
+	class NVPRSvgRenderer : public glannotations::NVPRRenderer {
 	public:
 		NVPRSvgRenderer(gl::GLuint globalMatricesBindingIndex);
-		virtual void draw(const globjects::ref_ptr<glat::AbstractAnnotation>& annotation) override;
+		virtual void draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) override;
 	protected:
-		virtual void drawSetupState(const glat::ViewportState& state) const override;
-		virtual void drawSetupState(const glat::InternalState& state) const override;
-		virtual void drawSetupState(const glat::PathState& state) const override;
+		virtual void drawSetupState(const glannotations::ViewportState& state) const override;
+		virtual void drawSetupState(const glannotations::InternalState& state) const override;
+		virtual void drawSetupState(const glannotations::PathState& state) const override;
 
 		void initializeSVG(const char* pathString);
 		void drawPath() const;

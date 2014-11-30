@@ -5,10 +5,10 @@
 #include <glannotations/AbstractAnnotation.h>
 #include <glannotations/glannotations_api.h>
 
-namespace glat {
+namespace glannotations {
 	class GLANNOTATIONS_API FontAnnotation : public AbstractAnnotation {
 	public:
-		FontAnnotation(const globjects::ref_ptr<glat::AbstractState>& initialState, std::string text, std::string fontName, const glat::RendererFactory& factory = RendererFactory());
+		FontAnnotation(const globjects::ref_ptr<glannotations::AbstractState>& initialState, std::string text, std::string fontName, const glannotations::RendererFactory& factory = RendererFactory());
 
 		void setText(std::string text);
 		const std::string& getText() const;

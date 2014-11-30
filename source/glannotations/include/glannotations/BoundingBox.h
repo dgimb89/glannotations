@@ -5,7 +5,7 @@
 
 #include <glm/glm.hpp>
 
-namespace glat {
+namespace glannotations {
 	class GLANNOTATIONS_API BoundingBox {
 	public:
 		BoundingBox();

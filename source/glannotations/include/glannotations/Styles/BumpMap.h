@@ -4,9 +4,9 @@
 #include <glannotations/Styling.h>
 #include <glannotations/glannotations_api.h>
 
-namespace glat {
+namespace glannotations {
 	namespace Styles {
-		class GLANNOTATIONS_API BumpMap : public glat::Styling {
+		class GLANNOTATIONS_API BumpMap : public glannotations::Styling {
 		public:
 			BumpMap(float intensity);
 			float getIntensity() const;

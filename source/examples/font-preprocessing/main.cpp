@@ -7,7 +7,7 @@ int main(int argc, char* argv[]) {
 
 	// Distance Transform 
 	{
-		glat::PNGImage pngExample("glat.png");
+		glannotations::PNGImage pngExample("glat.png");
 		assert(!pngExample.isDirty());
 
 		pngExample.distanceTransform();
@@ -21,14 +21,14 @@ int main(int argc, char* argv[]) {
 		pngExample.saveDistanceField("glat_df.png");
 		assert(!pngExample.isDirty());
 
-		glat::PNGImage pngDFExample("glat_df.png");
+		glannotations::PNGImage pngDFExample("glat_df.png");
 		assert(!pngExample.isDirty());
 		assert(pngDFExample.getHeight() == 128);
 	}
 
 	// Glyphset Generation
 	{
-	glat::preprocessor::GlyphSetGenerator::generateGlyphset("calibri.ttf", 90, true);
+		glannotations::preprocessor::GlyphSetGenerator::generateGlyphset("calibri.ttf", 90, false);
 	}
 	
 }

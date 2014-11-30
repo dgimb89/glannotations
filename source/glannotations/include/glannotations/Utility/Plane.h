@@ -4,7 +4,7 @@
 
 #include <glannotations/glannotations_api.h>
 
-namespace glat {
+namespace glannotations {
 namespace Utility {
 	struct GLANNOTATIONS_API Plane {
 		Plane(glm::vec3 p, glm::vec3 n);

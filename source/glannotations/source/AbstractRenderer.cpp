@@ -1,8 +1,8 @@
 #include <glannotations/AbstractRenderer.h>
 
-glat::AbstractRenderer::AbstractRenderer(unsigned int globalMatricesBindingIndex) : m_globalMatricesBindingIndex(globalMatricesBindingIndex) {
+glannotations::AbstractRenderer::AbstractRenderer(unsigned int globalMatricesBindingIndex) : m_globalMatricesBindingIndex(globalMatricesBindingIndex) {
 }
 
-unsigned int glat::AbstractRenderer::getMatricesBindingIndex() const {
+unsigned int glannotations::AbstractRenderer::getMatricesBindingIndex() const {
 	return m_globalMatricesBindingIndex;
 }

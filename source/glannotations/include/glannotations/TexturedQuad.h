@@ -2,8 +2,8 @@
 
 #include <glannotations/AbstractTexturedPrimitive.h>
 
-namespace glat {
-	class TexturedQuad : public glat::AbstractTexturedPrimitive {
+namespace glannotations {
+	class TexturedQuad : public glannotations::AbstractTexturedPrimitive {
 	public:
 		TexturedQuad(std::shared_ptr<globjects::Texture> texture, bool isDistanceField);
 		

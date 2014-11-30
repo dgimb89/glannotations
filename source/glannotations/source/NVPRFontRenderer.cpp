@@ -12,8 +12,8 @@
 
 #include <string.h>
 
-void glat::NVPRFontRenderer::draw(const globjects::ref_ptr<glat::AbstractAnnotation>& annotation) {
-	glat::FontAnnotation* currentAnnotation = reinterpret_cast<glat::FontAnnotation*>(annotation.get());
+void glannotations::NVPRFontRenderer::draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) {
+	glannotations::FontAnnotation* currentAnnotation = reinterpret_cast<glannotations::FontAnnotation*>(annotation.get());
 	if (currentAnnotation->isDirty()) {
 		clearStencilBuffer();
 		initializeFont(currentAnnotation);
@@ -22,10 +22,10 @@ void glat::NVPRFontRenderer::draw(const globjects::ref_ptr<glat::AbstractAnnotat
 	m_currentText = currentAnnotation->getText().c_str();
 	m_textColor = currentAnnotation->getColor();
 
-	glat::NVPRRenderer::draw(annotation);
+	glannotations::NVPRRenderer::draw(annotation);
 }
 
-void glat::NVPRFontRenderer::drawSetupState(const glat::ViewportState& state) const {
+void glannotations::NVPRFontRenderer::drawSetupState(const glannotations::ViewportState& state) const {
 	gl::glDisable(gl::GL_DEPTH_TEST);
 	gl::GLfloat yMin, yMax;
 	size_t messageLen = strlen(m_currentText);
@@ -48,7 +48,7 @@ void glat::NVPRFontRenderer::drawSetupState(const glat::ViewportState& state) co
 	gl::glEnable(gl::GL_DEPTH_TEST);
 }
 
-void glat::NVPRFontRenderer::drawSetupState(const glat::InternalState& state) const {
+void glannotations::NVPRFontRenderer::drawSetupState(const glannotations::InternalState& state) const {
 	gl::GLfloat yMin, yMax;
 	size_t messageLen = strlen(m_currentText);
 	gl::GLfloat totalAdvance;
@@ -56,8 +56,8 @@ void glat::NVPRFontRenderer::drawSetupState(const glat::InternalState& state) co
 	gl::GLfloat underline_position, underline_thickness;
 	getTextStencelingDimensions(m_currentText, messageLen, xtranslate, totalAdvance, yMin, yMax, underline_position, underline_thickness);
 	
-	setupProjection(glat::getProjection(getMatricesBindingIndex()));
-	setupModelView(glat::getView(getMatricesBindingIndex()), state, totalAdvance, yMax - yMin);
+	setupProjection(glannotations::getProjection(getMatricesBindingIndex()));
+	setupModelView(glannotations::getView(getMatricesBindingIndex()), state, totalAdvance, yMax - yMin);
 
 	stencilThenCoverText(messageLen, xtranslate);
 	if (m_drawOutline) {
@@ -68,11 +68,11 @@ void glat::NVPRFontRenderer::drawSetupState(const glat::InternalState& state) co
 	cleanMatrixStacks();
 	}
 
-void glat::NVPRFontRenderer::drawSetupState(const glat::PathState& state) const {
+void glannotations::NVPRFontRenderer::drawSetupState(const glannotations::PathState& state) const {
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
-void glat::NVPRFontRenderer::initializeFont(glat::FontAnnotation* annotation) {
+void glannotations::NVPRFontRenderer::initializeFont(glannotations::FontAnnotation* annotation) {
 	gl::GLuint pathSettings = ~0;
 	gl::glPathCommandsNV(pathSettings, 0, NULL, 0, gl::GL_FLOAT, NULL);
 	gl::glPathParameteriNV(pathSettings, gl::GL_PATH_JOIN_STYLE_NV, (gl::GLint) gl::GL_ROUND_NV);
@@ -102,7 +102,7 @@ inline gl::PathRenderingMaskNV operator|(gl::PathRenderingMaskNV a, gl::PathRend
 	return static_cast<gl::PathRenderingMaskNV>(static_cast<int>(a) | static_cast<int>(b));
 }
 
-void glat::NVPRFontRenderer::getTextStencelingDimensions(const char* text, const size_t& messageLen, gl::GLfloat* &xtranslate, gl::GLfloat& totalAdvance, gl::GLfloat& yMin, gl::GLfloat& yMax,
+void glannotations::NVPRFontRenderer::getTextStencelingDimensions(const char* text, const size_t& messageLen, gl::GLfloat* &xtranslate, gl::GLfloat& totalAdvance, gl::GLfloat& yMin, gl::GLfloat& yMax,
 	gl::GLfloat& underline_position, gl::GLfloat& underline_thickness) const {
 	float font_data[4];
 	gl::GLfloat horizontalAdvance[256];
@@ -143,7 +143,7 @@ void glat::NVPRFontRenderer::getTextStencelingDimensions(const char* text, const
 	totalAdvance = xtranslate[2 * (messageLen - 1)] + horizontalAdvance[m_currentText[messageLen - 1]];
 }
 
-void glat::NVPRFontRenderer::stencilThenCoverText(const size_t& messageLen, const gl::GLfloat* xtranslate) const {
+void glannotations::NVPRFontRenderer::stencilThenCoverText(const size_t& messageLen, const gl::GLfloat* xtranslate) const {
 	gl::glPathCoverDepthFuncNV(gl::GL_ALWAYS);
 	// fill
 	gl::glStencilFillPathInstancedNV((gl::GLsizei)messageLen,
@@ -159,8 +159,8 @@ void glat::NVPRFontRenderer::stencilThenCoverText(const size_t& messageLen, cons
 		gl::GL_TRANSLATE_2D_NV, xtranslate);
 }
 
-void glat::NVPRFontRenderer::drawOutline(const size_t& messageLen, const gl::GLfloat* xtranslate, const glat::Styling* outline) const {
-	auto outlineStyle = reinterpret_cast<const glat::Styles::Outline*>(outline);
+void glannotations::NVPRFontRenderer::drawOutline(const size_t& messageLen, const gl::GLfloat* xtranslate, const glannotations::Styling* outline) const {
+	auto outlineStyle = reinterpret_cast<const glannotations::Styles::Outline*>(outline);
 	gl::glStencilStrokePathInstancedNV((gl::GLsizei)messageLen,
 		gl::GL_UNSIGNED_BYTE, m_currentText, m_pathBase,
 		1, ~0,
@@ -173,6 +173,6 @@ void glat::NVPRFontRenderer::drawOutline(const size_t& messageLen, const gl::GLf
 		gl::GL_TRANSLATE_2D_NV, xtranslate);
 }
 
-glat::NVPRFontRenderer::NVPRFontRenderer(gl::GLuint globalMatricesBindingIndex) : NVPRRenderer(globalMatricesBindingIndex) {
+glannotations::NVPRFontRenderer::NVPRFontRenderer(gl::GLuint globalMatricesBindingIndex) : NVPRRenderer(globalMatricesBindingIndex) {
 
 }

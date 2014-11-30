@@ -3,11 +3,11 @@
 #include <glannotations/AbstractAnnotation.h>
 #include <glannotations/glannotations_api.h>
 
-namespace glat {
+namespace glannotations {
 	class GLANNOTATIONS_API SVGAnnotation : public AbstractAnnotation {
 	public:
-		SVGAnnotation(const globjects::ref_ptr<glat::AbstractState>& initialState, const glat::RendererFactory& factory = RendererFactory());
-		SVGAnnotation(const globjects::ref_ptr<glat::AbstractState>& initialState, std::string svgPathString, unsigned width, unsigned height, const glat::RendererFactory& factory = RendererFactory());
+		SVGAnnotation(const globjects::ref_ptr<glannotations::AbstractState>& initialState, const glannotations::RendererFactory& factory = RendererFactory());
+		SVGAnnotation(const globjects::ref_ptr<glannotations::AbstractState>& initialState, std::string svgPathString, unsigned width, unsigned height, const glannotations::RendererFactory& factory = RendererFactory());
 
 		void setPathString(std::string svgPathString);
 		void setWidth(unsigned width);

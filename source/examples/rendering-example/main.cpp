@@ -57,7 +57,7 @@ public:
 
     virtual ~EventHandler()
 	{
-		glat::cleanUp();
+		glannotations::cleanUp();
 		delete m_camera;
     }
 
@@ -65,7 +65,7 @@ public:
     {
 		WindowEventHandler::initialize(window);
 
-		glat::RendererFactory dfFactory;
+		glannotations::RendererFactory dfFactory;
 		dfFactory.useNVpr(false);
 		dfFactory.setMatricesBindingIndex(2);
 
@@ -81,21 +81,21 @@ public:
 		m_camera->setEye(vec3(-17.f, 12.f, -15.0f));
 		m_camera->setUp(vec3(0, 1, 0));
 
-		m_building = new glat::Building(2);
-		m_building1 = new glat::Building(2);
-		m_building2 = new glat::Building(2);
-		m_building3 = new glat::Building(2);
-		m_building4 = new glat::Building(2);
-		m_building5 = new glat::Building(2);
-		m_building6 = new glat::Building(2);
-		m_building7 = new glat::Building(2);
-		m_building8 = new glat::Building(2);
-		m_building9 = new glat::Building(2);
-		m_building10 = new glat::Building(2);
-		m_building11 = new glat::Building(2);
-		m_building12 = new glat::Building(2);
-		m_building13 = new glat::Building(2);
-		m_building14 = new glat::Building(2);
+		m_building = new glannotations::Building(2);
+		m_building1 = new glannotations::Building(2);
+		m_building2 = new glannotations::Building(2);
+		m_building3 = new glannotations::Building(2);
+		m_building4 = new glannotations::Building(2);
+		m_building5 = new glannotations::Building(2);
+		m_building6 = new glannotations::Building(2);
+		m_building7 = new glannotations::Building(2);
+		m_building8 = new glannotations::Building(2);
+		m_building9 = new glannotations::Building(2);
+		m_building10 = new glannotations::Building(2);
+		m_building11 = new glannotations::Building(2);
+		m_building12 = new glannotations::Building(2);
+		m_building13 = new glannotations::Building(2);
+		m_building14 = new glannotations::Building(2);
 
 		float color;
 		srand(time(NULL));
@@ -139,25 +139,25 @@ public:
 		m_building13->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
 		m_building14->setColor(buildingColor + temp);
 
-		auto glatBox = new glat::FontAnnotation(new glat::InternalState(glm::vec3(10.01f, -4.f, 1.f), glm::vec3(10.01f, -4.f, -1.f), glm::vec3(10.01f, -2.75f, -1.f)), "Box", "calibri.ttf", dfFactory);
+		auto glatBox = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(10.01f, -4.f, 1.f), glm::vec3(10.01f, -4.f, -1.f), glm::vec3(10.01f, -2.75f, -1.f)), "Box", "calibri.ttf", dfFactory);
 		m_annotations.addAnnotation(glatBox);
 		glatBox->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
-		glatBox->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
-		glatBox->getState()->asInternalState().setExternalReference(new glat::BoxReference(glm::vec2(0.f, 0.f), glm::vec2(0.f, 2.75f), glm::vec3(-5.f, 0.f, 0.f), false));
+		glatBox->getState()->setStyling(new glannotations::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
+		glatBox->getState()->asInternalState().setExternalReference(new glannotations::BoxReference(glm::vec2(0.f, 0.f), glm::vec2(0.f, 2.75f), glm::vec3(-5.f, 0.f, 0.f), false));
 
-		auto cgsLabel = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-4.75f, 3.f, 12.f), glm::vec3(-1.25f, 3.f, 12.f), glm::vec3(-1.25f, 5.f, 12.f)), "Label", "calibri.ttf", dfFactory);
-		cgsLabel->getState()->asInternalState().setExternalReference(new glat::LabelReference(glm::vec3(0.f, -3.f, 10.f)));
+		auto cgsLabel = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(-4.75f, 3.f, 12.f), glm::vec3(-1.25f, 3.f, 12.f), glm::vec3(-1.25f, 5.f, 12.f)), "Label", "calibri.ttf", dfFactory);
+		cgsLabel->getState()->asInternalState().setExternalReference(new glannotations::LabelReference(glm::vec3(0.f, -3.f, 10.f)));
 		m_annotations.addAnnotation(cgsLabel);
 
-		auto hpicgs = new glat::FontAnnotation(new glat::InternalState(glm::vec3(2.f, -1.f, -1.01f), glm::vec3(2.f, 3.f, -1.01f), glm::vec3(4.f, 3.f, -1.01f)), "Internal", "calibri.ttf", dfFactory);
+		auto hpicgs = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(2.f, -1.f, -1.01f), glm::vec3(2.f, 3.f, -1.01f), glm::vec3(4.f, 3.f, -1.01f)), "Internal", "calibri.ttf", dfFactory);
 		m_annotations.addAnnotation(hpicgs);
 		hpicgs->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
-		hpicgs->getState()->setStyling(new glat::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
+		hpicgs->getState()->setStyling(new glannotations::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
 
-		m_annotations.addAnnotation(new glat::PNGAnnotation(new glat::InternalState(glm::vec3(-2.f, -4.f, 2.f), glm::vec3(-2.f, -4.f, 7.f), glm::vec3(-2.f, 1.0f, 7.f)), "hpi.png", dfFactory));
+		m_annotations.addAnnotation(new glannotations::PNGAnnotation(new glannotations::InternalState(glm::vec3(-2.f, -4.f, 2.f), glm::vec3(-2.f, -4.f, 7.f), glm::vec3(-2.f, 1.0f, 7.f)), "hpi.png", dfFactory));
 
-		m_annotations.addAnnotation(new glat::FontAnnotation(new glat::ViewportState(glm::vec2(0.4f, -1.f), glm::vec2(0.9f, -0.7f)), "Viewport", "calibri.ttf", dfFactory));
-		// m_hpilogo->addState(new glat::ViewportState(glm::vec2(-.25f, -.5f), glm::vec2(0.25f, 0.5f)));
+		m_annotations.addAnnotation(new glannotations::FontAnnotation(new glannotations::ViewportState(glm::vec2(0.4f, -1.f), glm::vec2(0.9f, -0.7f)), "Viewport", "calibri.ttf", dfFactory));
+		// m_hpilogo->addState(new glannotations::ViewportState(glm::vec2(-.25f, -.5f), glm::vec2(0.25f, 0.5f)));
 
         window.addTimer(0, 0, false);
 
@@ -174,11 +174,11 @@ public:
 
     void cameraChanged()
     {
-		glat::setView(m_camera->view(), 2);
-		glat::setProjection(m_camera->projection(), 2);
-		glat::setViewport(m_camera->viewport(), 2);
+		glannotations::setView(m_camera->view(), 2);
+		glannotations::setProjection(m_camera->projection(), 2);
+		glannotations::setViewport(m_camera->viewport(), 2);
 		float fovx = m_camera->aspectRatio() * m_camera->fovy();
-		glat::setViewFrustumVolume(glm::vec2(2 * m_camera->zNear() / std::sin(M_PI_2 - fovx) * std::sin(fovx),
+		glannotations::setViewFrustumVolume(glm::vec2(2 * m_camera->zNear() / std::sin(M_PI_2 - fovx) * std::sin(fovx),
 			2 * m_camera->zNear() / std::sin(M_PI_2 - m_camera->fovy()) * std::sin(m_camera->fovy())), 
 			2);
     }
@@ -327,23 +327,23 @@ protected:
 
 	AxisAlignedBoundingBox m_aabb;
 
-	glat::AnnotationGroup m_annotations;
+	glannotations::AnnotationGroup m_annotations;
 
-	globjects::ref_ptr<glat::Building> m_building;
-	globjects::ref_ptr<glat::Building> m_building1;
-	globjects::ref_ptr<glat::Building> m_building2;
-	globjects::ref_ptr<glat::Building> m_building3;
-	globjects::ref_ptr<glat::Building> m_building4;
-	globjects::ref_ptr<glat::Building> m_building5;
-	globjects::ref_ptr<glat::Building> m_building6;
-	globjects::ref_ptr<glat::Building> m_building7;
-	globjects::ref_ptr<glat::Building> m_building8;
-	globjects::ref_ptr<glat::Building> m_building9;
-	globjects::ref_ptr<glat::Building> m_building10;
-	globjects::ref_ptr<glat::Building> m_building11;
-	globjects::ref_ptr<glat::Building> m_building12;
-	globjects::ref_ptr<glat::Building> m_building13;
-	globjects::ref_ptr<glat::Building> m_building14;
+	globjects::ref_ptr<glannotations::Building> m_building;
+	globjects::ref_ptr<glannotations::Building> m_building1;
+	globjects::ref_ptr<glannotations::Building> m_building2;
+	globjects::ref_ptr<glannotations::Building> m_building3;
+	globjects::ref_ptr<glannotations::Building> m_building4;
+	globjects::ref_ptr<glannotations::Building> m_building5;
+	globjects::ref_ptr<glannotations::Building> m_building6;
+	globjects::ref_ptr<glannotations::Building> m_building7;
+	globjects::ref_ptr<glannotations::Building> m_building8;
+	globjects::ref_ptr<glannotations::Building> m_building9;
+	globjects::ref_ptr<glannotations::Building> m_building10;
+	globjects::ref_ptr<glannotations::Building> m_building11;
+	globjects::ref_ptr<glannotations::Building> m_building12;
+	globjects::ref_ptr<glannotations::Building> m_building13;
+	globjects::ref_ptr<glannotations::Building> m_building14;
 };
 
 

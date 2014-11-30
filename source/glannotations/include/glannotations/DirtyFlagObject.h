@@ -4,7 +4,7 @@
 
 #include <glannotations/glannotations_api.h>
 
-namespace glat {
+namespace glannotations {
 	class GLANNOTATIONS_API DirtyFlagObject : public globjects::Referenced {
 	public:
 		DirtyFlagObject();

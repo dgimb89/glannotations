@@ -4,7 +4,7 @@
 #include <glannotations/DirtyFlagObject.h>
 #include <glannotations/glannotations_api.h>
 
-namespace glat {
+namespace glannotations {
 	class GLANNOTATIONS_API AbstractDrawingPrimitive : public globjects::Referenced {
 	public:
 		virtual void draw() = 0;

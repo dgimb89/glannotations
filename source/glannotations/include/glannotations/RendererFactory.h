@@ -4,7 +4,7 @@
 
 #include <glannotations/glannotations_api.h>
 
-namespace glat {
+namespace glannotations {
 
 	// forward declaration 
 	class AbstractRenderer;
@@ -14,9 +14,9 @@ namespace glat {
 
 	class GLANNOTATIONS_API RendererFactory {
 	public:
-		globjects::ref_ptr<glat::AbstractRenderer> createRenderer(const glat::PNGAnnotation& annotation) const;
-		globjects::ref_ptr<glat::AbstractRenderer> createRenderer(const glat::FontAnnotation& annotation) const;
-		globjects::ref_ptr<glat::AbstractRenderer> createRenderer(const glat::SVGAnnotation& annotation) const;
+		globjects::ref_ptr<glannotations::AbstractRenderer> createRenderer(const glannotations::PNGAnnotation& annotation) const;
+		globjects::ref_ptr<glannotations::AbstractRenderer> createRenderer(const glannotations::FontAnnotation& annotation) const;
+		globjects::ref_ptr<glannotations::AbstractRenderer> createRenderer(const glannotations::SVGAnnotation& annotation) const;
 
 		void useNVpr(bool useNVpr);
 		bool usesNVpr() const;

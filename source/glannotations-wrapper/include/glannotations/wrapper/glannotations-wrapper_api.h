@@ -5,24 +5,24 @@
 // don't do it: http://support.microsoft.com/kb/q168958/
 
 #ifdef _MSC_VER
-#   define GLAT_WRAPPER_API_EXPORT_DECLARATION __declspec(dllexport)
-#   define GLAT_WRAPPER_API_IMPORT_DECLARATION __declspec(dllimport)
+#   define GLANNOTATIONS_WRAPPER_API_EXPORT_DECLARATION __declspec(dllexport)
+#   define GLANNOTATIONS_WRAPPER_API_IMPORT_DECLARATION __declspec(dllimport)
 #elif __GNUC__
-#	define GLAT_WRAPPER_API_EXPORT_DECLARATION __attribute__ ((visibility ("default")))
-#	define GLAT_WRAPPER_API_IMPORT_DECLARATION __attribute__ ((visibility ("default")))
+#	define GLANNOTATIONS_WRAPPER_API_EXPORT_DECLARATION __attribute__ ((visibility ("default")))
+#	define GLANNOTATIONS_WRAPPER_API_IMPORT_DECLARATION __attribute__ ((visibility ("default")))
 #else
-#   define GLAT_WRAPPER_API_EXPORT_DECLARATION
-#   define GLAT_WRAPPER_API_IMPORT_DECLARATION
+#   define GLANNOTATIONS_WRAPPER_API_EXPORT_DECLARATION
+#   define GLANNOTATIONS_WRAPPER_API_IMPORT_DECLARATION
 #endif
 
-#ifndef GLAT_WRAPPER_STATIC
-#ifdef GLAT_WRAPPER_EXPORTS
-#   define GLAT_WRAPPER_API GLAT_WRAPPER_API_EXPORT_DECLARATION
+#ifndef GLANNOTATIONS_WRAPPER_STATIC
+#ifdef GLANNOTATIONS_WRAPPER_EXPORTS
+#   define GLANNOTATIONS_WRAPPER_API GLANNOTATIONS_WRAPPER_API_EXPORT_DECLARATION
 #else
-#   define GLAT_WRAPPER_API GLAT_WRAPPER_API_IMPORT_DECLARATION
+#   define GLANNOTATIONS_WRAPPER_API GLANNOTATIONS_WRAPPER_API_IMPORT_DECLARATION
 #endif
 #else
-#   define GLAT_WRAPPER_API
+#   define GLANNOTATIONS_WRAPPER_API
 #endif
 
 #ifdef N_DEBUG
@@ -44,7 +44,7 @@
 
 
 /**
- * \namespace glat
+ * \namespace glannotations
  *
  * \brief Contains all the core classes that ... functionality.
  *

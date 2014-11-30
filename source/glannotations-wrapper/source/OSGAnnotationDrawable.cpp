@@ -3,32 +3,29 @@
 
 #include <glannotations/wrapper/OSGAnnotationDrawable.h>
 
-glat::wrapper::DrawableAnnotation::DrawableAnnotation() {
+glannotations::wrapper::DrawableAnnotation::DrawableAnnotation() {
 }
 
-glat::wrapper::DrawableAnnotation::DrawableAnnotation(const DrawableAnnotation& drawable, const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/) : osg::Drawable(drawable, copyop) {
+glannotations::wrapper::DrawableAnnotation::DrawableAnnotation(const DrawableAnnotation& drawable, const osg::CopyOp& copyop /*= osg::CopyOp::SHALLOW_COPY*/) : osg::Drawable(drawable, copyop) {
 	// ToDo : Make deep copy possible
 	setAnnotation(drawable.getAnnotation());
 }
 
-void glat::wrapper::DrawableAnnotation::drawImplementation(osg::RenderInfo&) const {
+void glannotations::wrapper::DrawableAnnotation::drawImplementation(osg::RenderInfo&) const {
 	if (m_annotation) {
-		// try hard ... but doesn't work ... todo
-		glPushAttrib(GL_ALL_ATTRIB_BITS);
 		m_annotation->draw();
-		glPopAttrib();
 	}
 }
 
-osg::BoundingBox glat::wrapper::DrawableAnnotation::computeBound() const {
-	glat::BoundingBox bb = m_annotation->getRenderState()->getBoundingBox();
+osg::BoundingBox glannotations::wrapper::DrawableAnnotation::computeBound() const {
+	glannotations::BoundingBox bb = m_annotation->getRenderState()->getBoundingBox();
 	return osg::BoundingBox(bb.getLLF().x, bb.getLLF().y, bb.getLLF().z, bb.getURB().x, bb.getURB().y, bb.getURB().z);
 }
 
-void glat::wrapper::DrawableAnnotation::setAnnotation(globjects::ref_ptr<glat::AbstractAnnotation> annotation) {
+void glannotations::wrapper::DrawableAnnotation::setAnnotation(globjects::ref_ptr<glannotations::AbstractAnnotation> annotation) {
 	m_annotation = annotation;
 }
 
-const globjects::ref_ptr<glat::AbstractAnnotation>& glat::wrapper::DrawableAnnotation::getAnnotation() const {
+const globjects::ref_ptr<glannotations::AbstractAnnotation>& glannotations::wrapper::DrawableAnnotation::getAnnotation() const {
 	return m_annotation;
 }

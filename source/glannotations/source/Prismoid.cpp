@@ -60,7 +60,7 @@ static const char* texturingFragShader = R"(
 				}
 				)";
 
-void glat::Prismoid::draw() {
+void glannotations::Prismoid::draw() {
 	m_program->release();
 	gl::glDisable(gl::GL_CULL_FACE);
 
@@ -71,14 +71,14 @@ void glat::Prismoid::draw() {
 	gl::glEnable(gl::GL_CULL_FACE);
 }
 
-void glat::Prismoid::setPosition(const glm::vec3& a, const glm::vec3& b) {
+void glannotations::Prismoid::setPosition(const glm::vec3& a, const glm::vec3& b) {
 	std::vector<glm::vec3> vertexArray{ a, b };
 	m_positions->setData(vertexArray, gl::GL_STREAM_DRAW);
 	m_vao->binding(0)->setBuffer(m_positions, 0, sizeof(glm::vec3));
 }
 
-glat::Prismoid::Prismoid() {
-	setupShader(glat::ShaderSources::passThroughVS, geomShader, texturingFragShader);
+glannotations::Prismoid::Prismoid() {
+	setupShader(glannotations::ShaderSources::passThroughVS, geomShader, texturingFragShader);
 	m_program->link();
 	// Position
 	m_vao->binding(0)->setAttribute(0);
@@ -88,11 +88,11 @@ glat::Prismoid::Prismoid() {
 	setLabelStrength(0.07f);
 }
 
-void glat::Prismoid::setReference(const glm::vec3& reference) {
+void glannotations::Prismoid::setReference(const glm::vec3& reference) {
 	m_program->setUniform("reference", reference);
 }
 
-void glat::Prismoid::setLabelStrength(float strength) {
+void glannotations::Prismoid::setLabelStrength(float strength) {
 	m_program->setUniform("labelStrength", strength);
 }
 

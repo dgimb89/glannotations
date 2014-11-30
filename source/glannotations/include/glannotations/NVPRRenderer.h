@@ -5,11 +5,11 @@
 #include <glannotations/AbstractRenderer.h>
 #include <glannotations/Styling.h>
 
-namespace glat {
+namespace glannotations {
 	class InternalState;
-	class NVPRRenderer : public glat::AbstractRenderer {
+	class NVPRRenderer : public glannotations::AbstractRenderer {
 	public:
-		virtual void draw(const globjects::ref_ptr<glat::AbstractAnnotation>& annotation);
+		virtual void draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation);
 
 	protected:
 		NVPRRenderer(gl::GLuint globalMatricesBindingIndex);
@@ -18,7 +18,7 @@ namespace glat {
 		virtual void setupProjection(glm::mat4 viewProjection) const;
 		void setupModelView(glm::mat4 view, const InternalState& state, float stencilWidth, float stencilHeight) const;
 		void pushEmptyModelViewMatrix() const;
-		void setupOutline(gl::GLuint& pathSettings, const glat::Styling* outline, float scaleFactor = 1.f);
+		void setupOutline(gl::GLuint& pathSettings, const glannotations::Styling* outline, float scaleFactor = 1.f);
 
 		void cleanMatrixStacks() const;
 

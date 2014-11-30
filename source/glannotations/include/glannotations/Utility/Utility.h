@@ -5,7 +5,7 @@
 #include <glm/glm.hpp>
 #include <limits>
 
-namespace glat {
+namespace glannotations {
 namespace Utility {
 	template <typename genType>
 	static void computeNextNearestPoint(unsigned numPoints, const genType& reference, std::vector<genType>& points, std::vector<genType>& writeBack) {

@@ -7,27 +7,27 @@
 #include "ShaderSources.hpp"
 #include <string.h>
 
-glat::DrawingPrimitiveBase::DrawingPrimitiveBase() {
+glannotations::DrawingPrimitiveBase::DrawingPrimitiveBase() {
 	m_vao = new globjects::VertexArray();
 	m_positions = new globjects::Buffer();
 }
 
-void glat::DrawingPrimitiveBase::setColor(glm::vec4 color) {
+void glannotations::DrawingPrimitiveBase::setColor(glm::vec4 color) {
 	m_program->setUniform("color", color);
 }
 
-glat::DrawingPrimitiveBase::~DrawingPrimitiveBase() {
+glannotations::DrawingPrimitiveBase::~DrawingPrimitiveBase() {
 	m_program->release();
 }
 
-void glat::DrawingPrimitiveBase::setupShader(const char* vertShader, const char* geomShader, const char* fragShader) {
+void glannotations::DrawingPrimitiveBase::setupShader(const char* vertShader, const char* geomShader, const char* fragShader) {
 	m_program = new globjects::Program;
 	m_program->attach(	globjects::Shader::fromString(gl::GL_VERTEX_SHADER, vertShader), 
 						finalizeGeometryShader(geomShader),
 						globjects::Shader::fromString(gl::GL_FRAGMENT_SHADER, fragShader));
 }
 
-void glat::DrawingPrimitiveBase::setBindingIndex(unsigned int bindingIndex) {
+void glannotations::DrawingPrimitiveBase::setBindingIndex(unsigned int bindingIndex) {
 	// we need to link before binding uniform blocks
 	m_program->link();
 
@@ -36,8 +36,8 @@ void glat::DrawingPrimitiveBase::setBindingIndex(unsigned int bindingIndex) {
 	}
 }
 
-globjects::Shader* glat::DrawingPrimitiveBase::finalizeGeometryShader(const char* shader) {
+globjects::Shader* glannotations::DrawingPrimitiveBase::finalizeGeometryShader(const char* shader) {
 	globjects::StringTemplate* shaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(shader, strlen(shader)));
-	shaderSource->replace("### MATRIX_BLOCK ###", glat::ShaderSources::matrixUniformBlock);
+	shaderSource->replace("### MATRIX_BLOCK ###", glannotations::ShaderSources::matrixUniformBlock);
 	return new globjects::Shader(gl::GL_GEOMETRY_SHADER, shaderSource);
 }

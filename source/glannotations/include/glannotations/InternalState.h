@@ -5,9 +5,9 @@
 #include <glannotations/ReferenceableState.h>
 #include <glannotations/glannotations_api.h>
 
-namespace glat {
+namespace glannotations {
 
-	class GLANNOTATIONS_API InternalState : public glat::ReferenceableState {
+	class GLANNOTATIONS_API InternalState : public glannotations::ReferenceableState {
 	public:
 		// lower left, lower right, upper right
 		InternalState(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur);
@@ -19,10 +19,10 @@ namespace glat {
 		const glm::vec3& getLR() const;
 
 		virtual bool isValid() const override;
-		virtual glat::BoundingBox getBoundingBox() override;
+		virtual glannotations::BoundingBox getBoundingBox() override;
 
-		virtual globjects::ref_ptr<glat::AbstractState> clone() const;
-		virtual void setExternalReference(const globjects::ref_ptr<glat::AbstractExternalReference>& reference);
+		virtual globjects::ref_ptr<glannotations::AbstractState> clone() const;
+		virtual void setExternalReference(const globjects::ref_ptr<glannotations::AbstractExternalReference>& reference);
 
 	protected:
 		virtual void draw(const AbstractRenderer& renderer) override;

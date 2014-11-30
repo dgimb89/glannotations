@@ -8,11 +8,11 @@ if(OPTION_BUILD_EXAMPLES)
 
 	add_subdirectory(rendering-example)
 
-	if (OPTION_BUILD_GLAT_PREPROCESSOR)
+	if (OPTION_BUILD_GLANNOTATIONS_PREPROCESSOR)
 		add_subdirectory(font-preprocessing)
 	endif()
 
-	if (OPTION_BUILD_GLAT_WRAPPER)
+	if (OPTION_BUILD_GLANNOTATIONS_WRAPPER)
 		add_subdirectory(osg-wrapper)
 	endif()
 endif()

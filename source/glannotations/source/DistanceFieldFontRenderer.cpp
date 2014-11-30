@@ -9,7 +9,7 @@
 #include <glannotations/QuadStrip.h>
 #include <glannotations/GlyphSetConfig.h>
 
-void glat::DistanceFieldFontRenderer::draw(const globjects::ref_ptr<glat::AbstractAnnotation>& annotation) {
+void glannotations::DistanceFieldFontRenderer::draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) {
 	FontAnnotation* currentAnnotation = dynamic_cast<FontAnnotation*>(annotation.get());
 
 	gl::glEnable(gl::GL_BLEND);
@@ -28,13 +28,13 @@ void glat::DistanceFieldFontRenderer::draw(const globjects::ref_ptr<glat::Abstra
 	gl::glDisable(gl::GL_BLEND);
 }
 
-glat::DistanceFieldFontRenderer::DistanceFieldFontRenderer(gl::GLuint matricesBindingIndex) : AbstractPrimitiveRenderer(matricesBindingIndex) {
+glannotations::DistanceFieldFontRenderer::DistanceFieldFontRenderer(gl::GLuint matricesBindingIndex) : AbstractPrimitiveRenderer(matricesBindingIndex) {
 
 }
 
-void glat::DistanceFieldFontRenderer::setupGlyphQuadstrip(glat::FontAnnotation* annotation) {
-	glat::GlyphSetConfig glyphConfig(annotation->getFontName());
-	auto quadStrip = new QuadStrip(glat::TextureManager::getInstance().getTexture(glyphConfig.getGlyphsetImageName()), m_globalMatricesBindingIndex, true);
+void glannotations::DistanceFieldFontRenderer::setupGlyphQuadstrip(glannotations::FontAnnotation* annotation) {
+	glannotations::GlyphSetConfig glyphConfig(annotation->getFontName());
+	auto quadStrip = new QuadStrip(glannotations::TextureManager::getInstance().getTexture(glyphConfig.getGlyphsetImageName()), m_globalMatricesBindingIndex, true);
 	for (unsigned i = 0; i < annotation->getText().length(); ++i) {
 		quadStrip->addQuad(glyphConfig.getGlyphConfigForCharcode(annotation->getText().at(i))._ll,
 			glyphConfig.getGlyphConfigForCharcode(annotation->getText().at(i))._advance);

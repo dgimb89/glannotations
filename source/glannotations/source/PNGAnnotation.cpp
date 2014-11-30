@@ -1,38 +1,38 @@
 #include <glannotations/PNGAnnotation.h>
 
-glat::PNGAnnotation::PNGAnnotation(const globjects::ref_ptr<glat::AbstractState>& initialState, std::string fileName, const glat::RendererFactory& factory /*= RendererFactory()*/) 
-	: glat::AbstractAnnotation(initialState) {
+glannotations::PNGAnnotation::PNGAnnotation(const globjects::ref_ptr<glannotations::AbstractState>& initialState, std::string fileName, const glannotations::RendererFactory& factory /*= RendererFactory()*/) 
+	: glannotations::AbstractAnnotation(initialState) {
 	m_fileName = fileName;
 	m_renderer = factory.createRenderer(*this);
 }
 
-void glat::PNGAnnotation::setPNGFile(std::string filename, bool isDistanceField /*= false*/) {
+void glannotations::PNGAnnotation::setPNGFile(std::string filename, bool isDistanceField /*= false*/) {
 	setDirty(true);
 	m_fileName = filename;
 	m_distanceField = isDistanceField;
 }
 
-void glat::PNGAnnotation::setAsDistanceField(glm::vec4 renderColor) {
+void glannotations::PNGAnnotation::setAsDistanceField(glm::vec4 renderColor) {
 	setDirty(true);
 	m_distanceField = true;
 	m_color = renderColor;
 	// Todo: update / new renderer
 }
 
-void glat::PNGAnnotation::setAsNoDistanceField() {
+void glannotations::PNGAnnotation::setAsNoDistanceField() {
 	setDirty(true);
 	m_distanceField = false;
 	// Todo: update / new renderer
 }
 
-glm::vec4 glat::PNGAnnotation::getColor() const {
+glm::vec4 glannotations::PNGAnnotation::getColor() const {
 	return m_color;
 }
 
-bool glat::PNGAnnotation::isDistanceField() const {
+bool glannotations::PNGAnnotation::isDistanceField() const {
 	return m_distanceField;
 }
 
-const std::string& glat::PNGAnnotation::getFileName() const {
+const std::string& glannotations::PNGAnnotation::getFileName() const {
 	return m_fileName;
 }

@@ -2,8 +2,8 @@
 
 #include <glannotations/DrawingPrimitiveBase.h>
 
-namespace glat {
-	class GLANNOTATIONS_API Box : public glat::DrawingPrimitiveBase {
+namespace glannotations {
+	class GLANNOTATIONS_API Box : public glannotations::DrawingPrimitiveBase {
 	public:
 		Box();
 		virtual void draw();

@@ -6,9 +6,9 @@
 #include <glannotations/Styling.h>
 #include <glannotations/glannotations_api.h>
 
-namespace glat {
+namespace glannotations {
 	namespace Styles {
-		class GLANNOTATIONS_API Outline : public glat::Styling {
+		class GLANNOTATIONS_API Outline : public glannotations::Styling {
 		public:
 			Outline(float width, glm::vec3 rgbColor);
 			float getWidth() const;

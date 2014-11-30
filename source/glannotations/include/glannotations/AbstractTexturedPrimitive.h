@@ -5,8 +5,8 @@
 
 #include <glannotations/DrawingPrimitiveBase.h>
 
-namespace glat {
-	class AbstractTexturedPrimitive : public glat::DrawingPrimitiveBase {
+namespace glannotations {
+	class AbstractTexturedPrimitive : public glannotations::DrawingPrimitiveBase {
 	public:
 		AbstractTexturedPrimitive(std::shared_ptr<globjects::Texture> texture);
 		virtual bool setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur) = 0;

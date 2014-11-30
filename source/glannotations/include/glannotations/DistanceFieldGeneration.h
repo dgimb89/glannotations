@@ -4,19 +4,19 @@
 
 #include <glannotations/PNGImage.h>
 
-namespace glat {
+namespace glannotations {
 	namespace DistanceFieldGeneration {
-		globjects::ref_ptr<glat::PNGImage> distanceTransform(const glat::PNGImage& original);
-		globjects::ref_ptr<glat::PNGImage> scaleImageToWidth(const glat::PNGImage& original, unsigned scaledWidth);
-		globjects::ref_ptr<glat::PNGImage> scaleImageToHeight(const glat::PNGImage& original, unsigned scaledHeight);
-		globjects::ref_ptr<glat::PNGImage> scaleImage(const glat::PNGImage& original, float scaleFactor);
+		globjects::ref_ptr<glannotations::PNGImage> distanceTransform(const glannotations::PNGImage& original);
+		globjects::ref_ptr<glannotations::PNGImage> scaleImageToWidth(const glannotations::PNGImage& original, unsigned scaledWidth);
+		globjects::ref_ptr<glannotations::PNGImage> scaleImageToHeight(const glannotations::PNGImage& original, unsigned scaledHeight);
+		globjects::ref_ptr<glannotations::PNGImage> scaleImage(const glannotations::PNGImage& original, float scaleFactor);
 
-		glat::PNGImage::colorVal_t colorValueFromFloat(double val);
-		globjects::ref_ptr<glat::PNGImage> bilinearResize(const glat::PNGImage& inImage, unsigned scaledWidth, unsigned scaledHeight);
-		globjects::ref_ptr<glat::PNGImage> bicubicResize(const glat::PNGImage& inImage, unsigned scaledWidth, unsigned scaledHeight);
+		glannotations::PNGImage::colorVal_t colorValueFromFloat(double val);
+		globjects::ref_ptr<glannotations::PNGImage> bilinearResize(const glannotations::PNGImage& inImage, unsigned scaledWidth, unsigned scaledHeight);
+		globjects::ref_ptr<glannotations::PNGImage> bicubicResize(const glannotations::PNGImage& inImage, unsigned scaledWidth, unsigned scaledHeight);
 
 		namespace detail {
-			bool selfColoredNeighborsNot(const glat::PNGImage& original, unsigned x, unsigned y);
+			bool selfColoredNeighborsNot(const glannotations::PNGImage& original, unsigned x, unsigned y);
 		}
 	}
 }

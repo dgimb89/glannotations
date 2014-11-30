@@ -7,9 +7,9 @@
 #include <glannotations/glannotations_api.h>
 #include <glannotations/DirtyFlagObject.h>
 
-namespace glat {
+namespace glannotations {
 
-	class GLANNOTATIONS_API GlyphSetConfig : public glat::DirtyFlagObject {
+	class GLANNOTATIONS_API GlyphSetConfig : public glannotations::DirtyFlagObject {
 	public:
 		struct GLANNOTATIONS_API GlyphConfig {
 			glm::vec2 _ll, _advance;
@@ -23,18 +23,18 @@ namespace glat {
 		unsigned short getNumGlyphs();
 		void setStartGlyph(unsigned short startGlyph);
 		unsigned short getStartGlyph();
-		void setNormalizedGlyphConfigs(const std::vector<glat::GlyphSetConfig::GlyphConfig>& glyphConfigs);
+		void setNormalizedGlyphConfigs(const std::vector<glannotations::GlyphSetConfig::GlyphConfig>& glyphConfigs);
 
 		/// normalizes given configs by dividing every glyph coordinates by maxWidth resp. maxHeight
-		void setGlyphConfigs(const std::vector<glat::GlyphSetConfig::GlyphConfig>& glyphConfigs, double maxWidth, double maxHeight);
-		const std::vector<glat::GlyphSetConfig::GlyphConfig>& getGlyphConfigs();
-		const glat::GlyphSetConfig::GlyphConfig& getGlyphConfig(unsigned short numGlyph);
-		const glat::GlyphSetConfig::GlyphConfig& getGlyphConfigForCharcode(unsigned short charCode);
+		void setGlyphConfigs(const std::vector<glannotations::GlyphSetConfig::GlyphConfig>& glyphConfigs, double maxWidth, double maxHeight);
+		const std::vector<glannotations::GlyphSetConfig::GlyphConfig>& getGlyphConfigs();
+		const glannotations::GlyphSetConfig::GlyphConfig& getGlyphConfig(unsigned short numGlyph);
+		const glannotations::GlyphSetConfig::GlyphConfig& getGlyphConfigForCharcode(unsigned short charCode);
 
 	protected: 
 		std::string getFileContent();
 		unsigned short m_startGlyph = 0;
-		std::vector<glat::GlyphSetConfig::GlyphConfig> m_glyphConfigs;
+		std::vector<glannotations::GlyphSetConfig::GlyphConfig> m_glyphConfigs;
 		std::string m_fontFileName;
 	};
 }

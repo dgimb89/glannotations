@@ -12,7 +12,7 @@
 
 #define GLYPH_CONFIG "glyphconfig.json"
 
-glat::GlyphSetConfig::GlyphSetConfig(std::string fontFileName) {
+glannotations::GlyphSetConfig::GlyphSetConfig(std::string fontFileName) {
 	if (fontFileName == "")
 		throw std::runtime_error("Font file can not be empty!");
 
@@ -27,7 +27,7 @@ glat::GlyphSetConfig::GlyphSetConfig(std::string fontFileName) {
 		m_startGlyph = fontObject["startGlyph"].GetUint();
 		const rapidjson::Value& glyphConfigs = fontObject["glyphs"];
 		for (rapidjson::SizeType i = 0; i < glyphConfigs.Size(); ++i) {
-			m_glyphConfigs.push_back(	glat::GlyphSetConfig::GlyphConfig(
+			m_glyphConfigs.push_back(	glannotations::GlyphSetConfig::GlyphConfig(
 											glyphConfigs[i]["llf_x"].GetDouble(),
 											glyphConfigs[i]["llf_y"].GetDouble(),
 											glyphConfigs[i]["advance_x"].GetDouble(),
@@ -37,7 +37,7 @@ glat::GlyphSetConfig::GlyphSetConfig(std::string fontFileName) {
 	}
 }
 
-void glat::GlyphSetConfig::serialize() {
+void glannotations::GlyphSetConfig::serialize() {
 	if (!isDirty()) return;
 	rapidjson::Document document;
 	document.Parse<0>(getFileContent().c_str());
@@ -86,7 +86,7 @@ void glat::GlyphSetConfig::serialize() {
 	setDirty(false);
 }
 
-std::string glat::GlyphSetConfig::getFileContent() {
+std::string glannotations::GlyphSetConfig::getFileContent() {
 	std::string configFile = RESOURCES_DIR;
 	configFile += GLYPH_CONFIG;
 	std::ifstream in(configFile);
@@ -100,33 +100,33 @@ std::string glat::GlyphSetConfig::getFileContent() {
 	return buffer.str();
 }
 
-unsigned short glat::GlyphSetConfig::getNumGlyphs() {
+unsigned short glannotations::GlyphSetConfig::getNumGlyphs() {
 	return m_glyphConfigs.size();
 }
 
-void glat::GlyphSetConfig::setStartGlyph(unsigned short startGlyph) {
+void glannotations::GlyphSetConfig::setStartGlyph(unsigned short startGlyph) {
 	setDirty(true);
 	m_startGlyph = startGlyph;
 }
 
-unsigned short glat::GlyphSetConfig::getStartGlyph() {
+unsigned short glannotations::GlyphSetConfig::getStartGlyph() {
 	return m_startGlyph;
 }
 
-void glat::GlyphSetConfig::setNormalizedGlyphConfigs(const std::vector<GlyphConfig>& glyphConfigs) {
+void glannotations::GlyphSetConfig::setNormalizedGlyphConfigs(const std::vector<GlyphConfig>& glyphConfigs) {
 	setDirty(true);
 	m_glyphConfigs = glyphConfigs;
 }
 
-const std::vector<glat::GlyphSetConfig::GlyphConfig>& glat::GlyphSetConfig::getGlyphConfigs() {
+const std::vector<glannotations::GlyphSetConfig::GlyphConfig>& glannotations::GlyphSetConfig::getGlyphConfigs() {
 	return m_glyphConfigs;
 }
 
-const glat::GlyphSetConfig::GlyphConfig& glat::GlyphSetConfig::getGlyphConfig(unsigned short numGlyph) {
+const glannotations::GlyphSetConfig::GlyphConfig& glannotations::GlyphSetConfig::getGlyphConfig(unsigned short numGlyph) {
 	return m_glyphConfigs.at(numGlyph);
 }
 
-void glat::GlyphSetConfig::setGlyphConfigs(const std::vector<GlyphConfig>& glyphConfigs, double maxWidth, double maxHeight) {
+void glannotations::GlyphSetConfig::setGlyphConfigs(const std::vector<GlyphConfig>& glyphConfigs, double maxWidth, double maxHeight) {
 	setDirty(true);
 	setNormalizedGlyphConfigs(glyphConfigs);
 	for (auto& glyphConfig : m_glyphConfigs) {
@@ -137,15 +137,15 @@ void glat::GlyphSetConfig::setGlyphConfigs(const std::vector<GlyphConfig>& glyph
 	}
 }
 
-const glat::GlyphSetConfig::GlyphConfig& glat::GlyphSetConfig::getGlyphConfigForCharcode(unsigned short charCode) {
+const glannotations::GlyphSetConfig::GlyphConfig& glannotations::GlyphSetConfig::getGlyphConfigForCharcode(unsigned short charCode) {
 	return getGlyphConfig(charCode - m_startGlyph);
 }
 
-std::string glat::GlyphSetConfig::getGlyphsetImageName() const {
+std::string glannotations::GlyphSetConfig::getGlyphsetImageName() const {
 	return std::string(m_fontFileName + ".png");
 }
 
-glat::GlyphSetConfig::GlyphConfig::GlyphConfig(glm::float_t ll_x, glm::float_t ll_y, glm::float_t advance_x, glm::float_t advance_y) {
+glannotations::GlyphSetConfig::GlyphConfig::GlyphConfig(glm::float_t ll_x, glm::float_t ll_y, glm::float_t advance_x, glm::float_t advance_y) {
 	_ll = glm::highp_vec2(ll_x, ll_y);
 	_advance = glm::highp_vec2(advance_x, advance_y);
 }

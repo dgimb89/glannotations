@@ -4,8 +4,8 @@
 #include <glannotations/Prismoid.h>
 #include <glannotations/glannotations_api.h>
 
-namespace glat {
-	class GLANNOTATIONS_API LabelReference : public glat::AbstractExternalReference {
+namespace glannotations {
+	class GLANNOTATIONS_API LabelReference : public glannotations::AbstractExternalReference {
 	public:
 		LabelReference(glm::vec3 reference);
 	protected:
@@ -18,7 +18,7 @@ namespace glat {
 		void updatePrismoid(const glm::vec3& a, const glm::vec3& b);
 
 	private:
-		globjects::ref_ptr<glat::Prismoid> m_prismoid;
+		globjects::ref_ptr<glannotations::Prismoid> m_prismoid;
 		glm::vec3 m_annotationCenter;
 		float m_width, m_height;
 	};

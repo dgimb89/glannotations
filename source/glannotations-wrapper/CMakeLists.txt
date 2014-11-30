@@ -1,3 +1,9 @@
+find_package(OpenSceneGraph REQUIRED)
+if (NOT OSG_FOUND)
+    message(WARNING "glannotations osg-wrapper disabled: No OSG found")
+    
+    return ()
+endif ()
 
 set(target glannotations-wrapper)
 message(STATUS "Lib ${target}")
@@ -6,41 +12,37 @@ message(STATUS "Lib ${target}")
 # External libraries
 #
 
-find_package(OpenSceneGraph REQUIRED)
-find_package(GLOBJECTS REQUIRED)
-find_package(GLBinding REQUIRED)
+find_package(OpenGL REQUIRED)
+find_package(GLM REQUIRED)
+find_package(glbinding REQUIRED)
+find_package(globjects REQUIRED)
+find_package(gloperate REQUIRED)
 
 #
 # Libraries
 #
 
-
-include_directories(
-    BEFORE
-    ${GLBINDING_INCLUDES}
-    ${CMAKE_SOURCE_DIR}/source/glannotations/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${GLOBJECTS_INCLUDES}
-    ${GLM_INCLUDE_DIR}
-)
-
 set(libs
+    ${GLBINDING_LIBRARIES}
+    ${GLOBJECTS_LIBRARIES}
+    ${GLOPERATE_LIBRARIES}
+    ${OPENSCENEGRAPH_LIBRARIES}
 	glannotations
 )
 
 #
 # Includes
 #
-if(OSG_FOUND)
-	include_directories(
-		${OPENSCENEGRAPH_INCLUDE_DIRS}
-	)
-	set(libs
-		${libs}
-		${OPENSCENEGRAPH_LIBRARIES}
-    	${GLOBJECTS_LIBRARIES}
-	)
-endif()
+include_directories(
+    BEFORE
+    ${CMAKE_SOURCE_DIR}/source/glannotations/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${GLM_INCLUDE_DIR}
+    ${GLBINDING_INCLUDES}
+    ${GLOBJECTS_INCLUDES}
+    ${GLOPERATE_INCLUDES}
+    ${OPENSCENEGRAPH_INCLUDE_DIRS}
+)
 
 #
 # Compiler definitions
@@ -59,12 +61,12 @@ add_definitions("-DGLM_FORCE_RADIANS")
 # Sources
 #
 
-set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/glannotations/wrapper")
+set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/glannotations")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(api_includes
-    ${include_path}/glannotations-wrapper_api.h
-	${include_path}/OSGAnnotationDrawable.h
+    ${include_path}/wrapper/glannotations-wrapper_api.h
+	${include_path}/wrapper/OSGAnnotationDrawable.h
 )
 
 set(sources

@@ -1,14 +1,14 @@
 #include <glannotations/DirtyFlagObject.h>
 
-bool glat::DirtyFlagObject::isDirty() const {
+bool glannotations::DirtyFlagObject::isDirty() const {
 	return m_dirty;
 }
 
-void glat::DirtyFlagObject::setDirty(bool dirty) const {
+void glannotations::DirtyFlagObject::setDirty(bool dirty) const {
 	m_dirty = dirty;
 }
 
-glat::DirtyFlagObject::DirtyFlagObject()
+glannotations::DirtyFlagObject::DirtyFlagObject()
 	: m_dirty(true) {
 }
 

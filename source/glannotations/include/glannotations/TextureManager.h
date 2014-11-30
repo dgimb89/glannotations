@@ -7,7 +7,7 @@
 #include <map>
 #include <memory>
 
-namespace glat {
+namespace glannotations {
 
 	// Wrapper to allow management via TextureManager
 	class ManagedTexture : public globjects::Texture {
@@ -23,7 +23,7 @@ namespace glat {
 		glm::ivec2 getTextureSize(std::string fileName);
 	protected:
 		TextureManager();
-		std::map<std::string, std::weak_ptr<glat::ManagedTexture>> m_textures;
+		std::map<std::string, std::weak_ptr<glannotations::ManagedTexture>> m_textures;
 
 		static std::unique_ptr<TextureManager> _instance;
 	};

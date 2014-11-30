@@ -5,12 +5,12 @@
 #include <glannotations/BSpline.h>
 #include <glannotations/glannotations_api.h>
 
-namespace glat {
-	class GLANNOTATIONS_API PathState : public glat::ReferenceableState {
+namespace glannotations {
+	class GLANNOTATIONS_API PathState : public glannotations::ReferenceableState {
 	public:
 		virtual bool isValid();
-		virtual globjects::ref_ptr<glat::AbstractState> clone();
-		virtual void setExternalReference(const globjects::ref_ptr<glat::AbstractExternalReference>& reference);
+		virtual globjects::ref_ptr<glannotations::AbstractState> clone();
+		virtual void setExternalReference(const globjects::ref_ptr<glannotations::AbstractExternalReference>& reference);
 
 	protected:
 		virtual void draw(const AbstractRenderer& renderer) override;
@@ -20,7 +20,7 @@ namespace glat {
 		virtual globjects::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix);
 
 	private:
-		std::shared_ptr<glat::BSpline> m_path;
-		globjects::ref_ptr<glat::AbstractExternalReference> m_externalReference = nullptr;
+		std::shared_ptr<glannotations::BSpline> m_path;
+		globjects::ref_ptr<glannotations::AbstractExternalReference> m_externalReference = nullptr;
 	};
 }

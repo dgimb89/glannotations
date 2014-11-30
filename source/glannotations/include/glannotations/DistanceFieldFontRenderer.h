@@ -3,15 +3,15 @@
 
 #include <glannotations/AbstractPrimitiveRenderer.h>
 
-namespace glat {
+namespace glannotations {
 	class FontAnnotation;
 
-	class DistanceFieldFontRenderer : public glat::AbstractPrimitiveRenderer {
+	class DistanceFieldFontRenderer : public glannotations::AbstractPrimitiveRenderer {
 	public:
 		DistanceFieldFontRenderer(gl::GLuint matricesBindingIndex);
-		virtual void draw(const globjects::ref_ptr<glat::AbstractAnnotation>& annotation);
+		virtual void draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation);
 
 	protected:
-		void setupGlyphQuadstrip(glat::FontAnnotation* annotation);
+		void setupGlyphQuadstrip(glannotations::FontAnnotation* annotation);
 	};
 }

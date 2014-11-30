@@ -6,13 +6,13 @@
 #include <glannotations/AbstractDrawingPrimitive.h>
 #include <glannotations/glannotations_api.h>
 
-namespace glat {
+namespace glannotations {
 
 	class InternalState;
 	class PathState;
 	class AbstractRenderer;
 
-	class GLANNOTATIONS_API AbstractExternalReference : public glat::DirtyFlagObject {
+	class GLANNOTATIONS_API AbstractExternalReference : public glannotations::DirtyFlagObject {
 	public:
 		friend class ReferenceableState;
 		friend class InternalState;
@@ -28,7 +28,7 @@ namespace glat {
 		unsigned int getBindingIndex() const;
 
 		virtual void draw();
-		virtual void updateBindings(const glat::AbstractRenderer& renderer);
+		virtual void updateBindings(const glannotations::AbstractRenderer& renderer);
 		virtual void setupExternalReference(const InternalState& state);
 		virtual void setupExternalReference(const PathState& state);
 
@@ -38,7 +38,7 @@ namespace glat {
 
 		bool m_positioningOnly;
 		unsigned int m_bindingIndex;
-		globjects::ref_ptr<glat::AbstractDrawingPrimitive> m_externalPrimitive;
+		globjects::ref_ptr<glannotations::AbstractDrawingPrimitive> m_externalPrimitive;
 
 	private:
 		void assertNotReused();

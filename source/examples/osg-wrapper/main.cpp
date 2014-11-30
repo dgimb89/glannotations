@@ -27,12 +27,12 @@ osg::GraphicsContext * createContext() {
 osg::Geode* createAnnotations() {
 	osg::Geode* geode = new osg::Geode;
 
-	glat::RendererFactory dfFactory;
+	glannotations::RendererFactory dfFactory;
 	dfFactory.useNVpr(false);
 
 	// setup annotation
-	glat::wrapper::DrawableAnnotation* annotationDrawable = new glat::wrapper::DrawableAnnotation;
-	auto viewportAnnotation = new glat::FontAnnotation(new glat::InternalState(glm::vec3(0.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f), glm::vec3(1.f, 1.f, 0.f)), "osgWrapper", "calibri.ttf", dfFactory);
+	glannotations::wrapper::DrawableAnnotation* annotationDrawable = new glannotations::wrapper::DrawableAnnotation;
+	auto viewportAnnotation = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(0.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f), glm::vec3(1.f, 1.f, 0.f)), "osgWrapper", "calibri.ttf", dfFactory);
 	viewportAnnotation->setColor(glm::vec4(0.75, 0.75, 0.75, 1.0));
 	annotationDrawable->setAnnotation(viewportAnnotation);
 
@@ -66,17 +66,17 @@ int main(int argc, char **argv) {
 		if (context->valid()) {
 			context->makeCurrent();
 			if (!initialized) {
-				glat::initialize();
-				//glat::setViewFrustumVolume()
+				glannotations::initialize();
+				//glannotations::setViewFrustumVolume()
 				//createAnnotations();
 				root->addChild(createAnnotations());
 				initialized = true;
 			}
-			glat::setProjection(glm::mat4(1));
-			glat::setView(glm::mat4());
-			glat::setViewport(glm::ivec2(800, 600));
+			glannotations::setProjection(glm::mat4(1));
+			glannotations::setView(glm::mat4());
+			glannotations::setViewport(glm::ivec2(800, 600));
 		}
 	}
-	glat::cleanUp();
+	glannotations::cleanUp();
 	return 0;
 }

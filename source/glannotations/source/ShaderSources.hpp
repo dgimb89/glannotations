@@ -1,4 +1,4 @@
-namespace glat {
+namespace glannotations {
 namespace ShaderSources {
 
 static const char*	passThroughVS = R"(

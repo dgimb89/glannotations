@@ -2,8 +2,8 @@
 
 #include <glannotations/DrawingPrimitiveBase.h>
 
-namespace glat {
-	class Building : public glat::DrawingPrimitiveBase {
+namespace glannotations {
+	class Building : public glannotations::DrawingPrimitiveBase {
 	public:
 		Building(unsigned int matricesBindingIndex = 0);
 		virtual void draw() override;

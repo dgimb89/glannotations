@@ -3,54 +3,54 @@
 #include <glannotations/AbstractAnnotation.h>
 #include <glannotations/StateInterpolation.h>
 
-glat::ViewportState::ViewportState(glm::vec2 llf, glm::vec2 urb) {
+glannotations::ViewportState::ViewportState(glm::vec2 llf, glm::vec2 urb) {
 	setExtends(llf, urb);
 }
 
-void glat::ViewportState::setExtends(glm::vec2 llf, glm::vec2 urb) {
+void glannotations::ViewportState::setExtends(glm::vec2 llf, glm::vec2 urb) {
 	setDirty(true);
 	m_ll = llf;
 	m_ur = urb;
 }
 
-const glm::vec2& glat::ViewportState::getLL() const {
+const glm::vec2& glannotations::ViewportState::getLL() const {
 	return m_ll;
 }
 
-const glm::vec2& glat::ViewportState::getUR() const {
+const glm::vec2& glannotations::ViewportState::getUR() const {
 	return m_ur;
 }
 
-void glat::ViewportState::draw(const AbstractRenderer& renderer) {
+void glannotations::ViewportState::draw(const AbstractRenderer& renderer) {
 	renderer.drawSetupState(*this);
 }
 
-bool glat::ViewportState::isValid() const {
+bool glannotations::ViewportState::isValid() const {
 	return (m_ur - m_ll).length() > 0;
 }
 
-const glm::vec2 glat::ViewportState::getLR() const {
+const glm::vec2 glannotations::ViewportState::getLR() const {
 	return glm::vec2(m_ur.x, m_ll.y);
 }
 
-globjects::ref_ptr<glat::AbstractState> glat::ViewportState::interpolateWith(const InternalState& mixState, float mix) {
-	return glat::Interpolation::interpolate(*this, mixState, mix);
+globjects::ref_ptr<glannotations::AbstractState> glannotations::ViewportState::interpolateWith(const InternalState& mixState, float mix) {
+	return glannotations::Interpolation::interpolate(*this, mixState, mix);
 }
 
-globjects::ref_ptr<glat::AbstractState> glat::ViewportState::interpolateWith(const PathState& mixState, float mix) {
-	return glat::Interpolation::interpolate(*this, mixState, mix);
+globjects::ref_ptr<glannotations::AbstractState> glannotations::ViewportState::interpolateWith(const PathState& mixState, float mix) {
+	return glannotations::Interpolation::interpolate(*this, mixState, mix);
 }
 
-globjects::ref_ptr<glat::AbstractState> glat::ViewportState::interpolateWith(const ViewportState& mixState, float mix) {
-	return glat::Interpolation::interpolate(*this, mixState, mix);
+globjects::ref_ptr<glannotations::AbstractState> glannotations::ViewportState::interpolateWith(const ViewportState& mixState, float mix) {
+	return glannotations::Interpolation::interpolate(*this, mixState, mix);
 }
 
-globjects::ref_ptr<glat::AbstractState> glat::ViewportState::clone() const {
-	globjects::ref_ptr<glat::AbstractState> clonedState(new ViewportState(m_ll, m_ur));
+globjects::ref_ptr<glannotations::AbstractState> glannotations::ViewportState::clone() const {
+	globjects::ref_ptr<glannotations::AbstractState> clonedState(new ViewportState(m_ll, m_ur));
 	AbstractState::copyState(*clonedState);
 	return clonedState;
 }
 
-glat::BoundingBox glat::ViewportState::getBoundingBox() {
-	return glat::BoundingBox(glm::vec3(std::numeric_limits<float>::lowest()), glm::vec3(std::numeric_limits<float>::max())); // will initialize a infinite bounding box -- always visible as intended
+glannotations::BoundingBox glannotations::ViewportState::getBoundingBox() {
+	return glannotations::BoundingBox(glm::vec3(std::numeric_limits<float>::lowest()), glm::vec3(std::numeric_limits<float>::max())); // will initialize a infinite bounding box -- always visible as intended
 }

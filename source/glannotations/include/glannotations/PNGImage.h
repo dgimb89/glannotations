@@ -8,8 +8,8 @@
 #include <glannotations/DirtyFlagObject.h>
 #include <glannotations/glannotations_api.h>
 
-namespace glat {
-	class GLANNOTATIONS_API PNGImage : public glat::DirtyFlagObject {
+namespace glannotations {
+	class GLANNOTATIONS_API PNGImage : public glannotations::DirtyFlagObject {
 	public:
 		typedef unsigned char colorVal_t;
 		typedef struct GLANNOTATIONS_API image_t : public globjects::Referenced{
@@ -50,7 +50,7 @@ namespace glat {
 		unsigned short getComponentBitdepth() const;
 		size_t getRowStride() const;
 
-		void replaceImageWith(globjects::ref_ptr<glat::PNGImage> image);
+		void replaceImageWith(globjects::ref_ptr<glannotations::PNGImage> image);
 
 
 	protected:

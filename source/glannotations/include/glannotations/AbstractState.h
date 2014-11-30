@@ -11,7 +11,7 @@
 #include <glannotations/BoundingBox.h>
 #include <glannotations/glannotations_api.h>
 
-namespace glat {
+namespace glannotations {
 
 	class AbstractRenderer;
 	class AbstractAnnotation;
@@ -19,14 +19,14 @@ namespace glat {
 	class InternalState;
 	class PathState;
 
-	typedef GLANNOTATIONS_API std::map<std::string, globjects::ref_ptr<glat::Styling> > StylingList;
+	typedef GLANNOTATIONS_API std::map<std::string, globjects::ref_ptr<glannotations::Styling> > StylingList;
 
 	namespace State {
 		enum GLANNOTATIONS_API VerticalAnchor { MIDDLE, BOTTOM, TOP, SCALE_HEIGHT};
 		enum GLANNOTATIONS_API HorizontalAnchor { CENTER, LEFT, RIGHT, SCALE_WIDTH };
 	}
 
-	class GLANNOTATIONS_API AbstractState : public glat::DirtyFlagObject {
+	class GLANNOTATIONS_API AbstractState : public glannotations::DirtyFlagObject {
 		friend class NVPRRenderer;
 		friend class DistanceFieldFontRenderer;
 		friend class DistanceFieldPNGRenderer;
@@ -34,24 +34,24 @@ namespace glat {
 	public:
 
 		// returns nullptr if style does not exist
-		const glat::Styling* getStyling(std::string ID) const;
-		const glat::StylingList& getStylings() const;
-		void setStyling(const globjects::ref_ptr<glat::Styling>& style);
+		const glannotations::Styling* getStyling(std::string ID) const;
+		const glannotations::StylingList& getStylings() const;
+		void setStyling(const globjects::ref_ptr<glannotations::Styling>& style);
 		void setStylings(const StylingList& stylings);
 
 		virtual bool isValid() const = 0;
-		virtual globjects::ref_ptr<glat::AbstractState> clone() const = 0;
-		virtual glat::BoundingBox getBoundingBox() = 0;
+		virtual globjects::ref_ptr<glannotations::AbstractState> clone() const = 0;
+		virtual glannotations::BoundingBox getBoundingBox() = 0;
 
-		glat::InternalState& asInternalState();
-		glat::PathState& asPathState();
-		glat::ViewportState& asViewportState();
+		glannotations::InternalState& asInternalState();
+		glannotations::PathState& asPathState();
+		glannotations::ViewportState& asViewportState();
 
-		glat::State::HorizontalAnchor getHorizontalAnchor() const;
-		void setHorizontalAnchor(glat::State::HorizontalAnchor horizontalAnchor);
+		glannotations::State::HorizontalAnchor getHorizontalAnchor() const;
+		void setHorizontalAnchor(glannotations::State::HorizontalAnchor horizontalAnchor);
 
-		glat::State::VerticalAnchor getVerticalAnchor() const;
-		void setVerticalAnchor(glat::State::VerticalAnchor verticalAnchor);
+		glannotations::State::VerticalAnchor getVerticalAnchor() const;
+		void setVerticalAnchor(glannotations::State::VerticalAnchor verticalAnchor);
 
 		virtual globjects::ref_ptr<AbstractState> interpolateWith(const InternalState& mixState, float mix) = 0;
 		virtual globjects::ref_ptr<AbstractState> interpolateWith(const PathState& mixState, float mix) = 0;

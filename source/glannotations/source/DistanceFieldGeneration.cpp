@@ -9,14 +9,14 @@ const double kernel[] = {	0.0, 	1.0, 					2.0,
 #define SWAPIFLOWER(y,x,swapVal) if((x) >= 0 && (x) < original.getWidth() && (y) >= 0 && (y) < original.getHeight()) \
 	distances[(y)*original.getWidth() + (x)] = (original.isColored(x, y) ? -1.0 : 1.0) * std::min(std::abs(distances[(y)*original.getWidth() + (x)]), std::abs(swapVal))
 
-bool glat::DistanceFieldGeneration::detail::selfColoredNeighborsNot(const glat::PNGImage& original, unsigned x, unsigned y) {
+bool glannotations::DistanceFieldGeneration::detail::selfColoredNeighborsNot(const glannotations::PNGImage& original, unsigned x, unsigned y) {
 	return original.isColored(x, y) && 
 		((x > 0 ? !original.isColored(x - 1, y) : true) || (y > 0 ? !original.isColored(x, y - 1) : true) || 
 		(x < original.getWidth() ? !original.isColored(x + 1, y) : true) || (y < original.getHeight() ? !original.isColored(x, y + 1) : true));
 }
 
-globjects::ref_ptr<glat::PNGImage> glat::DistanceFieldGeneration::bilinearResize(const glat::PNGImage& inImage, unsigned scaledWidth, unsigned scaledHeight) {
-	globjects::ref_ptr<glat::PNGImage> scaledResult = new glat::PNGImage(scaledWidth, scaledHeight, inImage.getNumComponents());
+globjects::ref_ptr<glannotations::PNGImage> glannotations::DistanceFieldGeneration::bilinearResize(const glannotations::PNGImage& inImage, unsigned scaledWidth, unsigned scaledHeight) {
+	globjects::ref_ptr<glannotations::PNGImage> scaledResult = new glannotations::PNGImage(scaledWidth, scaledHeight, inImage.getNumComponents());
 
 	const double tx = double(inImage.getWidth()) / scaledWidth;
 	const double ty = double(inImage.getHeight()) / scaledHeight;
@@ -30,7 +30,7 @@ globjects::ref_ptr<glat::PNGImage> glat::DistanceFieldGeneration::bilinearResize
 				double R_1 = ((1.0 - xPart) * inImage.getImageValue(std::floor(x * tx), std::floor(y * ty), c)) + (xPart * inImage.getImageValue(std::ceil(x * tx), std::floor(y * ty), c));
 				double R_2 = ((1.0 - xPart) * inImage.getImageValue(std::floor(x * tx), std::ceil(y * ty), c)) + (xPart * inImage.getImageValue(std::ceil(x * tx), std::ceil(y * ty), c));
 
-				scaledResult->setImageValue(x, y, c, static_cast<glat::PNGImage::colorVal_t>((1.0 - yPart) * R_1 + (yPart * R_2)));
+				scaledResult->setImageValue(x, y, c, static_cast<glannotations::PNGImage::colorVal_t>((1.0 - yPart) * R_1 + (yPart * R_2)));
 			}
 		}
 	}
@@ -42,8 +42,8 @@ inline double cubicInterpolate(double p, double cur, double n1, double n2, doubl
 	return cur + 0.5 * frac *(n1 - p + frac*(2.0*p - 5.0*cur + 4.0*n1 - n2 + frac*(3.0*(cur - n1) + n2 - p)));
 }
 
-globjects::ref_ptr<glat::PNGImage> glat::DistanceFieldGeneration::bicubicResize(const glat::PNGImage& inImage, unsigned scaledWidth, unsigned scaledHeight) {
-	globjects::ref_ptr<glat::PNGImage> scaledResult = new glat::PNGImage(scaledWidth, scaledHeight, inImage.getNumComponents());
+globjects::ref_ptr<glannotations::PNGImage> glannotations::DistanceFieldGeneration::bicubicResize(const glannotations::PNGImage& inImage, unsigned scaledWidth, unsigned scaledHeight) {
+	globjects::ref_ptr<glannotations::PNGImage> scaledResult = new glannotations::PNGImage(scaledWidth, scaledHeight, inImage.getNumComponents());
 
 	const double tx = double(inImage.getWidth()) / scaledWidth;
 	const double ty = double(inImage.getHeight()) / scaledHeight;
@@ -60,14 +60,14 @@ globjects::ref_ptr<glat::PNGImage> glat::DistanceFieldGeneration::bicubicResize(
 				double p2 = cubicInterpolate(inImage.getImageValue(lowestX + 2, lowestY, c), inImage.getImageValue(lowestX + 2, lowestY + 1, c), inImage.getImageValue(lowestX + 2, lowestY + 2, c), inImage.getImageValue(lowestX + 2, lowestY + 3, c), yFrac);
 				double p3 = cubicInterpolate(inImage.getImageValue(lowestX + 3, lowestY, c), inImage.getImageValue(lowestX + 3, lowestY + 1, c), inImage.getImageValue(lowestX + 3, lowestY + 2, c), inImage.getImageValue(lowestX + 3, lowestY + 3, c), yFrac);
 				double result = cubicInterpolate(p0, p1, p2, p3, (tx * x) - std::floor(tx * x));
-				scaledResult->setImageValue(x, y, c, static_cast<glat::PNGImage::colorVal_t>(std::round(result)));
+				scaledResult->setImageValue(x, y, c, static_cast<glannotations::PNGImage::colorVal_t>(std::round(result)));
 			}
 		}
 	}
 	return scaledResult;
 }
 
-globjects::ref_ptr<glat::PNGImage> glat::DistanceFieldGeneration::distanceTransform(const glat::PNGImage& original) {
+globjects::ref_ptr<glannotations::PNGImage> glannotations::DistanceFieldGeneration::distanceTransform(const glannotations::PNGImage& original) {
 	double* distances = new double[original.getHeight() * original.getWidth()];
 	std::fill_n(distances, original.getHeight() * original.getWidth(), std::numeric_limits<double>::infinity());
 	// top-left to bottom-right
@@ -120,7 +120,7 @@ globjects::ref_ptr<glat::PNGImage> glat::DistanceFieldGeneration::distanceTransf
 
 	// transform float distances to color values
 
-	globjects::ref_ptr<glat::PNGImage> distanceField = new glat::PNGImage(original.getWidth(), original.getHeight(), 1);
+	globjects::ref_ptr<glannotations::PNGImage> distanceField = new glannotations::PNGImage(original.getWidth(), original.getHeight(), 1);
 	for (unsigned y = 0; y < original.getHeight(); ++y) {
 		for (unsigned x = 0; x < original.getWidth(); ++x) {
 			distanceField->setImageValue(x, y, 0, colorValueFromFloat(distances[y * original.getWidth() + x]));
@@ -129,7 +129,7 @@ globjects::ref_ptr<glat::PNGImage> glat::DistanceFieldGeneration::distanceTransf
 	return distanceField;
 }
 
-glat::PNGImage::colorVal_t glat::DistanceFieldGeneration::colorValueFromFloat(double val) {
+glannotations::PNGImage::colorVal_t glannotations::DistanceFieldGeneration::colorValueFromFloat(double val) {
 	double clampedVal = std::max(-127.0, std::min(128.0, ((val < 0.0)? -1.0 : 1.0) *  std::sqrt(std::abs(val)) * 128)); // clamp to [-127 | 128]
-	return static_cast<glat::PNGImage::colorVal_t>(127.0 + clampedVal); // map to [0 | 255]
+	return static_cast<glannotations::PNGImage::colorVal_t>(127.0 + clampedVal); // map to [0 | 255]
 }

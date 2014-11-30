@@ -99,16 +99,16 @@ public:
 
 		m_agrid->setCamera(&m_camera);
 
-		m_nvprViewportFontAnnotation = new glat::FontAnnotation(new glat::ViewportState(glm::vec2(0.8f, -1.f), glm::vec2(1.f, 0.f)), "0", "calibri.ttf");
-		m_nvprViewportFontAnnotation->getState()->setStyling(new glat::Styles::Outline(3.f, glm::vec3(.3f, .3f, .3f)));
-		m_nvprViewportFontAnnotation->getState()->setStyling(new glat::Styles::BumpMap(1.0f));
+		m_nvprViewportFontAnnotation = new glannotations::FontAnnotation(new glannotations::ViewportState(glm::vec2(0.8f, -1.f), glm::vec2(1.f, 0.f)), "0", "calibri.ttf");
+		m_nvprViewportFontAnnotation->getState()->setStyling(new glannotations::Styles::Outline(3.f, glm::vec3(.3f, .3f, .3f)));
+		m_nvprViewportFontAnnotation->getState()->setStyling(new glannotations::Styles::BumpMap(1.0f));
 		m_nvprViewportFontAnnotation->setColor(glm::vec4(0.75, 0.75, 0.75, 1.0));
 
-		m_nvprInternalFontAnnotation = new glat::FontAnnotation(new glat::InternalState(glm::vec3(-3.f, -2.f, -5.f), glm::vec3(3.f, -2.f, -5.f), glm::vec3(3.f, 2.0f, -5.f)), "Nvidia PR", "calibri.ttf");
+		m_nvprInternalFontAnnotation = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(-3.f, -2.f, -5.f), glm::vec3(3.f, -2.f, -5.f), glm::vec3(3.f, 2.0f, -5.f)), "Nvidia PR", "calibri.ttf");
 		m_nvprInternalFontAnnotation->setColor(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f));
 
-		m_nvprViewportSVGAnnotation = new glat::SVGAnnotation(new glat::ViewportState(glm::vec2(-1.f, -1.f), glm::vec2(-0.3f, 0.f)));
-		m_nvprViewportSVGAnnotation->getState()->setStyling(new glat::Styles::Outline(2.f, glm::vec3(.3f, .3f, .3f)));
+		m_nvprViewportSVGAnnotation = new glannotations::SVGAnnotation(new glannotations::ViewportState(glm::vec2(-1.f, -1.f), glm::vec2(-0.3f, 0.f)));
+		m_nvprViewportSVGAnnotation->getState()->setStyling(new glannotations::Styles::Outline(2.f, glm::vec3(.3f, .3f, .3f)));
 		m_nvprViewportSVGAnnotation->setPathString("M100,180 L40,10 L190,120 L10,120 L160,10 z");
 		m_nvprViewportSVGAnnotation->setHeight(190);
 		m_nvprViewportSVGAnnotation->setWidth(200);
@@ -148,7 +148,7 @@ public:
 		char clockBuffer[10];
 		sprintf(clockBuffer, "%d", clock() / CLOCKS_PER_SEC);
 		m_nvprViewportFontAnnotation->setText(clockBuffer);
-		glat::updateMatricesFromCamera(m_camera);
+		glannotations::updateMatricesFromCamera(m_camera);
 		m_nvprInternalFontAnnotation->draw();
 		m_nvprViewportSVGAnnotation->draw();
 		m_nvprViewportFontAnnotation->draw();
@@ -334,9 +334,9 @@ protected:
 	globjects::ref_ptr<gloutils::Icosahedron> m_icosahedron;
 	globjects::ref_ptr<gloutils::AdaptiveGrid> m_agrid;
 
-	globjects::ref_ptr<glat::FontAnnotation> m_nvprViewportFontAnnotation;
-	globjects::ref_ptr<glat::SVGAnnotation> m_nvprViewportSVGAnnotation;
-	globjects::ref_ptr<glat::FontAnnotation> m_nvprInternalFontAnnotation;
+	globjects::ref_ptr<glannotations::FontAnnotation> m_nvprViewportFontAnnotation;
+	globjects::ref_ptr<glannotations::SVGAnnotation> m_nvprViewportSVGAnnotation;
+	globjects::ref_ptr<glannotations::FontAnnotation> m_nvprInternalFontAnnotation;
 
 	long double m_previousTime;
 

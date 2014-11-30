@@ -4,12 +4,12 @@
 #include <glannotations/InternalState.h>
 #include <glannotations/PathState.h>
 
-void glat::AbstractState::setStyling(const globjects::ref_ptr<glat::Styling>& style) {
+void glannotations::AbstractState::setStyling(const globjects::ref_ptr<glannotations::Styling>& style) {
 	setDirty(true); 
 	m_stylings[style->getID()] = style;
 }
 
-const glat::Styling* glat::AbstractState::getStyling(std::string ID) const {
+const glannotations::Styling* glannotations::AbstractState::getStyling(std::string ID) const {
 	auto itr = m_stylings.find(ID);
 	if (itr == m_stylings.end())
 		return nullptr;
@@ -17,55 +17,55 @@ const glat::Styling* glat::AbstractState::getStyling(std::string ID) const {
 	return itr->second.get();
 }
 
-glat::AbstractState::AbstractState() {
+glannotations::AbstractState::AbstractState() {
 	setDirty(true);
 }
 
-void glat::AbstractState::copyState(AbstractState& copyTo) const {
+void glannotations::AbstractState::copyState(AbstractState& copyTo) const {
 	copyTo.setHorizontalAnchor(getHorizontalAnchor());
 	copyTo.setVerticalAnchor(getVerticalAnchor());
 	copyTo.setStylings(getStylings());
 }
 
-void glat::AbstractState::setStylings(const StylingList& stylings) {
+void glannotations::AbstractState::setStylings(const StylingList& stylings) {
 	m_stylings = stylings;
 }
 
-const glat::StylingList& glat::AbstractState::getStylings() const {
+const glannotations::StylingList& glannotations::AbstractState::getStylings() const {
 	return m_stylings;
 }
 
-glat::InternalState& glat::AbstractState::asInternalState() {
-	return dynamic_cast<glat::InternalState&>(*this);
+glannotations::InternalState& glannotations::AbstractState::asInternalState() {
+	return dynamic_cast<glannotations::InternalState&>(*this);
 }
 
-glat::PathState& glat::AbstractState::asPathState() {
-	return dynamic_cast<glat::PathState&>(*this);
+glannotations::PathState& glannotations::AbstractState::asPathState() {
+	return dynamic_cast<glannotations::PathState&>(*this);
 }
 
-glat::ViewportState& glat::AbstractState::asViewportState() {
-	return dynamic_cast<glat::ViewportState&>(*this);
+glannotations::ViewportState& glannotations::AbstractState::asViewportState() {
+	return dynamic_cast<glannotations::ViewportState&>(*this);
 }
 
-glat::State::VerticalAnchor glat::AbstractState::getVerticalAnchor() const {
+glannotations::State::VerticalAnchor glannotations::AbstractState::getVerticalAnchor() const {
 	return m_verticalAnchor;
 }
 
-glat::State::HorizontalAnchor glat::AbstractState::getHorizontalAnchor() const {
+glannotations::State::HorizontalAnchor glannotations::AbstractState::getHorizontalAnchor() const {
 	return m_horizontalAnchor;
 }
-void glat::AbstractState::setVerticalAnchor(glat::State::VerticalAnchor verticalAnchor) {
+void glannotations::AbstractState::setVerticalAnchor(glannotations::State::VerticalAnchor verticalAnchor) {
 	m_verticalAnchor = verticalAnchor;
 }
 
-void glat::AbstractState::setHorizontalAnchor(glat::State::HorizontalAnchor horizontalAnchor) {
+void glannotations::AbstractState::setHorizontalAnchor(glannotations::State::HorizontalAnchor horizontalAnchor) {
 	m_horizontalAnchor = horizontalAnchor;
 }
 
-void glat::AbstractState::setSourceDimensions(unsigned short widthPixel, unsigned short heightPixel, unsigned int bindingIndex) {
+void glannotations::AbstractState::setSourceDimensions(unsigned short widthPixel, unsigned short heightPixel, unsigned int bindingIndex) {
 	setSourceDimensions(glm::ivec2(widthPixel, heightPixel), bindingIndex);
 }
 
-void glat::AbstractState::setSourceDimensions(glm::ivec2 pixelDimensions, unsigned int bindingIndex) {
-	m_sourceExtends = glm::vec2(pixelDimensions) / glm::vec2(glat::getViewport(bindingIndex)) * glat::getViewFrustumVolume(bindingIndex);
+void glannotations::AbstractState::setSourceDimensions(glm::ivec2 pixelDimensions, unsigned int bindingIndex) {
+	m_sourceExtends = glm::vec2(pixelDimensions) / glm::vec2(glannotations::getViewport(bindingIndex)) * glannotations::getViewFrustumVolume(bindingIndex);
 }
