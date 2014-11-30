@@ -75,8 +75,8 @@ public:
 		gl::glEnable(gl::GL_BLEND);
 		gl::glBlendFunc(gl::GL_SRC_ALPHA, gl::GL_ONE_MINUS_SRC_ALPHA);
 
-        m_camera->setZNear(1.f);
-		m_camera->setZFar(2048.f);
+        m_camera->setZNear(0.1);
+		m_camera->setZFar(1024.f);
 		m_camera->setCenter(vec3(0.f, 0.f, 5.f));
 		m_camera->setEye(vec3(-17.f, 12.f, -15.0f));
 		m_camera->setUp(vec3(0, 1, 0));

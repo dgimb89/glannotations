@@ -12,6 +12,8 @@ find_package(GLFW REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 
+add_definitions("-DGLM_FORCE_RADIANS")
+
 #
 # Includes
 #

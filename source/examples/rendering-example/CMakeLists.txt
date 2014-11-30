@@ -13,6 +13,8 @@ find_package(gloperate REQUIRED)
 find_package(GLFW REQUIRED)
 find_package(GLM REQUIRED)
 
+add_definitions("-DGLM_FORCE_RADIANS")
+
 #
 # Includes
 #
