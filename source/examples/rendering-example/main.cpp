@@ -81,21 +81,21 @@ public:
 		m_camera->setEye(vec3(-17.f, 12.f, -15.0f));
 		m_camera->setUp(vec3(0, 1, 0));
 
-		m_building = new glannotations::Building(2);
-		m_building1 = new glannotations::Building(2);
-		m_building2 = new glannotations::Building(2);
-		m_building3 = new glannotations::Building(2);
-		m_building4 = new glannotations::Building(2);
-		m_building5 = new glannotations::Building(2);
-		m_building6 = new glannotations::Building(2);
-		m_building7 = new glannotations::Building(2);
-		m_building8 = new glannotations::Building(2);
-		m_building9 = new glannotations::Building(2);
-		m_building10 = new glannotations::Building(2);
-		m_building11 = new glannotations::Building(2);
-		m_building12 = new glannotations::Building(2);
-		m_building13 = new glannotations::Building(2);
-		m_building14 = new glannotations::Building(2);
+		m_building = new Building(2);
+		m_building1 = new Building(2);
+		m_building2 = new Building(2);
+		m_building3 = new Building(2);
+		m_building4 = new Building(2);
+		m_building5 = new Building(2);
+		m_building6 = new Building(2);
+		m_building7 = new Building(2);
+		m_building8 = new Building(2);
+		m_building9 = new Building(2);
+		m_building10 = new Building(2);
+		m_building11 = new Building(2);
+		m_building12 = new Building(2);
+		m_building13 = new Building(2);
+		m_building14 = new Building(2);
 
 		float color;
 		srand(time(NULL));
@@ -329,21 +329,21 @@ protected:
 
 	glannotations::AnnotationGroup m_annotations;
 
-	globjects::ref_ptr<glannotations::Building> m_building;
-	globjects::ref_ptr<glannotations::Building> m_building1;
-	globjects::ref_ptr<glannotations::Building> m_building2;
-	globjects::ref_ptr<glannotations::Building> m_building3;
-	globjects::ref_ptr<glannotations::Building> m_building4;
-	globjects::ref_ptr<glannotations::Building> m_building5;
-	globjects::ref_ptr<glannotations::Building> m_building6;
-	globjects::ref_ptr<glannotations::Building> m_building7;
-	globjects::ref_ptr<glannotations::Building> m_building8;
-	globjects::ref_ptr<glannotations::Building> m_building9;
-	globjects::ref_ptr<glannotations::Building> m_building10;
-	globjects::ref_ptr<glannotations::Building> m_building11;
-	globjects::ref_ptr<glannotations::Building> m_building12;
-	globjects::ref_ptr<glannotations::Building> m_building13;
-	globjects::ref_ptr<glannotations::Building> m_building14;
+	globjects::ref_ptr<Building> m_building;
+	globjects::ref_ptr<Building> m_building1;
+	globjects::ref_ptr<Building> m_building2;
+	globjects::ref_ptr<Building> m_building3;
+	globjects::ref_ptr<Building> m_building4;
+	globjects::ref_ptr<Building> m_building5;
+	globjects::ref_ptr<Building> m_building6;
+	globjects::ref_ptr<Building> m_building7;
+	globjects::ref_ptr<Building> m_building8;
+	globjects::ref_ptr<Building> m_building9;
+	globjects::ref_ptr<Building> m_building10;
+	globjects::ref_ptr<Building> m_building11;
+	globjects::ref_ptr<Building> m_building12;
+	globjects::ref_ptr<Building> m_building13;
+	globjects::ref_ptr<Building> m_building14;
 };
 
 
