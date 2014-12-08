@@ -13,3 +13,7 @@ void glannotations::AnnotationGroup::draw() const {
 void glannotations::AnnotationGroup::clear() {
 	m_annotations.clear();
 }
+
+glannotations::AnnotationGroup::~AnnotationGroup() {
+
+}

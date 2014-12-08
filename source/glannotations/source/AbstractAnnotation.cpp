@@ -72,3 +72,7 @@ bool glannotations::AbstractAnnotation::isOnNearplane() const {
 		return false;
 	}
 }
+
+glannotations::AbstractAnnotation::~AbstractAnnotation() {
+
+}

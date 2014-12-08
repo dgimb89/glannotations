@@ -13,7 +13,7 @@
 void glannotations::AbstractPrimitiveRenderer::setupOutline(const Styling* outline) {
 	if (outline == nullptr) return;
 	const Styles::Outline* outlineStyle = reinterpret_cast<const Styles::Outline*>(outline);
-	m_drawingPrimitive->setOutline(outlineStyle->getWidth()*0.1f, outlineStyle->getColor());
+	m_drawingPrimitive->setOutline(outlineStyle->getWidth(), outlineStyle->getColor());
 }
 
 

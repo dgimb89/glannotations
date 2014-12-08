@@ -4,7 +4,8 @@
 
 std::string glannotations::Styling::getID() {
 	// some magic to demangle class name without name spaces
-	return std::string(typeid(*this).name()).substr(20);
+	std::string name = std::string(typeid(*this).name());
+	return name.substr(name.find_last_of(':') + 1);
 }
 
 glannotations::Styling::Styling() {

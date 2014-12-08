@@ -139,20 +139,20 @@ public:
 		m_building13->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
 		m_building14->setColor(buildingColor + temp);
 
-		auto glatBox = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(10.01f, -4.f, 1.f), glm::vec3(10.01f, -4.f, -1.f), glm::vec3(10.01f, -2.75f, -1.f)), "Box", "calibri.ttf", dfFactory);
-		m_annotations.addAnnotation(glatBox);
-		glatBox->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
-		glatBox->getState()->setStyling(new glannotations::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
-		glatBox->getState()->asInternalState().setExternalReference(new glannotations::BoxReference(glm::vec2(0.f, 0.f), glm::vec2(0.f, 2.75f), glm::vec3(-5.f, 0.f, 0.f), false));
+		auto boxAnnotation = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(10.01f, -4.f, 1.f), glm::vec3(10.01f, -4.f, -1.f), glm::vec3(10.01f, -2.75f, -1.f)), "Box", "calibri.ttf", dfFactory);
+		m_annotations.addAnnotation(boxAnnotation);
+		boxAnnotation->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
+		boxAnnotation->getState()->setStyling(new glannotations::Styles::Outline(0.2f, glm::vec3(0.f, 0.f, 0.f)));
+		boxAnnotation->getState()->asInternalState().setExternalReference(new glannotations::BoxReference(glm::vec2(0.f, 0.f), glm::vec2(0.f, 2.75f), glm::vec3(-5.f, 0.f, 0.f), false));
 
-		auto cgsLabel = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(-4.75f, 3.f, 12.f), glm::vec3(-1.25f, 3.f, 12.f), glm::vec3(-1.25f, 5.f, 12.f)), "Label", "calibri.ttf", dfFactory);
-		cgsLabel->getState()->asInternalState().setExternalReference(new glannotations::LabelReference(glm::vec3(0.f, -3.f, 10.f)));
-		m_annotations.addAnnotation(cgsLabel);
+		auto labelAnnotation = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(-4.75f, 3.f, 12.f), glm::vec3(-1.25f, 3.f, 12.f), glm::vec3(-1.25f, 5.f, 12.f)), "Label", "calibri.ttf", dfFactory);
+		labelAnnotation->getState()->asInternalState().setExternalReference(new glannotations::LabelReference(glm::vec3(0.f, -3.f, 10.f)));
+		m_annotations.addAnnotation(labelAnnotation);
 
-		auto hpicgs = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(2.f, -1.f, -1.01f), glm::vec3(2.f, 3.f, -1.01f), glm::vec3(4.f, 3.f, -1.01f)), "Internal", "calibri.ttf", dfFactory);
-		m_annotations.addAnnotation(hpicgs);
-		hpicgs->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
-		hpicgs->getState()->setStyling(new glannotations::Styles::Outline(1.f, glm::vec3(0.f, 0.f, 0.f)));
+		auto internalAnnotation = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(2.f, -1.f, -1.01f), glm::vec3(2.f, 3.f, -1.01f), glm::vec3(4.f, 3.f, -1.01f)), "Internal", "calibri.ttf", dfFactory);
+		m_annotations.addAnnotation(internalAnnotation);
+		internalAnnotation->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
+		internalAnnotation->getState()->setStyling(new glannotations::Styles::Outline(0.1f, glm::vec3(0.f, 0.f, 0.f)));
 
 		m_annotations.addAnnotation(new glannotations::PNGAnnotation(new glannotations::InternalState(glm::vec3(-2.f, -4.f, 2.f), glm::vec3(-2.f, -4.f, 7.f), glm::vec3(-2.f, 1.0f, 7.f)), "hpi.png", dfFactory));
 

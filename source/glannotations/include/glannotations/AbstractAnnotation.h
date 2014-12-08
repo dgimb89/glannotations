@@ -34,6 +34,7 @@ namespace glannotations {
 		void resetInterpolation();
 
 	protected:
+		virtual ~AbstractAnnotation();
 		const globjects::ref_ptr<glannotations::AbstractRenderer>& getRenderer();
 		AbstractAnnotation(const globjects::ref_ptr<glannotations::AbstractState>& state);
 		void setupRenderState() const;

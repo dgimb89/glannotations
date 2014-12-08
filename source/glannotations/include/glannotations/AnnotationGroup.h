@@ -12,11 +12,12 @@ namespace glannotations {
 
 	class GLANNOTATIONS_API AnnotationGroup : public globjects::Referenced {
 	public:
+		virtual ~AnnotationGroup();
 		void clear();
 		void addAnnotation(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation);
 		void draw() const;
 
-	private:
+	protected:
 		std::vector< globjects::ref_ptr<glannotations::AbstractAnnotation> > m_annotations;
 	};
 }

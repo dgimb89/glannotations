@@ -12,6 +12,7 @@ namespace glannotations {
 		virtual void setDirty(bool) const;
 
 	protected: 
+		virtual ~DirtyFlagObject();
 		mutable bool m_dirty;
 	};
 }

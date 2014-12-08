@@ -12,3 +12,7 @@ glannotations::DirtyFlagObject::DirtyFlagObject()
 	: m_dirty(true) {
 }
 
+glannotations::DirtyFlagObject::~DirtyFlagObject() {
+
+}
+
