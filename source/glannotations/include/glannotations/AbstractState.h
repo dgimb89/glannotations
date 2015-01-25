@@ -58,13 +58,9 @@ namespace glannotations {
 		virtual globjects::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix) = 0;
 
 	protected:
-		void setSourceDimensions(glm::ivec2 pixelDimensions, unsigned int bindingIndex);
-		void setSourceDimensions(unsigned short widthPixel, unsigned short heightPixel, unsigned int bindingIndex);
 		void copyState(AbstractState& copyTo) const;
 		virtual void draw(const AbstractRenderer& renderer) = 0;
 		AbstractState();
-
-		glm::vec2 m_sourceExtends;
 
 	private:
 		StylingList m_stylings;

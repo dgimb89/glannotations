@@ -74,7 +74,6 @@ int main(int argc, char **argv) {
 			}
 			glannotations::setProjection(glm::mat4(1));
 			glannotations::setView(glm::mat4());
-			glannotations::setViewport(glm::ivec2(800, 600));
 		}
 	}
 	glannotations::cleanUp();

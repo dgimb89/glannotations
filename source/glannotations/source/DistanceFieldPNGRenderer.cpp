@@ -19,8 +19,6 @@ void glannotations::DistanceFieldPNGRenderer::draw(const globjects::ref_ptr<glan
 		);
 		quadstrip->addQuad(glannotations::QuadStrip::texVec2_t(0.f, 0.f), glannotations::QuadStrip::texVec2_t(1.f, 1.f));
 		m_drawingPrimitive = quadstrip;
-		// TODO: avoid importing source image twice
-		annotation->getRenderState()->setSourceDimensions(glannotations::TextureManager::getInstance().getTextureSize(currentAnnotation->getFileName()), m_globalMatricesBindingIndex);
 		if (currentAnnotation->isDistanceField()) {
 			m_drawingPrimitive->setColor(currentAnnotation->getColor());
 			setupOutline(annotation->getRenderState()->getStyling("Outline"));

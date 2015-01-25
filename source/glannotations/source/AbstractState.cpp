@@ -61,11 +61,3 @@ void glannotations::AbstractState::setVerticalAnchor(glannotations::State::Verti
 void glannotations::AbstractState::setHorizontalAnchor(glannotations::State::HorizontalAnchor horizontalAnchor) {
 	m_horizontalAnchor = horizontalAnchor;
 }
-
-void glannotations::AbstractState::setSourceDimensions(unsigned short widthPixel, unsigned short heightPixel, unsigned int bindingIndex) {
-	setSourceDimensions(glm::ivec2(widthPixel, heightPixel), bindingIndex);
-}
-
-void glannotations::AbstractState::setSourceDimensions(glm::ivec2 pixelDimensions, unsigned int bindingIndex) {
-	m_sourceExtends = glm::vec2(pixelDimensions) / glm::vec2(glannotations::getViewport(bindingIndex)) * glannotations::getViewFrustumVolume(bindingIndex);
-}

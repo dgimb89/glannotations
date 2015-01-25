@@ -52,7 +52,7 @@ public:
 
         m_nav.setCamera(m_camera);
         m_nav.setCoordinateProvider(this);
-        m_nav.setBoundaryHint(m_aabb);
+		m_nav.setBoundaryHint(m_aabb);
     }
 
     virtual ~EventHandler()
@@ -176,7 +176,6 @@ public:
     {
 		glannotations::setView(m_camera->view(), 2);
 		glannotations::setProjection(m_camera->projection(), 2);
-		glannotations::setViewport(m_camera->viewport(), 2);
 		float fovx = m_camera->aspectRatio() * m_camera->fovy();
 		glannotations::setViewFrustumVolume(glm::vec2(2 * m_camera->zNear() / std::sin(M_PI_2 - fovx) * std::sin(fovx),
 			2 * m_camera->zNear() / std::sin(M_PI_2 - m_camera->fovy()) * std::sin(m_camera->fovy())), 

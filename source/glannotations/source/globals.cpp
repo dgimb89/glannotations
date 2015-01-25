@@ -14,7 +14,6 @@ struct MatrizesBuffer {
 	globjects::ref_ptr<globjects::Buffer> buffer;
 	glm::mat4 view = glm::mat4(1);
 	glm::mat4 projection = glm::mat4(1);
-	glm::ivec2 viewport;
 	glm::vec2 viewFrustumVolume;
 };
 
@@ -46,7 +45,6 @@ void glannotations::setProjection(const glm::mat4& projection, gl::GLuint bindin
 void glannotations::updateMatricesFromCamera(const gloperate::Camera& camera, gl::GLuint bindingIndex /*= 0*/) {
 	setView(camera.view(), bindingIndex);
 	setProjection(camera.projection(), bindingIndex);
-	setViewport(camera.viewport(), bindingIndex);
 	float fovx = camera.aspectRatio() * camera.fovy();
 	setViewFrustumVolume(glm::vec2(		2 * camera.zNear() / std::sin(M_PI_2 - fovx) * std::sin(fovx),
 										2 * camera.zNear() / std::sin(M_PI_2 - camera.fovy()) * std::sin(camera.fovy()))
@@ -65,13 +63,13 @@ bool glannotations::isMatricesUBOInitialiced(gl::GLuint bindingIndex /*= 0*/) {
 
 const glm::mat4& glannotations::getView(gl::GLuint bindingIndex /*= 0*/) {
 	if (!isMatricesUBOInitialiced(bindingIndex))
-		return glm::mat4(1);
+		throw std::runtime_error("UBO is not initialized");
 	return (*getMatricesBufferMap())[bindingIndex].view;
 }
 
 const glm::mat4 GLANNOTATIONS_API & glannotations::getProjection(gl::GLuint bindingIndex /*= 0*/) {
 	if (!isMatricesUBOInitialiced(bindingIndex))
-		return glm::mat4(1);
+		throw std::runtime_error("UBO is not initialized");
 	return (*getMatricesBufferMap())[bindingIndex].projection;
 }
 
@@ -96,17 +94,9 @@ void GLANNOTATIONS_API glannotations::setViewFrustumVolume(glm::vec2 volumeInWor
 	(*getMatricesBufferMap())[bindingIndex].viewFrustumVolume = volumeInWorldSpace;
 }
 
-void GLANNOTATIONS_API glannotations::setViewport(const glm::ivec2& viewport, gl::GLuint bindingIndex /*= 0*/) {
-	(*getMatricesBufferMap())[bindingIndex].viewport = viewport;
-}
-
 glm::vec2 GLANNOTATIONS_API glannotations::getViewFrustumVolume(gl::GLuint bindingIndex /*= 0*/) {
 	return (*getMatricesBufferMap())[bindingIndex].viewFrustumVolume;
 } 
-
-glm::ivec2 GLANNOTATIONS_API glannotations::getViewport(gl::GLuint bindingIndex /*= 0*/) {
-	return (*getMatricesBufferMap())[bindingIndex].viewport;
-}
 
 void GLANNOTATIONS_API glannotations::initialize() {
 	globjects::init();

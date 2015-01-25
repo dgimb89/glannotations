@@ -39,7 +39,6 @@ void glannotations::DistanceFieldFontRenderer::setupGlyphQuadstrip(glannotations
 		quadStrip->addQuad(glyphConfig.getGlyphConfigForCharcode(annotation->getText().at(i))._ll,
 			glyphConfig.getGlyphConfigForCharcode(annotation->getText().at(i))._advance);
 	}
-	float pixelHeight = annotation->getFontSize() * quadStrip->getQuadstripRowCount() * 4.f / 3.f; // 1 zoll = 72 pt = 96 px
-	annotation->getRenderState()->setSourceDimensions(static_cast<unsigned short>((quadStrip->getQuadStripWidth() / quadStrip->getQuadStripHeight()) * pixelHeight), static_cast<unsigned short>(pixelHeight), m_globalMatricesBindingIndex);
+	//float pixelHeight = annotation->getFontSize() * quadStrip->getQuadstripRowCount() * 4.f / 3.f; // 1 zoll = 72 pt = 96 px
 	m_drawingPrimitive = quadStrip;
 }
