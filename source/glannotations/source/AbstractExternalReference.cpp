@@ -40,7 +40,9 @@ inline unsigned int glannotations::AbstractExternalReference::getBindingIndex() 
 void glannotations::AbstractExternalReference::updateBindings(const glannotations::AbstractRenderer& renderer) {
 	if (isDirty()) {
 		setBindingIndex(renderer.getMatricesBindingIndex());
-		m_externalPrimitive->setBindingIndex(getBindingIndex());
+		if (!isPositioningOnly()) {
+			m_externalPrimitive->setBindingIndex(getBindingIndex());
+		}
 	}
 }
 

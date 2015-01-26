@@ -32,6 +32,8 @@
 #include <glannotations/InternalState.h>
 #include <glannotations/BoxReference.h>
 #include <glannotations/LabelReference.h>
+#include <glannotations/FlagReference.h>
+#include <glannotations/RectReference.h>
 #include <glannotations/Styles.h>
 
 #include "building.h"
@@ -150,9 +152,17 @@ public:
 		m_annotations.addAnnotation(labelAnnotation);
 
 		auto internalAnnotation = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(2.f, -1.f, -1.01f), glm::vec3(2.f, 3.f, -1.01f), glm::vec3(4.f, 3.f, -1.01f)), "Internal", "calibri.ttf", dfFactory);
-		m_annotations.addAnnotation(internalAnnotation);
 		internalAnnotation->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 		internalAnnotation->getState()->setStyling(new glannotations::Styles::Outline(0.1f, glm::vec3(0.f, 0.f, 0.f)));
+		m_annotations.addAnnotation(internalAnnotation);
+
+		auto topAnnotation = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(-0.75f, -2.98f, -0.5f), glm::vec3(-0.75f, -2.98f, 1.f), glm::vec3(0.75f, -2.98f, 0.5f)), "Top", "calibri.ttf", dfFactory);
+		topAnnotation->getState()->asInternalState().setExternalReference(new glannotations::RectReference());
+		m_annotations.addAnnotation(topAnnotation);
+
+		auto flagAnnotation = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(-1.f, 3.f, 5.01f), glm::vec3(1.f, 3.f, 5.01f), glm::vec3(1.f, 4.f, 5.01f)), "Flag", "calibri.ttf", dfFactory);
+		flagAnnotation->getState()->asInternalState().setExternalReference(new glannotations::FlagReference(1.0f, glm::vec3(0.f, 0.f, -3.f), false));
+		m_annotations.addAnnotation(flagAnnotation);
 
 		m_annotations.addAnnotation(new glannotations::PNGAnnotation(new glannotations::InternalState(glm::vec3(-2.f, -4.f, 2.f), glm::vec3(-2.f, -4.f, 7.f), glm::vec3(-2.f, 1.0f, 7.f)), "hpi.png", dfFactory));
 

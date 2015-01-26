@@ -96,20 +96,24 @@ set(api_includes
 	${include_path}/DistanceFieldFontRenderer.h
 
 	${include_path}/AbstractState.h
-	${include_path}/AbstractExternalReference.h
 	${include_path}/ReferenceableState.h
 	${include_path}/ViewportState.h
 	${include_path}/InternalState.h
 	${include_path}/PathState.h
-	${include_path}/BoxReference.h
-	${include_path}/LabelReference.h
 	${include_path}/BSpline.h
 	${include_path}/StateInterpolation.h
+
+	${include_path}/AbstractExternalReference.h
+	${include_path}/BoxReference.h
+	${include_path}/FlagReference.h
+	${include_path}/RectReference.h
+	${include_path}/LabelReference.h
 	
 	${include_path}/AbstractDrawingPrimitive.h
 	${include_path}/DrawingPrimitiveBase.h
 	${include_path}/Prismoid.h
 	${include_path}/Box.h
+	${include_path}/Rect.h
 	${include_path}/AbstractTexturedPrimitive.h
 	${include_path}/QuadStrip.h
 
@@ -153,19 +157,23 @@ set(sources
 	${source_path}/DistanceFieldFontRenderer.cpp
 
 	${source_path}/AbstractState.cpp
-	${source_path}/AbstractExternalReference.cpp
 	${source_path}/ReferenceableState.cpp
 	${source_path}/ViewportState.cpp
 	${source_path}/InternalState.cpp
 	${source_path}/PathState.cpp
-	${source_path}/BoxReference.cpp
-	${source_path}/LabelReference.cpp
 	${source_path}/BSpline.cpp
 	${source_path}/StateInterpolation.cpp
+
+	${source_path}/AbstractExternalReference.cpp
+	${source_path}/BoxReference.cpp
+	${source_path}/FlagReference.cpp
+	${source_path}/RectReference.cpp
+	${source_path}/LabelReference.cpp
 	
 	${source_path}/DrawingPrimitiveBase.cpp
 	${source_path}/Prismoid.cpp
 	${source_path}/Box.cpp
+	${source_path}/Rect.cpp
 	${source_path}/AbstractTexturedPrimitive.cpp
 	${source_path}/QuadStrip.cpp
 	

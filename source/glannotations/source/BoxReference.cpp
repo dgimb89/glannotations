@@ -7,6 +7,7 @@
 #include <iostream>
 
 #include <glannotations/BoxReference.h>
+#include <glannotations/Box.h>
 #include <glannotations/AbstractAnnotation.h>
 #include <glannotations/PathState.h>
 #include <glannotations/InternalState.h>
@@ -20,7 +21,6 @@ void glannotations::BoxReference::updatePositioning(InternalState& state) {
 	Utility::Segment camToBoxCenter(glannotations::getEye(getBindingIndex()), m_frontLLF + (m_widthSpan + m_heightSpan + m_depthSpan) / 2.f);
 	glm::vec3 intersection, widthSpan, heightSpan;
 	float vOverflow, hOverflow;
-	bool ignoreWidthSpanRot = false;
 
 	//front
 	if (intersectionSegmentQuad(camToBoxCenter, m_frontLLF, m_frontLLF + m_heightSpan, m_frontLLF + m_widthSpan, m_frontLLF + m_widthSpan + m_heightSpan, intersection, vOverflow, hOverflow)){
