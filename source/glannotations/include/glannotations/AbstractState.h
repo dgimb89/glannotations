@@ -19,7 +19,7 @@ namespace glannotations {
 	class InternalState;
 	class PathState;
 
-	typedef GLANNOTATIONS_API std::map<std::string, globjects::ref_ptr<glannotations::Styling> > StylingList;
+    typedef std::map<std::string, globjects::ref_ptr<glannotations::Styling> > StylingList;
 
 	namespace State {
 		enum GLANNOTATIONS_API VerticalAnchor { MIDDLE, BOTTOM, TOP, SCALE_HEIGHT};
