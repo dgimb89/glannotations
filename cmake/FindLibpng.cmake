@@ -12,16 +12,20 @@ find_path(	LIBPNG_INCLUDE_DIR
 		$ENV{LIBPNG_HOME}
 		${LIBPNG_INCLUDE_DIR}
 		${NSCP_INCLUDEDIR}
+		/usr
 	PATH_SUFFIXES 
-		include		
+		include
 )
 
-find_library( LIBPNG_LIBRARY 
+find_library(	LIBPNG_LIBRARY 
 	NAMES 
 		libpng
 		libpng16
+		png
 	PATHS
 		$ENV{LIBPNG_HOME}/lib
+		/usr/lib/x86_64-linux-gnu
+		/usr/lib
 )
 
 
@@ -32,6 +36,8 @@ find_library( LIBPNG_LIBRARY_DEBUG
 		libpng16d
 	PATHS
 		$ENV{LIBPNG_HOME}/lib
+		/usr/lib/x86_64-linux-gnu
+		/usr/lib
 )
 
 set(LIBPNG_LIBRARIES "optimized" ${LIBPNG_LIBRARY} "debug" ${LIBPNG_LIBRARY_DEBUG})
@@ -45,7 +51,8 @@ elseif(LIBPNG_LIBRARY AND NOT LIBPNG_LIBRARY_DEBUG)
 endif()
 
 ### Debug ###
-#message(STATUS "LibPNG: " ${LIBPNG_LIBRARIES})
+message(STATUS "LibPNG: " ${LIBPNG_LIBRARIES})
+message(STATUS "LibPNG: " ${LIBPNG_INCLUDE_DIR})
 
 if(LIBPNG_LIBRARIES AND LIBPNG_INCLUDE_DIR)
 	set(LIBPNG_FOUND TRUE)
