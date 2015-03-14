@@ -126,6 +126,7 @@ public:
 		srand(time(NULL));
 		glm::vec4 temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
 		m_building->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
+		flagColor = buildingColor + temp;
 		m_building1->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
 		m_building2->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
 		m_building3->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
@@ -147,6 +148,12 @@ public:
 		boxAnnotation->getState()->setStyling(new glannotations::Styles::Outline(0.2f, glm::vec3(0.f, 0.f, 0.f)));
 		boxAnnotation->getState()->asInternalState().setExternalReference(new glannotations::BoxReference(glm::vec2(0.f, 0.f), glm::vec2(0.f, 2.75f), glm::vec3(-5.f, 0.f, 0.f), false));
 
+		auto flagAnnotation = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(-1.f, 3.f, 5.01f), glm::vec3(1.f, 3.f, 5.01f), glm::vec3(1.f, 4.f, 5.01f)), "Flag", "calibri.ttf", dfFactory);
+		flagRef = new glannotations::FlagReference(1.0f, glm::vec3(0.f, 0.f, -3.f), false);
+		flagAnnotation->getState()->asInternalState().setExternalReference(flagRef);
+		flagAnnotation->setColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+		m_annotations.addAnnotation(flagAnnotation);
+
 		auto labelAnnotation = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(-4.75f, 3.f, 12.f), glm::vec3(-1.25f, 3.f, 12.f), glm::vec3(-1.25f, 5.f, 12.f)), "Label", "calibri.ttf", dfFactory);
 		labelAnnotation->getState()->asInternalState().setExternalReference(new glannotations::LabelReference(glm::vec3(0.f, -3.f, 10.f)));
 		m_annotations.addAnnotation(labelAnnotation);
@@ -156,13 +163,10 @@ public:
 		internalAnnotation->getState()->setStyling(new glannotations::Styles::Outline(0.1f, glm::vec3(0.f, 0.f, 0.f)));
 		m_annotations.addAnnotation(internalAnnotation);
 
-		auto topAnnotation = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(-0.75f, -2.98f, -0.5f), glm::vec3(-0.75f, -2.98f, 1.f), glm::vec3(0.75f, -2.98f, 0.5f)), "Top", "calibri.ttf", dfFactory);
+		auto topAnnotation = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(-1.f, -2.98f, -1.f), glm::vec3(-1.f, -2.98f, 1.f), glm::vec3(1.f, -2.98f, 1.f)), "Top", "calibri.ttf", dfFactory);
+		topAnnotation->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 		topAnnotation->getState()->asInternalState().setExternalReference(new glannotations::RectReference());
 		m_annotations.addAnnotation(topAnnotation);
-
-		auto flagAnnotation = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(-1.f, 3.f, 5.01f), glm::vec3(1.f, 3.f, 5.01f), glm::vec3(1.f, 4.f, 5.01f)), "Flag", "calibri.ttf", dfFactory);
-		flagAnnotation->getState()->asInternalState().setExternalReference(new glannotations::FlagReference(1.0f, glm::vec3(0.f, 0.f, -3.f), false));
-		m_annotations.addAnnotation(flagAnnotation);
 
 		m_annotations.addAnnotation(new glannotations::PNGAnnotation(new glannotations::InternalState(glm::vec3(-2.f, -4.f, 2.f), glm::vec3(-2.f, -4.f, 7.f), glm::vec3(-2.f, 1.0f, 7.f)), "hpi.png", dfFactory));
 
@@ -281,7 +285,8 @@ public:
     {
         switch (event.button())
         {
-        case GLFW_MOUSE_BUTTON_LEFT:
+		case GLFW_MOUSE_BUTTON_LEFT:
+			flagRef->setColor(flagColor);
             m_nav.panEnd();
             event.accept();
             break;
@@ -337,6 +342,8 @@ protected:
 	AxisAlignedBoundingBox m_aabb;
 
 	glannotations::AnnotationGroup m_annotations;
+	globjects::ref_ptr<glannotations::AbstractExternalReference> flagRef;
+	glm::vec4 flagColor;
 
 	globjects::ref_ptr<Building> m_building;
 	globjects::ref_ptr<Building> m_building1;

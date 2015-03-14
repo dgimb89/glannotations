@@ -90,6 +90,7 @@ set(api_includes
 	${include_path}/NVPRSvgRenderer.h
 
 	${include_path}/PNGImage.h
+	${include_path}/GLRawFile.h
 	${include_path}/AbstractPrimitiveRenderer.h
 	${include_path}/DistanceFieldGeneration.h
 	${include_path}/DistanceFieldPNGRenderer.h
@@ -151,6 +152,7 @@ set(sources
 	${source_path}/NVPRSvgRenderer.cpp
 
 	${source_path}/PNGImage.cpp
+	${source_path}/GLRawFile.cpp
 	${source_path}/AbstractPrimitiveRenderer.cpp
 	${source_path}/DistanceFieldGeneration.cpp
 	${source_path}/DistanceFieldPNGRenderer.cpp	
