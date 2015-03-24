@@ -25,9 +25,11 @@ void glannotations::AbstractState::copyState(AbstractState& copyTo) const {
 	copyTo.setHorizontalAnchor(getHorizontalAnchor());
 	copyTo.setVerticalAnchor(getVerticalAnchor());
 	copyTo.setStylings(getStylings());
+	copyTo.setMaximumLineHeight(getMaximumLineHeight());
 }
 
 void glannotations::AbstractState::setStylings(const StylingList& stylings) {
+	setDirty(true);
 	m_stylings = stylings;
 }
 
@@ -55,9 +57,25 @@ glannotations::State::HorizontalAnchor glannotations::AbstractState::getHorizont
 	return m_horizontalAnchor;
 }
 void glannotations::AbstractState::setVerticalAnchor(glannotations::State::VerticalAnchor verticalAnchor) {
+	setDirty(true);
 	m_verticalAnchor = verticalAnchor;
 }
 
 void glannotations::AbstractState::setHorizontalAnchor(glannotations::State::HorizontalAnchor horizontalAnchor) {
+	setDirty(true);
 	m_horizontalAnchor = horizontalAnchor;
+}
+
+void glannotations::AbstractState::setMaximumLineHeight(float height) {
+	setDirty(true);
+	m_maximumLineHeight = height;
+}
+
+float glannotations::AbstractState::getMaximumLineHeight() const {
+	// important: accomodate for line height in state specialization
+	return m_maximumLineHeight;
+}
+
+bool glannotations::AbstractState::hasMaximumLineHeightConstraint() const {
+	return getMaximumLineHeight() != 0.f;
 }

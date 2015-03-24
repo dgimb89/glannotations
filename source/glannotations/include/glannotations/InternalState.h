@@ -18,6 +18,11 @@ namespace glannotations {
 		const glm::vec3& getUR() const;
 		const glm::vec3& getLR() const;
 
+		// render extends in regards to aspect ratio / line height etc.
+		glm::vec3 getRenderLL() const;
+		glm::vec3 getRenderLR() const;
+		glm::vec3 getRenderUR() const;
+
 		virtual bool isValid() const override;
 		virtual glannotations::BoundingBox getBoundingBox() override;
 

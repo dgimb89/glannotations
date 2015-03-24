@@ -43,13 +43,20 @@ namespace glannotations {
 		virtual globjects::ref_ptr<glannotations::AbstractState> clone() const = 0;
 		virtual glannotations::BoundingBox getBoundingBox() = 0;
 
+		void setMaximumLineHeight(float height);
+		float getMaximumLineHeight() const;
+		// maximum lineheight of 0.f means there is no limit -- use full state space
+		bool hasMaximumLineHeightConstraint() const;
+
 		glannotations::InternalState& asInternalState();
 		glannotations::PathState& asPathState();
 		glannotations::ViewportState& asViewportState();
 
+		// TODO: make use of anchors
 		glannotations::State::HorizontalAnchor getHorizontalAnchor() const;
 		void setHorizontalAnchor(glannotations::State::HorizontalAnchor horizontalAnchor);
 
+		// TODO: make use of anchors
 		glannotations::State::VerticalAnchor getVerticalAnchor() const;
 		void setVerticalAnchor(glannotations::State::VerticalAnchor verticalAnchor);
 
@@ -58,11 +65,17 @@ namespace glannotations {
 		virtual globjects::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix) = 0;
 
 	protected:
+		template <typename T>
+		bool exceedsLineHeightConstraint(T lr, T ur) const {
+			return glm::distance(ur, lr) > getMaximumLineHeight();
+		}
+
 		void copyState(AbstractState& copyTo) const;
 		virtual void draw(const AbstractRenderer& renderer) = 0;
 		AbstractState();
 
 	private:
+		float m_maximumLineHeight = 0.f;
 		StylingList m_stylings;
 		State::VerticalAnchor m_verticalAnchor = State::VerticalAnchor::MIDDLE;
 		State::HorizontalAnchor m_horizontalAnchor = State::HorizontalAnchor::CENTER;

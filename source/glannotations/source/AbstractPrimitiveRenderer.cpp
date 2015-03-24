@@ -38,7 +38,7 @@ void glannotations::AbstractPrimitiveRenderer::drawSetupState(const ViewportStat
 
 void glannotations::AbstractPrimitiveRenderer::drawSetupState(const InternalState& state) const {
 	if (state.isDirty()) {
-		m_drawingPrimitive->setPosition(state.getLL(), state.getLR(), state.getUR());
+		m_drawingPrimitive->setPosition(state.getRenderLL(), state.getRenderLR(), state.getRenderUR());
 		state.setDirty(false);
 	}
 	m_drawingPrimitive->draw();

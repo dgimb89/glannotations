@@ -14,7 +14,7 @@ struct MatrizesBuffer {
 	globjects::ref_ptr<globjects::Buffer> buffer;
 	glm::mat4 view = glm::mat4(1);
 	glm::mat4 projection = glm::mat4(1);
-	glm::vec2 viewFrustumVolume;
+	float aspectRatio;
 };
 
 struct MatrizesBufferMap : public std::unordered_map < gl::GLuint, MatrizesBuffer > {
@@ -44,13 +44,15 @@ void glannotations::setProjection(const glm::mat4& projection, gl::GLuint bindin
 	(*getMatricesBufferMap())[bindingIndex].projection = projection;
 }
 
+void glannotations::setAspectRatio(float aspectRatio, gl::GLuint bindingIndex /*= 0*/) {
+	if (!isMatricesUBOInitialiced(bindingIndex)) return;
+	(*getMatricesBufferMap())[bindingIndex].aspectRatio = aspectRatio;
+}
+
 void glannotations::updateMatricesFromCamera(const gloperate::Camera& camera, gl::GLuint bindingIndex /*= 0*/) {
 	setView(camera.view(), bindingIndex);
 	setProjection(camera.projection(), bindingIndex);
-	float fovx = camera.aspectRatio() * camera.fovy();
-	setViewFrustumVolume(glm::vec2(		2 * camera.zNear() / std::sin(M_PI_2 - fovx) * std::sin(fovx),
-										2 * camera.zNear() / std::sin(M_PI_2 - camera.fovy()) * std::sin(camera.fovy()))
-	, bindingIndex);
+	setAspectRatio(camera.aspectRatio(), bindingIndex);
 }
 
 void glannotations::initializeMatricesUBO(gl::GLuint bindingIndex /*= 0*/) {
@@ -75,6 +77,12 @@ const glm::mat4 GLANNOTATIONS_API & glannotations::getProjection(gl::GLuint bind
 	return (*getMatricesBufferMap())[bindingIndex].projection;
 }
 
+float GLANNOTATIONS_API glannotations::getAspectRatio(gl::GLuint bindingIndex /*= 0*/) {
+	if (!isMatricesUBOInitialiced(bindingIndex))
+		throw std::runtime_error("UBO is not initialized");
+	return (*getMatricesBufferMap())[bindingIndex].aspectRatio;
+}
+
 
 glm::vec3 GLANNOTATIONS_API glannotations::getRight(gl::GLuint bindingIndex /*= 0*/) {
 	return glm::vec3(glannotations::getView(bindingIndex)[0]);
@@ -91,15 +99,6 @@ glm::vec3 GLANNOTATIONS_API glannotations::getLookAt(gl::GLuint bindingIndex /*=
 glm::vec3 GLANNOTATIONS_API glannotations::getEye(gl::GLuint bindingIndex /*= 0*/) {
 	return glm::vec3(getView(bindingIndex)[3]);
 }
-
-void GLANNOTATIONS_API glannotations::setViewFrustumVolume(glm::vec2 volumeInWorldSpace, gl::GLuint bindingIndex /*= 0*/) {
-	if (!isMatricesUBOInitialiced(bindingIndex)) return;
-	(*getMatricesBufferMap())[bindingIndex].viewFrustumVolume = volumeInWorldSpace;
-}
-
-glm::vec2 GLANNOTATIONS_API glannotations::getViewFrustumVolume(gl::GLuint bindingIndex /*= 0*/) {
-	return (*getMatricesBufferMap())[bindingIndex].viewFrustumVolume;
-} 
 
 void GLANNOTATIONS_API glannotations::initialize() {
 	globjects::init();
