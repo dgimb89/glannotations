@@ -33,11 +33,13 @@ gl::GLsizeiptr matrixBlockSize() {
 }
 
 void glannotations::setView(const glm::mat4& view, gl::GLuint bindingIndex /*= 0*/) {
+	if (!isMatricesUBOInitialiced(bindingIndex)) return;
 	(*getMatricesBufferMap())[bindingIndex].buffer->setSubData(0, sizeof(glm::mat4), glm::value_ptr(view));
 	(*getMatricesBufferMap())[bindingIndex].view = glm::inverse(view);
 }
 
 void glannotations::setProjection(const glm::mat4& projection, gl::GLuint bindingIndex /*= 0*/) {
+	if (!isMatricesUBOInitialiced(bindingIndex)) return;
 	(*getMatricesBufferMap())[bindingIndex].buffer->setSubData(sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(projection));
 	(*getMatricesBufferMap())[bindingIndex].projection = projection;
 }
@@ -91,6 +93,7 @@ glm::vec3 GLANNOTATIONS_API glannotations::getEye(gl::GLuint bindingIndex /*= 0*
 }
 
 void GLANNOTATIONS_API glannotations::setViewFrustumVolume(glm::vec2 volumeInWorldSpace, gl::GLuint bindingIndex /*= 0*/) {
+	if (!isMatricesUBOInitialiced(bindingIndex)) return;
 	(*getMatricesBufferMap())[bindingIndex].viewFrustumVolume = volumeInWorldSpace;
 }
 

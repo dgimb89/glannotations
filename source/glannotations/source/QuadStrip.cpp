@@ -304,7 +304,6 @@ void glannotations::QuadStrip::clearQuads() {
 }
 
 void glannotations::QuadStrip::draw() {
-	m_program->release();
 	if (m_texture) {
 		gl::glActiveTexture(gl::GL_TEXTURE0);
 		m_texture->bind();
@@ -318,14 +317,20 @@ void glannotations::QuadStrip::draw() {
 	}
 }
 
+glm::vec2 glannotations::QuadStrip::getQuadStripTextureAdvance() {
+	glm::vec2 texAdvance(0.f, m_textureRanges.front().second.y * getQuadstripRowCount());
+	for (auto textureCoords : m_textureRanges) {
+		texAdvance.x += textureCoords.second.x;
+	}
+	return texAdvance;
+}
+
 void glannotations::QuadStrip::updateQuadRanges() {
 	// update texture VBO
 	std::vector<texVec2_t> textures, texAdvances;
 
-	double textureWidth = 0.0;
 	for (auto textureCoords : m_textureRanges) {
 		// calculate full texture width for later usage
-		textureWidth += textureCoords.second.x;
 		textures.push_back(textureCoords.first);
 		texAdvances.push_back(textureCoords.second);
 	}
@@ -335,7 +340,7 @@ void glannotations::QuadStrip::updateQuadRanges() {
 	std::vector<glm::vec3> vertAdvanceW, vertAdvanceH;
 
 	glm::vec3 widthSpan = m_lr - m_ll;
-	widthSpan /= textureWidth; // normalize
+	widthSpan /= getQuadStripTextureAdvance().x; // normalize
 	glm::vec3 heightSpan = m_ur - m_lr;
 	glm::vec3 currentLL = m_ll;
 

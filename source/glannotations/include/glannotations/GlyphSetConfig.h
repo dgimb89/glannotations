@@ -22,6 +22,8 @@ namespace glannotations {
 		std::string getGlyphsetImageName() const;
 		unsigned short getNumGlyphs();
 		void setStartGlyph(unsigned short startGlyph);
+		void setWhitespaceLength(float whitespaceLength);
+		float getWhitespaceLength() const;
 		unsigned short getStartGlyph();
 		void setNormalizedGlyphConfigs(const std::vector<glannotations::GlyphSetConfig::GlyphConfig>& glyphConfigs);
 
@@ -34,6 +36,7 @@ namespace glannotations {
 	protected: 
 		std::string getFileContent();
 		unsigned short m_startGlyph = 0;
+		float m_whitespaceLength;
 		std::vector<glannotations::GlyphSetConfig::GlyphConfig> m_glyphConfigs;
 		std::string m_fontFileName;
 	};

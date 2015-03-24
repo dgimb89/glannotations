@@ -7,7 +7,7 @@
 #include "glannotations-version.h"
 
 #define PT_SIZE 196
-#define GLYPHSET_BEGIN 33
+#define GLYPHSET_BEGIN 32
 #define SCALEDOWN_HEIGHT 512
 #define GLYPH_GROUP_SIZE 16
 
@@ -95,6 +95,7 @@ void glannotations::preprocessor::GlyphSetGenerator::generateGlyphset(std::strin
 	finalImage->saveDistanceField(jsonConfig.getGlyphsetImageName());
 
 	jsonConfig.setStartGlyph(GLYPHSET_BEGIN);
+	jsonConfig.setWhitespaceLength(0.7f / GLYPH_GROUP_SIZE);
 	jsonConfig.setGlyphConfigs(glyphConfigs, maxRowWidth-1, finalHeight-1);
 	jsonConfig.serialize();
 
@@ -106,6 +107,10 @@ inline int glannotations::preprocessor::GlyphSetGenerator::convertFontToPixelSiz
 
 globjects::ref_ptr<glannotations::PNGImage> glannotations::preprocessor::GlyphSetGenerator::generateGlyphImage(void* bitmap, unsigned marginLeft, int ascender, int descender, int bearingY) {
 	FT_Bitmap* bitmapPtr = reinterpret_cast<FT_Bitmap*>(bitmap);
+	// replace whitespace glyph by dummy images
+	if (bitmapPtr->width == 0) {
+		return new glannotations::PNGImage(SCALEDOWN_HEIGHT / 3., SCALEDOWN_HEIGHT, 1, 8);
+	}
 	unsigned imageHeight = ascender - descender;
 	unsigned imageWidth = bitmapPtr->width + 2*marginLeft;// +marginRight;
 	globjects::ref_ptr<glannotations::PNGImage> result = new glannotations::PNGImage(imageWidth, imageHeight, 1, 8);

@@ -17,3 +17,7 @@ void glannotations::AnnotationGroup::clear() {
 glannotations::AnnotationGroup::~AnnotationGroup() {
 
 }
+
+size_t glannotations::AnnotationGroup::size() const {
+	return m_annotations.size();
+}

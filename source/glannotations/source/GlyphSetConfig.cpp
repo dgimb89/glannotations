@@ -25,6 +25,7 @@ glannotations::GlyphSetConfig::GlyphSetConfig(std::string fontFileName) {
 		const rapidjson::Value& fontObject = document[fontFileName.c_str()];
 
 		m_startGlyph = fontObject["startGlyph"].GetUint();
+		m_whitespaceLength = fontObject["whitespaceLength"].GetDouble();
 		const rapidjson::Value& glyphConfigs = fontObject["glyphs"];
 		for (rapidjson::SizeType i = 0; i < glyphConfigs.Size(); ++i) {
 			m_glyphConfigs.push_back(	glannotations::GlyphSetConfig::GlyphConfig(
@@ -47,6 +48,7 @@ void glannotations::GlyphSetConfig::serialize() {
 
 	rapidjson::Value fontObject(rapidjson::kObjectType);
 	fontObject.AddMember("startGlyph", m_startGlyph, allocator);
+	fontObject.AddMember("whitespaceLength", m_whitespaceLength, allocator);
 
 	{
 		rapidjson::Value glyphs(rapidjson::kArrayType);
@@ -143,6 +145,14 @@ const glannotations::GlyphSetConfig::GlyphConfig& glannotations::GlyphSetConfig:
 
 std::string glannotations::GlyphSetConfig::getGlyphsetImageName() const {
 	return std::string(m_fontFileName + ".png");
+}
+
+void glannotations::GlyphSetConfig::setWhitespaceLength(float whitespaceLength) {
+	m_whitespaceLength = whitespaceLength;
+}
+
+float glannotations::GlyphSetConfig::getWhitespaceLength() const {
+	return m_whitespaceLength;
 }
 
 glannotations::GlyphSetConfig::GlyphConfig::GlyphConfig(glm::float_t ll_x, glm::float_t ll_y, glm::float_t advance_x, glm::float_t advance_y) {

@@ -6,7 +6,7 @@
 #include <glannotations/InternalState.h>
 #include <glannotations/FontAnnotation.h>
 #include <glannotations/TextureManager.h>
-#include <glannotations/QuadStrip.h>
+#include <glannotations/ResolutionAwareQuadStrip.h>
 #include <glannotations/GlyphSetConfig.h>
 
 void glannotations::DistanceFieldFontRenderer::draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) {
@@ -34,7 +34,7 @@ glannotations::DistanceFieldFontRenderer::DistanceFieldFontRenderer(gl::GLuint m
 
 void glannotations::DistanceFieldFontRenderer::setupGlyphQuadstrip(glannotations::FontAnnotation* annotation) {
 	glannotations::GlyphSetConfig glyphConfig(annotation->getFontName());
-	auto quadStrip = new QuadStrip(glannotations::TextureManager::getInstance().getTexture(glyphConfig.getGlyphsetImageName()), m_globalMatricesBindingIndex, true);
+	auto quadStrip = new ResolutionAwareQuadStrip(glannotations::TextureManager::getInstance().getTexture(glyphConfig.getGlyphsetImageName()), m_globalMatricesBindingIndex, true);
 	for (unsigned i = 0; i < annotation->getText().length(); ++i) {
 		quadStrip->addQuad(glyphConfig.getGlyphConfigForCharcode(annotation->getText().at(i))._ll,
 			glyphConfig.getGlyphConfigForCharcode(annotation->getText().at(i))._advance);

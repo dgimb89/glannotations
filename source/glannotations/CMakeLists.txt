@@ -117,6 +117,7 @@ set(api_includes
 	${include_path}/Rect.h
 	${include_path}/AbstractTexturedPrimitive.h
 	${include_path}/QuadStrip.h
+	${include_path}/ResolutionAwareQuadStrip.h
 
 	${include_path}/BoundingBox.h
 
@@ -178,6 +179,7 @@ set(sources
 	${source_path}/Rect.cpp
 	${source_path}/AbstractTexturedPrimitive.cpp
 	${source_path}/QuadStrip.cpp
+	${source_path}/ResolutionAwareQuadStrip.cpp
 	
 	${source_path}/BoundingBox.cpp
 

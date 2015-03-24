@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
 
 	// Glyphset Generation
 	{
-		glannotations::preprocessor::GlyphSetGenerator::generateGlyphset("calibri.ttf", 90, false);
+		glannotations::preprocessor::GlyphSetGenerator::generateGlyphset("calibri.ttf", 91, true);
 	}
 	
 }

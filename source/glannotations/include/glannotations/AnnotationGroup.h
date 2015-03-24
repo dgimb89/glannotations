@@ -16,6 +16,7 @@ namespace glannotations {
 		void clear();
 		void addAnnotation(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation);
 		void draw() const;
+		size_t size() const;
 
 	protected:
 		std::vector< globjects::ref_ptr<glannotations::AbstractAnnotation> > m_annotations;

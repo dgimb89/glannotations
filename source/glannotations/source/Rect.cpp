@@ -63,7 +63,6 @@ glannotations::Rect::Rect() {
 }
 
 void glannotations::Rect::draw() {
-	m_program->release();
 	m_program->use();
 	m_vao->drawArrays(gl::GL_TRIANGLES, 0, 3);
 	m_program->release();
