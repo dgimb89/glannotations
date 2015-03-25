@@ -104,7 +104,6 @@ void glannotations::BoxReference::setupExternalReference(const InternalState& st
 
 	if (isDirty() && !isPositioningOnly()) {
 		auto box = new glannotations::Box;
-		box->setColor(glm::vec4(1.f, 0.f, 0.f, .35f));
 		box->setPosition(m_frontLLF, m_frontLLF + m_widthSpan + m_heightSpan + m_depthSpan);
 		m_externalPrimitive = box;
 	}

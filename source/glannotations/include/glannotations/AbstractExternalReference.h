@@ -39,6 +39,7 @@ namespace glannotations {
 		bool m_positioningOnly;
 		unsigned int m_bindingIndex;
 		globjects::ref_ptr<glannotations::AbstractDrawingPrimitive> m_externalPrimitive;
+		glm::vec4 m_color = glm::vec4(1.f, 0.f, 0.f, .35f);
 
 	private:
 		void assertNotReused();

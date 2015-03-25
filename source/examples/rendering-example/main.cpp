@@ -151,7 +151,7 @@ public:
 
 		auto flagAnnotation = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(-1.f, 3.f, 5.01f), glm::vec3(1.f, 3.f, 5.01f), glm::vec3(1.f, 4.f, 5.01f)), "Flag", "calibri.ttf", dfFactory);
 		auto flagRef = new glannotations::FlagReference(1.0f, glm::vec3(0.f, 0.f, -3.f), false);
-		//flagRef->setColor(flagColor);
+		flagRef->setColor(flagColor);
 		flagAnnotation->getState()->asInternalState().setExternalReference(flagRef);
 		flagAnnotation->getState()->setMaximumLineHeight(1.5f);
 		flagAnnotation->setColor(glm::vec4(1.f, 1.f, 1.f, 1.f));

@@ -48,6 +48,9 @@ void glannotations::AbstractExternalReference::updateBindings(const glannotation
 
 void glannotations::AbstractExternalReference::draw() {
 	if (!isPositioningOnly()) {
+		if (isDirty()) {
+			m_externalPrimitive->setColor(m_color);
+		}
 		m_externalPrimitive->draw();
 	}
 	setDirty(false);
@@ -58,5 +61,6 @@ void glannotations::AbstractExternalReference::setDirty(bool dirtyValue) const  
 }
 
 void glannotations::AbstractExternalReference::setColor(glm::vec4 color) {
-	m_externalPrimitive->setColor(color);
+	setDirty(true);
+	m_color = color;
 }

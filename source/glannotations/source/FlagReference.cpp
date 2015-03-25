@@ -55,7 +55,7 @@ void glannotations::FlagReference::updatePositioning(InternalState& state) {
 
 	glm::mat4 rotationMat = glm::rotate(glm::mat4(1), hOverflow * MAX_ROTATION_ANGLE, heightSpan);
 
-	widthSpan = glm::vec3(rotationMat * glm::vec4(widthSpan, 1.f));
+	widthSpan = glm::normalize(glm::vec3(rotationMat * glm::vec4(widthSpan, 1.f))) * glm::length(m_widthSpan);
 	heightSpan = glm::vec3(rotationMat * glm::vec4(heightSpan, 1.f));
 
 	// bring annotation forward depending on the angular rotation to avoid occlusion

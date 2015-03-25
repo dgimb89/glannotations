@@ -7,6 +7,7 @@
 #include <glannotations/PathState.h>
 #include <glannotations/InternalState.h>
 #include <glannotations/globals.h>
+#include <iostream>
 
 
 glannotations::RectReference::RectReference()
@@ -37,12 +38,15 @@ void glannotations::RectReference::updatePositioning(InternalState& state) {
 	float depthDot = glm::dot(cameraRight, false ? -m_heightSpan : m_heightSpan);
 	if (std::fabs(widthDot) > std::fabs(depthDot)) {
 		widthSpan = std::signbit(widthDot) ^ false ? -m_widthSpan : m_widthSpan;
+		heightSpan = glm::normalize(glm::cross(widthSpan, false ? m_up : -m_up));
+		widthSpan *= m_halfAnnotWidth;
+		heightSpan *= m_halfAnnotHeight;
 	} else {
 		widthSpan = std::signbit(depthDot) ^ false ? -m_heightSpan : m_heightSpan;
+		heightSpan = glm::normalize(glm::cross(widthSpan, false ? m_up : -m_up));
+		widthSpan *= m_halfAnnotHeight;
+		heightSpan *= m_halfAnnotWidth;
 	}
-	heightSpan = glm::cross(widthSpan, false ? m_up : -m_up);
-	widthSpan *= m_halfAnnotWidth;
-	heightSpan *= m_halfAnnotHeight;
 	state.setExtends(m_center - widthSpan - heightSpan, m_center + widthSpan - heightSpan, m_center + widthSpan + heightSpan);
 }
 
