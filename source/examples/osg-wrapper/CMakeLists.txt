@@ -12,6 +12,7 @@ find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(gloperate REQUIRED)
+find_package(libzeug REQUIRED)
 find_package(OpenSceneGraph REQUIRED)
 find_package(osgViewer REQUIRED)
 find_package(osgGA REQUIRED)
@@ -32,6 +33,7 @@ include_directories(
     ${OSGGA_INCLUDE_DIRS}
     ${OSGDB_INCLUDE_DIRS}
     ${GLOPERATE_INCLUDES}
+    ${LIBZEUG_INCLUDES}
 )
 
 include_directories(
@@ -55,6 +57,7 @@ set(libs
     ${OSGGA_LIBRARIES}
     ${OSGDB_LIBRARIES}
     ${GLOPERATE_LIBRARIES}
+    ${LIBZEUG_LIBRARIES}
     glannotations
     glannotations-wrapper
 )

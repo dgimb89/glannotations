@@ -7,7 +7,7 @@ message(STATUS "Lib ${target}")
 #
 
 find_package(Freetype REQUIRED)
-find_package(GLOBJECTS REQUIRED)
+find_package(globjects REQUIRED)
 find_package(GLM REQUIRED)
 
 #
