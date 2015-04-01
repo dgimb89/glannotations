@@ -29,11 +29,11 @@ void glannotations::AbstractExternalReference::assertNotReused() {
 	}
 }
 
-inline void glannotations::AbstractExternalReference::setBindingIndex(unsigned int bindingIndex) {
+void glannotations::AbstractExternalReference::setBindingIndex(unsigned int bindingIndex) {
 	m_bindingIndex = bindingIndex;
 }
 
-inline unsigned int glannotations::AbstractExternalReference::getBindingIndex() const {
+unsigned int glannotations::AbstractExternalReference::getBindingIndex() const {
 	return m_bindingIndex;
 }
 

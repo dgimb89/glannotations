@@ -115,7 +115,7 @@ void glannotations::BoxReference::setupExternalReference(const PathState& state)
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
-inline bool glannotations::BoxReference::intersectionSegmentQuad(const glannotations::Utility::Segment& ray, const glm::vec3& a, const glm::vec3& b, const glm::vec3& c, const glm::vec3& d, glm::vec3& point, float& vOverflow, float& hOverflow) {
+bool glannotations::BoxReference::intersectionSegmentQuad(const glannotations::Utility::Segment& ray, const glm::vec3& a, const glm::vec3& b, const glm::vec3& c, const glm::vec3& d, glm::vec3& point, float& vOverflow, float& hOverflow) {
 	if (ray.intersect(Utility::Triangle(a, b, c), point) || ray.intersect(Utility::Triangle(c, b, d), point)) {
 		vOverflow = calculateOverflow(a, b, point, m_halfAnnotHeight);
 		hOverflow = calculateOverflow(a, c, point, m_halfAnnotWidth);
@@ -124,7 +124,7 @@ inline bool glannotations::BoxReference::intersectionSegmentQuad(const glannotat
 	return false;
 }
 
-inline float glannotations::BoxReference::calculateOverflow(const glm::vec3& a, const glm::vec3& b, const glm::vec3& point, float overflowLimit) {
+float glannotations::BoxReference::calculateOverflow(const glm::vec3& a, const glm::vec3& b, const glm::vec3& point, float overflowLimit) {
 	glm::vec3 projectedPoint;
 	Utility::Segment segment(a, b);
 	segment.orthographicProjection(point, projectedPoint);
@@ -150,7 +150,7 @@ void glannotations::BoxReference::fixFlickering() {
 	m_depthSpan *= 1.f + ANTI_FLICKERING;
 }
 
-inline void glannotations::BoxReference::determineViewdependantSpans(glm::vec3& widthSpan, glm::vec3& heightSpan, bool bottom, float& vOverflow, float& hOverflow) {
+void glannotations::BoxReference::determineViewdependantSpans(glm::vec3& widthSpan, glm::vec3& heightSpan, bool bottom, float& vOverflow, float& hOverflow) {
 	glm::vec3 cameraRight = glannotations::getRight(getBindingIndex());
 	// project cameraRight on top plane
 	glm::vec3 n = glm::normalize(glm::cross(bottom ? -m_widthSpan : m_widthSpan, bottom ? -m_depthSpan : m_depthSpan));

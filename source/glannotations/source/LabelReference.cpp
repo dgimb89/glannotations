@@ -33,6 +33,6 @@ glannotations::LabelReference::LabelReference(glm::vec3 reference) : AbstractExt
 	m_externalPrimitive = prismoid;
 }
 
-inline void glannotations::LabelReference::updatePrismoid(const glm::vec3& a, const glm::vec3& b) {
+void glannotations::LabelReference::updatePrismoid(const glm::vec3& a, const glm::vec3& b) {
 	reinterpret_cast<glannotations::Prismoid*>(m_externalPrimitive.get())->setPosition(a, b);
 }

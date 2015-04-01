@@ -38,7 +38,7 @@ globjects::ref_ptr<glannotations::PNGImage> glannotations::DistanceFieldGenerati
 	return scaledResult;
 }
 
-inline double cubicInterpolate(double p, double cur, double n1, double n2, double frac) {
+double cubicInterpolate(double p, double cur, double n1, double n2, double frac) {
 	return cur + 0.5 * frac *(n1 - p + frac*(2.0*p - 5.0*cur + 4.0*n1 - n2 + frac*(3.0*(cur - n1) + n2 - p)));
 }
 

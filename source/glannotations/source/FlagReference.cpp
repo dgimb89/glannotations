@@ -108,7 +108,7 @@ bool glannotations::FlagReference::intersectionSegmentQuad(const glannotations::
 	return false;
 }
 
-inline float glannotations::FlagReference::calculateOverflow(const glm::vec3& a, const glm::vec3& b, const glm::vec3& point, float overflowLimit) {
+float glannotations::FlagReference::calculateOverflow(const glm::vec3& a, const glm::vec3& b, const glm::vec3& point, float overflowLimit) {
 	glm::vec3 projectedPoint;
 	Utility::Segment segment(a, b);
 	segment.orthographicProjection(point, projectedPoint);
