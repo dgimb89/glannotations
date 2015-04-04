@@ -92,7 +92,7 @@ void glannotations::NVPRFontRenderer::initializeFont(glannotations::FontAnnotati
 		gl::GL_USE_MISSING_GLYPH_NV, pathSettings, emScale);
 }
 
-inline gl::PathRenderingMaskNV operator|(gl::PathRenderingMaskNV a, gl::PathRenderingMaskNV b) {
+gl::PathRenderingMaskNV operator|(gl::PathRenderingMaskNV a, gl::PathRenderingMaskNV b) {
 	return static_cast<gl::PathRenderingMaskNV>(static_cast<int>(a) | static_cast<int>(b));
 }
 

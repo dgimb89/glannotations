@@ -11,6 +11,7 @@ find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(gloperate REQUIRED)
+find_package(libzeug REQUIRED)
 find_package(Libpng REQUIRED)
 
 #
@@ -23,6 +24,7 @@ include_directories(
     ${GLBINDING_INCLUDES}
     ${GLOBJECTS_INCLUDES}
     ${GLOPERATE_INCLUDES}
+    ${LIBZEUG_INCLUDES}
 )
 
 include_directories(
@@ -40,6 +42,7 @@ set(libs
     ${GLBINDING_LIBRARIES}
     ${GLOBJECTS_LIBRARIES}
     ${GLOPERATE_LIBRARIES}
+    ${LIBZEUG_LIBRARIES}
 )
 
 #

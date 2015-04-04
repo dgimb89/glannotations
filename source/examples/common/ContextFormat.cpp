@@ -259,7 +259,7 @@ bool ContextFormat::verifyVersionAndProfile(const ContextFormat & requested, con
     return sameProfiles;
 }
 
-inline void ContextFormat::verifyBufferSize(
+void ContextFormat::verifyBufferSize(
     const unsigned int sizeRequested
     , const unsigned int sizeInitialized
     , const std::string & warning

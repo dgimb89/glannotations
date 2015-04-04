@@ -110,8 +110,6 @@ protected:
     static bool verifyPixelFormat(const ContextFormat & requested, const ContextFormat & current);
 
 
-    /** Used as inline by verifyPixelFormat
-    */
     static void verifyBufferSize(
         unsigned int sizeRequested
         , unsigned int sizeInitialized

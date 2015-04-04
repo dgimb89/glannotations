@@ -12,6 +12,7 @@ find_package(GLM REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(gloperate REQUIRED)
+find_package(libzeug REQUIRED)
 
 #
 # Includes
@@ -24,6 +25,7 @@ include_directories(
     ${GLOBJECTS_INCLUDES}
     ${GLBINDING_INCLUDES}
     ${GLOPERATE_INCLUDES}
+    ${LIBZEUG_INCLUDES}
 )
 
 include_directories(
@@ -42,6 +44,7 @@ set(libs
     ${GLOBJECTS_LIBRARIES}
     ${GLBINDING_LIBRARIES}
     ${GLOPERATE_LIBRARIES}
+    ${LIBZEUG_LIBRARIES}
     ${EXAMPLE_COMMON}
     glannotations
 )
