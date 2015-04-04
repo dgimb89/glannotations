@@ -87,7 +87,6 @@ void glannotations::FlagReference::setupExternalReference(const InternalState& s
 
 	if (isDirty() && !isPositioningOnly()) {
 		auto flag = new glannotations::Rect;
-		flag->setColor(glm::vec4(1.f, 0.f, 0.f, 0.35f));
 		flag->setPosition(m_frontLLF, m_frontLLF + m_widthSpan, m_frontLLF + m_widthSpan + m_heightSpan);
 		m_externalPrimitive = flag;
 	}

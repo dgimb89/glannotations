@@ -8,8 +8,7 @@
 #include <string.h>
 
 glannotations::DrawingPrimitiveBase::DrawingPrimitiveBase() {
-	m_vao = new globjects::VertexArray();
-	m_positions = new globjects::Buffer();
+	initialize();
 }
 
 void glannotations::DrawingPrimitiveBase::setColor(glm::vec4 color) {
@@ -40,4 +39,9 @@ globjects::Shader* glannotations::DrawingPrimitiveBase::finalizeGeometryShader(c
 	globjects::StringTemplate* shaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(shader, strlen(shader)));
 	shaderSource->replace("### MATRIX_BLOCK ###", glannotations::ShaderSources::matrixUniformBlock);
 	return new globjects::Shader(gl::GL_GEOMETRY_SHADER, shaderSource);
+}
+
+void glannotations::DrawingPrimitiveBase::initialize() {
+	m_vao = new globjects::VertexArray();
+	m_positions = new globjects::Buffer();
 }

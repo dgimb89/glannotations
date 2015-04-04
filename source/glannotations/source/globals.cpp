@@ -1,13 +1,15 @@
 #define _USE_MATH_DEFINES
+#include <unordered_map>
+#include <cmath>
+#include <mutex>
+
 #include <glm/gtc/type_ptr.hpp>
 #include <glbinding/gl/enum.h>
 #include <globjects/globjects.h>
 #include <globjects/Buffer.h>
-#include <unordered_map>
-#include <cmath>
 
 #include <glannotations/globals.h>
-#include <iostream>
+
 
 // important! make sure that glbinding global objects are created BEFORE the matrizesBufferMap on global space
 struct MatrizesBuffer {
@@ -23,6 +25,11 @@ struct MatrizesBufferMap : public std::unordered_map < gl::GLuint, MatrizesBuffe
 	}
 };
 
+std::mutex* getMutex() {
+	static std::mutex* mutex = new std::mutex;
+	return mutex;
+}
+
 MatrizesBufferMap* getMatricesBufferMap() {
 	static MatrizesBufferMap* matricesBufferMap = new MatrizesBufferMap;
 	return matricesBufferMap;
@@ -30,6 +37,10 @@ MatrizesBufferMap* getMatricesBufferMap() {
 
 gl::GLsizeiptr matrixBlockSize() {
 	return sizeof(glm::mat4) * 2;
+}
+
+bool isMatricesUBOInitialiced(gl::GLuint bindingIndex /*= 0*/) {
+	return (*getMatricesBufferMap()).count(bindingIndex) > 0;
 }
 
 void glannotations::setView(const glm::mat4& view, gl::GLuint bindingIndex /*= 0*/) {
@@ -56,13 +67,14 @@ void glannotations::updateMatricesFromCamera(const gloperate::Camera& camera, gl
 }
 
 void glannotations::initializeMatricesUBO(gl::GLuint bindingIndex /*= 0*/) {
-	(*getMatricesBufferMap())[bindingIndex].buffer = new globjects::Buffer;
-	(*getMatricesBufferMap())[bindingIndex].buffer->setData(matrixBlockSize(), nullptr, gl::GL_STREAM_DRAW);
-	(*getMatricesBufferMap())[bindingIndex].buffer->bindRange(gl::GL_UNIFORM_BUFFER, bindingIndex, 0, matrixBlockSize());
-}
-
-bool glannotations::isMatricesUBOInitialiced(gl::GLuint bindingIndex /*= 0*/) {
-	return (*getMatricesBufferMap()).count(bindingIndex) > 0;
+	// initializiation could be called multithreaded - thus locking is appropriate
+	getMutex()->lock();
+	if (!isMatricesUBOInitialiced(bindingIndex)) {
+		(*getMatricesBufferMap())[bindingIndex].buffer = new globjects::Buffer;
+		(*getMatricesBufferMap())[bindingIndex].buffer->setData(matrixBlockSize(), nullptr, gl::GL_STREAM_DRAW);
+		(*getMatricesBufferMap())[bindingIndex].buffer->bindRange(gl::GL_UNIFORM_BUFFER, bindingIndex, 0, matrixBlockSize());
+	}
+	getMutex()->unlock();
 }
 
 const glm::mat4& glannotations::getView(gl::GLuint bindingIndex /*= 0*/) {

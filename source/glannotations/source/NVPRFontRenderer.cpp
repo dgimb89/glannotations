@@ -13,15 +13,9 @@
 #include <string.h>
 
 void glannotations::NVPRFontRenderer::draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) {
-	glannotations::FontAnnotation* currentAnnotation = reinterpret_cast<glannotations::FontAnnotation*>(annotation.get());
-	if (currentAnnotation->isDirty()) {
-		clearStencilBuffer();
-		initializeFont(currentAnnotation);
-		annotation->setDirty(false);
+	if (annotation->isDirty()) {
+		prepare(annotation);
 	}
-	m_currentText = currentAnnotation->getText().c_str();
-	m_textColor = currentAnnotation->getColor();
-
 	glannotations::NVPRRenderer::draw(annotation);
 }
 
@@ -175,4 +169,13 @@ void glannotations::NVPRFontRenderer::drawOutline(const size_t& messageLen, cons
 
 glannotations::NVPRFontRenderer::NVPRFontRenderer(gl::GLuint globalMatricesBindingIndex) : NVPRRenderer(globalMatricesBindingIndex) {
 
+}
+
+void glannotations::NVPRFontRenderer::prepare(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) {
+	glannotations::FontAnnotation* currentAnnotation = reinterpret_cast<glannotations::FontAnnotation*>(annotation.get());
+	clearStencilBuffer();
+	initializeFont(currentAnnotation);
+	m_currentText = currentAnnotation->getText().c_str();
+	m_textColor = currentAnnotation->getColor();
+	annotation->setDirty(false);
 }

@@ -12,13 +12,14 @@ namespace glannotations {
 	public:
 		DrawingPrimitiveBase();
 		virtual ~DrawingPrimitiveBase();
-
 		void setupShader(const char* vertShader, const char* geomShader, const char* fragShader);
 
 		virtual void setColor(glm::vec4 color) override;
 		virtual void setBindingIndex(unsigned int bindingIndex) override;
 
 	protected:
+		void initialize();
+
 		globjects::Shader* finalizeGeometryShader(const char* shader);
 
 		globjects::ref_ptr<globjects::Program> m_program;

@@ -14,9 +14,11 @@ glannotations::TextureManager& glannotations::TextureManager::getInstance() {
 }
 
 std::shared_ptr<globjects::Texture> glannotations::TextureManager::getTexture(std::string fileName) {
+	m_mutex.lock();
 	// we make use of weak_ptr to release textures to reduce memory consumption but still shared allocated textures whenever possible
 	if (m_textures.count(fileName)) {
 		if (auto spt = m_textures[fileName].lock()) {
+			m_mutex.unlock();
 			return spt; // texture resource still valid
 		} else {
 			m_textures.erase(fileName); // expired
@@ -34,6 +36,7 @@ std::shared_ptr<globjects::Texture> glannotations::TextureManager::getTexture(st
 	gl::GLenum format = image.getNumComponents() == 1 ? gl::GL_RED : (image.getNumComponents() == 3 ? gl::GL_RGB : gl::GL_RGBA);
 	texture->image2D(0, format, image.getWidth(), image.getHeight(), 0, format, gl::GL_UNSIGNED_BYTE, image.getImage()->data);
 	m_textures[fileName] = texture;
+	m_mutex.unlock();
 	return texture;
 }
 

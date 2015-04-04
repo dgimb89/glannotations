@@ -18,6 +18,7 @@ namespace glannotations {
 		friend class PathState;
 	public:
 		AbstractRenderer(unsigned int globalMatricesBindingIndex);
+		virtual void prepare(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) = 0;
 		virtual void draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) = 0;
 		unsigned int getMatricesBindingIndex() const;
 

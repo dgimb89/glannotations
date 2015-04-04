@@ -8,7 +8,6 @@
 
 namespace glannotations {
 	void GLANNOTATIONS_API initializeMatricesUBO(unsigned int bindingIndex = 0);
-	bool GLANNOTATIONS_API isMatricesUBOInitialiced(unsigned int bindingIndex = 0);
 
 	void GLANNOTATIONS_API initialize();
 	void GLANNOTATIONS_API cleanUp();

@@ -10,21 +10,13 @@
 #include <glannotations/GlyphSetConfig.h>
 
 void glannotations::DistanceFieldFontRenderer::draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) {
-	FontAnnotation* currentAnnotation = dynamic_cast<FontAnnotation*>(annotation.get());
+	if (annotation->isDirty()) {
+		prepare(annotation);
+	}
 
 	gl::glEnable(gl::GL_BLEND);
 	gl::glBlendFunc(gl::GL_SRC_ALPHA, gl::GL_ONE_MINUS_SRC_ALPHA);
-
-	if (currentAnnotation->isDirty()) {
-		setupGlyphQuadstrip(currentAnnotation);
-		m_drawingPrimitive->setColor(currentAnnotation->getColor());
-		setupOutline(annotation->getRenderState()->getStyling("Outline"));
-		setupBumpMap(annotation->getRenderState()->getStyling("BumpMap"));
-		annotation->setDirty(false);
-	}
-
 	annotation->getRenderState()->draw(*this);
-
 	gl::glDisable(gl::GL_BLEND);
 }
 
@@ -41,4 +33,13 @@ void glannotations::DistanceFieldFontRenderer::setupGlyphQuadstrip(glannotations
 	}
 	//float pixelHeight = annotation->getFontSize() * quadStrip->getQuadstripRowCount() * 4.f / 3.f; // 1 zoll = 72 pt = 96 px
 	m_drawingPrimitive = quadStrip;
+}
+
+void glannotations::DistanceFieldFontRenderer::prepare(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) {
+	FontAnnotation* currentAnnotation = dynamic_cast<FontAnnotation*>(annotation.get());
+	setupGlyphQuadstrip(currentAnnotation);
+	m_drawingPrimitive->setColor(currentAnnotation->getColor());
+	setupOutline(annotation->getRenderState()->getStyling("Outline"));
+	setupBumpMap(annotation->getRenderState()->getStyling("BumpMap"));
+	annotation->setDirty(false);
 }

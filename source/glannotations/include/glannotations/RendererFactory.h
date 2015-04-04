@@ -28,7 +28,6 @@ namespace glannotations {
 		unsigned int getMatricesBindingIndex() const;
 
 	protected:
-		static void validateMatricesUBO(unsigned int bindingIndex);
 		static bool isExtensionSupported(const char *extension);
 		bool m_useNVpr = true;
 		bool m_autoInitializeMatricesBuffer = true;

@@ -11,6 +11,10 @@ glannotations::AbstractAnnotation::AbstractAnnotation(const globjects::ref_ptr<g
 	setState(state);
 }
 
+void glannotations::AbstractAnnotation::prepare() {
+	m_renderer->prepare(this);
+}
+
 void glannotations::AbstractAnnotation::draw() {
 	m_renderer->draw(this);
 }

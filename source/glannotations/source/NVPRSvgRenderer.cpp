@@ -11,14 +11,8 @@
 #include <string.h>
 
 void glannotations::NVPRSvgRenderer::draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) {
-	glannotations::SVGAnnotation* currentAnnotation = reinterpret_cast<glannotations::SVGAnnotation*>(annotation.get());
 	if (annotation->isDirty()) {
-		m_height = currentAnnotation->getHeight();
-		m_width = currentAnnotation->getWidth();
-		clearStencilBuffer();
-		initializeSVG(currentAnnotation->getPathString().c_str());
-		setupOutline(m_pathBase, annotation->getRenderState()->getStyling("Outline"));
-		annotation->setDirty(false);
+		prepare(annotation);
 	}
 
 	glannotations::NVPRRenderer::draw(annotation);
@@ -76,4 +70,14 @@ void glannotations::NVPRSvgRenderer::drawSetupState(const glannotations::PathSta
 
 glannotations::NVPRSvgRenderer::NVPRSvgRenderer(gl::GLuint globalMatricesBindingIndex) : NVPRRenderer(globalMatricesBindingIndex) {
 
+}
+
+void glannotations::NVPRSvgRenderer::prepare(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) {
+	glannotations::SVGAnnotation* currentAnnotation = reinterpret_cast<glannotations::SVGAnnotation*>(annotation.get());
+	m_height = currentAnnotation->getHeight();
+	m_width = currentAnnotation->getWidth();
+	clearStencilBuffer();
+	initializeSVG(currentAnnotation->getPathString().c_str());
+	setupOutline(m_pathBase, annotation->getRenderState()->getStyling("Outline"));
+	annotation->setDirty(false);
 }

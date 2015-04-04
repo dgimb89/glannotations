@@ -6,6 +6,7 @@
 #include <globjects/Texture.h>
 #include <map>
 #include <memory>
+#include <mutex>
 
 namespace glannotations {
 
@@ -23,8 +24,10 @@ namespace glannotations {
 		glm::ivec2 getTextureSize(std::string fileName);
 	protected:
 		TextureManager();
-		std::map<std::string, std::weak_ptr<glannotations::ManagedTexture>> m_textures;
 
+	private:
+		std::mutex m_mutex;
+		std::map<std::string, std::weak_ptr<glannotations::ManagedTexture>> m_textures;
 		static std::unique_ptr<TextureManager> _instance;
 	};
 }

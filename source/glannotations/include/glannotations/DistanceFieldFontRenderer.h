@@ -9,9 +9,11 @@ namespace glannotations {
 	class DistanceFieldFontRenderer : public glannotations::AbstractPrimitiveRenderer {
 	public:
 		DistanceFieldFontRenderer(gl::GLuint matricesBindingIndex);
+		virtual void prepare(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation);
 		virtual void draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation);
 
 	protected:
 		void setupGlyphQuadstrip(glannotations::FontAnnotation* annotation);
+
 	};
 }
