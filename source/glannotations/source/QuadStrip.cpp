@@ -269,7 +269,7 @@ static const char* dfFragShader = R"(
 	in vec2 v_uv;
 
 	void main() {
-		fragColor = texture2D(source, v_uv);
+		fragColor = texture(source, v_uv);
 		if(fragColor.a < 0.001) discard;
 	}
 

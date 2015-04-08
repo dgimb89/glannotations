@@ -29,7 +29,7 @@ static const char* fragQuadShaderSource = R"(
 
 				void main()
 				{
-					fragColor = texture2D(source, v_uv);
+					fragColor = texture(source, v_uv);
 				}
 				)";
 
@@ -48,7 +48,7 @@ static const char* fragDFQuadShaderSource = R"(
 				in vec2 v_uv;
 
 				vec4 getText() {
-					float d = texture2D(source, v_uv).x - 0.5;	
+					float d = texture(source, v_uv).x - 0.5;	
 
 					if (d < 0.0) {
 						return vec4(color.rgb, color.a * smoothstep(0.0, 0.03, abs(d)));
@@ -59,7 +59,7 @@ static const char* fragDFQuadShaderSource = R"(
 				}
 
 				vec4 getTextWithOutline() {
-					float d = texture2D(source, v_uv).x - 0.48;	
+					float d = texture(source, v_uv).x - 0.48;	
 
 					// Interpolations Faktor zwischen outline und Welt
 					float d_outline = smoothstep(outlineSize, 0.00 , d);
@@ -76,8 +76,8 @@ static const char* fragDFQuadShaderSource = R"(
 				}
 
 				float getBumpMapEffect() {
-					float dx = dFdx(texture2D(source, v_uv).x) * 45.0 * bumpIntensity;
-					float dy = dFdy(texture2D(source, v_uv).x) * 50.0 * bumpIntensity;
+					float dx = dFdx(texture(source, v_uv).x) * 45.0 * bumpIntensity;
+					float dy = dFdy(texture(source, v_uv).x) * 50.0 * bumpIntensity;
 
 					vec3 vx = vec3(1.0, 0.0, dx);
 					vec3 vy = vec3(0.0, 1.0, dy);
