@@ -2,21 +2,26 @@
 
 # GLANNOTATIONS_LIBRARIES
 # GLANNOTATIONS_INCLUDES
+# GLANNOTATIONS_BINARIES
 
 # GLANNOTATIONS_LIBRARY
-# GLANNOTATIONS_LIBRARY_RELEASE
-# GLANNOTATIONS_LIBRARY_DEBUG
+# GLANNOTATIONS_LIBRARY_[RELEASE|DEBUG]
 # GLANNOTATIONS_INCLUDE_DIR
+# GLANNOTATIONS_BINARIES
+# GLANNOTATIONS_BINARY_[RELEASE|DEBUG]
 
 # GLANNOTATIONS_PREPROCESSOR_LIBRARY
-# GLANNOTATIONS_PREPROCESSOR_LIBRARY_RELEASE
-# GLANNOTATIONS_PREPROCESSOR_LIBRARY_DEBUG
+# GLANNOTATIONS_PREPROCESSOR_LIBRARY_[RELEASE|DEBUG]
 # GLANNOTATIONS_PREPROCESSOR_INCLUDE_DIR
+# GLANNOTATIONS_BINARIES
+# GLANNOTATIONS_BINARY_[RELEASE|DEBUG]
 
 # GLANNOTATIONS_WRAPPER_LIBRARY
-# GLANNOTATIONS_WRAPPER_LIBRARY_RELEASE
-# GLANNOTATIONS_WRAPPER_LIBRARY_DEBUG
+# GLANNOTATIONS_WRAPPER_LIBRARY_[RELEASE|DEBUG]
 # GLANNOTATIONS_WRAPPER_INCLUDE_DIR
+# GLANNOTATIONS_BINARIES
+# GLANNOTATIONS_BINARY_[RELEASE|DEBUG]
+
 
 include(FindPackageHandleStandardArgs)
 
@@ -27,7 +32,11 @@ endif()
 file(TO_CMAKE_PATH "$ENV{PROGRAMFILES}" ENVPROGRAMFILES)
 file(TO_CMAKE_PATH "$ENV{GLANNOTATIONS_DIR}" ENVGLANNOTATIONS_DIR)
 
-set(LIB_PATHS   
+set(GLANNOTATIONS_INCLUDES "")
+set(GLANNOTATIONS_LIBRARIES "")
+set(GLANNOTATIONS_BINARIES "")
+
+set(LIB_PATHS
     ${GLANNOTATIONS_DIR}/build
     ${GLANNOTATIONS_DIR}/build/Release
     ${GLANNOTATIONS_DIR}/build/Debug
@@ -49,19 +58,14 @@ set(LIB_PATHS
 macro (find LIB_NAME HEADER)
     set(HINT_PATHS ${ARGN})
 
-    if (${LIB_NAME} STREQUAL "glannotations")
-        set(LIB_NAME_UPPER GLANNOTATIONS)
-        set(LIBNAME glannotations)
-    else()
-        string(TOUPPER GLANNOTATIONS_${LIB_NAME} LIB_NAME_UPPER)
-        set(LIBNAME glannotations-${LIB_NAME})
-    endif()
-
+    string(TOUPPER ${LIB_NAME} LIB_NAME_UPPER)
+    string(REPLACE "-" "_" LIB_NAME_UPPER ${LIB_NAME_UPPER})
+    
     find_path(${LIB_NAME_UPPER}_INCLUDE_DIR ${HEADER}
         ${ENVGLANNOTATIONS_DIR}/include
-        ${ENVGLANNOTATIONS_DIR}/source/${LIBNAME}/include
+        ${ENVGLANNOTATIONS_DIR}/source/${LIB_NAME}/include
         ${GLANNOTATIONS_DIR}/include
-        ${GLANNOTATIONS_DIR}/source/${LIBNAME}/include
+        ${GLANNOTATIONS_DIR}/source/${LIB_NAME}/include
         ${ENVPROGRAMFILES}/glannotations/include
         /usr/include
         /usr/local/include
@@ -70,11 +74,11 @@ macro (find LIB_NAME HEADER)
         DOC "The directory where ${header} resides")
 
     find_library(${LIB_NAME_UPPER}_LIBRARY_RELEASE
-        NAMES ${LIBNAME}
+        NAMES ${LIB_NAME}
         PATHS ${HINT_PATHS}
         DOC "The ${LIB_NAME} library")
     find_library(${LIB_NAME_UPPER}_LIBRARY_DEBUG
-        NAMES ${LIBNAME}d
+        NAMES ${LIB_NAME}d
         PATHS ${HINT_PATHS}
         DOC "The ${LIB_NAME} debug library")
     
@@ -86,24 +90,58 @@ macro (find LIB_NAME HEADER)
         set(${LIB_NAME_UPPER}_LIBRARY ${${LIB_NAME_UPPER}_LIBRARY_DEBUG})
     endif()
 
-    set(GLANNOTATIONS_INCLUDES  ${GLANNOTATIONS_INCLUDES}  ${${LIB_NAME_UPPER}_INCLUDE_DIR})
-    set(GLANNOTATIONS_LIBRARIES ${GLANNOTATIONS_LIBRARIES} ${${LIB_NAME_UPPER}_LIBRARY})
-
     # DEBUG
-    message("${LIB_NAME_UPPER}_INCLUDE_DIR     = ${${LIB_NAME_UPPER}_INCLUDE_DIR}")
-    message("${LIB_NAME_UPPER}_LIBRARY_RELEASE = ${${LIB_NAME_UPPER}_LIBRARY_RELEASE}")
-    message("${LIB_NAME_UPPER}_LIBRARY_DEBUG   = ${${LIB_NAME_UPPER}_LIBRARY_DEBUG}")
-    message("${LIB_NAME_UPPER}_LIBRARY         = ${${LIB_NAME_UPPER}_LIBRARY}")
+    # message("${LIB_NAME_UPPER}_INCLUDE_DIR     = ${${LIB_NAME_UPPER}_INCLUDE_DIR}")
+    # message("${LIB_NAME_UPPER}_LIBRARY_RELEASE = ${${LIB_NAME_UPPER}_LIBRARY_RELEASE}")
+    # message("${LIB_NAME_UPPER}_LIBRARY_DEBUG   = ${${LIB_NAME_UPPER}_LIBRARY_DEBUG}")
+    # message("${LIB_NAME_UPPER}_LIBRARY         = ${${LIB_NAME_UPPER}_LIBRARY}")
 
+    if (${LIB_NAME_UPPER}_LIBRARY)
+        list(APPEND GLANNOTATIONS_INCLUDES ${${LIB_NAME_UPPER}_INCLUDE_DIR})
+        list(APPEND GLANNOTATIONS_LIBRARIES ${${LIB_NAME_UPPER}_LIBRARY})
+    endif ()
+
+    # find binaries
+    if (WIN32 AND ${LIB_NAME_UPPER}_LIBRARIES)
+        set(${LIB_NAME_UPPER}_BINARIES "")
+
+        find_file(${LIB_NAME_UPPER}_BINARY_RELEASE
+            NAMES ${LIB_NAME}.dll
+            PATHS
+            ${GLANNOTATIONS_DIR}/bin
+            ${GLANNOTATIONS_DIR}/build/Release
+            ${GLANNOTATIONS_DIR}/build-release
+            DOC "The ${LIB_NAME_UPPER} binary")
+
+        find_file(${LIB_NAME_UPPER}_BINARY_DEBUG
+            NAMES ${LIB_NAME}d.dll
+            PATHS
+            ${GLANNOTATIONS_DIR}/bin
+            ${GLANNOTATIONS_DIR}/build/Debug
+            ${GLANNOTATIONS_DIR}/build-debug
+            DOC "The ${LIB_NAME_UPPER} debug binary")
+
+        if(NOT ${LIB_NAME_UPPER}_BINARY_RELEASE STREQUAL "${LIB_NAME_UPPER}_BINARY_RELEASE-NOTFOUND")
+            list(APPEND ${LIB_NAME_UPPER}_BINARIES ${${LIB_NAME_UPPER}_BINARY_RELEASE})
+        endif()
+
+        if(NOT ${LIB_NAME_UPPER}_BINARY_DEBUG STREQUAL "${LIB_NAME_UPPER}_BINARY_DEBUG-NOTFOUND")
+            list(APPEND ${LIB_NAME_UPPER}_BINARIES ${${LIB_NAME_UPPER}_BINARY_DEBUG})
+        endif()
+
+        if (${LIB_NAME_UPPER}_BINARIES)
+            list(APPEND GLANNOTATIONS_BINARIES ${${LIB_NAME_UPPER}_BINARIES})
+        endif()
+    endif()
 endmacro()
 
-find(glannotations  glannotations/glannotations_api.h             ${LIB_PATHS})
-find(preprocessor   glannotations-preprocessor/glannotations-preprocessor_api.h   ${LIB_PATHS})
-find(wrapper        glannotations/wrapper/glannotations-wrapper_api.h ${LIB_PATHS})
+find(glannotations                glannotations/glannotations_api.h                           ${LIB_PATHS})
+find(glannotations-preprocessor   glannotations-preprocessor/glannotations-preprocessor_api.h ${LIB_PATHS})
+find(glannotations-wrapper        glannotations-wrapper/glannotations-wrapper_api.h           ${LIB_PATHS})
 
 # DEBUG
-message("GLANNOTATIONS_INCLUDES  = ${GLANNOTATIONS_INCLUDES}")
-message("GLANNOTATIONS_LIBRARIES = ${GLANNOTATIONS_LIBRARIES}")
+# message("GLANNOTATIONS_INCLUDES  = ${GLANNOTATIONS_INCLUDES}")
+# message("GLANNOTATIONS_LIBRARIES = ${GLANNOTATIONS_LIBRARIES}")
 
 find_package_handle_standard_args(GLANNOTATIONS DEFAULT_MSG GLANNOTATIONS_LIBRARIES GLANNOTATIONS_INCLUDES)
 mark_as_advanced(GLANNOTATIONS_FOUND)
