@@ -12,7 +12,7 @@ set(META_VERSION_MINOR       "2")
 set(META_VERSION_PATCH       "0")
 set(META_VERSION             "${META_VERSION_MAJOR}.${META_VERSION_MINOR}.${META_VERSION_PATCH}")
 set(META_AUTHOR_ORGANIZATION "hpicgs group")
-set(META_AUTHOR_DOMAIN       "https://github.com/hpicgs/glannotations/")
+set(META_AUTHOR_DOMAIN       "https://projects.hpi3d.de/projects/annotation_kit")
 set(META_AUTHOR_MAINTAINER   "daniel.gimbatschki@student.hpi.uni-potsdam.de")
 
 # Set project name and type (C/C++)
@@ -28,7 +28,7 @@ option(OPTION_BUILD_TESTS "Build tests (if gmock and gtest are found)." ON)
 option(OPTION_BUILD_EXAMPLES "Build examples." ON)
 option(OPTION_USE_NVPR "Allow Nvidia Path Rendering usage." ON)
 option(OPTION_BUILD_GLANNOTATIONS_PREPROCESSOR "Build glannotations preprocessor (required for preprocessing example)" ON)
-option(OPTION_BUILD_GLANNOTATIONS_WRAPPER "Build glannotations wrapper classes (OSG, ...)" ON)
+option(OPTION_BUILD_GLANNOTATIONS_WRAPPER "Build glannotations wrapper classes (OSG, ...)" OFF)
 set(BUILD_SHARED_LIBS $OPTION_BUILD_SHARED_LIBS)
 
 #
