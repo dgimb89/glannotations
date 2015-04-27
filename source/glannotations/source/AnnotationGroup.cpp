@@ -1,3 +1,5 @@
+#   define __STDC_LIMIT_MACROS
+
 #include <glannotations/AnnotationGroup.h>
 
 void glannotations::AnnotationGroup::addAnnotation(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) {

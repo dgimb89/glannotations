@@ -1,3 +1,5 @@
+#   define __STDC_LIMIT_MACROS
+
 #include <glbinding/gl/bitfield.h>
 #include <glbinding/gl/functions.h>
 

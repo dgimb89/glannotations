@@ -1,3 +1,5 @@
+#   define __STDC_LIMIT_MACROS
+
 #include <glannotations/TextureManager.h>
 #include <glannotations/PNGImage.h>
 
