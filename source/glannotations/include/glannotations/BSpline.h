@@ -7,15 +7,18 @@
 #include <glannotations/DirtyFlagObject.h>
 #include <glannotations/glannotations_api.h>
 
+template class GLANNOTATIONS_API std::vector < glm::vec3 > ;
+template class GLANNOTATIONS_API std::vector < float > ;
+
 namespace glannotations {
     class GLANNOTATIONS_API BSpline : protected glannotations::DirtyFlagObject {
 	public:
 		BSpline(std::initializer_list<glm::vec3> ctrlPoints, std::initializer_list<float> knotValues);
-		BSpline(std::initializer_list<glm::vec3> ctrlPoints, unsigned short degree);
+		BSpline(std::initializer_list<glm::vec3> ctrlPoints, size_t degree);
 
 		const std::vector<glm::vec3>& getControlPoints();
 		const std::vector<float>& getKnotValues();
-		unsigned short getSplineDegree();
+		size_t getSplineDegree();
 
 		// we want to use the dirty information just internally
         //virtual bool isDirty() const = delete;
@@ -26,8 +29,9 @@ namespace glannotations {
 		void calculateSplineDegree();
 		void calculateUniformKnotValues();
 
+	private:
 		std::vector<glm::vec3> m_ctrlPoints;
 		std::vector<float> m_knotValues;
-		unsigned short m_degree;
+		size_t m_degree;
 	};
 }

@@ -16,7 +16,7 @@ namespace glannotations {
 		protected:
 			static globjects::ref_ptr<PNGImage> generateGlyphImage(void* bitmap, unsigned marginLeft, int ascender, int descener, int bearingY);
 
-			static int convertFontToPixelSize(int input);
+			static double convertFontToPixelSize(int input);
 			GlyphSetGenerator() {}
 		};
 	}

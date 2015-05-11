@@ -3,6 +3,10 @@
 #include <glannotations/AbstractExternalReference.h>
 #include <glannotations/glannotations_api.h>
 
+// disable 4251 export warning because we dont offer these types as interface
+#  pragma warning( push )
+#  pragma warning( disable: 4251 )
+
 namespace glannotations {
 	namespace Utility {
 		struct Segment;
@@ -30,3 +34,5 @@ namespace glannotations {
 
 	};
 }
+
+#  pragma warning( pop )

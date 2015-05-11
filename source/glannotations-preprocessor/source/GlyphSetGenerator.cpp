@@ -101,7 +101,7 @@ void glannotations::preprocessor::GlyphSetGenerator::generateGlyphset(std::strin
 
 }
 
-inline int glannotations::preprocessor::GlyphSetGenerator::convertFontToPixelSize(int input) {
+double glannotations::preprocessor::GlyphSetGenerator::convertFontToPixelSize(int input) {
 	return input / 64.0; // 1/64th unit
 }
 

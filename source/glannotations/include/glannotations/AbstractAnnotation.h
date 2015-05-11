@@ -12,6 +12,9 @@
 #include <glannotations/AbstractState.h>
 
 namespace glannotations {
+	template class GLANNOTATIONS_API globjects::ref_ptr < glannotations::AbstractState > ;
+	template class GLANNOTATIONS_API globjects::ref_ptr < glannotations::AbstractRenderer >;
+
 	// forward declaration
 	class InternalState;
 	class PathState;

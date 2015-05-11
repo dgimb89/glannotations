@@ -5,6 +5,9 @@
 #include <glannotations/BSpline.h>
 #include <glannotations/glannotations_api.h>
 
+template class GLANNOTATIONS_API std::shared_ptr < glannotations::BSpline > ;
+template class GLANNOTATIONS_API globjects::ref_ptr< glannotations::AbstractExternalReference >;
+
 namespace glannotations {
 	class GLANNOTATIONS_API PathState : public glannotations::ReferenceableState {
 	public:

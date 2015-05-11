@@ -9,6 +9,11 @@
 #include <glannotations/glannotations_api.h>
 #include <glannotations/AbstractAnnotation.h>
 
+template class GLANNOTATIONS_API globjects::ref_ptr<glannotations::AbstractAnnotation>;
+
+#  pragma warning( push )
+#  pragma warning( disable: 4251 )
+
 namespace glannotations {
 
 	class GLANNOTATIONS_API AnnotationGroup : public globjects::Referenced {
@@ -20,9 +25,9 @@ namespace glannotations {
 		void draw() const;
 		size_t size() const;
 
-	protected:
-		std::vector< globjects::ref_ptr<glannotations::AbstractAnnotation> > m_annotations;
 	private:
+		std::vector< globjects::ref_ptr<glannotations::AbstractAnnotation> > m_annotations;
 		std::mutex m_mutex;
 	};
 }
+#  pragma warning( pop )

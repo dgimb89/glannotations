@@ -7,6 +7,13 @@
 #include <glannotations/glannotations_api.h>
 #include <glannotations/DirtyFlagObject.h>
 
+template class GLANNOTATIONS_API std::basic_string < char, std::char_traits<char>, std::allocator<char> > ;
+template struct GLANNOTATIONS_API glm::detail::tvec2 < float, glm::precision::defaultp > ;
+
+// disable export warnings for std::vector<GlyphConfig> because we dont offer it in interface
+#  pragma warning( push )
+#  pragma warning( disable: 4251 )
+
 namespace glannotations {
 
 	class GLANNOTATIONS_API GlyphSetConfig : public glannotations::DirtyFlagObject {
@@ -20,24 +27,28 @@ namespace glannotations {
 		void serialize();
 
 		std::string getGlyphsetImageName() const;
-		unsigned short getNumGlyphs();
-		void setStartGlyph(unsigned short startGlyph);
+		size_t getNumGlyphs();
+		void setStartGlyph(size_t startGlyph);
 		void setWhitespaceLength(float whitespaceLength);
 		float getWhitespaceLength() const;
-		unsigned short getStartGlyph();
-		void setNormalizedGlyphConfigs(const std::vector<glannotations::GlyphSetConfig::GlyphConfig>& glyphConfigs);
+		size_t getStartGlyph();
 
 		/// normalizes given configs by dividing every glyph coordinates by maxWidth resp. maxHeight
-		void setGlyphConfigs(const std::vector<glannotations::GlyphSetConfig::GlyphConfig>& glyphConfigs, double maxWidth, double maxHeight);
+		void setGlyphConfigs(const std::vector<glannotations::GlyphSetConfig::GlyphConfig>& glyphConfigs, size_t maxWidth, size_t maxHeight);
 		const std::vector<glannotations::GlyphSetConfig::GlyphConfig>& getGlyphConfigs();
-		const glannotations::GlyphSetConfig::GlyphConfig& getGlyphConfig(unsigned short numGlyph);
-		const glannotations::GlyphSetConfig::GlyphConfig& getGlyphConfigForCharcode(unsigned short charCode);
+		const glannotations::GlyphSetConfig::GlyphConfig& getGlyphConfig(size_t numGlyph);
+		const glannotations::GlyphSetConfig::GlyphConfig& getGlyphConfigForCharcode(size_t charCode);
 
 	protected: 
 		std::string getFileContent();
-		unsigned short m_startGlyph = 0;
+		size_t m_startGlyph = 0;
 		float m_whitespaceLength;
-		std::vector<glannotations::GlyphSetConfig::GlyphConfig> m_glyphConfigs;
 		std::string m_fontFileName;
+
+	private:
+		void setNormalizedGlyphConfigs(const std::vector<glannotations::GlyphSetConfig::GlyphConfig>& glyphConfigs);
+		std::vector<glannotations::GlyphSetConfig::GlyphConfig> m_glyphConfigs;
 	};
 }
+
+#  pragma warning( pop )

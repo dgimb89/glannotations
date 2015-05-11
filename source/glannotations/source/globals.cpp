@@ -12,7 +12,6 @@
 
 #include <glannotations/globals.h>
 
-
 // important! make sure that glbinding global objects are created BEFORE the matrizesBufferMap on global space
 struct MatrizesBuffer {
 	globjects::ref_ptr<globjects::Buffer> buffer;

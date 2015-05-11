@@ -7,6 +7,10 @@
 
 #include <glannotations/AbstractDrawingPrimitive.h>
 
+template class GLANNOTATIONS_API globjects::ref_ptr < globjects::Program > ;
+template class GLANNOTATIONS_API globjects::ref_ptr < globjects::VertexArray > ;
+template class GLANNOTATIONS_API globjects::ref_ptr < globjects::Buffer > ;
+
 namespace glannotations {
 	class GLANNOTATIONS_API DrawingPrimitiveBase : public AbstractDrawingPrimitive {
 	public:

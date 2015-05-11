@@ -3,6 +3,9 @@
 #include <glannotations/AbstractExternalReference.h>
 #include <glannotations/glannotations_api.h>
 
+template struct GLANNOTATIONS_API glm::detail::tvec2 < float, glm::precision::defaultp > ;
+template struct GLANNOTATIONS_API glm::detail::tvec3 < float, glm::precision::defaultp > ;
+
 namespace glannotations {
 	namespace Utility {
 		struct Segment;

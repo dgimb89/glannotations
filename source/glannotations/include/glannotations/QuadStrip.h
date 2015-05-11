@@ -29,9 +29,10 @@ namespace glannotations {
 		texVec2_t getLR(const textureRange_t& textureRange);
 		glm::vec2 getQuadStripTextureAdvance();
 
+	private:
 		std::vector<textureRange_t> m_textureRanges;
 		glm::vec3 m_ll, m_ur, m_lr;
-		unsigned m_vertexCount;
+		size_t m_vertexCount;
 
 		globjects::ref_ptr<globjects::Buffer> m_advanceH;
 		globjects::ref_ptr<globjects::Buffer> m_advanceW; 

@@ -7,12 +7,12 @@
 #include "glannotations-version.h"
 
 // internal data wrapper
-glannotations::PNGImage::image_t::image_t(size_t size) {
+glannotations::image_t::image_t(size_t size) {
 	data = new colorVal_t[size];
 	std::fill_n(data, size, 255);
 }
 
-glannotations::PNGImage::image_t::~image_t() {
+glannotations::image_t::~image_t() {
 	delete[] data;
 }
 // ----------------------
@@ -153,7 +153,7 @@ bool glannotations::PNGImage::saveDistanceField(std::string pngFileName) const {
 	/* write header */
 	if (setjmp(png_jmpbuf(png_ptr))) return false;
 
-	png_set_IHDR(png_ptr, info_ptr, m_width, m_height,
+	png_set_IHDR(png_ptr, info_ptr, (png_uint_32)m_width, (png_uint_32)m_height,
 		sizeof(colorVal_t)*8, PNG_COLOR_TYPE_GRAY, PNG_INTERLACE_NONE,
 		PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
 
@@ -194,18 +194,18 @@ void glannotations::PNGImage::setImageValue(size_t x, size_t y, unsigned short n
 	imageValue(x, y, numComponent) = value;
 }
 
-glannotations::PNGImage::colorVal_t glannotations::PNGImage::getImageValue(signed long x, signed long y, unsigned short numComponent) const {
+glannotations::colorVal_t glannotations::PNGImage::getImageValue(size_t x, size_t y, unsigned short numComponent) const {
 	// clamp x,y access to image ranges
-	x = std::max(0l, std::min(static_cast<signed long>(getWidth() - 1), x));
-	y = std::max(0l, std::min(static_cast<signed long>(getHeight() - 1), y));
+	x = std::max(0ull, std::min(getWidth() - 1, x));
+	y = std::max(0ull, std::min(getHeight() - 1, y));
 	return imageValue(x, y, numComponent);
 }
 
-glannotations::PNGImage::colorVal_t& glannotations::PNGImage::imageValue(size_t x, size_t y, unsigned short numComponent) const {
+glannotations::colorVal_t& glannotations::PNGImage::imageValue(size_t x, size_t y, unsigned short numComponent) const {
 	return m_image->data[(m_width * y + x) * m_channels + numComponent];
 }
 
-const globjects::ref_ptr<glannotations::PNGImage::image_t> glannotations::PNGImage::getImage() const {
+const globjects::ref_ptr<glannotations::image_t> glannotations::PNGImage::getImage() const {
 	return m_image;
 }
 
@@ -238,7 +238,7 @@ void glannotations::PNGImage::scaleToHeight(size_t scaledHeight) {
 }
 
 void glannotations::PNGImage::scale(double scaleFactor) {
-	replaceImageWith(glannotations::DistanceFieldGeneration::bicubicResize(*this, getWidth() * scaleFactor, getHeight() * scaleFactor));
+	replaceImageWith(glannotations::DistanceFieldGeneration::bicubicResize(*this, (size_t)std::ceil(getWidth() * scaleFactor), (size_t) std::ceil(getHeight() * scaleFactor)));
 }
 
 unsigned short glannotations::PNGImage::getComponentBitdepth() const {

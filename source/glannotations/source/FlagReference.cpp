@@ -14,7 +14,7 @@
 #include <glannotations/Utility/Segment.h>
 #include <glannotations/Utility/Triangle.h>
 
-const float MAX_ROTATION_ANGLE = M_PI * 45.f / 180.f;
+const float MAX_ROTATION_ANGLE = (float)M_PI * 45.f / 180.f;
 const float ANTI_FLICKERING = 0.01f;
 
 void glannotations::FlagReference::updatePositioning(InternalState& state) {

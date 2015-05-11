@@ -19,6 +19,8 @@ namespace glannotations {
 	class InternalState;
 	class PathState;
 
+	template class GLANNOTATIONS_API std::map < std::string, globjects::ref_ptr<glannotations::Styling> > ;
+
     typedef std::map<std::string, globjects::ref_ptr<glannotations::Styling> > StylingList;
 
 	namespace State {

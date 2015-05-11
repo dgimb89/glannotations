@@ -5,6 +5,9 @@
 #include <glannotations/AbstractAnnotation.h>
 #include <glannotations/glannotations_api.h>
 
+template struct GLANNOTATIONS_API glm::detail::tvec4 < float, glm::precision::defaultp > ;
+template class GLANNOTATIONS_API std::basic_string < char, std::char_traits<char>, std::allocator<char> > ;
+
 namespace glannotations {
 	class GLANNOTATIONS_API FontAnnotation : public AbstractAnnotation {
 	public:
