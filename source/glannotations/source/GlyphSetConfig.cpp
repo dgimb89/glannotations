@@ -25,7 +25,7 @@ glannotations::GlyphSetConfig::GlyphSetConfig(std::string fontFileName) {
 		const rapidjson::Value& fontObject = document[fontFileName.c_str()];
 
 		m_startGlyph = fontObject["startGlyph"].GetUint();
-		m_whitespaceLength = static_cast<float>(fontObject["whitespaceLength"].GetDouble());
+		m_whitespaceLength = fontObject["whitespaceLength"].GetDouble();
 		const rapidjson::Value& glyphConfigs = fontObject["glyphs"];
 		for (rapidjson::SizeType i = 0; i < glyphConfigs.Size(); ++i) {
 			m_glyphConfigs.push_back(	glannotations::GlyphSetConfig::GlyphConfig(
@@ -102,16 +102,16 @@ std::string glannotations::GlyphSetConfig::getFileContent() {
 	return buffer.str();
 }
 
-size_t glannotations::GlyphSetConfig::getNumGlyphs() {
+unsigned short glannotations::GlyphSetConfig::getNumGlyphs() {
 	return m_glyphConfigs.size();
 }
 
-void glannotations::GlyphSetConfig::setStartGlyph(size_t startGlyph) {
+void glannotations::GlyphSetConfig::setStartGlyph(unsigned short startGlyph) {
 	setDirty(true);
 	m_startGlyph = startGlyph;
 }
 
-size_t glannotations::GlyphSetConfig::getStartGlyph() {
+unsigned short glannotations::GlyphSetConfig::getStartGlyph() {
 	return m_startGlyph;
 }
 
@@ -124,11 +124,11 @@ const std::vector<glannotations::GlyphSetConfig::GlyphConfig>& glannotations::Gl
 	return m_glyphConfigs;
 }
 
-const glannotations::GlyphSetConfig::GlyphConfig& glannotations::GlyphSetConfig::getGlyphConfig(size_t numGlyph) {
+const glannotations::GlyphSetConfig::GlyphConfig& glannotations::GlyphSetConfig::getGlyphConfig(unsigned short numGlyph) {
 	return m_glyphConfigs.at(numGlyph);
 }
 
-void glannotations::GlyphSetConfig::setGlyphConfigs(const std::vector<glannotations::GlyphSetConfig::GlyphConfig>& glyphConfigs, size_t maxWidth, size_t maxHeight) {
+void glannotations::GlyphSetConfig::setGlyphConfigs(const std::vector<GlyphConfig>& glyphConfigs, double maxWidth, double maxHeight) {
 	setDirty(true);
 	setNormalizedGlyphConfigs(glyphConfigs);
 	for (auto& glyphConfig : m_glyphConfigs) {
@@ -139,7 +139,7 @@ void glannotations::GlyphSetConfig::setGlyphConfigs(const std::vector<glannotati
 	}
 }
 
-const glannotations::GlyphSetConfig::GlyphConfig& glannotations::GlyphSetConfig::getGlyphConfigForCharcode(size_t charCode) {
+const glannotations::GlyphSetConfig::GlyphConfig& glannotations::GlyphSetConfig::getGlyphConfigForCharcode(unsigned short charCode) {
 	return getGlyphConfig(charCode - m_startGlyph);
 }
 

@@ -12,9 +12,6 @@ namespace glannotations {
 	class PathState;
 	class AbstractRenderer;
 
-	template struct GLANNOTATIONS_API glm::detail::tvec4 < float, glm::precision::defaultp > ;
-	template class GLANNOTATIONS_API globjects::ref_ptr < glannotations::AbstractDrawingPrimitive > ;
-
 	class GLANNOTATIONS_API AbstractExternalReference : public glannotations::DirtyFlagObject {
 	public:
 		friend class ReferenceableState;
@@ -39,13 +36,12 @@ namespace glannotations {
 		virtual void updatePositioning(InternalState& state) = 0;
 		virtual void updatePositioning(PathState& state) = 0;
 
+		bool m_positioningOnly;
+		unsigned int m_bindingIndex;
 		globjects::ref_ptr<glannotations::AbstractDrawingPrimitive> m_externalPrimitive;
+		glm::vec4 m_color = glm::vec4(1.f, 0.f, 0.f, .35f);
 
 	private:
 		void assertNotReused();
-			
-		bool m_positioningOnly;
-		unsigned int m_bindingIndex;
-		glm::vec4 m_color = glm::vec4(1.f, 0.f, 0.f, .35f);
 	};
 }

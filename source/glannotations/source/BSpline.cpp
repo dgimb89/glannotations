@@ -8,7 +8,7 @@ const std::vector<float>& glannotations::BSpline::getKnotValues() {
 	return m_knotValues;
 }
 
-size_t glannotations::BSpline::getSplineDegree() {
+unsigned short glannotations::BSpline::getSplineDegree() {
 	return m_degree;
 }
 
@@ -28,7 +28,7 @@ glannotations::BSpline::BSpline(std::initializer_list<glm::vec3> ctrlPoints, std
 	calculateSplineDegree();
 }
 
-glannotations::BSpline::BSpline(std::initializer_list<glm::vec3> ctrlPoints, size_t degree) {
+glannotations::BSpline::BSpline(std::initializer_list<glm::vec3> ctrlPoints, unsigned short degree) {
 	setControlPoints(ctrlPoints);
 	m_degree = degree;
 	calculateUniformKnotValues();
@@ -40,7 +40,7 @@ void glannotations::BSpline::calculateUniformKnotValues() {
 	// starting knot -- nonperiodic B-Spline
 	m_knotValues.insert(m_knotValues.end(), m_degree, 0.f);
 
-	size_t ctrlCount = m_ctrlPoints.size();
+	unsigned ctrlCount = m_ctrlPoints.size();
 	float uniformDistance = 1.0f / ctrlCount;
 	float current = 0.f;
 	// internal knots - uniform distribution

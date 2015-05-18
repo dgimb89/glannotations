@@ -16,8 +16,7 @@ namespace glannotations {
 		const std::string& getPathString() const;
 		unsigned getHeight() const;
 		unsigned getWidth() const;
-
-	private:
+	protected:
 		std::string m_svgPathString;
 		unsigned m_width, m_height;
 	};

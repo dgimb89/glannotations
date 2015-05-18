@@ -129,8 +129,8 @@ void glannotations::NVPRFontRenderer::getTextStencelingDimensions(const char* te
 	gl::glGetPathSpacingNV(gl::GL_ACCUM_ADJACENT_PAIRS_NV,
 		(gl::GLsizei)messageLen, gl::GL_UNSIGNED_BYTE, m_currentText,
 		m_pathBase,
-		1.1f, 1.0f, gl::GL_TRANSLATE_2D_NV,
-		&xtranslate[2]);
+		1.1, 1.0, gl::GL_TRANSLATE_2D_NV,
+		xtranslate + 2);
 
 	/* Total advance is accumulated spacing plus horizontal advance of
 	the last glyph */

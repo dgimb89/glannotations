@@ -4,13 +4,6 @@
 #include <glannotations/Prismoid.h>
 #include <glannotations/glannotations_api.h>
 
-
-template struct GLANNOTATIONS_API glm::detail::tvec3 < float, glm::precision::defaultp > ;
-
-// disable export warnings for globjects::ref_ptr<glannotations::Prismoid> because we dont offer it in interface
-#  pragma warning( push )
-#  pragma warning( disable: 4251 )
-
 namespace glannotations {
 	class GLANNOTATIONS_API LabelReference : public glannotations::AbstractExternalReference {
 	public:
@@ -30,5 +23,3 @@ namespace glannotations {
 		float m_width, m_height;
 	};
 }
-
-#  pragma warning( pop )

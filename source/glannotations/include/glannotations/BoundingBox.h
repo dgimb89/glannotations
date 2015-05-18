@@ -4,8 +4,6 @@
 
 #include <glm/glm.hpp>
 
-template struct GLANNOTATIONS_API glm::detail::tvec3 < float, glm::precision::defaultp > ;
-
 namespace glannotations {
 	class GLANNOTATIONS_API BoundingBox {
 	public:
@@ -15,7 +13,7 @@ namespace glannotations {
 		const glm::vec3& getLLF() const;
 		const glm::vec3& getURB() const;
 
-	private:
+	protected:
 		glm::vec3 m_llf, m_urb;
 	};
 }

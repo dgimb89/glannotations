@@ -6,9 +6,6 @@
 
 #include <glannotations/glannotations_api.h>
 
-class GLANNOTATIONS_API gloperate::Camera;
-template class GLANNOTATIONS_API globjects::CachedValue < glm::mat4 > ;
-
 namespace glannotations {
 	void GLANNOTATIONS_API initializeMatricesUBO(unsigned int bindingIndex = 0);
 

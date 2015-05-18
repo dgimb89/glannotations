@@ -77,7 +77,7 @@ public:
 		gl::glEnable(gl::GL_BLEND);
 		gl::glBlendFunc(gl::GL_SRC_ALPHA, gl::GL_ONE_MINUS_SRC_ALPHA);
 
-        m_camera->setZNear(0.1f);
+        m_camera->setZNear(0.1);
 		m_camera->setZFar(1024.f);
 		m_camera->setCenter(vec3(0.f, 0.f, 5.f));
 		m_camera->setEye(vec3(-17.f, 12.f, -15.0f));
@@ -123,7 +123,7 @@ public:
 
 
 		glm::vec4 buildingColor = glm::vec4(0.25f, 0.2f, 0.25f, 1.f);
-		srand((unsigned) time(NULL));
+		srand(time(NULL));
 		glm::vec4 temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
 		m_building->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
 		auto flagColor = buildingColor + temp;
