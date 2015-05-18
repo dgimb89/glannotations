@@ -317,7 +317,7 @@ void glannotations::QuadStrip::draw() {
 	}
 }
 
-glm::vec2 glannotations::QuadStrip::getQuadStripTextureAdvance() {
+glm::vec2 glannotations::QuadStrip::getExtends() const {
 	glm::vec2 texAdvance(0.f, m_textureRanges.front().second.y * getQuadstripRowCount());
 	for (auto textureCoords : m_textureRanges) {
 		texAdvance.x += textureCoords.second.x;
@@ -340,7 +340,7 @@ void glannotations::QuadStrip::updateQuadRanges() {
 	std::vector<glm::vec3> vertAdvanceW, vertAdvanceH;
 
 	glm::vec3 widthSpan = m_lr - m_ll;
-	widthSpan /= getQuadStripTextureAdvance().x; // normalize
+	widthSpan /= getExtends().x; // normalize
 	glm::vec3 heightSpan = m_ur - m_lr;
 	glm::vec3 currentLL = m_ll;
 
@@ -428,7 +428,7 @@ float glannotations::QuadStrip::getUniformQuadHeight() {
 	return m_textureRanges.front().second.y; // returning random texture advance y
 }
 
-size_t glannotations::QuadStrip::getQuadstripRowCount() {
+size_t glannotations::QuadStrip::getQuadstripRowCount() const {
 	// TODO: support multiple rows
 	return 1u;
 }

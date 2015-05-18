@@ -28,6 +28,9 @@ namespace glannotations {
 
 		virtual globjects::ref_ptr<glannotations::AbstractState> clone() const;
 
+		virtual void updateExtends(glm::vec2 sourceExtends) override;
+
+	private:
 		glm::vec2 m_ll, m_ur;
 	};
 }

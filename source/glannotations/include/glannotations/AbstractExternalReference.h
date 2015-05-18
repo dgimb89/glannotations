@@ -13,10 +13,12 @@ namespace glannotations {
 	class AbstractRenderer;
 
 	class GLANNOTATIONS_API AbstractExternalReference : public glannotations::DirtyFlagObject {
-	public:
+
 		friend class ReferenceableState;
 		friend class InternalState;
 		friend class PathState;
+
+	public:
 		AbstractExternalReference(bool positioningOnly);
 		bool isPositioningOnly();
 		void setColor(glm::vec4 color);

@@ -54,3 +54,7 @@ globjects::ref_ptr<glannotations::AbstractState> glannotations::ViewportState::c
 glannotations::BoundingBox glannotations::ViewportState::getBoundingBox() {
 	return glannotations::BoundingBox(glm::vec3(std::numeric_limits<float>::lowest()), glm::vec3(std::numeric_limits<float>::max())); // will initialize a infinite bounding box -- always visible as intended
 }
+
+void glannotations::ViewportState::updateExtends(glm::vec2 sourceExtends) {
+	// TODO
+}

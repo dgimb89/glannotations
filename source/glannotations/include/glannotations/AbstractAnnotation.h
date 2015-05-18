@@ -4,7 +4,7 @@
 #include <memory>
 #include <globjects/base/ref_ptr.h>
 
-#include "globals.h"
+#include <glannotations/globals.h>
 #include <glannotations/glannotations_api.h>
 #include <glannotations/DirtyFlagObject.h>
 #include <glannotations/AbstractRenderer.h>
@@ -41,6 +41,8 @@ namespace glannotations {
 		const globjects::ref_ptr<glannotations::AbstractRenderer>& getRenderer();
 		AbstractAnnotation(const globjects::ref_ptr<glannotations::AbstractState>& state);
 		globjects::ref_ptr<glannotations::AbstractRenderer> m_renderer;
+
+	private:
 		globjects::ref_ptr<glannotations::AbstractState> m_state;
 		mutable globjects::ref_ptr<glannotations::AbstractState> m_renderState;
 	};

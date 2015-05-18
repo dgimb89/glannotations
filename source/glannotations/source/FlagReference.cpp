@@ -60,7 +60,7 @@ void glannotations::FlagReference::updatePositioning(InternalState& state) {
 
 	// bring annotation forward depending on the angular rotation to avoid occlusion
 	state.setExtends(start, start + widthSpan, start + widthSpan + heightSpan);
-	reinterpret_cast<glannotations::Rect*>(m_externalPrimitive.get())->setPosition(state.getRenderLL(), state.getRenderLR(), state.getRenderUR());
+	reinterpret_cast<glannotations::Rect*>(m_externalPrimitive.get())->setPosition(state.getLL(), state.getLR(), state.getUR());
 }
 
 void glannotations::FlagReference::updatePositioning(PathState& state) {

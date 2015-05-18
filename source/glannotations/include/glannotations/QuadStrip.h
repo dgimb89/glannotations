@@ -11,9 +11,10 @@ namespace glannotations {
 
 		void addQuad(texVec2_t texture_ll, texVec2_t texture_advance);
 		void clearQuads();
+		glm::vec2 getExtends() const;
 
 		float getUniformQuadHeight();
-		size_t getQuadstripRowCount();
+		size_t getQuadstripRowCount() const;
 		float getQuadStripHeight();
 		float getQuadStripWidth();
 
@@ -27,7 +28,6 @@ namespace glannotations {
 		bool positionValid(const glm::vec3& ll, const glm::vec3& lr, const glm::vec3& ur) const;
 		texVec2_t getUL(const textureRange_t& textureRange);
 		texVec2_t getLR(const textureRange_t& textureRange);
-		glm::vec2 getQuadStripTextureAdvance();
 
 		std::vector<textureRange_t> m_textureRanges;
 		glm::vec3 m_ll, m_ur, m_lr;

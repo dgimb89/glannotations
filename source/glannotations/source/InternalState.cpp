@@ -73,20 +73,6 @@ glannotations::BoundingBox glannotations::InternalState::getBoundingBox() {
 	return bb;
 }
 
-glm::vec3 glannotations::InternalState::getRenderLL() const {
-	// TODO: make line height constraint use anchors
-	return m_ll;
-}
-
-glm::vec3 glannotations::InternalState::getRenderLR() const {
-	// TODO: make line height constraint use anchors
-	return m_lr;
-}
-
-glm::vec3 glannotations::InternalState::getRenderUR() const {
-	// TODO: make line height constraint use anchors
-	if (!hasMaximumLineHeightConstraint() || !exceedsLineHeightConstraint(m_lr, m_ur)) {
-		return m_ur;
-	}
-	return m_lr + getMaximumLineHeight() * glm::normalize(m_ur - m_lr);
+void glannotations::InternalState::updateExtends(glm::vec2 sourceExtends) {
+	cropExtends(m_ll, m_lr, m_ur, sourceExtends);
 }

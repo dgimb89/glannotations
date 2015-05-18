@@ -1,4 +1,4 @@
-#   define __STDC_LIMIT_MACROS
+#define __STDC_LIMIT_MACROS
 
 #include <glannotations/AnnotationGroup.h>
 

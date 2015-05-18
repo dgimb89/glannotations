@@ -18,25 +18,22 @@ namespace glannotations {
 		const glm::vec3& getUR() const;
 		const glm::vec3& getLR() const;
 
-		// render extends in regards to aspect ratio / line height etc.
-		glm::vec3 getRenderLL() const;
-		glm::vec3 getRenderLR() const;
-		glm::vec3 getRenderUR() const;
-
 		virtual bool isValid() const override;
 		virtual glannotations::BoundingBox getBoundingBox() override;
 
 		virtual globjects::ref_ptr<glannotations::AbstractState> clone() const;
-		virtual void setExternalReference(const globjects::ref_ptr<glannotations::AbstractExternalReference>& reference);
+		virtual void setExternalReference(const globjects::ref_ptr<glannotations::AbstractExternalReference>& reference) override;
 
 	protected:
 		virtual void draw(const AbstractRenderer& renderer) override;
 
-		virtual globjects::ref_ptr<AbstractState> interpolateWith(const InternalState& mixState, float mix);
-		virtual globjects::ref_ptr<AbstractState> interpolateWith(const PathState& mixState, float mix);
-		virtual globjects::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix);
+		virtual globjects::ref_ptr<AbstractState> interpolateWith(const InternalState& mixState, float mix) override;
+		virtual globjects::ref_ptr<AbstractState> interpolateWith(const PathState& mixState, float mix) override;
+		virtual globjects::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix) override;
 
+		virtual void updateExtends(glm::vec2 sourceExtends) override;
 
-		glm::vec3 m_ll, m_ur, m_lr;
+	private:
+		glm::vec3	m_ll, m_ur, m_lr;
 	};
 }

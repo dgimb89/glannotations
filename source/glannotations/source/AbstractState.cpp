@@ -25,7 +25,7 @@ void glannotations::AbstractState::copyState(AbstractState& copyTo) const {
 	copyTo.setHorizontalAnchor(getHorizontalAnchor());
 	copyTo.setVerticalAnchor(getVerticalAnchor());
 	copyTo.setStylings(getStylings());
-	copyTo.setMaximumLineHeight(getMaximumLineHeight());
+	copyTo.setMaximumHeight(getMaximumHeight());
 }
 
 void glannotations::AbstractState::setStylings(const StylingList& stylings) {
@@ -56,6 +56,7 @@ glannotations::State::VerticalAnchor glannotations::AbstractState::getVerticalAn
 glannotations::State::HorizontalAnchor glannotations::AbstractState::getHorizontalAnchor() const {
 	return m_horizontalAnchor;
 }
+
 void glannotations::AbstractState::setVerticalAnchor(glannotations::State::VerticalAnchor verticalAnchor) {
 	setDirty(true);
 	m_verticalAnchor = verticalAnchor;
@@ -66,16 +67,25 @@ void glannotations::AbstractState::setHorizontalAnchor(glannotations::State::Hor
 	m_horizontalAnchor = horizontalAnchor;
 }
 
-void glannotations::AbstractState::setMaximumLineHeight(float height) {
+void glannotations::AbstractState::setMaximumHeight(float height) {
 	setDirty(true);
 	m_maximumLineHeight = height;
 }
 
-float glannotations::AbstractState::getMaximumLineHeight() const {
+float glannotations::AbstractState::getMaximumHeight() const {
 	// important: accomodate for line height in state specialization
 	return m_maximumLineHeight;
 }
 
-bool glannotations::AbstractState::hasMaximumLineHeightConstraint() const {
-	return getMaximumLineHeight() != 0.f;
+bool glannotations::AbstractState::hasMaximumHeight() const {
+	return getMaximumHeight() != 0.f;
+}
+
+void glannotations::AbstractState::setKeepSourceAspectRatio(bool keepAspectRatio) {
+	setDirty(true);
+	m_keepAspectRatio = keepAspectRatio;
+}
+
+bool glannotations::AbstractState::getSourceKeepAspectRatio() const {
+	return m_keepAspectRatio;
 }

@@ -13,6 +13,7 @@ namespace glannotations {
 	class PathState;
 
 	class AbstractRenderer : public glannotations::DirtyFlagObject {
+		friend class AbstractState;
 		friend class ViewportState;
 		friend class InternalState;
 		friend class PathState;
