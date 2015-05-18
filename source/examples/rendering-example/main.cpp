@@ -149,7 +149,7 @@ public:
 		boxAnnotation->getState()->setStyling(new glannotations::Styles::Outline(0.2f, glm::vec3(0.f, 0.f, 0.f)));
 		boxAnnotation->getState()->asInternalState().setExternalReference(new glannotations::BoxReference(glm::vec2(0.f, 0.f), glm::vec2(0.f, 2.75f), glm::vec3(-5.f, 0.f, 0.f), false));
 
-		auto flagAnnotation = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(-1.f, 3.f, 5.01f), glm::vec3(1.f, 3.f, 5.01f), glm::vec3(1.f, 4.f, 5.01f)), "Flag", "calibri.ttf", dfFactory);
+		auto flagAnnotation = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(-1.f, -4.f, 5.01f), glm::vec3(1.f, -4.f, 5.01f), glm::vec3(1.f, 4.f, 5.01f)), "Flag", "calibri.ttf", dfFactory);
 		auto flagRef = new glannotations::FlagReference(1.0f, glm::vec3(0.f, 0.f, -3.f), false);
 		flagRef->setColor(flagColor);
 		flagAnnotation->getState()->asInternalState().setExternalReference(flagRef);
@@ -164,7 +164,9 @@ public:
 
 		auto internalAnnotation = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(2.f, -3.f, -1.01f), glm::vec3(2.f, 5.f, -1.01f), glm::vec3(4.f, 5.f, -1.01f)), "Internal", "calibri.ttf", dfFactory);
 		internalAnnotation->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
+		internalAnnotation->getState()->setKeepSourceAspectRatio(true);
 		internalAnnotation->getState()->setMaximumHeight(1.5f);
+		internalAnnotation->getState()->setVerticalAnchor(glannotations::Anchor::BOTTOM);
 		internalAnnotation->getState()->setStyling(new glannotations::Styles::Outline(0.1f, glm::vec3(0.f, 0.f, 0.f)));
 		m_annotations.addAnnotation(internalAnnotation);
 

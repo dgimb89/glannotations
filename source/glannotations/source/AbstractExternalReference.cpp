@@ -11,7 +11,7 @@ glannotations::AbstractExternalReference::AbstractExternalReference(bool positio
 	setPositioningOnly(positioningOnly);
 }
 
-bool glannotations::AbstractExternalReference::isPositioningOnly() {
+bool glannotations::AbstractExternalReference::isPositioningOnly() const {
 	return m_positioningOnly;
 }
 
@@ -57,6 +57,7 @@ void glannotations::AbstractExternalReference::draw() {
 }
 
 void glannotations::AbstractExternalReference::setDirty(bool dirtyValue) const  {
+	// changing visbility to allow checking dirtyness for reusage-check
 	DirtyFlagObject::setDirty(dirtyValue);
 }
 

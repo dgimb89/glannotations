@@ -20,11 +20,10 @@ namespace glannotations {
 
 	public:
 		AbstractExternalReference(bool positioningOnly);
-		bool isPositioningOnly();
+		bool isPositioningOnly() const;
 		void setColor(glm::vec4 color);
 
 	protected:
-		void setDirty(bool) const override;
 		void setPositioningOnly(bool positioningOnly);
 		void setBindingIndex(unsigned int bindingIndex);
 		unsigned int getBindingIndex() const;
@@ -44,6 +43,7 @@ namespace glannotations {
 		glm::vec4 m_color = glm::vec4(1.f, 0.f, 0.f, .35f);
 
 	private:
+		void setDirty(bool) const override;
 		void assertNotReused();
 	};
 }

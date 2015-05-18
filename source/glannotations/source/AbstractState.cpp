@@ -26,6 +26,7 @@ void glannotations::AbstractState::copyState(AbstractState& copyTo) const {
 	copyTo.setVerticalAnchor(getVerticalAnchor());
 	copyTo.setStylings(getStylings());
 	copyTo.setMaximumHeight(getMaximumHeight());
+	copyTo.setKeepSourceAspectRatio(getSourceKeepAspectRatio());
 }
 
 void glannotations::AbstractState::setStylings(const StylingList& stylings) {
@@ -49,20 +50,20 @@ glannotations::ViewportState& glannotations::AbstractState::asViewportState() {
 	return dynamic_cast<glannotations::ViewportState&>(*this);
 }
 
-glannotations::State::VerticalAnchor glannotations::AbstractState::getVerticalAnchor() const {
+glannotations::Anchor::VerticalAnchor glannotations::AbstractState::getVerticalAnchor() const {
 	return m_verticalAnchor;
 }
 
-glannotations::State::HorizontalAnchor glannotations::AbstractState::getHorizontalAnchor() const {
+glannotations::Anchor::HorizontalAnchor glannotations::AbstractState::getHorizontalAnchor() const {
 	return m_horizontalAnchor;
 }
 
-void glannotations::AbstractState::setVerticalAnchor(glannotations::State::VerticalAnchor verticalAnchor) {
+void glannotations::AbstractState::setVerticalAnchor(glannotations::Anchor::VerticalAnchor verticalAnchor) {
 	setDirty(true);
 	m_verticalAnchor = verticalAnchor;
 }
 
-void glannotations::AbstractState::setHorizontalAnchor(glannotations::State::HorizontalAnchor horizontalAnchor) {
+void glannotations::AbstractState::setHorizontalAnchor(glannotations::Anchor::HorizontalAnchor horizontalAnchor) {
 	setDirty(true);
 	m_horizontalAnchor = horizontalAnchor;
 }

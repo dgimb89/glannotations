@@ -21,7 +21,7 @@ namespace glannotations {
 
     typedef std::map<std::string, globjects::ref_ptr<glannotations::Styling> > StylingList;
 
-	namespace State {
+	namespace Anchor {
 		enum GLANNOTATIONS_API VerticalAnchor { MIDDLE, BOTTOM, TOP };
 		enum GLANNOTATIONS_API HorizontalAnchor { CENTER, LEFT, RIGHT };
 	}
@@ -65,15 +65,15 @@ namespace glannotations {
 		 *	\brief		Horizontal anchoring effects the placement of the annotation on given extends (which are potentially cropped to ensure constraints)
 		 *	\see		setKeepSourceAspectRatio, getMaximumHeight
 		 */
-		void setHorizontalAnchor(glannotations::State::HorizontalAnchor horizontalAnchor);
+		void setHorizontalAnchor(glannotations::Anchor::HorizontalAnchor horizontalAnchor);
 		/*!
 		*	\brief		Vertical anchoring effects the placement of the annotation on given extends (which are potentially cropped to ensure constraints)
 		*	\see		setKeepSourceAspectRatio, getMaximumHeight
 		*/
-		void setVerticalAnchor(glannotations::State::VerticalAnchor verticalAnchor);
+		void setVerticalAnchor(glannotations::Anchor::VerticalAnchor verticalAnchor);
 
-		glannotations::State::HorizontalAnchor getHorizontalAnchor() const;
-		glannotations::State::VerticalAnchor getVerticalAnchor() const;
+		glannotations::Anchor::HorizontalAnchor getHorizontalAnchor() const;
+		glannotations::Anchor::VerticalAnchor getVerticalAnchor() const;
 
 		virtual globjects::ref_ptr<AbstractState> interpolateWith(const InternalState& mixState, float mix) = 0;
 		virtual globjects::ref_ptr<AbstractState> interpolateWith(const PathState& mixState, float mix) = 0;
@@ -105,7 +105,14 @@ namespace glannotations {
 
 			// assuring aspect ratio
 			if (getSourceKeepAspectRatio()) {
-
+				float aspectRatio = sourceExtends.x / sourceExtends.y;
+				if ((width / height) > aspectRatio) {
+					// shrink width
+					width = aspectRatio * height;
+				} else {
+					// shrink height
+					height = width / aspectRatio;
+				}
 			}
 
 			// recalculating center according to width/height + anchor settings
@@ -115,25 +122,25 @@ namespace glannotations {
 
 			T center;
 			switch (getHorizontalAnchor()) {
-			case State::LEFT:
+			case Anchor::LEFT:
 				center = ll + widthSpan;
 				break;
-			case State::CENTER:
+			case Anchor::CENTER:
 				center = (ll + lr) / 2.f;
 				break;
-			case State::RIGHT:
+			case Anchor::RIGHT:
 				center = lr - widthSpan;
 				break;
 			}
 
 			switch (getVerticalAnchor()) {
-			case State::BOTTOM:
+			case Anchor::BOTTOM:
 				center += heightSpan;
 				break;
-			case State::MIDDLE:
+			case Anchor::MIDDLE:
 				center += (ur - lr) / 2.f;
 				break;
-			case State::TOP:
+			case Anchor::TOP:
 				center += (ur - lr) - heightSpan;
 				break;
 			}
@@ -148,7 +155,7 @@ namespace glannotations {
 		bool m_keepAspectRatio = false;
 		float m_maximumLineHeight = 0.f;
 		StylingList m_stylings;
-		State::VerticalAnchor m_verticalAnchor = State::VerticalAnchor::MIDDLE;
-		State::HorizontalAnchor m_horizontalAnchor = State::HorizontalAnchor::CENTER;
+		Anchor::VerticalAnchor m_verticalAnchor = Anchor::VerticalAnchor::MIDDLE;
+		Anchor::HorizontalAnchor m_horizontalAnchor = Anchor::HorizontalAnchor::CENTER;
 	};
 }

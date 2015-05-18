@@ -69,7 +69,6 @@ void glannotations::FlagReference::updatePositioning(PathState& state) {
 
 glannotations::FlagReference::FlagReference(float widthOffset, glm::vec3 depthSpan, bool onlyPositioning /* = true */)
 	: glannotations::AbstractExternalReference(onlyPositioning) {
-	setDirty(true);
 	m_depthSpan = depthSpan;
 }
 

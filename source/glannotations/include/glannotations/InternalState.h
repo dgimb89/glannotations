@@ -34,6 +34,6 @@ namespace glannotations {
 		virtual void updateExtends(glm::vec2 sourceExtends) override;
 
 	private:
-		glm::vec3	m_ll, m_ur, m_lr;
+		glm::vec3 m_ll, m_ur, m_lr;
 	};
 }

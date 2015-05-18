@@ -74,7 +74,6 @@ void glannotations::BoxReference::updatePositioning(PathState& state) {
 
 glannotations::BoxReference::BoxReference(glm::vec2 widthOverflow, glm::vec2 heightOverflow, glm::vec3 depthSpan, bool onlyPositioning /* = true */)
 	: glannotations::AbstractExternalReference(onlyPositioning) {
-	setDirty(true);
 	// we use internal span vectors to save overflow ranges for now
 	m_widthSpan = glm::vec3(widthOverflow, 0.f);
 	m_heightSpan = glm::vec3(heightOverflow, 0.f);
