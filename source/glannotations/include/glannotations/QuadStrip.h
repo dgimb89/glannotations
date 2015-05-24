@@ -11,7 +11,7 @@ namespace glannotations {
 
 		void addQuad(texVec2_t texture_ll, texVec2_t texture_advance);
 		void clearQuads();
-		glm::vec2 getExtends() const;
+		virtual glm::vec2 getExtends() const override;
 
 		float getUniformQuadHeight();
 		size_t getQuadstripRowCount() const;

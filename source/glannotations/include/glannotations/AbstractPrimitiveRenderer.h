@@ -13,9 +13,9 @@ namespace glannotations {
 		void setupOutline(const glannotations::Styling* outline);
 		void setupBumpMap(const glannotations::Styling* bumpMap);
 
-		virtual void drawSetupState(const glannotations::ViewportState& state) const override;
-		virtual void drawSetupState(const glannotations::InternalState& state) const override;
-		virtual void drawSetupState(const glannotations::PathState& state) const override;
+		virtual void drawSetupState(glannotations::ViewportState& state) const override;
+		virtual void drawSetupState(glannotations::InternalState& state) const override;
+		virtual void drawSetupState(glannotations::PathState& state) const override;
 
 
 		// we set the primitive to mutable because there is no outside interference at all - the quad is JUST used for rendering for this specific Renderer

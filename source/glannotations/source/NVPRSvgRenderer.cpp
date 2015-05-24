@@ -25,7 +25,7 @@ void glannotations::NVPRSvgRenderer::initializeSVG(const char* pathString) {
 	gl::glPathParameteriNV(m_pathBase, gl::GL_PATH_JOIN_STYLE_NV, (gl::GLint)gl::GL_ROUND_NV);
 }
 
-void glannotations::NVPRSvgRenderer::drawSetupState(const glannotations::ViewportState& state) const {
+void glannotations::NVPRSvgRenderer::drawSetupState(glannotations::ViewportState& state) const {
 	gl::glDisable(gl::GL_DEPTH_TEST);
 
 	setupOrthoProjection(state.getLL(), state.getUR(), m_width, m_height);
@@ -39,7 +39,7 @@ void glannotations::NVPRSvgRenderer::drawSetupState(const glannotations::Viewpor
 	gl::glPopAttrib();
 }
 
-void glannotations::NVPRSvgRenderer::drawSetupState(const glannotations::InternalState& state) const {
+void glannotations::NVPRSvgRenderer::drawSetupState(glannotations::InternalState& state) const {
 	setupProjection(glannotations::getProjection(getMatricesBindingIndex()));
 	setupModelView(glannotations::getView(getMatricesBindingIndex()), state, m_width, m_height);
 
@@ -64,7 +64,7 @@ void glannotations::NVPRSvgRenderer::drawPath() const {
 	}
 }
 
-void glannotations::NVPRSvgRenderer::drawSetupState(const glannotations::PathState& state) const {
+void glannotations::NVPRSvgRenderer::drawSetupState(glannotations::PathState& state) const {
 	throw std::logic_error("The method or operation is not implemented.");
 }
 

@@ -33,7 +33,6 @@ void glannotations::DistanceFieldFontRenderer::setupGlyphQuadstrip(glannotations
 			glyphConfig.getGlyphConfigForCharcode(annotation->getText().at(i))._advance);
 	}
 
-	annotation->getRenderState()->updateExtends(quadStrip->getExtends());
 	//float pixelHeight = annotation->getFontSize() * quadStrip->getQuadstripRowCount() * 4.f / 3.f; // 1 zoll = 72 pt = 96 px
 	m_drawingPrimitive = quadStrip;
 }

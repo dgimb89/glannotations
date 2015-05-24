@@ -7,6 +7,7 @@
 
 namespace glannotations {
 	class GLANNOTATIONS_API ViewportState : public glannotations::AbstractState {
+		friend class AbstractPrimitiveRenderer;
 	public:
 		ViewportState(glm::vec2 llf, glm::vec2 urb);
 

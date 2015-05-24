@@ -25,9 +25,9 @@ namespace glannotations {
 
 	protected:
 		unsigned int m_globalMatricesBindingIndex;
-		virtual void drawSetupState(const glannotations::ViewportState& state) const = 0;
-		virtual void drawSetupState(const glannotations::InternalState& state) const = 0;
-		virtual void drawSetupState(const glannotations::PathState& state) const = 0;
+		virtual void drawSetupState(glannotations::ViewportState& state) const = 0;
+		virtual void drawSetupState(glannotations::InternalState& state) const = 0;
+		virtual void drawSetupState(glannotations::PathState& state) const = 0;
 	};
 
 }

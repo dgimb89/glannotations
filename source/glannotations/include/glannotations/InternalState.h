@@ -8,12 +8,24 @@
 namespace glannotations {
 
 	class GLANNOTATIONS_API InternalState : public glannotations::ReferenceableState {
+		friend class AbstractPrimitiveRenderer;
 	public:
-		// lower left, lower right, upper right
+		/*!
+		 *	\brief		Creates an Annotation State which can be positioned by a Quad in world space
+		 *	\param	ll	Lower left coordinate of given Quad
+		 *	\param	lr	Lower right coordinate of given Quad
+		 *	\param	ur	Upper right coordinate of given Quad
+		 */
 		InternalState(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur);
 
-		// Extends in world coordinates
+		/*!
+		*	\brief		Resets the extends for this State
+		*	\param	ll	Lower left coordinate of given Quad
+		*	\param	lr	Lower right coordinate of given Quad
+		*	\param	ur	Upper right coordinate of given Quad
+		*/
 		void setExtends(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur);
+
 		const glm::vec3& getLL() const;
 		const glm::vec3& getUR() const;
 		const glm::vec3& getLR() const;

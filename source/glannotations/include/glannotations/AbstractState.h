@@ -30,6 +30,7 @@ namespace glannotations {
 		friend class NVPRRenderer;
 		friend class DistanceFieldFontRenderer;
 		friend class DistanceFieldPNGRenderer;
+		friend class AbstractPrimitiveRenderer;
 
 	public:
 

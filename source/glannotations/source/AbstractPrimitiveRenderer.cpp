@@ -23,8 +23,9 @@ void glannotations::AbstractPrimitiveRenderer::setupBumpMap(const Styling* bumpM
 	m_drawingPrimitive->setBumpMap(bumpMapStyle->getIntensity());
 }
 
-void glannotations::AbstractPrimitiveRenderer::drawSetupState(const ViewportState& state) const {
+void glannotations::AbstractPrimitiveRenderer::drawSetupState(ViewportState& state) const {
 	if (state.isDirty()) {
+		state.updateExtends(m_drawingPrimitive->getExtends());
 		m_drawingPrimitive->setViewportPosition(state.getLL(), state.getLR(), state.getUR());
 		state.setDirty(false);
 	}
@@ -36,15 +37,16 @@ void glannotations::AbstractPrimitiveRenderer::drawSetupState(const ViewportStat
 }
 
 
-void glannotations::AbstractPrimitiveRenderer::drawSetupState(const InternalState& state) const {
+void glannotations::AbstractPrimitiveRenderer::drawSetupState(InternalState& state) const {
 	if (state.isDirty()) {
+		state.updateExtends(m_drawingPrimitive->getExtends());
 		m_drawingPrimitive->setPosition(state.getLL(), state.getLR(), state.getUR());
 		state.setDirty(false);
 	}
 	m_drawingPrimitive->draw();
 }
 
-void glannotations::AbstractPrimitiveRenderer::drawSetupState(const glannotations::PathState& state) const {
+void glannotations::AbstractPrimitiveRenderer::drawSetupState(glannotations::PathState& state) const {
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
