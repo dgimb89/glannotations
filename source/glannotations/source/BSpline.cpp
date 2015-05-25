@@ -72,7 +72,7 @@ void glannotations::BSpline::calculateArcLengths() {
 	int numberOfDivisions = 10 * m_ctrlPoints.size();
 	int maxPoint = numberOfDivisions + 1;
 
-	glm::vec3 previousPoint = getCurvepointAt(0);
+	glm::vec3 previousPoint = retrieveCurvepointAt(0);
 
 	float sum = 0;
 
@@ -80,24 +80,25 @@ void glannotations::BSpline::calculateArcLengths() {
 	m_arcLengths.push_back(0.0);
 
 	for (int i = 1; i <= maxPoint; i++){
-		glm::vec3 p = getCurvepointAt(i / maxPoint);
+		glm::vec3 p = retrieveCurvepointAt(i / maxPoint);
 
 		//calculate distance
-		glm::vec3 temp = previousPoint - p;
-		float distSqr = glm::dot(temp, temp);
+		float d = glm::distance(p, previousPoint);
+		//glm::vec3 temp = previousPoint - p;
+		//float distSqr = glm::dot(temp, temp);
 
-		sum += distSqr;
+		sum += d;
 
 		previousPoint = p;
 		m_arcLengths.push_back(sum);
 	};
 };
 
-glm::vec3 glannotations::BSpline::getCurvepointAt(float t) {
+glm::vec3 glannotations::BSpline::retrieveCurvepointAt(float t) {
 	if ( t < 0.0f || t > 1.0f)
 		std::cout << "debug: warning! 0 <= t <= 1";
 
-	float tempT = t* m_ctrlPoints.size() - 1;
+	float tempT = t * m_ctrlPoints.size() - 1;
 	int i = std::floor(tempT) + m_degree - 1;
 	glm::vec3 point = deBoor(m_degree, m_degree, i, tempT, m_knotValues);
 
@@ -128,10 +129,52 @@ glm::vec3 glannotations::BSpline::deBoor(int k, int degree, int i, float t, std:
 	}
 };
 
-glm::vec2 glannotations::BSpline::getSecantVectorAt(float t, float nextT) {
-	glm::vec3 currentPoint = getCurvepointAt(t);
-	glm::vec3 nextPoint = getCurvepointAt(nextT);
-	glm::vec2 secantVector(nextPoint - currentPoint);
+glm::vec3 glannotations::BSpline::retrieveSecantVectorAt(float t, float nextT) {
+	glm::vec3 currentPoint = retrieveCurvepointAt(t);
+	glm::vec3 nextPoint = retrieveCurvepointAt(nextT);
+	glm::vec3 secantVector(nextPoint - currentPoint);
 
 	return secantVector;
+};
+
+glm::vec3 glannotations::BSpline::retrieveNormalizedOrthogonalVectorAt(float t, float nextT, enum GlyphOrientationOnSpline orientation) {
+	//will be useful for positioning, I suppose
+	
+	glm::vec3 secantVec = retrieveSecantVectorAt(t, nextT);
+
+	//todo debug : if glyphs are upside down, invert resulting normal!
+
+	if (m_ctrlPoints.size() < 2) {
+		std::cout << "debug: less than 2 controlpoints! It's not a curve.";
+		return glm::vec3(0.f, 0.f, 0.f);
+	}
+
+	//"curve plane": described by the vector(last_controlpoint, first_controlpoint) and secantVec
+	glm::vec3 v1 = (m_ctrlPoints.back() - m_ctrlPoints.front());
+	glm::vec3 normal = glm::cross(v1, secantVec);
+
+	glm::vec3 result = glm::equal(normal, glm::vec3(0, 0, 0));
+	if (result.x && result.y && result.z) {
+		std::cout << "debug: warning: secant vector equals vector(first_controlpoint, last_controlpoint) of curve!.";
+		return normal; //zero vector
+	}
+	
+	switch (orientation) {
+	case ORTHOGONAL_TO_PLANE:
+		//glyphs orthogonal to the curve plane
+		return glm::normalize(normal);
+		break;
+	case IN_SAME_PLANE:
+		//glyphs in the same plane as the curve
+		//use normal to rotate the secant vec
+		return glm::rotate(secantVec, glm::radians(90.0f), normal); //should still be normalized, right?
+		break;
+	default:
+		//CUSTOM_SECOND_PATH
+		//every glyph has another up-vector
+		//yeah, maybe another day...
+		std::cout << "debug: warning: CUSTOM_SECOND_PATH yet not implemented!";
+		return glm::vec3(0, 0, 0);
+		break;
+	}
 };

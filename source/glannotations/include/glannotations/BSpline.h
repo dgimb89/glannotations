@@ -3,11 +3,15 @@
 #include <vector>
 #include <initializer_list>
 #include <glm/glm.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 
 #include <glannotations/DirtyFlagObject.h>
 #include <glannotations/glannotations_api.h>
 
 namespace glannotations {
+
+	enum GlyphOrientationOnSpline{ IN_SAME_PLANE, ORTHOGONAL_TO_PLANE, CUSTOM_SECOND_PATH };
+
     class GLANNOTATIONS_API BSpline : protected glannotations::DirtyFlagObject {
 	public:
 		BSpline(std::initializer_list<glm::vec3> ctrlPoints, std::initializer_list<float> knotValues);
@@ -21,14 +25,21 @@ namespace glannotations {
 		* calculates a Curvepoint parametrized by t using de Boor's algorithm
 		* t Curve parameter in range [0,1]
 		*/
-		glm::vec3 getCurvepointAt(float t);
+		glm::vec3 retrieveCurvepointAt(float t);
 
 		/**
 		* Calculates 2D-vector between two curvepoints specified by curve parameters t and nextT, not normalized
 		* t Curve parameter for first curvepoint
 		* nextT Curve parameter for second curvepoint
 		*/
-		glm::vec2 getSecantVectorAt(float t, float nextT);
+		glm::vec3 retrieveSecantVectorAt(float t, float nextT);
+
+		/**
+		* Calculates orthogonal vector to the secantvector between two curvepoints specified by curve parameters t and nextT
+		* t Curve parameter for first curvepoint
+		* nextT Curve parameter for second curvepoint
+		*/
+		glm::vec3 retrieveNormalizedOrthogonalVectorAt(float t, float nextT, enum GlyphOrientationOnSpline orientation);
 
 		// we want to use the dirty information just internally
         //virtual bool isDirty() const = delete;
