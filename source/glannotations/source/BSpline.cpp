@@ -84,7 +84,7 @@ void glannotations::BSpline::calculateArcLengths() {
 
 		//calculate distance
 		glm::vec3 temp = previousPoint - p;
-		float distSqr = dot(temp, temp);
+        float distSqr = glm::dot(temp, temp);
 
 		sum += distSqr;
 
