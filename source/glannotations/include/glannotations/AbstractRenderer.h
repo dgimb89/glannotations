@@ -27,8 +27,7 @@ namespace glannotations {
 		unsigned int m_globalMatricesBindingIndex;
 		virtual void drawSetupState(glannotations::ViewportState& state) const = 0;
 		virtual void drawSetupState(glannotations::InternalState& state) const = 0;
-		virtual void drawSetupState(glannotations::
-			& state) const = 0;
+		virtual void drawSetupState(glannotations::SplineState& state) const = 0;
 	};
 
 }

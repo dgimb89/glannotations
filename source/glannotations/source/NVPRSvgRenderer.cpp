@@ -67,9 +67,6 @@ void glannotations::NVPRSvgRenderer::drawPath() const {
 
 void glannotations::NVPRSvgRenderer::drawSetupState(glannotations::SplineState& state) const {
 	throw std::logic_error("The method or operation is not implemented.");
-
-	//drawPath();
-	//state.setDirty(false);
 }
 
 glannotations::NVPRSvgRenderer::NVPRSvgRenderer(gl::GLuint globalMatricesBindingIndex) : NVPRRenderer(globalMatricesBindingIndex) {
