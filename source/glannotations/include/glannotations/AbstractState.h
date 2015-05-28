@@ -17,7 +17,7 @@ namespace glannotations {
 	class AbstractAnnotation;
 	class ViewportState;
 	class InternalState;
-	class PathState;
+	class SplineState;
 
     typedef std::map<std::string, globjects::ref_ptr<glannotations::Styling> > StylingList;
 
@@ -53,7 +53,7 @@ namespace glannotations {
 		bool hasMaximumHeight() const;
 
 		glannotations::InternalState& asInternalState();
-		glannotations::PathState& asPathState();
+		glannotations::SplineState& asSplineState();
 		glannotations::ViewportState& asViewportState();
 
 		/*!
@@ -77,7 +77,7 @@ namespace glannotations {
 		glannotations::Anchor::VerticalAnchor getVerticalAnchor() const;
 
 		virtual globjects::ref_ptr<AbstractState> interpolateWith(const InternalState& mixState, float mix) = 0;
-		virtual globjects::ref_ptr<AbstractState> interpolateWith(const PathState& mixState, float mix) = 0;
+		virtual globjects::ref_ptr<AbstractState> interpolateWith(const SplineState& mixState, float mix) = 0;
 		virtual globjects::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix) = 0;
 
 	protected:

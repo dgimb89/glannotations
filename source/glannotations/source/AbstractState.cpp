@@ -2,7 +2,7 @@
 #include <glannotations/globals.h>
 #include <glannotations/ViewportState.h>
 #include <glannotations/InternalState.h>
-#include <glannotations/PathState.h>
+#include <glannotations/SplineState.h>
 
 void glannotations::AbstractState::setStyling(const globjects::ref_ptr<glannotations::Styling>& style) {
 	setDirty(true); 
@@ -42,8 +42,8 @@ glannotations::InternalState& glannotations::AbstractState::asInternalState() {
 	return dynamic_cast<glannotations::InternalState&>(*this);
 }
 
-glannotations::PathState& glannotations::AbstractState::asPathState() {
-	return dynamic_cast<glannotations::PathState&>(*this);
+glannotations::SplineState& glannotations::AbstractState::asSplineState() {
+	return dynamic_cast<glannotations::SplineState&>(*this);
 }
 
 glannotations::ViewportState& glannotations::AbstractState::asViewportState() {

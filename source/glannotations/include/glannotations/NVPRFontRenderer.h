@@ -16,7 +16,7 @@ namespace glannotations {
 	protected:
 		virtual void drawSetupState(glannotations::ViewportState& state) const override;
 		virtual void drawSetupState(glannotations::InternalState& state) const override;
-		virtual void drawSetupState(glannotations::PathState& state) const override;
+		virtual void drawSetupState(glannotations::SplineState& state) const override;
 
 		void initializeFont(glannotations::FontAnnotation* annotation);
 		void getTextStencelingDimensions(const char* text, const size_t& messageLen, gl::GLfloat* &xtranslate, gl::GLfloat& totalAdvance, gl::GLfloat& yMin, gl::GLfloat& yMax, gl::GLfloat& underline_position, gl::GLfloat& underline_thickness) const;

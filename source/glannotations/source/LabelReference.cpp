@@ -1,6 +1,6 @@
 #include <glannotations/LabelReference.h>
 #include <glannotations/InternalState.h>
-#include <glannotations/PathState.h>
+#include <glannotations/SplineState.h>
 #include <glannotations/globals.h>
 
 void glannotations::LabelReference::updatePositioning(InternalState& state) {
@@ -11,7 +11,7 @@ void glannotations::LabelReference::updatePositioning(InternalState& state) {
 	updatePrismoid(newLL, newLR);
 }
 
-void glannotations::LabelReference::updatePositioning(PathState& state) {
+void glannotations::LabelReference::updatePositioning(SplineState& state) {
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
@@ -22,7 +22,7 @@ void glannotations::LabelReference::setupExternalReference(const InternalState& 
 	m_height = glm::distance(state.getUR(), state.getLR());
 }
 
-void glannotations::LabelReference::setupExternalReference(const PathState& state) {
+void glannotations::LabelReference::setupExternalReference(const SplineState& state) {
 	throw std::logic_error("The method or operation is not implemented.");
 }
 

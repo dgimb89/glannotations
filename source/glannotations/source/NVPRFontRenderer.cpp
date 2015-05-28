@@ -62,7 +62,7 @@ void glannotations::NVPRFontRenderer::drawSetupState(glannotations::InternalStat
 	cleanMatrixStacks();
 	}
 
-void glannotations::NVPRFontRenderer::drawSetupState(glannotations::PathState& state) const {
+void glannotations::NVPRFontRenderer::drawSetupState(glannotations::SplineState& state) const {
 	throw std::logic_error("The method or operation is not implemented.");
 }
 

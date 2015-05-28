@@ -46,7 +46,7 @@ globjects::ref_ptr<glannotations::AbstractState> glannotations::InternalState::i
 	return glannotations::Interpolation::interpolate(*this, mixState, mix);
 }
 
-globjects::ref_ptr<glannotations::AbstractState> glannotations::InternalState::interpolateWith(const PathState& mixState, float mix) {
+globjects::ref_ptr<glannotations::AbstractState> glannotations::InternalState::interpolateWith(const SplineState& mixState, float mix) {
 	return glannotations::Interpolation::interpolate(*this, mixState, mix);
 }
 

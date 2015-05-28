@@ -5,6 +5,7 @@
 #include <glannotations/NVPRSvgRenderer.h>
 #include <glannotations/SVGAnnotation.h>
 #include <glannotations/ViewportState.h>
+#include <glannotations/SplineState.h>
 #include <glannotations/InternalState.h>
 #include <glannotations/Styles/Outline.h>
 
@@ -64,8 +65,11 @@ void glannotations::NVPRSvgRenderer::drawPath() const {
 	}
 }
 
-void glannotations::NVPRSvgRenderer::drawSetupState(glannotations::PathState& state) const {
+void glannotations::NVPRSvgRenderer::drawSetupState(glannotations::SplineState& state) const {
 	throw std::logic_error("The method or operation is not implemented.");
+
+	//drawPath();
+	//state.setDirty(false);
 }
 
 glannotations::NVPRSvgRenderer::NVPRSvgRenderer(gl::GLuint globalMatricesBindingIndex) : NVPRRenderer(globalMatricesBindingIndex) {

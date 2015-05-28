@@ -8,7 +8,7 @@
 #include <glannotations/Styles/BumpMap.h>
 #include <glannotations/ViewportState.h>
 #include <glannotations/InternalState.h>
-#include <glannotations/PathState.h>
+#include <glannotations/SplineState.h>
 
 void glannotations::AbstractPrimitiveRenderer::setupOutline(const Styling* outline) {
 	if (outline == nullptr) return;
@@ -46,7 +46,7 @@ void glannotations::AbstractPrimitiveRenderer::drawSetupState(InternalState& sta
 	m_drawingPrimitive->draw();
 }
 
-void glannotations::AbstractPrimitiveRenderer::drawSetupState(glannotations::PathState& state) const {
+void glannotations::AbstractPrimitiveRenderer::drawSetupState(glannotations::SplineState& state) const {
 	throw std::logic_error("The method or operation is not implemented.");
 }
 

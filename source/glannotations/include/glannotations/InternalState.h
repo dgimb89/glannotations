@@ -40,7 +40,7 @@ namespace glannotations {
 		virtual void draw(const AbstractRenderer& renderer) override;
 
 		virtual globjects::ref_ptr<AbstractState> interpolateWith(const InternalState& mixState, float mix) override;
-		virtual globjects::ref_ptr<AbstractState> interpolateWith(const PathState& mixState, float mix) override;
+		virtual globjects::ref_ptr<AbstractState> interpolateWith(const SplineState& mixState, float mix) override;
 		virtual globjects::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix) override;
 
 		virtual void updateExtends(glm::vec2 sourceExtends) override;

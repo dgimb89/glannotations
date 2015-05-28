@@ -9,7 +9,7 @@
 #include <glannotations/BoxReference.h>
 #include <glannotations/Box.h>
 #include <glannotations/AbstractAnnotation.h>
-#include <glannotations/PathState.h>
+#include <glannotations/SplineState.h>
 #include <glannotations/InternalState.h>
 #include <glannotations/Utility/Segment.h>
 #include <glannotations/Utility/Triangle.h>
@@ -68,7 +68,7 @@ void glannotations::BoxReference::updatePositioning(InternalState& state) {
 	state.setExtends(intersection - widthSpan - heightSpan, intersection + widthSpan - heightSpan, intersection + widthSpan + heightSpan);
 }
 
-void glannotations::BoxReference::updatePositioning(PathState& state) {
+void glannotations::BoxReference::updatePositioning(SplineState& state) {
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
@@ -108,7 +108,7 @@ void glannotations::BoxReference::setupExternalReference(const InternalState& st
 	}
 }
 
-void glannotations::BoxReference::setupExternalReference(const PathState& state) {
+void glannotations::BoxReference::setupExternalReference(const SplineState& state) {
 	AbstractExternalReference::setupExternalReference(state);
 
 	throw std::logic_error("The method or operation is not implemented.");

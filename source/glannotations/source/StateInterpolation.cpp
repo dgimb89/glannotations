@@ -4,7 +4,7 @@ const globjects::ref_ptr<glannotations::AbstractState> glannotations::Interpolat
 	return nullptr;
 }
 
-const globjects::ref_ptr<glannotations::AbstractState> glannotations::Interpolation::interpolate(const InternalState& first, const PathState& second, float mix) {
+const globjects::ref_ptr<glannotations::AbstractState> glannotations::Interpolation::interpolate(const InternalState& first, const SplineState& second, float mix) {
 	return nullptr;
 }
 
@@ -12,15 +12,15 @@ const globjects::ref_ptr<glannotations::AbstractState> glannotations::Interpolat
 	return nullptr;
 }
 
-const globjects::ref_ptr<glannotations::AbstractState> glannotations::Interpolation::interpolate(const PathState& first, const InternalState& second, float mix) {
+const globjects::ref_ptr<glannotations::AbstractState> glannotations::Interpolation::interpolate(const SplineState& first, const InternalState& second, float mix) {
 	return nullptr;
 }
 
-const globjects::ref_ptr<glannotations::AbstractState> glannotations::Interpolation::interpolate(const PathState& first, const PathState& second, float mix) {
+const globjects::ref_ptr<glannotations::AbstractState> glannotations::Interpolation::interpolate(const SplineState& first, const SplineState& second, float mix) {
 	return nullptr;
 }
 
-const globjects::ref_ptr<glannotations::AbstractState> glannotations::Interpolation::interpolate(const PathState& first, const ViewportState& second, float mix) {
+const globjects::ref_ptr<glannotations::AbstractState> glannotations::Interpolation::interpolate(const SplineState& first, const ViewportState& second, float mix) {
 	return nullptr;
 }
 
@@ -28,7 +28,7 @@ const globjects::ref_ptr<glannotations::AbstractState> glannotations::Interpolat
 	return nullptr;
 }
 
-const globjects::ref_ptr<glannotations::AbstractState> glannotations::Interpolation::interpolate(const ViewportState& first, const PathState& second, float mix) {
+const globjects::ref_ptr<glannotations::AbstractState> glannotations::Interpolation::interpolate(const ViewportState& first, const SplineState& second, float mix) {
 	return nullptr;
 }
 

@@ -9,7 +9,7 @@
 #include <glannotations/FlagReference.h>
 #include <glannotations/Rect.h>
 #include <glannotations/AbstractAnnotation.h>
-#include <glannotations/PathState.h>
+#include <glannotations/SplineState.h>
 #include <glannotations/InternalState.h>
 #include <glannotations/Utility/Segment.h>
 #include <glannotations/Utility/Triangle.h>
@@ -63,7 +63,7 @@ void glannotations::FlagReference::updatePositioning(InternalState& state) {
 	reinterpret_cast<glannotations::Rect*>(m_externalPrimitive.get())->setPosition(state.getLL(), state.getLR(), state.getUR());
 }
 
-void glannotations::FlagReference::updatePositioning(PathState& state) {
+void glannotations::FlagReference::updatePositioning(SplineState& state) {
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
@@ -91,7 +91,7 @@ void glannotations::FlagReference::setupExternalReference(const InternalState& s
 	}
 }
 
-void glannotations::FlagReference::setupExternalReference(const PathState& state) {
+void glannotations::FlagReference::setupExternalReference(const SplineState& state) {
 	AbstractExternalReference::setupExternalReference(state);
 
 	throw std::logic_error("The method or operation is not implemented.");

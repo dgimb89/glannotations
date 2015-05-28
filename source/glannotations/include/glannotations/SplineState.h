@@ -6,7 +6,7 @@
 #include <glannotations/glannotations_api.h>
 
 namespace glannotations {
-	class GLANNOTATIONS_API PathState : public glannotations::ReferenceableState {
+	class GLANNOTATIONS_API SplineState : public glannotations::ReferenceableState {
 	public:
 		virtual bool isValid();
 		virtual globjects::ref_ptr<glannotations::AbstractState> clone();
@@ -16,7 +16,7 @@ namespace glannotations {
 		virtual void draw(const AbstractRenderer& renderer) override;
 
 		virtual globjects::ref_ptr<AbstractState> interpolateWith(const InternalState& mixState, float mix);
-		virtual globjects::ref_ptr<AbstractState> interpolateWith(const PathState& mixState, float mix);
+		virtual globjects::ref_ptr<AbstractState> interpolateWith(const SplineState& mixState, float mix);
 		virtual globjects::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix);
 
 	private:

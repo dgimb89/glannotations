@@ -19,7 +19,7 @@ void glannotations::AbstractExternalReference::setupExternalReference(const Inte
 	assertNotReused();
 }
 
-void glannotations::AbstractExternalReference::setupExternalReference(const PathState& state) {
+void glannotations::AbstractExternalReference::setupExternalReference(const SplineState& state) {
 	assertNotReused();
 }
 

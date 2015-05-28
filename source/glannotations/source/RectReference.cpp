@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include <glannotations/RectReference.h>
-#include <glannotations/PathState.h>
+#include <glannotations/SplineState.h>
 #include <glannotations/InternalState.h>
 #include <glannotations/globals.h>
 #include <iostream>
@@ -25,7 +25,7 @@ void glannotations::RectReference::setupExternalReference(const InternalState& s
 	m_halfAnnotHeight = glm::distance(state.getUR(), state.getLR()) / 2.f;
 }
 
-void glannotations::RectReference::setupExternalReference(const PathState& state) {
+void glannotations::RectReference::setupExternalReference(const SplineState& state) {
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
@@ -50,6 +50,6 @@ void glannotations::RectReference::updatePositioning(InternalState& state) {
 	state.setExtends(m_center - widthSpan - heightSpan, m_center + widthSpan - heightSpan, m_center + widthSpan + heightSpan);
 }
 
-void glannotations::RectReference::updatePositioning(PathState& state) {
+void glannotations::RectReference::updatePositioning(SplineState& state) {
 	throw std::logic_error("The method or operation is not implemented.");
 }

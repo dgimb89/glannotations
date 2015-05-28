@@ -9,14 +9,14 @@
 namespace glannotations {
 
 	class InternalState;
-	class PathState;
+	class SplineState;
 	class AbstractRenderer;
 
 	class GLANNOTATIONS_API AbstractExternalReference : public glannotations::DirtyFlagObject {
 
 		friend class ReferenceableState;
 		friend class InternalState;
-		friend class PathState;
+		friend class SplineState;
 
 	public:
 		AbstractExternalReference(bool positioningOnly);
@@ -31,11 +31,11 @@ namespace glannotations {
 		virtual void draw();
 		virtual void updateBindings(const glannotations::AbstractRenderer& renderer);
 		virtual void setupExternalReference(const InternalState& state);
-		virtual void setupExternalReference(const PathState& state);
+		virtual void setupExternalReference(const SplineState& state);
 
 		// updates positioning of given state
 		virtual void updatePositioning(InternalState& state) = 0;
-		virtual void updatePositioning(PathState& state) = 0;
+		virtual void updatePositioning(SplineState& state) = 0;
 
 		bool m_positioningOnly;
 		unsigned int m_bindingIndex;

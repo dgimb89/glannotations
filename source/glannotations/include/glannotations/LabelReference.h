@@ -10,10 +10,10 @@ namespace glannotations {
 		LabelReference(glm::vec3 reference);
 	protected:
 		virtual void updatePositioning(InternalState& state) override;
-		virtual void updatePositioning(PathState& state) override;
+		virtual void updatePositioning(SplineState& state) override;
 
 		virtual void setupExternalReference(const InternalState& state) override;
-		virtual void setupExternalReference(const PathState& state) override;
+		virtual void setupExternalReference(const SplineState& state) override;
 
 		void updatePrismoid(const glm::vec3& a, const glm::vec3& b);
 

@@ -4,7 +4,7 @@
 #include <glannotations/AbstractAnnotation.h>
 #include <glannotations/ViewportState.h>
 #include <glannotations/InternalState.h>
-#include <glannotations/PathState.h>
+#include <glannotations/SplineState.h>
 #include <glannotations/Styles/ExternalColor.h>
 
 glannotations::AbstractAnnotation::AbstractAnnotation(const globjects::ref_ptr<glannotations::AbstractState>& state) {
@@ -45,7 +45,7 @@ void glannotations::AbstractAnnotation::interpolateState(const InternalState& mi
 	m_renderState = m_state->interpolateWith(mixState, mix);
 }
 
-void glannotations::AbstractAnnotation::interpolateState(const PathState& mixState, float mix) {
+void glannotations::AbstractAnnotation::interpolateState(const SplineState& mixState, float mix) {
 	m_renderState = nullptr;
 	setupRenderState();
 	m_renderState = m_state->interpolateWith(mixState, mix);

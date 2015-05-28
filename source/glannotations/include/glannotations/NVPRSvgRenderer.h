@@ -12,7 +12,7 @@ namespace glannotations {
 	protected:
 		virtual void drawSetupState(glannotations::ViewportState& state) const override;
 		virtual void drawSetupState(glannotations::InternalState& state) const override;
-		virtual void drawSetupState(glannotations::PathState& state) const override;
+		virtual void drawSetupState(glannotations::SplineState& state) const override;
 
 		void initializeSVG(const char* pathString);
 		void drawPath() const;

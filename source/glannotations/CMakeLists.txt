@@ -103,7 +103,7 @@ set(api_includes
 	${include_path}/ReferenceableState.h
 	${include_path}/ViewportState.h
 	${include_path}/InternalState.h
-	${include_path}/PathState.h
+	${include_path}/SplineState.h
 	${include_path}/BSpline.h
 	${include_path}/StateInterpolation.h
 
@@ -165,7 +165,7 @@ set(sources
 	${source_path}/ReferenceableState.cpp
 	${source_path}/ViewportState.cpp
 	${source_path}/InternalState.cpp
-	${source_path}/PathState.cpp
+	${source_path}/SplineState.cpp
 	${source_path}/BSpline.cpp
 	${source_path}/StateInterpolation.cpp
 

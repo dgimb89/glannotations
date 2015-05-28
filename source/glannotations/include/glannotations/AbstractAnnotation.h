@@ -14,7 +14,7 @@
 namespace glannotations {
 	// forward declaration
 	class InternalState;
-	class PathState;
+	class SplineState;
 	class ViewportState;
 
 	class GLANNOTATIONS_API AbstractAnnotation : public glannotations::DirtyFlagObject {
@@ -31,7 +31,7 @@ namespace glannotations {
 
 		// should internal interpolation be offered? - maybe just at state level, but user has to keep the both final states
 		void interpolateState(const InternalState& mixState, float mix);
-		void interpolateState(const PathState& mixState, float mix);
+		void interpolateState(const SplineState& mixState, float mix);
 		void interpolateState(const ViewportState& mixState, float mix);
 
 		void resetInterpolation();
