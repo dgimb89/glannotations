@@ -153,7 +153,7 @@ glm::vec3 glannotations::BSpline::retrieveNormalizedOrthogonalVectorAt(float t, 
 	glm::vec3 v1 = (m_ctrlPoints.back() - m_ctrlPoints.front());
 	glm::vec3 normal = glm::cross(v1, secantVec);
 
-	glm::vec3 result = glm::equal(normal, glm::vec3(0, 0, 0));
+    glm::bvec3 result = glm::equal(normal, glm::vec3(0, 0, 0));
 	if (result.x && result.y && result.z) {
 		std::cout << "debug: warning: secant vector equals vector(first_controlpoint, last_controlpoint) of curve!.";
 		return normal; //zero vector
