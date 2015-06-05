@@ -67,7 +67,7 @@ namespace glannotations {
 		*	\brief	returns t curve (or arcLength-) parameterized value in range [0,1]
 		*	\param	u Parameterized value in range [0,1]
 		*/
-		float glannotations::BSpline::getTForU(float u);
+		float getTForU(float u);
 
 		std::vector<glm::vec3> m_ctrlPoints;
 		std::vector<float> m_knotValues;
