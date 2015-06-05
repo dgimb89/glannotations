@@ -30,11 +30,13 @@
 #include <glannotations/PNGAnnotation.h>
 #include <glannotations/ViewportState.h>
 #include <glannotations/InternalState.h>
+#include <glannotations/SplineState.h>
 #include <glannotations/BoxReference.h>
 #include <glannotations/LabelReference.h>
 #include <glannotations/FlagReference.h>
 #include <glannotations/RectReference.h>
 #include <glannotations/Styles.h>
+#include <glannotations/BSpline.h>
 
 #include "building.h"
 
@@ -166,6 +168,39 @@ public:
 		labelAnnotation->getState()->setVerticalAnchor(glannotations::Anchor::BOTTOM);
 		labelAnnotation->getState()->setHorizontalAnchor(glannotations::Anchor::RIGHT);
 		m_annotations.addAnnotation(labelAnnotation);
+
+		//todo:anne hello world!
+		std::vector<glm::vec3> ctrlPoints;
+		int x = 4;
+		int y = 6;
+		int h = 2;
+		ctrlPoints.push_back(glm::vec3(0, 0, 0));
+		ctrlPoints.push_back(glm::vec3(x, y/2, 0));
+		ctrlPoints.push_back(glm::vec3(x, 0, 0));
+		ctrlPoints.push_back(glm::vec3(x, y, 0));
+
+		std::vector<float> knotValues = { 0.f, 0.f, 0.f, 1.f, 2.f, 3.f, 3.f, 3.f };
+
+		std::vector<glm::vec3> ctrlPoints2;
+		ctrlPoints2.push_back(glm::vec3(0-h, 0, 0));
+		ctrlPoints2.push_back(glm::vec3(x-h, y/2+h, 0));
+		ctrlPoints2.push_back(glm::vec3(x-h, 0+h, 0));
+		ctrlPoints2.push_back(glm::vec3(x-h, y, 0));
+
+		//glannotations::BSpline splineBase = glannotations::BSpline(ctrlPoints, 3);
+		auto splineAnnotation = new glannotations::FontAnnotation(
+			new glannotations::SplineState(
+				glm::vec3(-8, 4, 4)
+				, ctrlPoints, knotValues
+				, ctrlPoints2, knotValues
+				, glannotations::GlyphOrientationOnSpline::CUSTOM_SECOND_SPLINE
+			), "Hello World!", "calibri.ttf", dfFactory);
+		//splineAnnotation->getState()->asSplineState().setExternalReference(new glannotations::LabelReference(glm::vec3(0.f, -3.f, 10.f)));
+		splineAnnotation->getState()->setMaximumHeight(10.5f);
+		splineAnnotation->getState()->setKeepSourceAspectRatio(true);
+		//splineAnnotation->getState()->setVerticalAnchor(glannotations::Anchor::BOTTOM);
+		//splineAnnotation->getState()->setHorizontalAnchor(glannotations::Anchor::LEFT);
+		m_annotations.addAnnotation(splineAnnotation);
 
 		auto internalAnnotation = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(2.f, -3.f, -1.01f), glm::vec3(2.f, 5.f, -1.01f), glm::vec3(4.f, 5.f, -1.01f)), "Internal", "calibri.ttf", dfFactory);
 		internalAnnotation->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));

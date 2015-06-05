@@ -1,4 +1,4 @@
-#include <glannotations/QuadStrip.h>
+#include <glannotations/BendedQuadStrip.h>
 #include "ShaderSources.hpp"
 
 #include <glbinding/gl/functions.h>
@@ -261,7 +261,7 @@ static const char* dfFragShader = R"(
 		}
 	)";
 
-		static const char* texturingFragShader = R"(
+	static const char* texturingFragShader = R"(
 	#version 330
 	uniform sampler2D source;
 
@@ -275,16 +275,17 @@ static const char* dfFragShader = R"(
 
 	)";
 
-glannotations::QuadStrip::QuadStrip(std::shared_ptr<globjects::Texture> texture, gl::GLuint matricesBindingIndex, bool isDistanceField) : glannotations::AbstractTexturedPrimitive(texture) {
+glannotations::BendedQuadStrip::BendedQuadStrip(std::shared_ptr<globjects::Texture> texture, gl::GLuint matricesBindingIndex, bool isDistanceField) : glannotations::AbstractTexturedPrimitive(texture) {
 	if (isDistanceField) {
 		setupShader(vertShader, geomShader, dfFragShader);
-	} else {
+	}
+	else {
 		setupShader(vertShader, geomShader, texturingFragShader);
 	}
 	setBindingIndex(matricesBindingIndex);
 
 	// initial position
-	m_ll = m_lr = m_ur = glm::vec3(0.0f, 0.0f, 0.0f);
+	m_startPoint = glm::vec3(0.0f, 0.0f, 0.0f);
 	m_vertexCount = 0;
 	m_advanceH = new globjects::Buffer;
 	m_advanceW = new globjects::Buffer;
@@ -295,15 +296,16 @@ glannotations::QuadStrip::QuadStrip(std::shared_ptr<globjects::Texture> texture,
 	m_vao->enable(0);
 }
 
-void glannotations::QuadStrip::addQuad(texVec2_t texture_ll, texVec2_t texture_advance) {
+void glannotations::BendedQuadStrip::addQuad(texVec2_t texture_ll, texVec2_t texture_advance, glm::vec3 secantVec, glm::vec3 orthoVec) {
 	m_textureRanges.push_back(std::make_pair(texture_ll, texture_advance));
+	m_quadRanges.push_back(std::make_pair(secantVec, orthoVec));
 }
 
-void glannotations::QuadStrip::clearQuads() {
+void glannotations::BendedQuadStrip::clearQuads() {
 	m_textureRanges.clear();
 }
 
-void glannotations::QuadStrip::draw() {
+void glannotations::BendedQuadStrip::draw() {
 	if (m_texture) {
 		gl::glActiveTexture(gl::GL_TEXTURE0);
 		m_texture->bind();
@@ -317,16 +319,22 @@ void glannotations::QuadStrip::draw() {
 	}
 }
 
-glm::vec2 glannotations::QuadStrip::getExtends() const {
-	glm::vec2 texAdvance(0.f, m_textureRanges.front().second.y * getQuadstripRowCount());
+glm::vec2 glannotations::BendedQuadStrip::getExtends() const {
+	glm::vec2 texAdvance(0.f, m_textureRanges.front().second.y);
 	for (auto textureCoords : m_textureRanges) {
 		texAdvance.x += textureCoords.second.x;
 	}
 	return texAdvance;
+	
+	return glm::vec2();
+	//todo: spline length?
+	//debug i use this, but i don't know why
+	//only used within my own class! I can do what I want!
 }
 
-void glannotations::QuadStrip::updateQuadRanges() {
+void glannotations::BendedQuadStrip::updateQuadPositions() {
 	// update texture VBO
+	//goal: set vertex position of quad, and its extends (secantVec, orthoVec)
 	std::vector<texVec2_t> textures, texAdvances;
 
 	for (auto textureCoords : m_textureRanges) {
@@ -339,20 +347,24 @@ void glannotations::QuadStrip::updateQuadRanges() {
 	std::vector<glm::vec3> vertexVector;
 	std::vector<glm::vec3> vertAdvanceW, vertAdvanceH;
 
-	glm::vec3 widthSpan = m_lr - m_ll;
-	widthSpan /= getExtends().x; // normalize
-	glm::vec3 heightSpan = m_ur - m_lr;
-	glm::vec3 currentLL = m_ll;
 
-	for (auto textureCoords : m_textureRanges) {
-		// we can calculate necessary width for current quad from texture widths because the scaling is done uniformly
-		vertexVector.push_back(currentLL);
-		auto currentWidthSpan = widthSpan;
-		currentWidthSpan *= textureCoords.second.x;
-		vertAdvanceW.push_back(currentWidthSpan);
-		vertAdvanceH.push_back(heightSpan);
+	glm::vec3 widthSpan = glm::vec3(); //todo:anne unused!
+	for (auto secantVec : m_quadRanges) {
+		// calculate full curve width for later usage
+		widthSpan += secantVec.first;
+	}
+	widthSpan /= getExtends().x; // normalize todo:anne is this right?
 
-		currentLL += currentWidthSpan;
+	glm::vec3 currentPoint = m_startPoint;
+
+	for (int i = 0; i < m_textureRanges.size(); i++) {
+		//just put the full text on the spline
+		vertexVector.push_back(currentPoint);
+
+		vertAdvanceW.push_back(m_quadRanges.at(i).first); //secantVec
+		vertAdvanceH.push_back(m_quadRanges.at(i).second); //orthoVec, should adapt with getUniformQuadHeight()?
+
+		currentPoint += m_quadRanges.at(i).first;
 	}
 
 	m_positions->setData(vertexVector, gl::GL_STATIC_DRAW);
@@ -387,48 +399,28 @@ void glannotations::QuadStrip::updateQuadRanges() {
 	m_vao->enable(4);
 }
 
-bool glannotations::QuadStrip::setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur) {
-	if (positionValid(ll, lr, ur)) {
-		m_ll = ll;
-		m_lr = lr;
-		m_ur = ur;
-		updateQuadRanges();
-		// finalize geom shader for internal rendering
-		m_program->setUniform("onNearplane", false);
-		return true;
-	}
-	return false;
+bool glannotations::BendedQuadStrip::setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur) {
+	m_startPoint = ll;
+	updateQuadPositions();
+	// finalize geom shader for internal rendering
+	m_program->setUniform("onNearplane", false);
+	return true;
 }
 
-bool glannotations::QuadStrip::setViewportPosition(glm::vec2 ll, glm::vec2 lr, glm::vec2 ur) {
-	if (setPosition(glm::vec3(ll, 0.f), glm::vec3(lr, 0.f), glm::vec3(ur, 0.f))) {
-		// finalize geom shader for viewport rendering
-		m_program->setUniform("onNearplane", true);
-		return true;
-	}
-	return false;
+bool glannotations::BendedQuadStrip::setViewportPosition(glm::vec2 ll, glm::vec2 lr, glm::vec2 ur) {
+	setPosition(glm::vec3(ll, 0.f), glm::vec3(lr, 0.f), glm::vec3(ur, 0.f));
+	// finalize geom shader for viewport rendering
+	m_program->setUniform("onNearplane", true);
+	return true;
 }
 
-float glannotations::QuadStrip::getUniformQuadHeight() {
+float glannotations::BendedQuadStrip::getUniformQuadHeight() {
 	return m_textureRanges.front().second.y; // returning random texture advance y
 }
 
-size_t glannotations::QuadStrip::getQuadstripRowCount() const {
-	// TODO: support multiple rows
-	return 1u;
-}
-
-float glannotations::QuadStrip::getQuadStripHeight() {
-	return getQuadstripRowCount() * getUniformQuadHeight();
-}
-
-float glannotations::QuadStrip::getQuadStripWidth() {
+float glannotations::BendedQuadStrip::getQuadStripWidth() {
 	// TODO: adapt when multiple row support is added
 	float resultWidth = 0.f;
 	std::for_each(m_textureRanges.begin(), m_textureRanges.end(), [&](textureRange_t elem){ resultWidth += elem.second.x; });
 	return resultWidth;
-}
-
-bool glannotations::QuadStrip::positionValid( const glm::vec3& ll, const glm::vec3& lr, const glm::vec3& ur ) const {
-	return ll != lr && ll != ur && lr != ur;
 }

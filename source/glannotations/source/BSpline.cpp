@@ -1,5 +1,70 @@
 #include <glannotations/BSpline.h>
-#include <iostream> //debug todo: remove
+
+#include <glm/gtx/vector_angle.hpp>
+#include <glm/gtx/rotate_vector.hpp>
+
+#include <iostream> //debug todo:anne remove
+
+glannotations::BSpline::BSpline(std::vector<glm::vec3> ctrlPoints, std::vector<float> knotValues) {
+	setControlPoints(ctrlPoints);
+	setKnotValues(knotValues);
+	calculateSplineDegree();
+	calculateArcLengths();
+}
+
+glannotations::BSpline::BSpline(std::vector<glm::vec3> ctrlPoints, unsigned short degree) {
+	setControlPoints(ctrlPoints);
+	m_degree = degree;
+	calculateUniformKnotValues();
+	calculateArcLengths();
+}
+
+glannotations::BSpline::BSpline(std::vector<glm::vec2> ctrlPoints, std::vector<float> knotValues, glm::vec3 planeNormal, glm::vec3 firstControlPointOnTargetPlane, glm::vec3 lastControlPointOnTargetPlane){
+	project2DContropointsToPlane(ctrlPoints, planeNormal, firstControlPointOnTargetPlane, lastControlPointOnTargetPlane);
+
+	setKnotValues(knotValues);
+	calculateSplineDegree();
+	calculateArcLengths();
+}
+glannotations::BSpline::BSpline(std::vector<glm::vec2> ctrlPoints, unsigned short degree, glm::vec3 planeNormal, glm::vec3 firstControlPointOnTargetPlane, glm::vec3 lastControlPointOnTargetPlane){
+	project2DContropointsToPlane(ctrlPoints, planeNormal, firstControlPointOnTargetPlane, lastControlPointOnTargetPlane);
+
+	m_degree = degree;
+	calculateUniformKnotValues();
+	calculateArcLengths();
+}
+
+void glannotations::BSpline::project2DContropointsToPlane(std::vector<glm::vec2> ctrlPoints, glm::vec3 planeNormal, glm::vec3 firstControlPointOnTargetPlane, glm::vec3 lastControlPointOnTargetPlane){
+	//todo:anne needs testing!
+	setDirty(true);
+	
+	std::vector<glm::vec2> controlPoints2D = ctrlPoints;
+	std::vector<glm::vec3> controlPoints3D;
+	
+	planeNormal = glm::normalize(planeNormal);
+
+	//todo:anne maybe necessary?
+	//glm::vec3 up = lastControlPointOnTargetPlane - firstControlPointOnTargetPlane;
+	//float rotationAngleZAxis = glm::angle(glm::vec3(0, 1, 0), up);
+	//we could use "up" for extends of spline, or something like that
+	
+	float rotationAngle = glm::angle(glm::vec3(0, 0, 1), planeNormal);
+	glm::vec3 rotationAxis = glm::cross(glm::vec3(0, 0, 1), planeNormal);
+
+	glm::vec3 translationVec = firstControlPointOnTargetPlane - glm::vec3(controlPoints2D.at(0), 0.f);
+
+	//todo:anne transform points based on given plane
+	for (int i = 0; i < controlPoints2D.size(); i++){
+		glm::vec3 projectedPoint = glm::vec3(controlPoints2D.at(i), 0.f);
+
+		projectedPoint = glm::rotate(projectedPoint, rotationAngle, rotationAxis);
+		projectedPoint += translationVec;
+		
+		controlPoints3D.push_back(projectedPoint);
+	}
+
+	m_ctrlPoints = controlPoints3D;
+}
 
 const std::vector<glm::vec3>& glannotations::BSpline::getControlPoints() {
 	return m_ctrlPoints;
@@ -13,26 +78,14 @@ unsigned short glannotations::BSpline::getSplineDegree() {
 	return m_degree;
 }
 
-void glannotations::BSpline::setKnotValues(std::initializer_list<float> knotValues) {
+void glannotations::BSpline::setKnotValues(std::vector<float> knotValues) {
 	setDirty(true);
 	m_knotValues = knotValues;
 }
 
-void glannotations::BSpline::setControlPoints(std::initializer_list<glm::vec3> ctrlPoints) {
+void glannotations::BSpline::setControlPoints(std::vector<glm::vec3> ctrlPoints) {
 	setDirty(true);
 	m_ctrlPoints = ctrlPoints;
-}
-
-glannotations::BSpline::BSpline(std::initializer_list<glm::vec3> ctrlPoints, std::initializer_list<float> knotValues) {
-	setControlPoints(ctrlPoints);
-	setKnotValues(knotValues);
-	calculateSplineDegree();
-}
-
-glannotations::BSpline::BSpline(std::initializer_list<glm::vec3> ctrlPoints, unsigned short degree) {
-	setControlPoints(ctrlPoints);
-	m_degree = degree;
-	calculateUniformKnotValues();
 }
 
 void glannotations::BSpline::calculateUniformKnotValues() {
@@ -42,15 +95,15 @@ void glannotations::BSpline::calculateUniformKnotValues() {
 	m_knotValues.insert(m_knotValues.end(), m_degree, 0.f);
 
 	unsigned ctrlCount = m_ctrlPoints.size();
-	float uniformDistance = 1.0f / ctrlCount;
+	//float uniformDistance = ctrlCount;
 	float current = 0.f;
 	// internal knots - uniform distribution
-	for (unsigned n = 0; n < ctrlCount; ++n) {
-		m_knotValues.push_back(current);
-		current += uniformDistance;
+	for (unsigned n = 1; n < ctrlCount-1; ++n) {
+		m_knotValues.push_back(n);
+		//current += uniformDistance;
 	}
 	// ending knot
-	m_knotValues.insert(m_knotValues.end(), m_degree, 1.f);
+	m_knotValues.insert(m_knotValues.end(), m_degree, ctrlCount-1);
 
 	setDirty(true);
 }
@@ -79,26 +132,24 @@ void glannotations::BSpline::calculateArcLengths() {
 	m_arcLengths.clear();
 	m_arcLengths.push_back(0.0);
 
-	for (int i = 1; i <= maxPoint; i++){
-		glm::vec3 p = retrieveCurvepointAt(i / maxPoint);
-
-		//calculate distance
-		float d = glm::distance(p, previousPoint);
-		//glm::vec3 temp = previousPoint - p;
-		//float distSqr = glm::dot(temp, temp);
-
-		sum += d;
-
+	for (int i = 1; i < maxPoint; i++){
+		glm::vec3 p = retrieveCurvepointAt((float)i / maxPoint);
+		sum += glm::distance(p, previousPoint);
 		previousPoint = p;
 		m_arcLengths.push_back(sum);
 	};
+
+	glm::vec3 p = retrieveCurvepointAt(1.f);
+	sum += glm::distance(p, previousPoint);
+	previousPoint = p;
+	m_arcLengths.push_back(sum);
 };
 
 glm::vec3 glannotations::BSpline::retrieveCurvepointAt(float t) {
 	if ( t < 0.0f || t > 1.0f)
 		std::cout << "debug: warning! 0 <= t <= 1";
 
-	float tempT = t * m_ctrlPoints.size() - 1;
+	float tempT = t * (m_ctrlPoints.size() - 1);
 	int i = std::floor(tempT) + m_degree - 1;
 	glm::vec3 point = deBoor(m_degree, m_degree, i, tempT, m_knotValues);
 
@@ -111,6 +162,39 @@ inline float clamp(float value, float min, float max){
 	return value < min ? min : (value > max ? max : value);
 };
 
+inline int binaryIndexOfLargestValueSmallerThanOrEqualTo(std::vector<float> container, float searchElement){
+	int minIndex = 0;
+	int maxIndex = container.size() - 1;
+	int currentIndex;
+	float currentElement;
+
+	while (minIndex <= maxIndex) {
+		currentIndex = std::floor((minIndex + maxIndex) / 2);
+		currentElement = container.at(currentIndex);
+
+		if (currentElement == searchElement)
+			return currentIndex;
+		if (currentElement >= searchElement &&
+			currentIndex == 0)
+			return currentIndex;
+		if (currentElement >= searchElement &&
+			(container.at(currentIndex - 1) < searchElement))
+			return currentIndex - 1;
+		if (currentElement <= searchElement &&
+			(currentIndex >= container.size() || container.at(currentIndex + 1) > searchElement))
+			return currentIndex;
+
+		if (currentElement < searchElement)
+			minIndex = currentIndex + 1;
+		else if (currentElement > searchElement)
+			maxIndex = currentIndex - 1;
+		else
+			return currentIndex;
+	}
+
+	return -1;
+};
+
 glm::vec3 glannotations::BSpline::deBoor(int k, int degree, int i, float t, std::vector<float> knots) {
 	if (k == 0) {
 		i = clamp(i, 0.0f, m_ctrlPoints.size() - 1);
@@ -119,8 +203,11 @@ glm::vec3 glannotations::BSpline::deBoor(int k, int degree, int i, float t, std:
 	else {
 		float alpha;
 		try {
-			alpha = (t - knots[i]) / (knots[i + degree + 1 - k] - knots[i]);
-		} catch (...) {
+			if (i + degree + 1 - k >= knots.size() || (knots[i + degree + 1 - k] - knots[i]) == 0)
+				alpha = 1.0f;
+			else
+				alpha = (t - knots[i]) / (knots[i + degree + 1 - k] - knots[i]);
+		} catch (...) { //this catch doesn't work, what kind of sorcery is this?
 			alpha = 1.0f;
 			std::cout << "debug: alpha problem";
 		}
@@ -129,52 +216,34 @@ glm::vec3 glannotations::BSpline::deBoor(int k, int degree, int i, float t, std:
 	}
 };
 
+float glannotations::BSpline::getTForU(float u){
+	if (u < 0 || u>1)
+		std::cout << "u out of range: " << u;
+	float t;
+	float targetArcLength = u * m_arcLengths.back();
+	float index = binaryIndexOfLargestValueSmallerThanOrEqualTo(m_arcLengths, targetArcLength);
+
+	if (m_arcLengths[index] == targetArcLength){
+		// if exact match, return t based on exact index
+		t = index / (m_arcLengths.size() - 1);
+	}
+	else{
+		// need to interpolate between two points
+		float lengthBefore = m_arcLengths[index];
+		float lengthAfter = m_arcLengths[index + 1];
+		float segmentLength = lengthAfter - lengthBefore;
+		float segmentFraction = (targetArcLength - lengthBefore) / segmentLength;
+		t = (index + segmentFraction) / (m_arcLengths.size() - 1);
+	}
+	if (t<0 || t>1)
+		std::cout << "t out of range: " << t;
+	return t;
+};
+
 glm::vec3 glannotations::BSpline::retrieveSecantVectorAt(float t, float nextT) {
-	glm::vec3 currentPoint = retrieveCurvepointAt(t);
-	glm::vec3 nextPoint = retrieveCurvepointAt(nextT);
+	glm::vec3 currentPoint = retrieveCurvepointAt(getTForU(t));
+	glm::vec3 nextPoint = retrieveCurvepointAt(getTForU(nextT));
 	glm::vec3 secantVector(nextPoint - currentPoint);
 
 	return secantVector;
-};
-
-glm::vec3 glannotations::BSpline::retrieveNormalizedOrthogonalVectorAt(float t, float nextT, enum GlyphOrientationOnSpline orientation) {
-	//will be useful for positioning, I suppose
-	
-	glm::vec3 secantVec = retrieveSecantVectorAt(t, nextT);
-
-	//todo debug : if glyphs are upside down, invert resulting normal!
-
-	if (m_ctrlPoints.size() < 2) {
-		std::cout << "debug: less than 2 controlpoints! It's not a curve.";
-		return glm::vec3(0.f, 0.f, 0.f);
-	}
-
-	//"curve plane": described by the vector(last_controlpoint, first_controlpoint) and secantVec
-	glm::vec3 v1 = (m_ctrlPoints.back() - m_ctrlPoints.front());
-	glm::vec3 normal = glm::cross(v1, secantVec);
-
-	glm::vec3 result = glm::equal(normal, glm::vec3(0, 0, 0));
-	if (result.x && result.y && result.z) {
-		std::cout << "debug: warning: secant vector equals vector(first_controlpoint, last_controlpoint) of curve!.";
-		return normal; //zero vector
-	}
-	
-	switch (orientation) {
-	case ORTHOGONAL_TO_PLANE:
-		//glyphs orthogonal to the curve plane
-		return glm::normalize(normal);
-		break;
-	case IN_SAME_PLANE:
-		//glyphs in the same plane as the curve
-		//use normal to rotate the secant vec
-		return glm::rotate(secantVec, glm::radians(90.0f), normal); //should still be normalized, right?
-		break;
-	default:
-		//CUSTOM_SECOND_PATH
-		//every glyph has another up-vector
-		//yeah, maybe another day...
-		std::cout << "debug: warning: CUSTOM_SECOND_PATH yet not implemented!";
-		return glm::vec3(0, 0, 0);
-		break;
-	}
 };

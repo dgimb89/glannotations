@@ -47,7 +47,12 @@ void glannotations::AbstractPrimitiveRenderer::drawSetupState(InternalState& sta
 }
 
 void glannotations::AbstractPrimitiveRenderer::drawSetupState(glannotations::SplineState& state) const {
-	throw std::logic_error("The method or operation is not implemented.");
+	if (state.isDirty()) {
+		//m_draweingPrimitive is BendedQuadStrip here!
+		m_drawingPrimitive->setPosition(state.getLL(), glm::vec3(), glm::vec3());
+		state.setDirty(false);
+	}
+	m_drawingPrimitive->draw();
 }
 
 glannotations::AbstractPrimitiveRenderer::AbstractPrimitiveRenderer(gl::GLuint globalMatricesBindingIndex) : AbstractRenderer(globalMatricesBindingIndex) {

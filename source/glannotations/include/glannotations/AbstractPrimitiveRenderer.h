@@ -3,6 +3,8 @@
 #include <globjects/base/ref_ptr.h>
 
 #include <glannotations/AbstractTexturedPrimitive.h>
+#include <glannotations/QuadStrip.h>
+#include <glannotations/BendedQuadStrip.h>
 #include <glannotations/AbstractRenderer.h>
 #include <glannotations/Styling.h>
 

@@ -1,33 +1,36 @@
 #pragma once
 
+#include <glannotations/SplineState.h>
 #include <glannotations/AbstractTexturedPrimitive.h>
 
 namespace glannotations {
-	class QuadStrip : public glannotations::AbstractTexturedPrimitive {
+	class BendedQuadStrip : public glannotations::AbstractTexturedPrimitive {
 	public:
 		typedef glm::vec2 texVec2_t;
 		typedef std::pair<texVec2_t, texVec2_t> textureRange_t;
-		QuadStrip(std::shared_ptr<globjects::Texture> texture, gl::GLuint matricesBindingIndex, bool isDistanceField);
+		typedef std::pair<glm::vec3, glm::vec3> QuadRange_t;
 
-		void addQuad(texVec2_t texture_ll, texVec2_t texture_advance);
+		BendedQuadStrip(std::shared_ptr<globjects::Texture> texture, gl::GLuint matricesBindingIndex, bool isDistanceField);
+
+		void addQuad(texVec2_t texture_ll, texVec2_t texture_advance, glm::vec3 secantVec, glm::vec3 orthoVec);
 		void clearQuads();
 		virtual glm::vec2 getExtends() const override;
 
+		virtual void draw();
+
 		float getUniformQuadHeight();
-		size_t getQuadstripRowCount() const;
-		float getQuadStripHeight();
 		float getQuadStripWidth();
 
-		virtual void draw();
 		virtual bool setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur) override;
 		virtual bool setViewportPosition(glm::vec2 ll, glm::vec2 lr, glm::vec2 ur) override;
 
 	protected:
-		void updateQuadRanges();
-		bool positionValid(const glm::vec3& ll, const glm::vec3& lr, const glm::vec3& ur) const;
+		void updateQuadPositions();
 
 		std::vector<textureRange_t> m_textureRanges;
-		glm::vec3 m_ll, m_ur, m_lr;
+		std::vector<QuadRange_t> m_quadRanges;
+		//glm::vec3 m_ll, m_ur, m_lr;
+		glm::vec3 m_startPoint;
 		unsigned m_vertexCount;
 
 		globjects::ref_ptr<globjects::Buffer> m_advanceH;

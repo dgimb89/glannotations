@@ -12,7 +12,8 @@ void glannotations::LabelReference::updatePositioning(InternalState& state) {
 }
 
 void glannotations::LabelReference::updatePositioning(SplineState& state) {
-	throw std::logic_error("The method or operation is not implemented.");
+	//throw std::logic_error("The method or operation is not implemented.");
+	//todo:anne what do I have to do here?
 }
 
 void glannotations::LabelReference::setupExternalReference(const InternalState& state) {
@@ -23,7 +24,11 @@ void glannotations::LabelReference::setupExternalReference(const InternalState& 
 }
 
 void glannotations::LabelReference::setupExternalReference(const SplineState& state) {
-	throw std::logic_error("The method or operation is not implemented.");
+	AbstractExternalReference::setupExternalReference(state);
+	m_annotationCenter = state.getLL();
+	m_width = 1.f;
+	m_height = 1.f;
+	//todo:anne put some meaningful values in here!
 }
 
 glannotations::LabelReference::LabelReference(glm::vec3 reference) : AbstractExternalReference(false) {
