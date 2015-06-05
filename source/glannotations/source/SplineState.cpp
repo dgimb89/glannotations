@@ -66,7 +66,7 @@ void glannotations::SplineState::updateSplineTop() {
 	
 	//"curve plane": described by the vector(last_controlpoint, first_controlpoint) and secantVec
 	glm::vec3 v1 = (m_splineBase->getControlPoints().back() - m_splineBase->getControlPoints().front());
-	glm::vec3 result = glm::equal(v1, glm::vec3(0, 0, 0));
+	glm::bvec3 result = glm::equal(v1, glm::vec3(0, 0, 0));
 	if (result.x && result.y && result.z) {
 		//todo:anne debug testing
 		//if firstControlpoint = lastControlpoint (because Circle), then try first and second controlpoint
@@ -85,7 +85,7 @@ void glannotations::SplineState::updateSplineTop() {
 
 		normal = glm::cross(v1, secantVec);
 
-		glm::vec3 result = glm::equal(normal, glm::vec3(0, 0, 0));
+		glm::bvec3 result = glm::equal(normal, glm::vec3(0, 0, 0));
 		if (result.x && result.y && result.z) {
 			std::cout << "debug: warning: secant vector equals vector(first_controlpoint, last_controlpoint) of curve!.";
 		}
