@@ -24,19 +24,19 @@
 #include <common/events.h>
 
 #include <glannotations/AnnotationGroup.h>
-#include <glannotations/RendererFactory.h>
+#include <glannotations/Renderer/RendererFactory.h>
 #include <glannotations/FontAnnotation.h>
 #include <glannotations/SVGAnnotation.h>
 #include <glannotations/PNGAnnotation.h>
-#include <glannotations/ViewportState.h>
-#include <glannotations/InternalState.h>
-#include <glannotations/SplineState.h>
-#include <glannotations/BoxReference.h>
-#include <glannotations/LabelReference.h>
-#include <glannotations/FlagReference.h>
-#include <glannotations/RectReference.h>
-#include <glannotations/Styles.h>
-#include <glannotations/BSpline.h>
+#include <glannotations/States/ViewportState.h>
+#include <glannotations/States/InternalState.h>
+#include <glannotations/States/SplineState.h>
+#include <glannotations/Externals/BoxReference.h>
+#include <glannotations/Externals/LabelReference.h>
+#include <glannotations/Externals/FlagReference.h>
+#include <glannotations/Externals/RectReference.h>
+#include <glannotations/Styles/Styles.h>
+#include <glannotations/Utility/BSpline.h>
 
 #include "building.h"
 
@@ -79,7 +79,7 @@ public:
 		gl::glEnable(gl::GL_BLEND);
 		gl::glBlendFunc(gl::GL_SRC_ALPHA, gl::GL_ONE_MINUS_SRC_ALPHA);
 
-        m_camera->setZNear(0.1);
+        m_camera->setZNear(0.1f);
 		m_camera->setZFar(1024.f);
 		m_camera->setCenter(vec3(0.f, 0.f, 5.f));
 		m_camera->setEye(vec3(-17.f, 12.f, -15.0f));
@@ -102,7 +102,7 @@ public:
 		m_building14 = new Building(2);
 
 		float color;
-		srand(time(NULL));
+		srand(static_cast<unsigned int>(time(NULL)));
 		color = ((rand() * 0.4f) / RAND_MAX) + 0.6f;
 		m_building->setPosition(glm::vec3(-1.f, -4.f, 1.f), glm::vec3(1.f, -3.f, -1.f));
 		m_building1->setPosition(glm::vec3(-1.f, -4.f, 5.f), glm::vec3(1.f, 4.f, 2.f));
@@ -125,7 +125,7 @@ public:
 
 
 		glm::vec4 buildingColor = glm::vec4(0.25f, 0.2f, 0.25f, 1.f);
-		srand(time(NULL));
+		srand(static_cast<unsigned int>(time(NULL)));
 		glm::vec4 temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
 		m_building->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
 		auto flagColor = buildingColor + temp;

@@ -6,15 +6,15 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 
-#include <glannotations/FlagReference.h>
-#include <glannotations/Rect.h>
+#include <glannotations/Externals/FlagReference.h>
+#include <glannotations/Renderer/Rect.h>
 #include <glannotations/AbstractAnnotation.h>
-#include <glannotations/SplineState.h>
-#include <glannotations/InternalState.h>
+#include <glannotations/States/SplineState.h>
+#include <glannotations/States/InternalState.h>
 #include <glannotations/Utility/Segment.h>
 #include <glannotations/Utility/Triangle.h>
 
-const float MAX_ROTATION_ANGLE = M_PI * 45.f / 180.f;
+const float MAX_ROTATION_ANGLE = static_cast<float>(M_PI * 45.0 / 180.0);
 const float ANTI_FLICKERING = 0.01f;
 
 void glannotations::FlagReference::updatePositioning(InternalState& state) {

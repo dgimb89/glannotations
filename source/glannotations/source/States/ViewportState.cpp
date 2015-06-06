@@ -1,7 +1,7 @@
-#include <glannotations/ViewportState.h>
-#include <glannotations/AbstractRenderer.h>
+#include <glannotations/States/ViewportState.h>
+#include <glannotations/Renderer/AbstractRenderer.h>
 #include <glannotations/AbstractAnnotation.h>
-#include <glannotations/StateInterpolation.h>
+#include <glannotations/States/StateInterpolation.h>
 
 glannotations::ViewportState::ViewportState(glm::vec2 llf, glm::vec2 urb) {
 	setExtends(llf, urb);

@@ -2,8 +2,8 @@
 
 #include <glm/glm.hpp>
 
-#include <glannotations/NVPRRenderer.h>
-#include <glannotations/Styling.h>
+#include <glannotations/Renderer/NVPRRenderer.h>
+#include <glannotations/Styles/Styling.h>
 
 namespace glannotations {
 	class FontAnnotation;

@@ -1,4 +1,4 @@
-#include <glannotations/DistanceFieldGeneration.h>
+#include <glannotations/Utility/DistanceFieldGeneration.h>
 #include <algorithm>
 
 // use fixed kernel distances - thanks pythagoras
@@ -24,11 +24,11 @@ globjects::ref_ptr<glannotations::PNGImage> glannotations::DistanceFieldGenerati
 
 	for (unsigned y = 0; y < scaledHeight; ++y){
 		for (unsigned x = 0; x < scaledWidth; ++x) {
-			for (unsigned c = 0; c < channels; ++c) {
+			for (unsigned short c = 0; c < channels; ++c) {
 				double xPart = (x * tx) - std::floor(x * tx);
 				double yPart = (y * ty) - std::floor(y * ty);
-				double R_1 = ((1.0 - xPart) * inImage.getImageValue(std::floor(x * tx), std::floor(y * ty), c)) + (xPart * inImage.getImageValue(std::ceil(x * tx), std::floor(y * ty), c));
-				double R_2 = ((1.0 - xPart) * inImage.getImageValue(std::floor(x * tx), std::ceil(y * ty), c)) + (xPart * inImage.getImageValue(std::ceil(x * tx), std::ceil(y * ty), c));
+				double R_1 = ((1.0 - xPart) * inImage.getImageValue(static_cast<long>(std::floor(x * tx)), static_cast<long>(std::floor(y * ty)), c)) + (xPart * inImage.getImageValue(static_cast<long>(std::ceil(x * tx)), static_cast<long>(std::floor(y * ty)), c));
+				double R_2 = ((1.0 - xPart) * inImage.getImageValue(static_cast<long>(std::floor(x * tx)), static_cast<long>(std::ceil(y * ty)), c)) + (xPart * inImage.getImageValue(static_cast<long>(std::ceil(x * tx)), static_cast<long>(std::ceil(y * ty)), c));
 
 				scaledResult->setImageValue(x, y, c, static_cast<glannotations::PNGImage::colorVal_t>((1.0 - yPart) * R_1 + (yPart * R_2)));
 			}
@@ -42,7 +42,7 @@ double cubicInterpolate(double p, double cur, double n1, double n2, double frac)
 	return cur + 0.5 * frac *(n1 - p + frac*(2.0*p - 5.0*cur + 4.0*n1 - n2 + frac*(3.0*(cur - n1) + n2 - p)));
 }
 
-globjects::ref_ptr<glannotations::PNGImage> glannotations::DistanceFieldGeneration::bicubicResize(const glannotations::PNGImage& inImage, unsigned scaledWidth, unsigned scaledHeight) {
+globjects::ref_ptr<glannotations::PNGImage> glannotations::DistanceFieldGeneration::bicubicResize(const glannotations::PNGImage& inImage, size_t scaledWidth, size_t scaledHeight) {
 	globjects::ref_ptr<glannotations::PNGImage> scaledResult = new glannotations::PNGImage(scaledWidth, scaledHeight, inImage.getNumComponents());
 
 	const double tx = double(inImage.getWidth()) / scaledWidth;
@@ -90,8 +90,8 @@ globjects::ref_ptr<glannotations::PNGImage> glannotations::DistanceFieldGenerati
 		}
 	}
 	// bottom-right to top-left
-	for (unsigned y = original.getHeight(); y > 0; --y) {
-		for (unsigned x = original.getWidth(); x > 0; --x) {
+	for (size_t y = original.getHeight(); y > 0; --y) {
+		for (size_t x = original.getWidth(); x > 0; --x) {
 			// apply kernel
 			double currentVal = std::abs(distances[(y - 1) * original.getWidth() + (x - 1)]);
 			if (currentVal == INFINITY) continue;
@@ -110,10 +110,10 @@ globjects::ref_ptr<glannotations::PNGImage> glannotations::DistanceFieldGenerati
 
 	// image has no colored pixel if any distance is still infinity
 	if (distances[0] != INFINITY) {
-		for (unsigned i = original.getHeight() * original.getWidth(); i > 0; --i) {
+		for (size_t i = original.getHeight() * original.getWidth(); i > 0; --i) {
 			maxDistance = std::max(maxDistance, std::abs(distances[i - 1]));
 		}
-		for (unsigned i = original.getHeight() * original.getWidth(); i > 0; --i) {
+		for (size_t i = original.getHeight() * original.getWidth(); i > 0; --i) {
 			distances[i - 1] /= maxDistance;
 		}
 	}

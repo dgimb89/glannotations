@@ -1,7 +1,7 @@
 #   define __STDC_LIMIT_MACROS
 
-#include <glannotations/TextureManager.h>
-#include <glannotations/PNGImage.h>
+#include <glannotations/Common/TextureManager.h>
+#include <glannotations/Common/PNGImage.h>
 
 #include <glbinding/gl/enum.h>
 
@@ -36,7 +36,7 @@ std::shared_ptr<globjects::Texture> glannotations::TextureManager::getTexture(st
 	texture->setParameter(gl::GL_TEXTURE_WRAP_R, gl::GL_CLAMP_TO_EDGE);
 	glannotations::PNGImage image(fileName);
 	gl::GLenum format = image.getNumComponents() == 1 ? gl::GL_RED : (image.getNumComponents() == 3 ? gl::GL_RGB : gl::GL_RGBA);
-	texture->image2D(0, format, image.getWidth(), image.getHeight(), 0, format, gl::GL_UNSIGNED_BYTE, image.getImage()->data);
+	texture->image2D(0, format, static_cast<gl::GLsizei>(image.getWidth()), static_cast<gl::GLsizei>(image.getHeight()), 0, format, gl::GL_UNSIGNED_BYTE, image.getImage()->data);
 	m_textures[fileName] = texture;
 	m_mutex.unlock();
 	return texture;

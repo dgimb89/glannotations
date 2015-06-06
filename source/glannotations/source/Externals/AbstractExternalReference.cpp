@@ -1,5 +1,5 @@
-#include <glannotations/AbstractExternalReference.h>
-#include <glannotations/AbstractRenderer.h>
+#include <glannotations/Externals/AbstractExternalReference.h>
+#include <glannotations/Renderer/AbstractRenderer.h>
 #include <stdexcept>
 
 void glannotations::AbstractExternalReference::setPositioningOnly(bool positioningOnly) {

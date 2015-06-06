@@ -2,7 +2,7 @@
 
 #include <glm/glm.hpp>
 
-#include <glannotations/ReferenceableState.h>
+#include <glannotations/States/ReferenceableState.h>
 #include <glannotations/glannotations_api.h>
 
 namespace glannotations {

@@ -2,7 +2,7 @@
 
 #include <globjects/base/ref_ptr.h>
 
-#include <glannotations/DirtyFlagObject.h>
+#include <glannotations/Common/DirtyFlagObject.h>
 
 namespace glannotations {
 

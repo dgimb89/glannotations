@@ -1,4 +1,4 @@
-#include <glannotations/ReferenceableState.h>
+#include <glannotations/States/ReferenceableState.h>
 
 void glannotations::ReferenceableState::setExternalReference(const globjects::ref_ptr<glannotations::AbstractExternalReference>& reference) {
 	setDirty(true);

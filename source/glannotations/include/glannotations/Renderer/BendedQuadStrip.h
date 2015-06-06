@@ -1,7 +1,7 @@
 #pragma once
 
-#include <glannotations/SplineState.h>
-#include <glannotations/AbstractTexturedPrimitive.h>
+#include <glannotations/States/SplineState.h>
+#include <glannotations/Renderer/AbstractTexturedPrimitive.h>
 
 namespace glannotations {
 	class BendedQuadStrip : public glannotations::AbstractTexturedPrimitive {
@@ -31,7 +31,7 @@ namespace glannotations {
 		std::vector<QuadRange_t> m_quadRanges;
 		//glm::vec3 m_ll, m_ur, m_lr;
 		glm::vec3 m_startPoint;
-		unsigned m_vertexCount;
+		size_t m_vertexCount;
 
 		globjects::ref_ptr<globjects::Buffer> m_advanceH;
 		globjects::ref_ptr<globjects::Buffer> m_advanceW; 

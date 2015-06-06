@@ -3,7 +3,7 @@
 #include <globjects/Texture.h>
 #include <memory>
 
-#include <glannotations/DrawingPrimitiveBase.h>
+#include <glannotations/Renderer/DrawingPrimitiveBase.h>
 
 namespace glannotations {
 	class AbstractTexturedPrimitive : public glannotations::DrawingPrimitiveBase {

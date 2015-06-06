@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glannotations/AbstractTexturedPrimitive.h>
+#include <glannotations/Renderer/AbstractTexturedPrimitive.h>
 
 namespace glannotations {
 	class TexturedQuad : public glannotations::AbstractTexturedPrimitive {

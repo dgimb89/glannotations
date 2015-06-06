@@ -1,6 +1,6 @@
 #include <typeinfo>
 
-#include <glannotations/Styling.h>
+#include <glannotations/Styles/Styling.h>
 
 std::string glannotations::Styling::getID() {
 	// some magic to demangle class name without name spaces

@@ -1,7 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 
-#include <glannotations/DirtyFlagObject.h>
+#include <glannotations/Common/DirtyFlagObject.h>
 #include <glannotations/glannotations_api.h>
 
 namespace glannotations {

@@ -1,6 +1,6 @@
 #include <limits>
 
-#include <glannotations/BoundingBox.h>
+#include <glannotations/Utility/BoundingBox.h>
 
 glannotations::BoundingBox::BoundingBox() {
 	m_llf = glm::vec3(std::numeric_limits<float>::max());

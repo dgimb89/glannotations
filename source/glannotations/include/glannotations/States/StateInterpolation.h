@@ -2,9 +2,9 @@
 
 #include <globjects/base/ref_ptr.h>
 
-#include <glannotations/InternalState.h>
-#include <glannotations/SplineState.h>
-#include <glannotations/ViewportState.h>
+#include <glannotations/States/InternalState.h>
+#include <glannotations/States/SplineState.h>
+#include <glannotations/States/ViewportState.h>
 
 namespace glannotations {
 	namespace Interpolation {

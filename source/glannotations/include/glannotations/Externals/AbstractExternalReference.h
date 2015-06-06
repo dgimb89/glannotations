@@ -2,8 +2,8 @@
 
 #include <globjects/base/ref_ptr.h>
 
-#include <glannotations/DirtyFlagObject.h>
-#include <glannotations/AbstractDrawingPrimitive.h>
+#include <glannotations/Common/DirtyFlagObject.h>
+#include <glannotations/Renderer/AbstractDrawingPrimitive.h>
 #include <glannotations/glannotations_api.h>
 
 namespace glannotations {

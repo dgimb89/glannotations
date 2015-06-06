@@ -1,7 +1,7 @@
 #pragma once
 #include <globjects/base/ref_ptr.h>
 
-#include <glannotations/AbstractPrimitiveRenderer.h>
+#include <glannotations/Renderer/AbstractPrimitiveRenderer.h>
 
 namespace glannotations {
 	class FontAnnotation;

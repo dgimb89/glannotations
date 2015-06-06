@@ -1,4 +1,4 @@
-#include <glannotations/BSpline.h>
+#include <glannotations/Utility/BSpline.h>
 
 #include <glm/gtx/vector_angle.hpp>
 #include <glm/gtx/rotate_vector.hpp>
@@ -92,24 +92,25 @@ void glannotations::BSpline::calculateUniformKnotValues() {
 	m_knotValues.clear();
 
 	// starting knot -- nonperiodic B-Spline
-	m_knotValues.insert(m_knotValues.end(), m_degree, 0.f);
-
-	unsigned ctrlCount = m_ctrlPoints.size();
+	m_knotValues.insert(m_knotValues.end(), 0.f);
+	// todo: this should be garantied
+	assert(m_ctrlPoints.size() > 0);
+	size_t ctrlCount = m_ctrlPoints.size() - 1;
 	//float uniformDistance = ctrlCount;
 	float current = 0.f;
 	// internal knots - uniform distribution
-	for (unsigned n = 1; n < ctrlCount-1; ++n) {
-		m_knotValues.push_back(n);
+	for (unsigned n = 1; n < ctrlCount; ++n) {
+		m_knotValues.push_back(static_cast<float>(n));
 		//current += uniformDistance;
 	}
 	// ending knot
-	m_knotValues.insert(m_knotValues.end(), m_degree, ctrlCount-1);
+	m_knotValues.insert(m_knotValues.end(), static_cast<float>(ctrlCount));
 
 	setDirty(true);
 }
 
 void glannotations::BSpline::calculateSplineDegree() {
-	m_degree = m_knotValues.size() - m_ctrlPoints.size() - 1;
+	m_degree = static_cast<unsigned short>(m_knotValues.size() - m_ctrlPoints.size() - 1);
 	setDirty(true);
 }
 
@@ -122,8 +123,8 @@ void glannotations::BSpline::calculateArcLengths() {
 	//UPDATE: the longer the curve, the higher numberOfSubdivisions needed
 	//& the longer an icicle, the more curve points given
 	// => the more curve points, the higher numberOfSubdivisions!
-	int numberOfDivisions = 10 * m_ctrlPoints.size();
-	int maxPoint = numberOfDivisions + 1;
+	size_t numberOfDivisions = 10 * m_ctrlPoints.size();
+	size_t maxPoint = numberOfDivisions + 1;
 
 	glm::vec3 previousPoint = retrieveCurvepointAt(0);
 
@@ -150,26 +151,21 @@ glm::vec3 glannotations::BSpline::retrieveCurvepointAt(float t) {
 		std::cout << "debug: warning! 0 <= t <= 1";
 
 	float tempT = t * (m_ctrlPoints.size() - 1);
-	int i = std::floor(tempT) + m_degree - 1;
+	int i = static_cast<int>(std::floor(tempT)) + m_degree - 1;
 	glm::vec3 point = deBoor(m_degree, m_degree, i, tempT, m_knotValues);
 
 	return point;
 };
 
-//not sure if the use of "inline" is correct here
-inline float clamp(float value, float min, float max){
-	//because there is no clamp in std
-	return value < min ? min : (value > max ? max : value);
-};
-
 inline int binaryIndexOfLargestValueSmallerThanOrEqualTo(std::vector<float> container, float searchElement){
 	int minIndex = 0;
-	int maxIndex = container.size() - 1;
+	assert(container.size() > 0);
+	size_t maxIndex = container.size() - 1;
 	int currentIndex;
 	float currentElement;
 
 	while (minIndex <= maxIndex) {
-		currentIndex = std::floor((minIndex + maxIndex) / 2);
+		currentIndex = static_cast<int>(std::floor((minIndex + maxIndex) / 2));
 		currentElement = container.at(currentIndex);
 
 		if (currentElement == searchElement)
@@ -197,7 +193,7 @@ inline int binaryIndexOfLargestValueSmallerThanOrEqualTo(std::vector<float> cont
 
 glm::vec3 glannotations::BSpline::deBoor(int k, int degree, int i, float t, std::vector<float> knots) {
 	if (k == 0) {
-		i = clamp(i, 0.0f, m_ctrlPoints.size() - 1);
+		i = clamp(i, 0, static_cast<int>(m_ctrlPoints.size() - 1));
 		return m_ctrlPoints[i];
 	}
 	else {
@@ -221,11 +217,11 @@ float glannotations::BSpline::getTForU(float u){
 		std::cout << "u out of range: " << u;
 	float t;
 	float targetArcLength = u * m_arcLengths.back();
-	float index = binaryIndexOfLargestValueSmallerThanOrEqualTo(m_arcLengths, targetArcLength);
+	int index = binaryIndexOfLargestValueSmallerThanOrEqualTo(m_arcLengths, targetArcLength);
 
 	if (m_arcLengths[index] == targetArcLength){
 		// if exact match, return t based on exact index
-		t = index / (m_arcLengths.size() - 1);
+		t = static_cast<float>(index) / (m_arcLengths.size() - 1);
 	}
 	else{
 		// need to interpolate between two points

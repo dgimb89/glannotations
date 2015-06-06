@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glannotations/AbstractExternalReference.h>
+#include <glannotations/Externals/AbstractExternalReference.h>
 
 namespace glannotations {
 	class GLANNOTATIONS_API RectReference : public glannotations::AbstractExternalReference {

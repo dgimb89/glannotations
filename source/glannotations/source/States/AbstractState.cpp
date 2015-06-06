@@ -1,8 +1,8 @@
-#include <glannotations/AbstractState.h>
-#include <glannotations/globals.h>
-#include <glannotations/ViewportState.h>
-#include <glannotations/InternalState.h>
-#include <glannotations/SplineState.h>
+#include <glannotations/States/AbstractState.h>
+#include <glannotations/Common/globals.h>
+#include <glannotations/States/ViewportState.h>
+#include <glannotations/States/InternalState.h>
+#include <glannotations/States/SplineState.h>
 
 void glannotations::AbstractState::setStyling(const globjects::ref_ptr<glannotations::Styling>& style) {
 	setDirty(true); 

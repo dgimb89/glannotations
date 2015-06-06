@@ -38,8 +38,8 @@
 #include <glannotations/FontAnnotation.h>
 #include <glannotations/PNGAnnotation.h>
 #include <glannotations/SVGAnnotation.h>
-#include <glannotations/ViewportState.h>
-#include <glannotations/InternalState.h>
+#include <glannotations/States/ViewportState.h>
+#include <glannotations/States/InternalState.h>
 #include <glannotations/Styles.h>
 
 using namespace glowindow;

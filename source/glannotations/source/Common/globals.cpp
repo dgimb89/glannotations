@@ -10,7 +10,7 @@
 #include <globjects/globjects.h>
 #include <globjects/Buffer.h>
 
-#include <glannotations/globals.h>
+#include <glannotations/Common/globals.h>
 
 
 // important! make sure that glbinding global objects are created BEFORE the matrizesBufferMap on global space

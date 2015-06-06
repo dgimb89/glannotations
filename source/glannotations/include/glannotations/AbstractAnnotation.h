@@ -4,12 +4,12 @@
 #include <memory>
 #include <globjects/base/ref_ptr.h>
 
-#include <glannotations/globals.h>
+#include <glannotations/Common/globals.h>
 #include <glannotations/glannotations_api.h>
-#include <glannotations/DirtyFlagObject.h>
-#include <glannotations/AbstractRenderer.h>
-#include <glannotations/RendererFactory.h>
-#include <glannotations/AbstractState.h>
+#include <glannotations/Common/DirtyFlagObject.h>
+#include <glannotations/Renderer/AbstractRenderer.h>
+#include <glannotations/Renderer/RendererFactory.h>
+#include <glannotations/States/AbstractState.h>
 
 namespace glannotations {
 	// forward declaration

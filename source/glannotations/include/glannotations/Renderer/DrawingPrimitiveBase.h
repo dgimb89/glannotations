@@ -5,7 +5,7 @@
 #include <globjects/VertexArray.h>
 #include <globjects/Buffer.h>
 
-#include <glannotations/AbstractDrawingPrimitive.h>
+#include <glannotations/Renderer/AbstractDrawingPrimitive.h>
 
 namespace glannotations {
 	class GLANNOTATIONS_API DrawingPrimitiveBase : public AbstractDrawingPrimitive {

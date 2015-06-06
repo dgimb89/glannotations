@@ -1,7 +1,7 @@
-#include <glannotations/InternalState.h>
-#include <glannotations/AbstractRenderer.h>
+#include <glannotations/States/InternalState.h>
+#include <glannotations/Renderer/AbstractRenderer.h>
 #include <glannotations/AbstractAnnotation.h>
-#include <glannotations/StateInterpolation.h>
+#include <glannotations/States/StateInterpolation.h>
 
 glannotations::InternalState::InternalState(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur) {
 	setExtends(ll, lr, ur);

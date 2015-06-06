@@ -4,7 +4,7 @@
 //#include <initializer_list>
 #include <glm/glm.hpp>
 
-#include <glannotations/DirtyFlagObject.h>
+#include <glannotations/Common/DirtyFlagObject.h>
 #include <glannotations/glannotations_api.h>
 
 namespace glannotations {
@@ -43,7 +43,7 @@ namespace glannotations {
 		void setKnotValues(std::vector<float> knotValues);
 		void calculateSplineDegree();
 
-	protected:		
+	protected:
 		void calculateUniformKnotValues();
 		void project2DContropointsToPlane(std::vector<glm::vec2> ctrlPoints, glm::vec3 planeNormal, glm::vec3 firstControlPointOnTargetPlane, glm::vec3 lastControlPointOnTargetPlane);
 
@@ -69,6 +69,12 @@ namespace glannotations {
 		*/
 		float getTForU(float u);
 
+		template <typename T>
+		T clamp(T val, T min, T max) {
+			return val < min ? min : (val > max ? max : val);
+		}
+
+	private:
 		std::vector<glm::vec3> m_ctrlPoints;
 		std::vector<float> m_knotValues;
 		unsigned short m_degree;

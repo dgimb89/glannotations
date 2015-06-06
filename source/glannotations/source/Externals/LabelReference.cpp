@@ -1,7 +1,7 @@
-#include <glannotations/LabelReference.h>
-#include <glannotations/InternalState.h>
-#include <glannotations/SplineState.h>
-#include <glannotations/globals.h>
+#include <glannotations/Externals/LabelReference.h>
+#include <glannotations/States/InternalState.h>
+#include <glannotations/States/SplineState.h>
+#include <glannotations/Common/globals.h>
 
 void glannotations::LabelReference::updatePositioning(InternalState& state) {
 	glm::vec3 upVector = glm::normalize(glannotations::getUp(getBindingIndex())) * m_height;

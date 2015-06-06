@@ -42,14 +42,14 @@
 #include <ExampleWindowEventHandler.h>
 
 #include <glannotations/AnnotationGroup.h>
-#include <glannotations/RendererFactory.h>
+#include <glannotations/Renderer/RendererFactory.h>
 #include <glannotations/FontAnnotation.h>
 #include <glannotations/SVGAnnotation.h>
 #include <glannotations/PNGAnnotation.h>
-#include <glannotations/ViewportState.h>
-#include <glannotations/InternalState.h>
-#include <glannotations/BoxReference.h>
-#include <glannotations/LabelReference.h>
+#include <glannotations/States/ViewportState.h>
+#include <glannotations/States/InternalState.h>
+#include <glannotations/Externals/BoxReference.h>
+#include <glannotations/Externals/LabelReference.h>
 #include <glannotations/Styles.h>
 
 #include "building.h"

@@ -2,9 +2,9 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <glannotations/AbstractAnnotation.h>
-#include <glannotations/ViewportState.h>
-#include <glannotations/InternalState.h>
-#include <glannotations/SplineState.h>
+#include <glannotations/States/ViewportState.h>
+#include <glannotations/States/InternalState.h>
+#include <glannotations/States/SplineState.h>
 #include <glannotations/Styles/ExternalColor.h>
 
 glannotations::AbstractAnnotation::AbstractAnnotation(const globjects::ref_ptr<glannotations::AbstractState>& state) {
@@ -72,7 +72,7 @@ bool glannotations::AbstractAnnotation::isOnNearplane() const {
 		getRenderState()->asViewportState();
 		return true;
 	}
-	catch (std::bad_cast& e) {
+	catch (std::bad_cast&) {
 		return false;
 	}
 }

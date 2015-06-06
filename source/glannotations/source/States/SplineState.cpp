@@ -1,7 +1,7 @@
-#include <glannotations/SplineState.h>
-#include <glannotations/AbstractRenderer.h>
+#include <glannotations/States/SplineState.h>
+#include <glannotations/Renderer/AbstractRenderer.h>
 #include <glannotations/AbstractAnnotation.h>
-#include <glannotations/StateInterpolation.h>
+#include <glannotations/States/StateInterpolation.h>
 
 #include <glm/gtx/rotate_vector.hpp>
 
@@ -62,7 +62,7 @@ void glannotations::SplineState::changeOrientation(std::shared_ptr<BSpline> spli
 void glannotations::SplineState::updateSplineTop() {
 	setDirty(true);
 
-	int baseCtrlPointSize = m_splineBase->getControlPoints().size() - 1;
+	size_t baseCtrlPointSize = m_splineBase->getControlPoints().size() - 1;
 	
 	//"curve plane": described by the vector(last_controlpoint, first_controlpoint) and secantVec
 	glm::vec3 v1 = (m_splineBase->getControlPoints().back() - m_splineBase->getControlPoints().front());

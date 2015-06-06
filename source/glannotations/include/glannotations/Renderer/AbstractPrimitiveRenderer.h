@@ -2,11 +2,11 @@
 
 #include <globjects/base/ref_ptr.h>
 
-#include <glannotations/AbstractTexturedPrimitive.h>
-#include <glannotations/QuadStrip.h>
-#include <glannotations/BendedQuadStrip.h>
-#include <glannotations/AbstractRenderer.h>
-#include <glannotations/Styling.h>
+#include <glannotations/Renderer/AbstractTexturedPrimitive.h>
+#include <glannotations/Renderer/QuadStrip.h>
+#include <glannotations/Renderer/BendedQuadStrip.h>
+#include <glannotations/Renderer/AbstractRenderer.h>
+#include <glannotations/Styles/Styling.h>
 
 namespace glannotations {
 	class AbstractPrimitiveRenderer : public AbstractRenderer {

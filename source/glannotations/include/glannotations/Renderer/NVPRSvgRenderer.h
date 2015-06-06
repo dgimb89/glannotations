@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glannotations/NVPRRenderer.h>
+#include <glannotations/Renderer/NVPRRenderer.h>
 
 namespace glannotations {
 	class SVGAnnotation;
@@ -18,6 +18,6 @@ namespace glannotations {
 		void drawPath() const;
 
 
-		unsigned m_width, m_height;
+		float m_width, m_height;
 	};
 }

@@ -1,11 +1,11 @@
-#include <glannotations/Rect.h>
+#include <glannotations/Renderer/Rect.h>
 
 #include <globjects/VertexAttributeBinding.h>
 #include <glbinding/gl/bitfield.h>
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/enum.h>
 #include <array>
-#include "ShaderSources.hpp"
+#include "../ShaderSources.hpp"
 
 /// -------------------- Shader ---------------------
 

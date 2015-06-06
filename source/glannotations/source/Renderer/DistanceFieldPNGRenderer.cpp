@@ -3,12 +3,12 @@
 #include <glbinding/gl/bitfield.h>
 #include <glbinding/gl/functions.h>
 
-#include <glannotations/DistanceFieldPNGRenderer.h>
-#include <glannotations/ViewportState.h>
-#include <glannotations/InternalState.h>
+#include <glannotations/Renderer/DistanceFieldPNGRenderer.h>
+#include <glannotations/States/ViewportState.h>
+#include <glannotations/States/InternalState.h>
 #include <glannotations/PNGAnnotation.h>
-#include <glannotations/TextureManager.h>
-#include <glannotations/QuadStrip.h>
+#include <glannotations/Common/TextureManager.h>
+#include <glannotations/Renderer/QuadStrip.h>
 
 void glannotations::DistanceFieldPNGRenderer::draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) {
 	if (annotation->isDirty()) {

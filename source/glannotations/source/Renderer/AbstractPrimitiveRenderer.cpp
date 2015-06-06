@@ -3,12 +3,12 @@
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/enum.h>
 
-#include <glannotations/AbstractPrimitiveRenderer.h>
+#include <glannotations/Renderer/AbstractPrimitiveRenderer.h>
 #include <glannotations/Styles/Outline.h>
 #include <glannotations/Styles/BumpMap.h>
-#include <glannotations/ViewportState.h>
-#include <glannotations/InternalState.h>
-#include <glannotations/SplineState.h>
+#include <glannotations/States/ViewportState.h>
+#include <glannotations/States/InternalState.h>
+#include <glannotations/States/SplineState.h>
 
 void glannotations::AbstractPrimitiveRenderer::setupOutline(const Styling* outline) {
 	if (outline == nullptr) return;

@@ -2,11 +2,11 @@
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/bitfield.h>
 
-#include <glannotations/NVPRSvgRenderer.h>
+#include <glannotations/Renderer/NVPRSvgRenderer.h>
 #include <glannotations/SVGAnnotation.h>
-#include <glannotations/ViewportState.h>
-#include <glannotations/SplineState.h>
-#include <glannotations/InternalState.h>
+#include <glannotations/States/ViewportState.h>
+#include <glannotations/States/SplineState.h>
+#include <glannotations/States/InternalState.h>
 #include <glannotations/Styles/Outline.h>
 
 #include <string.h>
@@ -75,8 +75,8 @@ glannotations::NVPRSvgRenderer::NVPRSvgRenderer(gl::GLuint globalMatricesBinding
 
 void glannotations::NVPRSvgRenderer::prepare(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) {
 	glannotations::SVGAnnotation* currentAnnotation = reinterpret_cast<glannotations::SVGAnnotation*>(annotation.get());
-	m_height = currentAnnotation->getHeight();
-	m_width = currentAnnotation->getWidth();
+	m_height = static_cast<float>(currentAnnotation->getHeight());
+	m_width = static_cast<float>(currentAnnotation->getWidth());
 	clearStencilBuffer();
 	initializeSVG(currentAnnotation->getPathString().c_str());
 	setupOutline(m_pathBase, annotation->getRenderState()->getStyling("Outline"));

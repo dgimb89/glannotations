@@ -3,8 +3,8 @@
 
 #include <globjects/base/StringTemplate.h>
 #include <globjects/base/StaticStringSource.h>
-#include <glannotations/DrawingPrimitiveBase.h>
-#include "ShaderSources.hpp"
+#include <glannotations/Renderer/DrawingPrimitiveBase.h>
+#include "../ShaderSources.hpp"
 #include <string.h>
 
 glannotations::DrawingPrimitiveBase::DrawingPrimitiveBase() {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glannotations/AbstractExternalReference.h>
+#include <glannotations/Externals/AbstractExternalReference.h>
 #include <glannotations/glannotations_api.h>
 
 namespace glannotations {

@@ -3,11 +3,11 @@
 #include <glbinding/gl/enum.h>
 #include <glbinding/gl/types.h>
 
-#include <glannotations/NVPRFontRenderer.h>
+#include <glannotations/Renderer/NVPRFontRenderer.h>
 #include <glannotations/FontAnnotation.h>
-#include <glannotations/ViewportState.h>
-#include <glannotations/InternalState.h>
-#include <glannotations/Styles.h>
+#include <glannotations/States/ViewportState.h>
+#include <glannotations/States/InternalState.h>
+#include <glannotations/Styles/Styles.h>
 #include "glannotations-version.h"
 
 #include <string.h>
@@ -129,7 +129,7 @@ void glannotations::NVPRFontRenderer::getTextStencelingDimensions(const char* te
 	gl::glGetPathSpacingNV(gl::GL_ACCUM_ADJACENT_PAIRS_NV,
 		(gl::GLsizei)messageLen, gl::GL_UNSIGNED_BYTE, m_currentText,
 		m_pathBase,
-		1.1, 1.0, gl::GL_TRANSLATE_2D_NV,
+		1.1f, 1.0f, gl::GL_TRANSLATE_2D_NV,
 		xtranslate + 2);
 
 	/* Total advance is accumulated spacing plus horizontal advance of

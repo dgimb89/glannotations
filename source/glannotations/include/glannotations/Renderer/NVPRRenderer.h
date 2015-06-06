@@ -2,8 +2,8 @@
 
 #include <glm/glm.hpp>
 
-#include <glannotations/AbstractRenderer.h>
-#include <glannotations/Styling.h>
+#include <glannotations/Renderer/AbstractRenderer.h>
+#include <glannotations/Styles/Styling.h>
 
 namespace glannotations {
 	class InternalState;

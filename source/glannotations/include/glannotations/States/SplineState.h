@@ -1,8 +1,8 @@
 #pragma once
 
-#include <glannotations/ReferenceableState.h>
-#include <glannotations/AbstractExternalReference.h>
-#include <glannotations/BSpline.h>
+#include <glannotations/States/ReferenceableState.h>
+#include <glannotations/Externals/AbstractExternalReference.h>
+#include <glannotations/Utility/BSpline.h>
 #include <glannotations/glannotations_api.h>
 
 namespace glannotations {

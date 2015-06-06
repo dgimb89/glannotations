@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include <glannotations/AbstractPrimitiveRenderer.h>
+#include <glannotations/Renderer/AbstractPrimitiveRenderer.h>
 
 namespace glannotations {
 	class DistanceFieldPNGRenderer : public AbstractPrimitiveRenderer {

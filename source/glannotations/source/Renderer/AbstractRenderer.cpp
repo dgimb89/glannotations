@@ -1,4 +1,4 @@
-#include <glannotations/AbstractRenderer.h>
+#include <glannotations/Renderer/AbstractRenderer.h>
 
 glannotations::AbstractRenderer::AbstractRenderer(unsigned int globalMatricesBindingIndex) : m_globalMatricesBindingIndex(globalMatricesBindingIndex) {
 }

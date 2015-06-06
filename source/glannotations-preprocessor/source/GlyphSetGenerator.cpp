@@ -3,7 +3,7 @@
 #include FT_FREETYPE_H
 
 #include <glannotations-preprocessor/GlyphSetGenerator.h>
-#include <glannotations/GlyphSetConfig.h>
+#include <glannotations/Utility/GlyphSetConfig.h>
 #include "glannotations-version.h"
 
 #define PT_SIZE 196

@@ -2,7 +2,7 @@
 
 #include <glm/glm.hpp>
 
-#include <glannotations/AbstractState.h>
+#include <glannotations/States/AbstractState.h>
 #include <glannotations/glannotations_api.h>
 
 namespace glannotations {

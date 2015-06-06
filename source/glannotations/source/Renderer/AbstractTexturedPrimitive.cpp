@@ -1,4 +1,4 @@
-#include <glannotations/AbstractTexturedPrimitive.h>
+#include <glannotations/Renderer/AbstractTexturedPrimitive.h>
 
 glannotations::AbstractTexturedPrimitive::AbstractTexturedPrimitive(std::shared_ptr<globjects::Texture> texture) {
 	m_style = 0;

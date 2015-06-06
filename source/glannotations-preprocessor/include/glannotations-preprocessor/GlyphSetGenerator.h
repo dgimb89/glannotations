@@ -4,7 +4,7 @@
 #include <string>
 #include <globjects/base/ref_ptr.h>
 
-#include <glannotations/PNGImage.h>
+#include <glannotations/Common/PNGImage.h>
 #include <glannotations-preprocessor/glannotations-preprocessor_api.h>
 
 namespace glannotations {

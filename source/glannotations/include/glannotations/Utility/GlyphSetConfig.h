@@ -5,7 +5,7 @@
 #include <vector>
 
 #include <glannotations/glannotations_api.h>
-#include <glannotations/DirtyFlagObject.h>
+#include <glannotations/Common/DirtyFlagObject.h>
 
 namespace glannotations {
 
@@ -20,7 +20,7 @@ namespace glannotations {
 		void serialize();
 
 		std::string getGlyphsetImageName() const;
-		unsigned short getNumGlyphs();
+		size_t getNumGlyphs();
 		void setStartGlyph(unsigned short startGlyph);
 		void setWhitespaceLength(float whitespaceLength);
 		float getWhitespaceLength() const;
@@ -28,7 +28,7 @@ namespace glannotations {
 		void setNormalizedGlyphConfigs(const std::vector<glannotations::GlyphSetConfig::GlyphConfig>& glyphConfigs);
 
 		/// normalizes given configs by dividing every glyph coordinates by maxWidth resp. maxHeight
-		void setGlyphConfigs(const std::vector<glannotations::GlyphSetConfig::GlyphConfig>& glyphConfigs, double maxWidth, double maxHeight);
+		void setGlyphConfigs(const std::vector<glannotations::GlyphSetConfig::GlyphConfig>& glyphConfigs, float maxWidth, float maxHeight);
 		const std::vector<glannotations::GlyphSetConfig::GlyphConfig>& getGlyphConfigs();
 		const glannotations::GlyphSetConfig::GlyphConfig& getGlyphConfig(unsigned short numGlyph);
 		const glannotations::GlyphSetConfig::GlyphConfig& getGlyphConfigForCharcode(unsigned short charCode);

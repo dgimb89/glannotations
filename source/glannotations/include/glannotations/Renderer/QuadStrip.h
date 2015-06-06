@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glannotations/AbstractTexturedPrimitive.h>
+#include <glannotations/Renderer/AbstractTexturedPrimitive.h>
 
 namespace glannotations {
 	class QuadStrip : public glannotations::AbstractTexturedPrimitive {
@@ -28,7 +28,7 @@ namespace glannotations {
 
 		std::vector<textureRange_t> m_textureRanges;
 		glm::vec3 m_ll, m_ur, m_lr;
-		unsigned m_vertexCount;
+		size_t m_vertexCount;
 
 		globjects::ref_ptr<globjects::Buffer> m_advanceH;
 		globjects::ref_ptr<globjects::Buffer> m_advanceW; 

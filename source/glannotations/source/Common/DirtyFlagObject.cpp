@@ -1,4 +1,4 @@
-#include <glannotations/DirtyFlagObject.h>
+#include <glannotations/Common/DirtyFlagObject.h>
 
 bool glannotations::DirtyFlagObject::isDirty() const {
 	return m_dirty;

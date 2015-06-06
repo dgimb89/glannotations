@@ -6,9 +6,9 @@
 #include <memory>
 #include <glm/glm.hpp>
 
-#include <glannotations/DirtyFlagObject.h>
-#include <glannotations/Styling.h>
-#include <glannotations/BoundingBox.h>
+#include <glannotations/Common/DirtyFlagObject.h>
+#include <glannotations/Styles/Styling.h>
+#include <glannotations/Utility/BoundingBox.h>
 #include <glannotations/glannotations_api.h>
 
 namespace glannotations {

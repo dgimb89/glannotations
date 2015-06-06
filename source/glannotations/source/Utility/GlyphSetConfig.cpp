@@ -7,7 +7,7 @@
 #include <rapidjson/stringbuffer.h>
 #include <rapidjson/prettywriter.h>
 
-#include <glannotations/GlyphSetConfig.h>
+#include <glannotations/Utility/GlyphSetConfig.h>
 #include "glannotations-version.h"
 
 #define GLYPH_CONFIG "glyphconfig.json"
@@ -25,14 +25,14 @@ glannotations::GlyphSetConfig::GlyphSetConfig(std::string fontFileName) {
 		const rapidjson::Value& fontObject = document[fontFileName.c_str()];
 
 		m_startGlyph = fontObject["startGlyph"].GetUint();
-		m_whitespaceLength = fontObject["whitespaceLength"].GetDouble();
+		m_whitespaceLength = static_cast<float>(fontObject["whitespaceLength"].GetDouble());
 		const rapidjson::Value& glyphConfigs = fontObject["glyphs"];
 		for (rapidjson::SizeType i = 0; i < glyphConfigs.Size(); ++i) {
 			m_glyphConfigs.push_back(	glannotations::GlyphSetConfig::GlyphConfig(
-											glyphConfigs[i]["llf_x"].GetDouble(),
-											glyphConfigs[i]["llf_y"].GetDouble(),
-											glyphConfigs[i]["advance_x"].GetDouble(),
-											glyphConfigs[i]["advance_y"].GetDouble()));
+											static_cast<float>(glyphConfigs[i]["llf_x"].GetDouble()),
+											static_cast<float>(glyphConfigs[i]["llf_y"].GetDouble()),
+											static_cast<float>(glyphConfigs[i]["advance_x"].GetDouble()),
+											static_cast<float>(glyphConfigs[i]["advance_y"].GetDouble())));
 		}
 		setDirty(false);
 	}
@@ -102,7 +102,7 @@ std::string glannotations::GlyphSetConfig::getFileContent() {
 	return buffer.str();
 }
 
-unsigned short glannotations::GlyphSetConfig::getNumGlyphs() {
+size_t glannotations::GlyphSetConfig::getNumGlyphs() {
 	return m_glyphConfigs.size();
 }
 
@@ -128,7 +128,7 @@ const glannotations::GlyphSetConfig::GlyphConfig& glannotations::GlyphSetConfig:
 	return m_glyphConfigs.at(numGlyph);
 }
 
-void glannotations::GlyphSetConfig::setGlyphConfigs(const std::vector<GlyphConfig>& glyphConfigs, double maxWidth, double maxHeight) {
+void glannotations::GlyphSetConfig::setGlyphConfigs(const std::vector<glannotations::GlyphSetConfig::GlyphConfig>& glyphConfigs, float maxWidth, float maxHeight) {
 	setDirty(true);
 	setNormalizedGlyphConfigs(glyphConfigs);
 	for (auto& glyphConfig : m_glyphConfigs) {

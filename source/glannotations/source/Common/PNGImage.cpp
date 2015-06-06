@@ -2,8 +2,8 @@
 #include <png.h>
 #include <algorithm>
 
-#include <glannotations/PNGImage.h>
-#include <glannotations/DistanceFieldGeneration.h>
+#include <glannotations/Common/PNGImage.h>
+#include <glannotations/Utility/DistanceFieldGeneration.h>
 #include "glannotations-version.h"
 
 // internal data wrapper
@@ -153,7 +153,7 @@ bool glannotations::PNGImage::saveDistanceField(std::string pngFileName) const {
 	/* write header */
 	if (setjmp(png_jmpbuf(png_ptr))) return false;
 
-	png_set_IHDR(png_ptr, info_ptr, m_width, m_height,
+	png_set_IHDR(png_ptr, info_ptr, static_cast<png_uint_32>(m_width), static_cast<png_uint_32>(m_height),
 		sizeof(colorVal_t)*8, PNG_COLOR_TYPE_GRAY, PNG_INTERLACE_NONE,
 		PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
 
@@ -182,10 +182,10 @@ bool glannotations::PNGImage::saveDistanceField(std::string pngFileName) const {
 
 bool glannotations::PNGImage::isColored(size_t x, size_t y) const {
 	if (m_channels > 3)
-		return getImageValue(x, y, 3) == 255u;
+		return getImageValue(static_cast<signed long>(x), static_cast<signed long>(y), 3) == 255u;
 	size_t result = 0;
-	for (auto i = 0; i < m_channels; ++i) {
-		result += getImageValue(x, y, i);
+	for (unsigned short i = 0; i < m_channels; ++i) {
+		result += getImageValue(static_cast<signed long>(x), static_cast<signed long>(y), i);
 	}
 	return result != (m_channels * 255);
 }
@@ -238,7 +238,7 @@ void glannotations::PNGImage::scaleToHeight(size_t scaledHeight) {
 }
 
 void glannotations::PNGImage::scale(double scaleFactor) {
-	replaceImageWith(glannotations::DistanceFieldGeneration::bicubicResize(*this, getWidth() * scaleFactor, getHeight() * scaleFactor));
+	replaceImageWith(glannotations::DistanceFieldGeneration::bicubicResize(*this, static_cast<size_t>(std::ceil(getWidth() * scaleFactor)), static_cast<size_t>(std::ceil(getHeight() * scaleFactor))));
 }
 
 unsigned short glannotations::PNGImage::getComponentBitdepth() const {

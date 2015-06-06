@@ -3,10 +3,10 @@
 #include <stdexcept>
 #include <iostream>
 
-#include <glannotations/RectReference.h>
-#include <glannotations/SplineState.h>
-#include <glannotations/InternalState.h>
-#include <glannotations/globals.h>
+#include <glannotations/Externals/RectReference.h>
+#include <glannotations/States/SplineState.h>
+#include <glannotations/States/InternalState.h>
+#include <glannotations/Common/globals.h>
 #include <iostream>
 
 

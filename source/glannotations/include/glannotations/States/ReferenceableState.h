@@ -1,7 +1,7 @@
 #pragma once
 
-#include <glannotations/AbstractState.h>
-#include <glannotations/AbstractExternalReference.h>
+#include <glannotations/States/AbstractState.h>
+#include <glannotations/Externals/AbstractExternalReference.h>
 
 namespace glannotations {
 	class GLANNOTATIONS_API ReferenceableState : public glannotations::AbstractState {

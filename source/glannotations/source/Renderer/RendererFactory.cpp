@@ -1,20 +1,20 @@
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/enum.h>
 
-#include <glannotations/RendererFactory.h>
-#include <glannotations/globals.h>
+#include <glannotations/Renderer/RendererFactory.h>
+#include <glannotations/Common/globals.h>
 #include <glannotations/SVGAnnotation.h>
 #include <glannotations/PNGAnnotation.h>
 #include <glannotations/FontAnnotation.h>
-#include <glannotations/DistanceFieldFontRenderer.h>
-#include <glannotations/DistanceFieldPNGRenderer.h>
+#include <glannotations/Renderer/DistanceFieldFontRenderer.h>
+#include <glannotations/Renderer/DistanceFieldPNGRenderer.h>
 #include "glannotations-version.h"
 
 #include <string.h>
 
 #ifdef OPTION_USE_NVPR
-	#include <glannotations/NVPRFontRenderer.h>
-	#include <glannotations/NVPRSvgRenderer.h>
+	#include <glannotations/Renderer/NVPRFontRenderer.h>
+	#include <glannotations/Renderer/NVPRSvgRenderer.h>
 #endif
 
 bool glannotations::RendererFactory::isExtensionSupported(const char *extension) {

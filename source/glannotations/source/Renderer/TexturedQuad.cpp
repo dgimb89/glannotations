@@ -1,4 +1,4 @@
-#include <glannotations/TexturedQuad.h>
+#include <glannotations/Renderer/TexturedQuad.h>
 #include <globjects/VertexAttributeBinding.h>
 
 

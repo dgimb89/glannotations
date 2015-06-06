@@ -4,10 +4,10 @@
 #include <glbinding/gl/bitfield.h>
 #include <glbinding/gl/enum.h>
 
-#include <glannotations/NVPRRenderer.h>
+#include <glannotations/Renderer/NVPRRenderer.h>
 #include <glannotations/AbstractAnnotation.h>
 #include <glannotations/Styles/Outline.h>
-#include <glannotations/InternalState.h>
+#include <glannotations/States/InternalState.h>
 
 void glannotations::NVPRRenderer::draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) {
 	// enable stencil test as needed by nvpr

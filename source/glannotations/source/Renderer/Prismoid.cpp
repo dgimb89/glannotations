@@ -1,10 +1,10 @@
-#include <glannotations/Prismoid.h>
+#include <glannotations/Renderer/Prismoid.h>
 
 #include <glbinding/gl/bitfield.h>
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/enum.h>
 #include <globjects/VertexAttributeBinding.h>
-#include "ShaderSources.hpp"
+#include "../ShaderSources.hpp"
 
 static const char* geomShader = R"(
 				#version 330

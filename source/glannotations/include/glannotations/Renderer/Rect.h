@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glannotations/DrawingPrimitiveBase.h>
+#include <glannotations/Renderer/DrawingPrimitiveBase.h>
 
 namespace glannotations {
 	class GLANNOTATIONS_API Rect : public glannotations::DrawingPrimitiveBase {

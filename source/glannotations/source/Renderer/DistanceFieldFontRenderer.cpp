@@ -3,14 +3,14 @@
 #include <glbinding/gl/bitfield.h>
 #include <glbinding/gl/functions.h>
 
-#include <glannotations/DistanceFieldFontRenderer.h>
-#include <glannotations/ViewportState.h>
-#include <glannotations/InternalState.h>
+#include <glannotations/Renderer/DistanceFieldFontRenderer.h>
+#include <glannotations/States/ViewportState.h>
+#include <glannotations/States/InternalState.h>
 #include <glannotations/FontAnnotation.h>
-#include <glannotations/TextureManager.h>
-#include <glannotations/QuadStrip.h>
-#include <glannotations/BendedQuadStrip.h> //todo:anne optimize includes?
-#include <glannotations/GlyphSetConfig.h>
+#include <glannotations/Common/TextureManager.h>
+#include <glannotations/Renderer/QuadStrip.h>
+#include <glannotations/Renderer/BendedQuadStrip.h> //todo:anne optimize includes?
+#include <glannotations/Utility/GlyphSetConfig.h>
 
 void glannotations::DistanceFieldFontRenderer::draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) {
 	if (annotation->isDirty()) {

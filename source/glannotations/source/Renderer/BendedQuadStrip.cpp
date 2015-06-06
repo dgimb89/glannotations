@@ -1,5 +1,5 @@
-#include <glannotations/BendedQuadStrip.h>
-#include "ShaderSources.hpp"
+#include <glannotations/Renderer/BendedQuadStrip.h>
+#include "../ShaderSources.hpp"
 
 #include <glbinding/gl/functions.h>
 #include <glbinding/gl/enum.h>
@@ -311,7 +311,7 @@ void glannotations::BendedQuadStrip::draw() {
 		m_texture->bind();
 	}
 	m_program->use();
-	m_vao->drawArrays(gl::GL_POINTS, 0, m_vertexCount);
+	m_vao->drawArrays(gl::GL_POINTS, 0, static_cast<gl::GLsizei>(m_vertexCount));
 	m_program->release();
 
 	if (m_texture) {

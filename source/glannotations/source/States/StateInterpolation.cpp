@@ -1,4 +1,4 @@
-#include <glannotations/StateInterpolation.h>
+#include <glannotations/States/StateInterpolation.h>
 
 const globjects::ref_ptr<glannotations::AbstractState> glannotations::Interpolation::interpolate(const InternalState& first, const InternalState& second, float mix) {
 	return nullptr;
