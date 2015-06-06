@@ -67,63 +67,58 @@ set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(api_includes
     ${include_path}/glannotations_api.h
-	${include_path}/globals.h
+    ${include_path}/AbstractAnnotation.h
+    ${include_path}/AnnotationGroup.h
+    ${include_path}/FontAnnotation.h
+    ${include_path}/PNGAnnotation.h
+    ${include_path}/SVGAnnotation.h
 
-	${include_path}/DirtyFlagObject.h
-	${include_path}/GlyphSetConfig.h
+    ${include_path}/Common/DirtyFlagObject.h
+	${include_path}/Common/globals.h
+    ${include_path}/Common/GLRawFile.h
+    ${include_path}/Common/PNGImage.h
+    ${include_path}/Common/TextureManager.h
 
-	${include_path}/AnnotationGroup.h
-	${include_path}/AbstractAnnotation.h
-	${include_path}/FontAnnotation.h
-	${include_path}/SVGAnnotation.h
-	${include_path}/PNGAnnotation.h
+    ${include_path}/Externals/AbstractExternalReference.h
+    ${include_path}/Externals/BoxReference.h
+    ${include_path}/Externals/FlagReference.h
+    ${include_path}/Externals/LabelReference.h
+    ${include_path}/Externals/RectReference.h
 
-	${include_path}/Styling.h
-	${include_path}/Styles.h
-	${include_path}/Styles/Outline.h
-	${include_path}/Styles/BumpMap.h
-	${include_path}/Styles/ExternalColor.h
+    ${include_path}/Renderer/AbstractDrawingPrimitive.h
+    ${include_path}/Renderer/AbstractPrimitiveRenderer.h
+    ${include_path}/Renderer/AbstractRenderer.h
+    ${include_path}/Renderer/AbstractTexturedPrimitive.h
+    ${include_path}/Renderer/BendedQuadStrip.h
+    ${include_path}/Renderer/Box.h
+    ${include_path}/Renderer/DistanceFieldFontRenderer.h
+    ${include_path}/Renderer/DistanceFieldPNGRenderer.h
+    ${include_path}/Renderer/DrawingPrimitiveBase.h
+    ${include_path}/Renderer/NVPRFontRenderer.h
+    ${include_path}/Renderer/NVPRRenderer.h
+    ${include_path}/Renderer/NVPRSvgRenderer.h
+    ${include_path}/Renderer/Prismoid.h
+    ${include_path}/Renderer/QuadStrip.h
+    ${include_path}/Renderer/Rect.h
+    ${include_path}/Renderer/RendererFactory.h
 
-	${include_path}/TextureManager.h
-	${include_path}/RendererFactory.h
-	${include_path}/AbstractRenderer.h
+    ${include_path}/States/AbstractState.h
+    ${include_path}/States/InternalState.h
+    ${include_path}/States/ReferenceableState.h
+    ${include_path}/States/SplineState.h
+    ${include_path}/States/StateInterpolation.h
+    ${include_path}/States/ViewportState.h
 
-	${include_path}/NVPRRenderer.h
-	${include_path}/NVPRFontRenderer.h
-	${include_path}/NVPRSvgRenderer.h
+    ${include_path}/Styles/BumpMap.h
+    ${include_path}/Styles/ExternalColor.h
+    ${include_path}/Styles/Outline.h
+    ${include_path}/Styles/Styles.h
+	${include_path}/Styles/Styling.h
 
-	${include_path}/PNGImage.h
-	${include_path}/GLRawFile.h
-	${include_path}/AbstractPrimitiveRenderer.h
-	${include_path}/DistanceFieldGeneration.h
-	${include_path}/DistanceFieldPNGRenderer.h
-	${include_path}/DistanceFieldFontRenderer.h
-
-	${include_path}/AbstractState.h
-	${include_path}/ReferenceableState.h
-	${include_path}/ViewportState.h
-	${include_path}/InternalState.h
-	${include_path}/SplineState.h
-	${include_path}/BSpline.h
-	${include_path}/StateInterpolation.h
-
-	${include_path}/AbstractExternalReference.h
-	${include_path}/BoxReference.h
-	${include_path}/FlagReference.h
-	${include_path}/RectReference.h
-	${include_path}/LabelReference.h
-	
-	${include_path}/AbstractDrawingPrimitive.h
-	${include_path}/DrawingPrimitiveBase.h
-	${include_path}/Prismoid.h
-	${include_path}/Box.h
-	${include_path}/Rect.h
-	${include_path}/AbstractTexturedPrimitive.h
-	${include_path}/QuadStrip.h
-	${include_path}/BendedQuadStrip.h
-
-	${include_path}/BoundingBox.h
-
+    ${include_path}/Utility/BoundingBox.h
+    ${include_path}/Utility/BSpline.h
+    ${include_path}/Utility/DistanceFieldGeneration.h
+    ${include_path}/Utility/GlyphSetConfig.h
 	${include_path}/Utility/Utility.h
 	${include_path}/Utility/Segment.h
 	${include_path}/Utility/Triangle.h
@@ -131,67 +126,61 @@ set(api_includes
 )
 
 set(sources
-	${source_path}/globals.cpp
+    ${source_path}/AbstractAnnotation.cpp
+    ${source_path}/AnnotationGroup.cpp
+    ${source_path}/FontAnnotation.cpp
+    ${source_path}/PNGAnnotation.cpp
+    ${source_path}/ShaderSources.hpp
+    ${source_path}/SVGAnnotation.cpp
 
-	${source_path}/DirtyFlagObject.cpp
-	${source_path}/GlyphSetConfig.cpp
+    ${source_path}/Common/DirtyFlagObject.cpp
+    ${source_path}/Common/globals.cpp
+    ${source_path}/Common/GLRawFile.cpp
+    ${source_path}/Common/PNGImage.cpp
+    ${source_path}/Common/TextureManager.cpp
 
-	${source_path}/AnnotationGroup.cpp
-	${source_path}/AbstractAnnotation.cpp
-	${source_path}/FontAnnotation.cpp
-	${source_path}/SVGAnnotation.cpp
-	${source_path}/PNGAnnotation.cpp
+    ${source_path}/Externals/AbstractExternalReference.cpp
+    ${source_path}/Externals/BoxReference.cpp
+    ${source_path}/Externals/FlagReference.cpp
+    ${source_path}/Externals/LabelReference.cpp
+    ${source_path}/Externals/RectReference.cpp
 
-	${source_path}/Styling.cpp
-	${source_path}/Styles/Outline.cpp
-	${source_path}/Styles/BumpMap.cpp
-	${source_path}/Styles/ExternalColor.cpp
+    ${source_path}/Renderer/AbstractPrimitiveRenderer.cpp
+    ${source_path}/Renderer/AbstractRenderer.cpp
+    ${source_path}/Renderer/AbstractTexturedPrimitive.cpp
+    ${source_path}/Renderer/BendedQuadStrip.cpp
+    ${source_path}/Renderer/Box.cpp
+    ${source_path}/Renderer/DistanceFieldFontRenderer.cpp
+    ${source_path}/Renderer/DistanceFieldPNGRenderer.cpp
+    ${source_path}/Renderer/DrawingPrimitiveBase.cpp
+    ${source_path}/Renderer/NVPRFontRenderer.cpp
+    ${source_path}/Renderer/NVPRRenderer.cpp
+    ${source_path}/Renderer/NVPRSvgRenderer.cpp
+    ${source_path}/Renderer/Prismoid.cpp
+    ${source_path}/Renderer/QuadStrip.cpp
+    ${source_path}/Renderer/Rect.cpp
+    ${source_path}/Renderer/RendererFactory.cpp
 
-	${source_path}/TextureManager.cpp
-	${source_path}/RendererFactory.cpp
-	${source_path}/AbstractRenderer.cpp
+    ${source_path}/States/AbstractState.cpp
+    ${source_path}/States/InternalState.cpp
+    ${source_path}/States/ReferenceableState.cpp
+    ${source_path}/States/SplineState.cpp
+    ${source_path}/States/StateInterpolation.cpp
+    ${source_path}/States/ViewportState.cpp
 
-	${source_path}/NVPRRenderer.cpp
-	${source_path}/NVPRFontRenderer.cpp
-	${source_path}/NVPRSvgRenderer.cpp
+    ${source_path}/Styles/BumpMap.cpp
+    ${source_path}/Styles/ExternalColor.cpp
+    ${source_path}/Styles/Outline.cpp
+    ${source_path}/Styles/Styling.cpp
 
-	${source_path}/PNGImage.cpp
-	${source_path}/GLRawFile.cpp
-	${source_path}/AbstractPrimitiveRenderer.cpp
-	${source_path}/DistanceFieldGeneration.cpp
-	${source_path}/DistanceFieldPNGRenderer.cpp	
-	${source_path}/DistanceFieldFontRenderer.cpp
-
-	${source_path}/AbstractState.cpp
-	${source_path}/ReferenceableState.cpp
-	${source_path}/ViewportState.cpp
-	${source_path}/InternalState.cpp
-	${source_path}/SplineState.cpp
-	${source_path}/BSpline.cpp
-	${source_path}/StateInterpolation.cpp
-
-	${source_path}/AbstractExternalReference.cpp
-	${source_path}/BoxReference.cpp
-	${source_path}/FlagReference.cpp
-	${source_path}/RectReference.cpp
-	${source_path}/LabelReference.cpp
-	
-	${source_path}/DrawingPrimitiveBase.cpp
-	${source_path}/Prismoid.cpp
-	${source_path}/Box.cpp
-	${source_path}/Rect.cpp
-	${source_path}/AbstractTexturedPrimitive.cpp
-	${source_path}/QuadStrip.cpp
-	${source_path}/BendedQuadStrip.cpp
-	
-	${source_path}/BoundingBox.cpp
-
-	${source_path}/Utility/Utility.cpp
-	${source_path}/Utility/Segment.cpp
-	${source_path}/Utility/Triangle.cpp
-	${source_path}/Utility/Plane.cpp
-
-	${source_path}/ShaderSources.hpp
+    ${source_path}/Utility/BoundingBox.cpp
+    ${source_path}/Utility/BSpline.cpp
+    ${source_path}/Utility/DistanceFieldGeneration.cpp
+    ${source_path}/Utility/GlyphSetConfig.cpp
+    ${source_path}/Utility/Utility.cpp
+    ${source_path}/Utility/Segment.cpp
+    ${source_path}/Utility/Triangle.cpp
+    ${source_path}/Utility/Plane.cpp
 )
 
 # Group source files
@@ -231,6 +220,8 @@ set_target_properties(${target}
 #
 
 # Library
+configure_file(${source_path}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+
 install(TARGETS ${target}
     RUNTIME DESTINATION ${INSTALL_BIN}
     LIBRARY DESTINATION ${INSTALL_SHARED}
