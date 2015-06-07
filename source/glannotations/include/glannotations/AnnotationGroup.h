@@ -2,7 +2,6 @@
 
 #include <vector>
 #include <mutex>
-#include <chrono>
 
 #include <glm/glm.hpp>
 #include <globjects/base/Referenced.h>
@@ -20,12 +19,27 @@ namespace glannotations {
 		void addAnnotation(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation);
 		size_t size() const;
 
+		/*!
+		 *	\brief		Initializes all the annotation renderer necessary for this AnnotationGroup. If not called explicitly, renderer will be setup on first draw call.
+		 */
 		void prepareRenderer() const;
+		/*!
+		 *	\brief		Prepares & draws all annotations of this AnnotationGroup.
+		 *	\returns	
+		 */
 		void draw() const;
-		void draw(std::chrono::duration<double> preparationLimit);
+		/*!
+		 *	\brief		Draws all the annotations, but will interrupt annotation preparation (e.g. positioning updates/interpolation) once the preparationLimit timeslot is exceeded.
+		 *				Annotations are prepared in round-robin fashion so processing of a annotation is guaranteed before a single other one is processed a second time.
+		 */
+		void draw(long long preparationInMicroseconds);
+
+	protected:
+		inline size_t ringBufferPosition(size_t i);
 
 	private:
 		std::mutex m_mutex;
 		std::vector< globjects::ref_ptr<glannotations::AbstractAnnotation> > m_annotations;
+		size_t m_processIndex = 0;
 	};
 }

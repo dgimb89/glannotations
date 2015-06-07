@@ -42,6 +42,7 @@ void glannotations::AbstractExternalReference::updateBindings(const glannotation
 	if (!isPositioningOnly()) {
 		m_externalPrimitive->setBindingIndex(getBindingIndex());
 	}
+	m_bindingIndexSet = true;
 }
 
 void glannotations::AbstractExternalReference::draw() {
@@ -62,4 +63,8 @@ void glannotations::AbstractExternalReference::setDirty(bool dirtyValue) const  
 void glannotations::AbstractExternalReference::setColor(glm::vec4 color) {
 	setDirty(true);
 	m_color = color;
+}
+
+bool glannotations::AbstractExternalReference::bindingIndexSet() const {
+	return m_bindingIndexSet;
 }

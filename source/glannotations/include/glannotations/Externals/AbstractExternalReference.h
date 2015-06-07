@@ -26,6 +26,7 @@ namespace glannotations {
 	protected:
 		void setPositioningOnly(bool positioningOnly);
 		void setBindingIndex(unsigned int bindingIndex);
+		bool bindingIndexSet() const;
 		unsigned int getBindingIndex() const;
 
 		virtual void draw();
@@ -39,6 +40,7 @@ namespace glannotations {
 
 		bool m_positioningOnly;
 		unsigned int m_bindingIndex;
+		bool m_bindingIndexSet = false;
 		globjects::ref_ptr<glannotations::AbstractDrawingPrimitive> m_externalPrimitive;
 		glm::vec4 m_color = glm::vec4(1.f, 0.f, 0.f, .35f);
 

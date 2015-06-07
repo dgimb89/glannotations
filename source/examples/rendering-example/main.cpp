@@ -263,7 +263,7 @@ public:
 		m_building13->draw();
 		m_building14->draw();
 
-		m_annotations.draw();
+		m_annotations.draw(500);
     }
 
     virtual void keyPressEvent(KeyEvent & event) override
