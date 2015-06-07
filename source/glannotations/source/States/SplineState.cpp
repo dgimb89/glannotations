@@ -207,3 +207,8 @@ glm::vec3 glannotations::SplineState::retrieveConnectingVectorAt(float t) {
 glm::vec3 glannotations::SplineState::retrieveSecantVectorAt(float t, float nextT) {
 	return m_splineBase->retrieveSecantVectorAt(t, nextT);
 };
+
+void glannotations::SplineState::prepare() {
+	updatePositioning(*this);
+	AbstractState::prepare();
+}

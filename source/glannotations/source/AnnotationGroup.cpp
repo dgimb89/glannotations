@@ -11,8 +11,13 @@ void glannotations::AnnotationGroup::addAnnotation(const globjects::ref_ptr<glan
 
 void glannotations::AnnotationGroup::draw() const {
 	for (const auto& annotation : m_annotations) {
-			annotation->draw();
+		annotation->draw();
+		annotation->prepareDraw();
 	}
+}
+
+void glannotations::AnnotationGroup::draw(std::chrono::duration<double> preparationLimit) {
+	// todo
 }
 
 void glannotations::AnnotationGroup::clear() {
@@ -22,15 +27,14 @@ void glannotations::AnnotationGroup::clear() {
 }
 
 glannotations::AnnotationGroup::~AnnotationGroup() {
-
 }
 
 size_t glannotations::AnnotationGroup::size() const {
 	return m_annotations.size();
 }
 
-void glannotations::AnnotationGroup::prepare() const {
+void glannotations::AnnotationGroup::prepareRenderer() const {
 	for (auto& annotation : m_annotations) {
-		annotation->prepare();
+		annotation->prepareRenderer();
 	}
 }

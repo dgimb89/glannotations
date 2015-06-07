@@ -36,6 +36,8 @@ namespace glannotations {
 		virtual globjects::ref_ptr<glannotations::AbstractState> clone() const;
 		virtual void setExternalReference(const globjects::ref_ptr<glannotations::AbstractExternalReference>& reference) override;
 
+		virtual void prepare() override;
+
 	protected:
 		virtual void draw(const AbstractRenderer& renderer) override;
 
@@ -44,6 +46,7 @@ namespace glannotations {
 		virtual globjects::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix) override;
 
 		virtual void updateExtends(glm::vec2 sourceExtends) override;
+
 
 	private:
 		glm::vec3 m_ll, m_ur, m_lr;

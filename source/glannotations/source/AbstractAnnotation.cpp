@@ -11,10 +11,6 @@ glannotations::AbstractAnnotation::AbstractAnnotation(const globjects::ref_ptr<g
 	setState(state);
 }
 
-void glannotations::AbstractAnnotation::prepare() {
-	m_renderer->prepare(this);
-}
-
 void glannotations::AbstractAnnotation::draw() {
 	m_renderer->draw(this);
 }
@@ -79,4 +75,14 @@ bool glannotations::AbstractAnnotation::isOnNearplane() const {
 
 glannotations::AbstractAnnotation::~AbstractAnnotation() {
 
+}
+
+void glannotations::AbstractAnnotation::prepareRenderer() {
+	if (isDirty()) {
+		m_renderer->prepare(this);
+	}
+}
+
+void glannotations::AbstractAnnotation::prepareDraw() {
+	getRenderState()->prepare();
 }

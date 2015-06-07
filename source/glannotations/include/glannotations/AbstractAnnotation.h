@@ -20,7 +20,8 @@ namespace glannotations {
 	class GLANNOTATIONS_API AbstractAnnotation : public glannotations::DirtyFlagObject {
 	friend class AnnotationGroup;
 	public:
-		void prepare();
+		void prepareRenderer();
+		void prepareDraw();
 		void draw();
 		void setState(const globjects::ref_ptr<glannotations::AbstractState>& state);
 		globjects::ref_ptr<glannotations::AbstractState> getState() const;

@@ -72,3 +72,8 @@ glannotations::BoundingBox glannotations::InternalState::getBoundingBox() {
 void glannotations::InternalState::updateExtends(glm::vec2 sourceExtends) {
 	cropExtends(m_ll, m_lr, m_ur, sourceExtends);
 }
+
+void glannotations::InternalState::prepare() {
+	updatePositioning(*this);
+	AbstractState::prepare();
+}

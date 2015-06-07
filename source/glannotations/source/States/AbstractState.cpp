@@ -90,3 +90,19 @@ void glannotations::AbstractState::setKeepSourceAspectRatio(bool keepAspectRatio
 bool glannotations::AbstractState::getSourceKeepAspectRatio() const {
 	return m_keepAspectRatio;
 }
+
+void glannotations::AbstractState::prepare() {
+	// we deactivate automatic update once prepare is called manually
+	if (m_autoUpdate) {
+		setAutoUpdate(false);
+	}
+	// TODO: Interpolation transition management
+}
+
+bool glannotations::AbstractState::getAutoUpdate() const {
+	return m_autoUpdate;
+}
+
+void glannotations::AbstractState::setAutoUpdate(bool val) {
+	m_autoUpdate = val;
+}

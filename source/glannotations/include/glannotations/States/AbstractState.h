@@ -80,9 +80,27 @@ namespace glannotations {
 		virtual globjects::ref_ptr<AbstractState> interpolateWith(const SplineState& mixState, float mix) = 0;
 		virtual globjects::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix) = 0;
 
+		/*!
+		 *	\brief		Prepares the state for rendering manually (update positioning, interpolation etc.); Caution: This will deactivate automatic updates before draw
+		 *				Thus you have to call it on your own from then on
+		 */
+		virtual void prepare();
+
 	protected:
+		/*!
+		*	\brief		Enables / disables the auto update mechanism (positioning, interpolation etc.) before each annotation is drawn
+		*/
+		void setAutoUpdate(bool val);
+		/*!
+		*	\returns	Flag whether given annotation is automatically updated (positioning, interpolation etc.) before each draw call
+		*/
+		bool getAutoUpdate() const;
+
 		virtual void updateExtends(glm::vec2 sourceExtends) = 0;
 		void copyState(AbstractState& copyTo) const;
+		/*!
+		 *	\brief		prepares rendering (e.g. positioning update, interpolation update etc.)
+		 */
 		virtual void draw(const AbstractRenderer& renderer) = 0;
 		AbstractState();
 
@@ -96,6 +114,7 @@ namespace glannotations {
 		void cropExtends(T& ll, T& lr, T& ur, glm::vec2 sourceExtends);
 
 	private:
+		bool m_autoUpdate = true;
 		bool m_keepAspectRatio = false;
 		float m_maximumLineHeight = 0.f;
 		StylingList m_stylings;

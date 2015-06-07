@@ -8,21 +8,19 @@ namespace glannotations {
 	public:
 		virtual void setExternalReference(const globjects::ref_ptr<glannotations::AbstractExternalReference>& reference);
 		globjects::ref_ptr<glannotations::AbstractExternalReference> getExternalReference() const;
-		bool getAutoUpdate() const;
-		void setAutoUpdate(bool val);
-		/*!
-		 *	\brief		Allows manual positioning update. Only Use when AutoUpdate is set to false!
-		 */
-		template <class T>
-		void updatePositioning(T& manipulatedState);
 
 	protected:
 		void copyState(ReferenceableState& copyTo) const;
 
+		/*!
+		*	\brief		Allows manual positioning update. Only Use when AutoUpdate is set to false!
+		*/
+		template <class T>
+		void updatePositioning(T& manipulatedState);
+
 		template <class T>
 		void drawExternalReference(const AbstractRenderer& renderer, T& manipulatedState);
 
-		bool m_autoUpdate = true;
 		globjects::ref_ptr<glannotations::AbstractExternalReference> m_externalReference = nullptr;
 	};
 }

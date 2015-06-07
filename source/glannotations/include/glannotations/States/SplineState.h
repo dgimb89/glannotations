@@ -50,6 +50,8 @@ namespace glannotations {
 		virtual globjects::ref_ptr<glannotations::AbstractState> clone() const override;
 		virtual glannotations::BoundingBox getBoundingBox() override;
 
+		virtual void prepare() override;
+
 	protected:
 		virtual void draw(const AbstractRenderer& renderer) override;
 
@@ -58,6 +60,7 @@ namespace glannotations {
 		virtual globjects::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix);
 
 		virtual void updateExtends(glm::vec2 sourceExtends) override;
+
 
 	private:
 		std::shared_ptr<glannotations::BSpline> m_splineBase;

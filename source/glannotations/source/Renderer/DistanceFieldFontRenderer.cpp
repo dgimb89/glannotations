@@ -15,9 +15,7 @@
 void glannotations::DistanceFieldFontRenderer::draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) {
 	if (annotation->isDirty()) {
 		prepare(annotation);
-		//todo:anne vorbereiten? BendendQuadStrip?
 	}
-
 	gl::glEnable(gl::GL_BLEND);
 	gl::glBlendFunc(gl::GL_SRC_ALPHA, gl::GL_ONE_MINUS_SRC_ALPHA);
 	annotation->getRenderState()->draw(*this);
@@ -80,6 +78,7 @@ void glannotations::DistanceFieldFontRenderer::setupGlyphQuadstrip(glannotations
 }
 
 void glannotations::DistanceFieldFontRenderer::prepare(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) {
+	//todo:anne vorbereiten? BendendQuadStrip?
 	FontAnnotation* currentAnnotation = dynamic_cast<FontAnnotation*>(annotation.get());
 	setupGlyphQuadstrip(currentAnnotation);
 	m_drawingPrimitive->setColor(currentAnnotation->getColor());
