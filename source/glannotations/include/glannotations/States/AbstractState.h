@@ -87,9 +87,7 @@ namespace glannotations {
 		AbstractState();
 
 		template <typename T>
-		bool exceedsLineHeightConstraint(T lr, T ur) const {
-			return glm::distance(ur, lr) > getMaximumHeight();
-		}
+		bool exceedsLineHeightConstraint(T lr, T ur) const;
 
 		/*!
 		*	\brief		If keepSourceAsspectRatio is set to true: Crop given render extends ll, lr and ur according to sourceExtends

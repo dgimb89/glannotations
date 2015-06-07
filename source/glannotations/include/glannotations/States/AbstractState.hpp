@@ -2,6 +2,11 @@
 
 #include <glannotations/States/AbstractState.h>
 
+template <typename T>
+bool glannotations::AbstractState::exceedsLineHeightConstraint(T lr, T ur) const {
+	return glm::distance(ur, lr) > getMaximumHeight();
+}
+
 template<typename T>
 void glannotations::AbstractState::cropExtends(T& ll, T& lr, T& ur, glm::vec2 sourceExtends) {
 	// calculating width / height to fit in given ll,lr,ur extends and keep aspect ratio
