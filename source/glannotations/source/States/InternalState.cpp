@@ -30,11 +30,7 @@ const glm::vec3& glannotations::InternalState::getUR() const {
 }
 
 void glannotations::InternalState::draw(const AbstractRenderer& renderer) {
-	if (m_externalReference) {
-		m_externalReference->updateBindings(renderer);
-		m_externalReference->updatePositioning(*this);
-		m_externalReference->draw();
-	}
+	drawExternalReference(renderer, *this);
 	renderer.drawSetupState(*this);
 }
 

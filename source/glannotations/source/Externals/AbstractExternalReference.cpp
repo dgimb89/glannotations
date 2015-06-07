@@ -38,11 +38,9 @@ unsigned int glannotations::AbstractExternalReference::getBindingIndex() const {
 }
 
 void glannotations::AbstractExternalReference::updateBindings(const glannotations::AbstractRenderer& renderer) {
-	if (isDirty()) {
-		setBindingIndex(renderer.getMatricesBindingIndex());
-		if (!isPositioningOnly()) {
-			m_externalPrimitive->setBindingIndex(getBindingIndex());
-		}
+	setBindingIndex(renderer.getMatricesBindingIndex());
+	if (!isPositioningOnly()) {
+		m_externalPrimitive->setBindingIndex(getBindingIndex());
 	}
 }
 

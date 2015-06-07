@@ -103,8 +103,10 @@ set(api_includes
     ${include_path}/Renderer/RendererFactory.h
 
     ${include_path}/States/AbstractState.h
+    ${include_path}/States/AbstractState.hpp
     ${include_path}/States/InternalState.h
     ${include_path}/States/ReferenceableState.h
+    ${include_path}/States/ReferenceableState.hpp
     ${include_path}/States/SplineState.h
     ${include_path}/States/StateInterpolation.h
     ${include_path}/States/ViewportState.h

@@ -15,3 +15,11 @@ void glannotations::ReferenceableState::copyState(ReferenceableState& copyTo) co
 	}
 	AbstractState::copyState(copyTo);
 }
+
+bool glannotations::ReferenceableState::getAutoUpdate() const {
+	return m_autoUpdate;
+}
+
+void glannotations::ReferenceableState::setAutoUpdate(bool val) {
+	m_autoUpdate = val;
+}

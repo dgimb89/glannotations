@@ -131,11 +131,7 @@ void glannotations::SplineState::updateSplineTop() {
 }
 
 void glannotations::SplineState::draw(const AbstractRenderer& renderer) {
-	if (m_externalReference) {
-		m_externalReference->updateBindings(renderer); //?
-		m_externalReference->updatePositioning(*this);
-		m_externalReference->draw();
-	}
+	drawExternalReference(renderer, *this);
 	//todo:anne maybe do something here?
 	renderer.drawSetupState(*this);
 }
