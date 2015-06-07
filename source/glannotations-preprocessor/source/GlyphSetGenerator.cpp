@@ -38,7 +38,7 @@ void glannotations::preprocessor::GlyphSetGenerator::generateGlyphset(std::strin
 	}
 
 	// check for number of available glyphs
-	if (numGlyphs > face->num_glyphs) {
+	if (numGlyphs > static_cast<unsigned>(face->num_glyphs)) {
 		std::cerr << "Font face does not support " << numGlyphs << " glyphs (setting to available number: " << face->num_glyphs << ")" << std::endl;
 		numGlyphs = face->num_glyphs;
 	}
@@ -73,16 +73,21 @@ void glannotations::preprocessor::GlyphSetGenerator::generateGlyphset(std::strin
 	FT_Done_FreeType(library);
 
 	// create final glyphset image
-	size_t finalHeight = std::ceil(glyphImages.size() / static_cast<float>(GLYPH_GROUP_SIZE)) * SCALEDOWN_HEIGHT;
+	size_t finalHeight = static_cast<size_t>(std::ceil(glyphImages.size() / static_cast<float>(GLYPH_GROUP_SIZE))* SCALEDOWN_HEIGHT);
 	globjects::ref_ptr<glannotations::PNGImage> finalImage = new glannotations::PNGImage(maxRowWidth, finalHeight, 1);
 	size_t width = 0, height = finalImage->getHeight() - SCALEDOWN_HEIGHT;
 	unsigned glyphIndex = 0;
 	std::vector<glannotations::GlyphSetConfig::GlyphConfig> glyphConfigs;
 	for (auto image : glyphImages) {
-		glyphConfigs.push_back(glannotations::GlyphSetConfig::GlyphConfig(width, height, image->getWidth() - 1, image->getHeight() - 1));
+		glyphConfigs.push_back(glannotations::GlyphSetConfig::GlyphConfig(
+			static_cast<float>(width), 
+			static_cast<float>(height), 
+			static_cast<float>(image->getWidth() - 1), 
+			static_cast<float>(image->getHeight() - 1))
+		);
 		for (size_t w = 0; w < image->getWidth(); ++w)
 			for (size_t h = 0; h < image->getHeight(); ++h) {
-				finalImage->setImageValue(width + w, height + h, 0, image->getImageValue(w, h, 0));
+				finalImage->setImageValue(width + w, height + h, 0, image->getImageValue(static_cast<long>(w), static_cast<long>(h), 0));
 			}
 		width += image->getWidth();
 		++glyphIndex;
@@ -96,20 +101,20 @@ void glannotations::preprocessor::GlyphSetGenerator::generateGlyphset(std::strin
 
 	jsonConfig.setStartGlyph(GLYPHSET_BEGIN);
 	jsonConfig.setWhitespaceLength(0.7f / GLYPH_GROUP_SIZE);
-	jsonConfig.setGlyphConfigs(glyphConfigs, maxRowWidth-1, finalHeight-1);
+	jsonConfig.setGlyphConfigs(glyphConfigs, static_cast<float>(maxRowWidth - 1), static_cast<float>(finalHeight - 1));
 	jsonConfig.serialize();
 
 }
 
 inline int glannotations::preprocessor::GlyphSetGenerator::convertFontToPixelSize(int input) {
-	return input / 64.0; // 1/64th unit
+	return input / 64; // 1/64th unit
 }
 
 globjects::ref_ptr<glannotations::PNGImage> glannotations::preprocessor::GlyphSetGenerator::generateGlyphImage(void* bitmap, unsigned marginLeft, int ascender, int descender, int bearingY) {
 	FT_Bitmap* bitmapPtr = reinterpret_cast<FT_Bitmap*>(bitmap);
 	// replace whitespace glyph by dummy images
 	if (bitmapPtr->width == 0) {
-		return new glannotations::PNGImage(SCALEDOWN_HEIGHT / 3., SCALEDOWN_HEIGHT, 1, 8);
+		return new glannotations::PNGImage(SCALEDOWN_HEIGHT / 3, SCALEDOWN_HEIGHT, 1, 8);
 	}
 	unsigned imageHeight = ascender - descender;
 	unsigned imageWidth = bitmapPtr->width + 2*marginLeft;// +marginRight;
