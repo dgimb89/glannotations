@@ -16,7 +16,7 @@ namespace glannotations {
 	class AbstractRenderer;
 	class AbstractAnnotation;
 	class ViewportState;
-	class InternalState;
+	class QuadState;
 	class SplineState;
 
     typedef std::map<std::string, globjects::ref_ptr<glannotations::Styling> > StylingList;
@@ -52,7 +52,7 @@ namespace glannotations {
 		// maximum height of 0.f means there is no limit -- use full state space
 		bool hasMaximumHeight() const;
 
-		glannotations::InternalState& asInternalState();
+		glannotations::QuadState& asInternalState();
 		glannotations::SplineState& asSplineState();
 		glannotations::ViewportState& asViewportState();
 
@@ -76,7 +76,7 @@ namespace glannotations {
 		glannotations::Anchor::HorizontalAnchor getHorizontalAnchor() const;
 		glannotations::Anchor::VerticalAnchor getVerticalAnchor() const;
 
-		virtual globjects::ref_ptr<AbstractState> interpolateWith(const InternalState& mixState, float mix) = 0;
+		virtual globjects::ref_ptr<AbstractState> interpolateWith(const QuadState& mixState, float mix) = 0;
 		virtual globjects::ref_ptr<AbstractState> interpolateWith(const SplineState& mixState, float mix) = 0;
 		virtual globjects::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix) = 0;
 

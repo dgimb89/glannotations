@@ -3,7 +3,7 @@
 
 #include <glannotations/AbstractAnnotation.h>
 #include <glannotations/States/ViewportState.h>
-#include <glannotations/States/InternalState.h>
+#include <glannotations/States/QuadState.h>
 #include <glannotations/States/SplineState.h>
 #include <glannotations/Styles/ExternalColor.h>
 
@@ -35,7 +35,7 @@ void glannotations::AbstractAnnotation::resetInterpolation() {
 	m_renderState = nullptr;
 }
 
-void glannotations::AbstractAnnotation::interpolateState(const InternalState& mixState, float mix) {
+void glannotations::AbstractAnnotation::interpolateState(const QuadState& mixState, float mix) {
 	m_renderState = nullptr;
 	setupRenderState();
 	m_renderState = m_state->interpolateWith(mixState, mix);

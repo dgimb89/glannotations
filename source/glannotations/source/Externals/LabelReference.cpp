@@ -1,9 +1,9 @@
 #include <glannotations/Externals/LabelReference.h>
-#include <glannotations/States/InternalState.h>
+#include <glannotations/States/QuadState.h>
 #include <glannotations/States/SplineState.h>
 #include <glannotations/Common/globals.h>
 
-void glannotations::LabelReference::updatePositioning(InternalState& state) {
+void glannotations::LabelReference::updatePositioning(QuadState& state) {
 	glm::vec3 upVector = glm::normalize(glannotations::getUp(getBindingIndex())) * m_height;
 	glm::vec3 newLL = m_annotationCenter - (m_height + m_width) / 2.f;
 	glm::vec3 newLR = newLL + glm::normalize(glannotations::getRight(getBindingIndex())) * m_width;
@@ -16,7 +16,7 @@ void glannotations::LabelReference::updatePositioning(SplineState& state) {
 	//todo:anne what do I have to do here?
 }
 
-void glannotations::LabelReference::setupExternalReference(const InternalState& state) {
+void glannotations::LabelReference::setupExternalReference(const QuadState& state) {
 	AbstractExternalReference::setupExternalReference(state);
 	m_annotationCenter = (state.getLL() + state.getLR()) / 2.f + (state.getUR() - state.getLR()) / 2.f;
 	m_width = glm::distance(state.getLR(), state.getLL());

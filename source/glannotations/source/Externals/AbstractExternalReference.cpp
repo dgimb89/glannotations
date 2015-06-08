@@ -15,7 +15,7 @@ bool glannotations::AbstractExternalReference::isPositioningOnly() const {
 	return m_positioningOnly;
 }
 
-void glannotations::AbstractExternalReference::setupExternalReference(const InternalState& state) {
+void glannotations::AbstractExternalReference::setupExternalReference(const QuadState& state) {
 	assertNotReused();
 }
 

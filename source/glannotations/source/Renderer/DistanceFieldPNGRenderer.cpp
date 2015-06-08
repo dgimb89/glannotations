@@ -5,7 +5,7 @@
 
 #include <glannotations/Renderer/DistanceFieldPNGRenderer.h>
 #include <glannotations/States/ViewportState.h>
-#include <glannotations/States/InternalState.h>
+#include <glannotations/States/QuadState.h>
 #include <glannotations/PNGAnnotation.h>
 #include <glannotations/Common/TextureManager.h>
 #include <glannotations/Renderer/QuadStrip.h>

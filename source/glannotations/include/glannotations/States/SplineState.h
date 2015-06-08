@@ -55,7 +55,7 @@ namespace glannotations {
 	protected:
 		virtual void draw(const AbstractRenderer& renderer) override;
 
-		virtual globjects::ref_ptr<AbstractState> interpolateWith(const InternalState& mixState, float mix);
+		virtual globjects::ref_ptr<AbstractState> interpolateWith(const QuadState& mixState, float mix);
 		virtual globjects::ref_ptr<AbstractState> interpolateWith(const SplineState& mixState, float mix);
 		virtual globjects::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix);
 

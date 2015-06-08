@@ -1,7 +1,6 @@
 #define __STDC_LIMIT_MACROS
 
 #include <threadingzeug/parallelfor.h>
-#include <iostream>
 
 #include <glannotations/AnnotationGroup.h>
 

@@ -7,7 +7,7 @@
 #include <glannotations/Styles/Outline.h>
 #include <glannotations/Styles/BumpMap.h>
 #include <glannotations/States/ViewportState.h>
-#include <glannotations/States/InternalState.h>
+#include <glannotations/States/QuadState.h>
 #include <glannotations/States/SplineState.h>
 
 void glannotations::AbstractPrimitiveRenderer::setupOutline(const Styling* outline) {
@@ -37,7 +37,7 @@ void glannotations::AbstractPrimitiveRenderer::drawSetupState(ViewportState& sta
 }
 
 
-void glannotations::AbstractPrimitiveRenderer::drawSetupState(InternalState& state) const {
+void glannotations::AbstractPrimitiveRenderer::drawSetupState(QuadState& state) const {
 	if (state.isDirty()) {
 		state.updateExtends(m_drawingPrimitive->getExtends());
 		m_drawingPrimitive->setPosition(state.getLL(), state.getLR(), state.getUR());
@@ -48,7 +48,7 @@ void glannotations::AbstractPrimitiveRenderer::drawSetupState(InternalState& sta
 
 void glannotations::AbstractPrimitiveRenderer::drawSetupState(glannotations::SplineState& state) const {
 	if (state.isDirty()) {
-		//m_draweingPrimitive is BendedQuadStrip here!
+		//m_drawingPrimitive is BendedQuadStrip here!
 		m_drawingPrimitive->setPosition(state.getLL(), glm::vec3(), glm::vec3());
 		state.setDirty(false);
 	}

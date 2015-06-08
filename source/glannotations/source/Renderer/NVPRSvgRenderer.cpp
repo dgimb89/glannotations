@@ -6,7 +6,7 @@
 #include <glannotations/SVGAnnotation.h>
 #include <glannotations/States/ViewportState.h>
 #include <glannotations/States/SplineState.h>
-#include <glannotations/States/InternalState.h>
+#include <glannotations/States/QuadState.h>
 #include <glannotations/Styles/Outline.h>
 
 #include <string.h>
@@ -40,7 +40,7 @@ void glannotations::NVPRSvgRenderer::drawSetupState(glannotations::ViewportState
 	gl::glPopAttrib();
 }
 
-void glannotations::NVPRSvgRenderer::drawSetupState(glannotations::InternalState& state) const {
+void glannotations::NVPRSvgRenderer::drawSetupState(glannotations::QuadState& state) const {
 	setupProjection(glannotations::getProjection(getMatricesBindingIndex()));
 	setupModelView(glannotations::getView(getMatricesBindingIndex()), state, m_width, m_height);
 

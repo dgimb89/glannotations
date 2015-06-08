@@ -15,7 +15,7 @@ namespace glannotations {
 		virtual void draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation);
 	protected:
 		virtual void drawSetupState(glannotations::ViewportState& state) const override;
-		virtual void drawSetupState(glannotations::InternalState& state) const override;
+		virtual void drawSetupState(glannotations::QuadState& state) const override;
 		virtual void drawSetupState(glannotations::SplineState& state) const override;
 
 		void initializeFont(glannotations::FontAnnotation* annotation);

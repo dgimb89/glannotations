@@ -10,14 +10,14 @@
 #include <glannotations/Renderer/Box.h>
 #include <glannotations/AbstractAnnotation.h>
 #include <glannotations/States/SplineState.h>
-#include <glannotations/States/InternalState.h>
+#include <glannotations/States/QuadState.h>
 #include <glannotations/Utility/Segment.h>
 #include <glannotations/Utility/Triangle.h>
 
 const float MAX_ROTATION_ANGLE = static_cast<float>(M_PI * 45.f / 180.f);
 const float ANTI_FLICKERING = 0.01f;
 
-void glannotations::BoxReference::updatePositioning(InternalState& state) {
+void glannotations::BoxReference::updatePositioning(QuadState& state) {
 	Utility::Segment camToBoxCenter(glannotations::getEye(getBindingIndex()), m_frontLLF + (m_widthSpan + m_heightSpan + m_depthSpan) / 2.f);
 	glm::vec3 intersection, widthSpan, heightSpan;
 	float vOverflow, hOverflow;
@@ -87,7 +87,7 @@ void glannotations::BoxReference::draw() {
 	gl::glDepthMask(gl::GL_TRUE);
 }
 
-void glannotations::BoxReference::setupExternalReference(const InternalState& state) {
+void glannotations::BoxReference::setupExternalReference(const QuadState& state) {
 	AbstractExternalReference::setupExternalReference(state);
 	m_frontLLF = state.getLL() - (m_widthSpan.x * glm::normalize(state.getLR() - state.getLL())) - (m_heightSpan.x * glm::normalize(state.getUR() - state.getLR()));
 

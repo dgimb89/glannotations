@@ -104,7 +104,7 @@ set(api_includes
 
     ${include_path}/States/AbstractState.h
     ${include_path}/States/AbstractState.hpp
-    ${include_path}/States/InternalState.h
+    ${include_path}/States/QuadState.h
     ${include_path}/States/ReferenceableState.h
     ${include_path}/States/ReferenceableState.hpp
     ${include_path}/States/SplineState.h
@@ -164,7 +164,7 @@ set(sources
     ${source_path}/Renderer/RendererFactory.cpp
 
     ${source_path}/States/AbstractState.cpp
-    ${source_path}/States/InternalState.cpp
+    ${source_path}/States/QuadState.cpp
     ${source_path}/States/ReferenceableState.cpp
     ${source_path}/States/SplineState.cpp
     ${source_path}/States/StateInterpolation.cpp

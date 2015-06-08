@@ -13,7 +13,7 @@
 
 namespace glannotations {
 	// forward declaration
-	class InternalState;
+	class QuadState;
 	class SplineState;
 	class ViewportState;
 
@@ -31,7 +31,7 @@ namespace glannotations {
 		void setupRenderState() const;
 
 		// should internal interpolation be offered? - maybe just at state level, but user has to keep the both final states
-		void interpolateState(const InternalState& mixState, float mix);
+		void interpolateState(const QuadState& mixState, float mix);
 		void interpolateState(const SplineState& mixState, float mix);
 		void interpolateState(const ViewportState& mixState, float mix);
 

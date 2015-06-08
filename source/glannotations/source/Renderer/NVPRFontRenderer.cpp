@@ -6,7 +6,7 @@
 #include <glannotations/Renderer/NVPRFontRenderer.h>
 #include <glannotations/FontAnnotation.h>
 #include <glannotations/States/ViewportState.h>
-#include <glannotations/States/InternalState.h>
+#include <glannotations/States/QuadState.h>
 #include <glannotations/Styles/Styles.h>
 #include "glannotations-version.h"
 
@@ -42,7 +42,7 @@ void glannotations::NVPRFontRenderer::drawSetupState(glannotations::ViewportStat
 	gl::glEnable(gl::GL_DEPTH_TEST);
 }
 
-void glannotations::NVPRFontRenderer::drawSetupState(glannotations::InternalState& state) const {
+void glannotations::NVPRFontRenderer::drawSetupState(glannotations::QuadState& state) const {
 	gl::GLfloat yMin, yMax;
 	size_t messageLen = strlen(m_currentText);
 	gl::GLfloat totalAdvance;

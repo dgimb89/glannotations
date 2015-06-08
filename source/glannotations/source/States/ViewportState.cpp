@@ -33,7 +33,7 @@ const glm::vec2 glannotations::ViewportState::getLR() const {
 	return glm::vec2(m_ur.x, m_ll.y);
 }
 
-globjects::ref_ptr<glannotations::AbstractState> glannotations::ViewportState::interpolateWith(const InternalState& mixState, float mix) {
+globjects::ref_ptr<glannotations::AbstractState> glannotations::ViewportState::interpolateWith(const QuadState& mixState, float mix) {
 	return glannotations::Interpolation::interpolate(*this, mixState, mix);
 }
 

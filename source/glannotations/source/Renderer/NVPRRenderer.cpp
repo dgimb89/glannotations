@@ -7,7 +7,7 @@
 #include <glannotations/Renderer/NVPRRenderer.h>
 #include <glannotations/AbstractAnnotation.h>
 #include <glannotations/Styles/Outline.h>
-#include <glannotations/States/InternalState.h>
+#include <glannotations/States/QuadState.h>
 
 void glannotations::NVPRRenderer::draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) {
 	// enable stencil test as needed by nvpr
@@ -58,7 +58,7 @@ void glannotations::NVPRRenderer::setupProjection(glm::mat4 projection) const {
 	gl::glMultMatrixf(glm::value_ptr(projection));
 }
 
-void glannotations::NVPRRenderer::setupModelView(glm::mat4 view, const glannotations::InternalState& state, float stencilWidth, float stencilHeight) const {
+void glannotations::NVPRRenderer::setupModelView(glm::mat4 view, const glannotations::QuadState& state, float stencilWidth, float stencilHeight) const {
 	gl::glMatrixMode(gl::GL_MODELVIEW);
 	gl::glPushMatrix();
 	gl::glLoadIdentity();

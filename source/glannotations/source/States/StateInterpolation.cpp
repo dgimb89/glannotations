@@ -1,18 +1,18 @@
 #include <glannotations/States/StateInterpolation.h>
 
-const globjects::ref_ptr<glannotations::AbstractState> glannotations::Interpolation::interpolate(const InternalState& first, const InternalState& second, float mix) {
+const globjects::ref_ptr<glannotations::AbstractState> glannotations::Interpolation::interpolate(const QuadState& first, const QuadState& second, float mix) {
 	return nullptr;
 }
 
-const globjects::ref_ptr<glannotations::AbstractState> glannotations::Interpolation::interpolate(const InternalState& first, const SplineState& second, float mix) {
+const globjects::ref_ptr<glannotations::AbstractState> glannotations::Interpolation::interpolate(const QuadState& first, const SplineState& second, float mix) {
 	return nullptr;
 }
 
-const globjects::ref_ptr<glannotations::AbstractState> glannotations::Interpolation::interpolate(const InternalState& first, const ViewportState& second, float mix) {
+const globjects::ref_ptr<glannotations::AbstractState> glannotations::Interpolation::interpolate(const QuadState& first, const ViewportState& second, float mix) {
 	return nullptr;
 }
 
-const globjects::ref_ptr<glannotations::AbstractState> glannotations::Interpolation::interpolate(const SplineState& first, const InternalState& second, float mix) {
+const globjects::ref_ptr<glannotations::AbstractState> glannotations::Interpolation::interpolate(const SplineState& first, const QuadState& second, float mix) {
 	return nullptr;
 }
 
@@ -24,7 +24,7 @@ const globjects::ref_ptr<glannotations::AbstractState> glannotations::Interpolat
 	return nullptr;
 }
 
-const globjects::ref_ptr<glannotations::AbstractState> glannotations::Interpolation::interpolate(const ViewportState& first, const InternalState& second, float mix) {
+const globjects::ref_ptr<glannotations::AbstractState> glannotations::Interpolation::interpolate(const ViewportState& first, const QuadState& second, float mix) {
 	return nullptr;
 }
 

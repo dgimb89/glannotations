@@ -1,7 +1,7 @@
 #include <glannotations/States/AbstractState.h>
 #include <glannotations/Common/globals.h>
 #include <glannotations/States/ViewportState.h>
-#include <glannotations/States/InternalState.h>
+#include <glannotations/States/QuadState.h>
 #include <glannotations/States/SplineState.h>
 
 void glannotations::AbstractState::setStyling(const globjects::ref_ptr<glannotations::Styling>& style) {
@@ -38,8 +38,8 @@ const glannotations::StylingList& glannotations::AbstractState::getStylings() co
 	return m_stylings;
 }
 
-glannotations::InternalState& glannotations::AbstractState::asInternalState() {
-	return dynamic_cast<glannotations::InternalState&>(*this);
+glannotations::QuadState& glannotations::AbstractState::asInternalState() {
+	return dynamic_cast<glannotations::QuadState&>(*this);
 }
 
 glannotations::SplineState& glannotations::AbstractState::asSplineState() {

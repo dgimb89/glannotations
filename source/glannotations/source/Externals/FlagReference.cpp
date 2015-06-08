@@ -10,14 +10,14 @@
 #include <glannotations/Renderer/Rect.h>
 #include <glannotations/AbstractAnnotation.h>
 #include <glannotations/States/SplineState.h>
-#include <glannotations/States/InternalState.h>
+#include <glannotations/States/QuadState.h>
 #include <glannotations/Utility/Segment.h>
 #include <glannotations/Utility/Triangle.h>
 
 const float MAX_ROTATION_ANGLE = static_cast<float>(M_PI * 45.0 / 180.0);
 const float ANTI_FLICKERING = 0.01f;
 
-void glannotations::FlagReference::updatePositioning(InternalState& state) {
+void glannotations::FlagReference::updatePositioning(QuadState& state) {
 	glm::vec3 center = m_frontLLF + (m_widthSpan + m_heightSpan + m_depthSpan) / 2.f;
 	Utility::Segment camToBoxCenter(glannotations::getEye(getBindingIndex()), center);
 	glm::vec3 intersection, widthSpan, heightSpan;
@@ -78,7 +78,7 @@ void glannotations::FlagReference::draw() {
 	gl::glDepthMask(gl::GL_TRUE);
 }
 
-void glannotations::FlagReference::setupExternalReference(const InternalState& state) {
+void glannotations::FlagReference::setupExternalReference(const QuadState& state) {
 	AbstractExternalReference::setupExternalReference(state);
 	m_frontLLF = state.getLL();
 	m_widthSpan = state.getLR() - state.getLL();

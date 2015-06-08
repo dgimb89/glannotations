@@ -140,7 +140,7 @@ const glm::vec3& glannotations::SplineState::getLL() const {
 	return m_ll;
 }
 
-globjects::ref_ptr<glannotations::AbstractState> glannotations::SplineState::interpolateWith(const InternalState& mixState, float mix) {
+globjects::ref_ptr<glannotations::AbstractState> glannotations::SplineState::interpolateWith(const QuadState& mixState, float mix) {
 	return glannotations::Interpolation::interpolate(*this, mixState, mix);
 }
 

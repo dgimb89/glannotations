@@ -5,7 +5,7 @@
 
 #include <glannotations/Externals/RectReference.h>
 #include <glannotations/States/SplineState.h>
-#include <glannotations/States/InternalState.h>
+#include <glannotations/States/QuadState.h>
 #include <glannotations/Common/globals.h>
 #include <iostream>
 
@@ -14,7 +14,7 @@ glannotations::RectReference::RectReference()
 	: glannotations::AbstractExternalReference(true) {
 }
 
-void glannotations::RectReference::setupExternalReference(const InternalState& state) {
+void glannotations::RectReference::setupExternalReference(const QuadState& state) {
 	AbstractExternalReference::setupExternalReference(state);
 	m_widthSpan = glm::normalize(state.getLR() - state.getLL());
 	m_heightSpan = glm::normalize(state.getUR() - state.getLR());
@@ -29,7 +29,7 @@ void glannotations::RectReference::setupExternalReference(const SplineState& sta
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
-void glannotations::RectReference::updatePositioning(InternalState& state) {
+void glannotations::RectReference::updatePositioning(QuadState& state) {
 	glm::vec3 cameraRight = glannotations::getRight(getBindingIndex());
 	glm::vec3 widthSpan, heightSpan;
 	glm::vec3 n = glm::normalize(glm::cross(false ? -m_widthSpan : m_widthSpan, false ? -m_heightSpan : m_heightSpan));

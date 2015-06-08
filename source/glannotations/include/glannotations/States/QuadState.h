@@ -7,7 +7,7 @@
 
 namespace glannotations {
 
-	class GLANNOTATIONS_API InternalState : public glannotations::ReferenceableState {
+	class GLANNOTATIONS_API QuadState : public glannotations::ReferenceableState {
 		friend class AbstractPrimitiveRenderer;
 	public:
 		/*!
@@ -16,7 +16,7 @@ namespace glannotations {
 		 *	\param	lr	Lower right coordinate of given Quad
 		 *	\param	ur	Upper right coordinate of given Quad
 		 */
-		InternalState(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur);
+		QuadState(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur);
 
 		/*!
 		*	\brief		Resets the extends for this State
@@ -41,7 +41,7 @@ namespace glannotations {
 	protected:
 		virtual void draw(const AbstractRenderer& renderer) override;
 
-		virtual globjects::ref_ptr<AbstractState> interpolateWith(const InternalState& mixState, float mix) override;
+		virtual globjects::ref_ptr<AbstractState> interpolateWith(const QuadState& mixState, float mix) override;
 		virtual globjects::ref_ptr<AbstractState> interpolateWith(const SplineState& mixState, float mix) override;
 		virtual globjects::ref_ptr<AbstractState> interpolateWith(const ViewportState& mixState, float mix) override;
 
