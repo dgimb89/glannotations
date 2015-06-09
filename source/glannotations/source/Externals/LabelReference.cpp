@@ -5,10 +5,9 @@
 
 void glannotations::LabelReference::updatePositioning(QuadState& state) {
 	glm::vec3 upVector = glm::normalize(glannotations::getUp(getBindingIndex())) * m_height;
-	glm::vec3 newLL = m_annotationCenter - (m_height + m_width) / 2.f;
-	glm::vec3 newLR = newLL + glm::normalize(glannotations::getRight(getBindingIndex())) * m_width;
-	state.setExtends(newLL, newLR, newLR + upVector);
-	updatePrismoid(newLL, newLR);
+	m_newLL = m_annotationCenter - (m_height + m_width) / 2.f;
+	m_newLR = m_newLL + glm::normalize(glannotations::getRight(getBindingIndex())) * m_width;
+	state.setExtends(m_newLL, m_newLR, m_newLR + upVector);
 }
 
 void glannotations::LabelReference::updatePositioning(SplineState& state) {
@@ -40,4 +39,9 @@ glannotations::LabelReference::LabelReference(glm::vec3 reference) : AbstractExt
 
 void glannotations::LabelReference::updatePrismoid(const glm::vec3& a, const glm::vec3& b) {
 	reinterpret_cast<glannotations::Prismoid*>(m_externalPrimitive.get())->setPosition(a, b);
+}
+
+void glannotations::LabelReference::draw() {
+	updatePrismoid(m_newLL, m_newLR);
+	AbstractExternalReference::draw();
 }

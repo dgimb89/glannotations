@@ -13,14 +13,11 @@ void glannotations::AnnotationGroup::addAnnotation(const globjects::ref_ptr<glan
 }
 
 void glannotations::AnnotationGroup::draw() const {
-	/*
 	threadingzeug::parallel_for(0, static_cast<int>(m_annotations.size()), [this](int i) {
 		m_annotations.at(i)->prepareDraw();
 	});
-	*/
 
 	for (const auto& annotation : m_annotations) {
-		annotation->prepareDraw();
 		annotation->draw();
 	}
 }
@@ -32,6 +29,8 @@ inline size_t glannotations::AnnotationGroup::ringBufferPosition(size_t i) {
 void glannotations::AnnotationGroup::draw(long long preparationInMicroseconds) {
 	size_t i = 0;
 	std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+
+	#pragma omp parallel for reduction(max : i)
 	for (i = 0; i < m_annotations.size(); ++i) {
 		size_t index = ringBufferPosition(i);
 		m_annotations.at(index)->prepareDraw();

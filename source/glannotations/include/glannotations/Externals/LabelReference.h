@@ -17,9 +17,11 @@ namespace glannotations {
 
 		void updatePrismoid(const glm::vec3& a, const glm::vec3& b);
 
+		virtual void draw() override;
+
 	private:
 		globjects::ref_ptr<glannotations::Prismoid> m_prismoid;
-		glm::vec3 m_annotationCenter;
+		glm::vec3 m_annotationCenter, m_newLL, m_newLR;
 		float m_width, m_height;
 	};
 }
