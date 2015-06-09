@@ -27,7 +27,8 @@ glannotations::DistanceFieldFontRenderer::DistanceFieldFontRenderer(gl::GLuint m
 
 void glannotations::DistanceFieldFontRenderer::setupGlyphQuadstrip(glannotations::FontAnnotation* annotation) {
 	glannotations::GlyphSetConfig glyphConfig(annotation->getFontName());
-
+	// TODO: just save the text and font name here and defer primitive creation until we know the state
+	// take a look at @AbstractPrimitiveRenderer::drawSetupState --> create primitive when state is dirty
 	try {
 		annotation->getRenderState()->asSplineState();
 		auto bendedQuadStrip = new BendedQuadStrip(
@@ -73,8 +74,6 @@ void glannotations::DistanceFieldFontRenderer::setupGlyphQuadstrip(glannotations
 		}
 		m_drawingPrimitive = quadStrip;
 	}
-
-	//float pixelHeight = annotation->getFontSize() * quadStrip->getQuadstripRowCount() * 4.f / 3.f; // 1 zoll = 72 pt = 96 px
 }
 
 void glannotations::DistanceFieldFontRenderer::prepare(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) {

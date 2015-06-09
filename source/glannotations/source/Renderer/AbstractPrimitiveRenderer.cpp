@@ -9,6 +9,7 @@
 #include <glannotations/States/ViewportState.h>
 #include <glannotations/States/QuadState.h>
 #include <glannotations/States/SplineState.h>
+#include <glannotations/Common/globals.h>
 
 void glannotations::AbstractPrimitiveRenderer::setupOutline(const Styling* outline) {
 	if (outline == nullptr) return;
@@ -24,6 +25,8 @@ void glannotations::AbstractPrimitiveRenderer::setupBumpMap(const Styling* bumpM
 }
 
 void glannotations::AbstractPrimitiveRenderer::drawSetupState(ViewportState& state) const {
+	// in order to allow correct constrainting for screen space extends, the state needs to know the current screen aspect ratio
+	state.setScreenAspectRatio(glannotations::getAspectRatio(getMatricesBindingIndex()));
 	if (state.isDirty()) {
 		state.updateExtends(m_drawingPrimitive->getExtends());
 		m_drawingPrimitive->setViewportPosition(state.getLL(), state.getLR(), state.getUR());

@@ -3,14 +3,17 @@
 #include <glannotations/AbstractAnnotation.h>
 #include <glannotations/States/StateInterpolation.h>
 
-glannotations::ViewportState::ViewportState(glm::vec2 llf, glm::vec2 urb) {
-	setExtends(llf, urb);
+#include <iostream>
+
+glannotations::ViewportState::ViewportState(glm::vec2 ll, glm::vec2 lr, glm::vec2 ur) {
+	setExtends(ll, lr, ur);
 }
 
-void glannotations::ViewportState::setExtends(glm::vec2 llf, glm::vec2 urb) {
+void glannotations::ViewportState::setExtends(glm::vec2 ll, glm::vec2 lr, glm::vec2 ur) {
 	setDirty(true);
-	m_ll = llf;
-	m_ur = urb;
+	m_ll = m_origLL = ll;
+	m_lr = m_origLR = lr;
+	m_ur = m_origUR = ur;
 }
 
 const glm::vec2& glannotations::ViewportState::getLL() const {
@@ -26,11 +29,13 @@ void glannotations::ViewportState::draw(const AbstractRenderer& renderer) {
 }
 
 bool glannotations::ViewportState::isValid() const {
-	return (m_ur - m_ll).length() > 0;
+	return	glm::distance(m_ll, m_lr) > 0 &&
+			glm::distance(m_lr, m_ur) > 0 &&
+			glm::distance(m_ll, m_ur) > 0;
 }
 
-const glm::vec2 glannotations::ViewportState::getLR() const {
-	return glm::vec2(m_ur.x, m_ll.y);
+const glm::vec2& glannotations::ViewportState::getLR() const {
+	return m_lr;
 }
 
 globjects::ref_ptr<glannotations::AbstractState> glannotations::ViewportState::interpolateWith(const QuadState& mixState, float mix) {
@@ -46,15 +51,34 @@ globjects::ref_ptr<glannotations::AbstractState> glannotations::ViewportState::i
 }
 
 globjects::ref_ptr<glannotations::AbstractState> glannotations::ViewportState::clone() const {
-	globjects::ref_ptr<glannotations::AbstractState> clonedState(new ViewportState(m_ll, m_ur));
+	globjects::ref_ptr<glannotations::AbstractState> clonedState(new ViewportState(m_ll, m_lr, m_ur));
 	AbstractState::copyState(*clonedState);
 	return clonedState;
 }
 
 glannotations::BoundingBox glannotations::ViewportState::getBoundingBox() {
-	return glannotations::BoundingBox(glm::vec3(std::numeric_limits<float>::lowest()), glm::vec3(std::numeric_limits<float>::max())); // will initialize a infinite bounding box -- always visible as intended
+	// will initialize a infinite bounding box -- always visible as intended
+	return glannotations::BoundingBox(glm::vec3(std::numeric_limits<float>::lowest()), glm::vec3(std::numeric_limits<float>::max()));
 }
 
 void glannotations::ViewportState::updateExtends(glm::vec2 sourceExtends) {
-	// TODO
+	// reset extends to original ones ...
+	// todo: make this prettier (like the ExternalReference system)
+	m_ll = m_origLL;
+	m_lr = m_origLR;
+	m_ur = m_origUR;
+	// translate source extends to fit screen space extends
+	// e.g. width of a quadratic image on a 16:9 screen space will be multiplied by 9 and height multiplied by 16 to make it independent of aspect ratio
+	cropExtends(m_ll, m_lr, m_ur, glm::vec2(sourceExtends.x / getScreenAspectRatio(), sourceExtends.y));
+}
+
+float glannotations::ViewportState::getScreenAspectRatio() const {
+	return m_screenAspectRatio;
+}
+
+void glannotations::ViewportState::setScreenAspectRatio(float val) {
+	// do not invalidate if aspect ratio is same as before in order to minimize positioning + sizing overhead
+	if (val == m_screenAspectRatio) return;
+	setDirty(true);
+	m_screenAspectRatio = val;
 }

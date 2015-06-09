@@ -209,15 +209,20 @@ public:
 		internalAnnotation->getState()->setStyling(new glannotations::Styles::Outline(0.1f, glm::vec3(0.f, 0.f, 0.f)));
 		m_annotations.addAnnotation(internalAnnotation);
 
-		auto topAnnotation = new glannotations::FontAnnotation(new glannotations::QuadState(glm::vec3(-1.f, -2.98f, -1.f), glm::vec3(-1.f, -2.98f, 1.f), glm::vec3(1.f, -2.98f, 1.f)), "Top", "calibri.ttf", dfFactory);
-		topAnnotation->getState()->setMaximumHeight(1.5f);
+		auto topAnnotation = new glannotations::FontAnnotation(new glannotations::QuadState(glm::vec3(-1.f, -2.98f, -1.f), glm::vec3(-1.f, -2.98f, 1.f), glm::vec3(1.f, -2.98f, 1.f)), "Rect", "calibri.ttf", dfFactory);
+		topAnnotation->getState()->setMaximumHeight(1.f);
+		topAnnotation->getState()->setKeepSourceAspectRatio(true);
+		topAnnotation->getState()->setVerticalAnchor(glannotations::Anchor::BOTTOM);
+		topAnnotation->getState()->asInternalState().setExternalReference(new glannotations::RectReference);
 		topAnnotation->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
-		topAnnotation->getState()->asInternalState().setExternalReference(new glannotations::RectReference());
 		m_annotations.addAnnotation(topAnnotation);
 
 		m_annotations.addAnnotation(new glannotations::PNGAnnotation(new glannotations::QuadState(glm::vec3(-2.f, -4.f, 2.f), glm::vec3(-2.f, -4.f, 7.f), glm::vec3(-2.f, 1.0f, 7.f)), "hpi.png", dfFactory));
-
-		m_annotations.addAnnotation(new glannotations::FontAnnotation(new glannotations::ViewportState(glm::vec2(0.4f, -1.f), glm::vec2(0.9f, -0.75f)), "Viewport State", "calibri.ttf", dfFactory));
+		auto viewportAnnotation = new glannotations::FontAnnotation(new glannotations::ViewportState(glm::vec2(0.4f, -1.f), glm::vec2(1.f, -0.8f), glm::vec2(1.f, 0.f)), "Viewport State", "calibri.ttf", dfFactory);
+		viewportAnnotation->getState()->setKeepSourceAspectRatio(true);
+		viewportAnnotation->getState()->setHorizontalAnchor(glannotations::Anchor::RIGHT);
+		viewportAnnotation->getState()->setVerticalAnchor(glannotations::Anchor::BOTTOM);
+		m_annotations.addAnnotation(viewportAnnotation);
 		// m_hpilogo->addState(new glannotations::ViewportState(glm::vec2(-.25f, -.5f), glm::vec2(0.25f, 0.5f)));
 
         window.addTimer(0, 0, false);
