@@ -27,6 +27,7 @@ namespace glannotations {
 		float calculateOverflow(const glm::vec3& a, const glm::vec3& b, const glm::vec3& point, float overflowLimit);
 
 		glm::vec3 m_widthSpan, m_heightSpan, m_depthSpan, m_frontLLF;
+		glm::vec3 m_newLL, m_newLR, m_newUR;
 
 	};
 }

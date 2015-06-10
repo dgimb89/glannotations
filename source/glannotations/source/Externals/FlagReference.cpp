@@ -59,8 +59,11 @@ void glannotations::FlagReference::updatePositioning(QuadState& state) {
 	heightSpan = glm::vec3(rotationMat * glm::vec4(heightSpan, 1.f));
 
 	// bring annotation forward depending on the angular rotation to avoid occlusion
-	state.setExtends(start, start + widthSpan, start + widthSpan + heightSpan);
-	reinterpret_cast<glannotations::Rect*>(m_externalPrimitive.get())->setPosition(state.getLL(), state.getLR(), state.getUR());
+	// todo: make this prettier (no more saving extends this way)
+	m_newLL = start;
+	m_newLR = start + widthSpan;
+	m_newUR = start + widthSpan + heightSpan;
+	state.setExtends(m_newLL, m_newLR, m_newUR);
 }
 
 void glannotations::FlagReference::updatePositioning(SplineState& state) {
@@ -73,6 +76,7 @@ glannotations::FlagReference::FlagReference(float widthOffset, glm::vec3 depthSp
 }
 
 void glannotations::FlagReference::draw() {
+	reinterpret_cast<glannotations::Rect*>(m_externalPrimitive.get())->setPosition(m_newLL, m_newLR, m_newUR);
 	gl::glDepthMask(gl::GL_FALSE);
 	AbstractExternalReference::draw();
 	gl::glDepthMask(gl::GL_TRUE);
