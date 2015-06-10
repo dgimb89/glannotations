@@ -1,4 +1,4 @@
-#include <glannotations/PNGImage.h>
+#include <glannotations/Common/PNGImage.h>
 #include <glannotations-preprocessor/GlyphSetGenerator.h>
 
 /** This example generates various Distance Fields from PNG, SVG, TrueTypeFonts and saves them into files

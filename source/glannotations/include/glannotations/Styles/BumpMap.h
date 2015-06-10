@@ -1,7 +1,7 @@
 #ifndef GLAT_BUMPMAP_H
 #define GLAT_BUMPMAP_H
 
-#include <glannotations/Styling.h>
+#include <glannotations/Styles/Styling.h>
 #include <glannotations/glannotations_api.h>
 
 namespace glannotations {

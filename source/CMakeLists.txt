@@ -1,6 +1,7 @@
 # Generate meta-header
 configure_file(glannotations-version.h.in ${CMAKE_CURRENT_BINARY_DIR}/glannotations-version.h)
 
+# Include directories
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
 )

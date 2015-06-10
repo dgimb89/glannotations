@@ -15,21 +15,31 @@ set(META_AUTHOR_ORGANIZATION "hpicgs group")
 set(META_AUTHOR_DOMAIN       "https://projects.hpi3d.de/projects/annotation_kit")
 set(META_AUTHOR_MAINTAINER   "daniel.gimbatschki@student.hpi.uni-potsdam.de")
 
+string(TOUPPER ${META_PROJECT_NAME} META_PROJECT_NAME_UPPER)
+
+
+# Limit supported configuration types
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Limited Configs" FORCE)
+
 # Set project name and type (C/C++)
 project(${META_PROJECT_NAME} C CXX)
 
 #
 # Configuration options
 #
-option(OPTION_LIMIT_CONFIGS "Generate limited configs (Release; Debug)." ON)
 option(OPTION_PORTABLE_INSTALL "Install into a self-contained directory." OFF)
-option(OPTION_BUILD_SHARED_LIBS "Build shared libraries (affects CMake variable BUILD_SHARED_LIBS)." ON)
-option(OPTION_BUILD_TESTS "Build tests (if gmock and gtest are found)." OFF)
+option(OPTION_BUILD_STATIC      "Build static libraries." OFF)
 option(OPTION_BUILD_EXAMPLES "Build examples." ON)
 option(OPTION_USE_NVPR "Allow Nvidia Path Rendering usage." OFF)
 option(OPTION_BUILD_GLANNOTATIONS_PREPROCESSOR "Build glannotations preprocessor (required for preprocessing example)" OFF)
 option(OPTION_BUILD_GLANNOTATIONS_WRAPPER "Build glannotations wrapper classes (OSG, ...)" OFF)
-set(BUILD_SHARED_LIBS $OPTION_BUILD_SHARED_LIBS)
+
+if(OPTION_BUILD_STATIC)
+   set(BUILD_SHARED_LIBS OFF)
+   message("Note: ${META_PROJECT_NAME_UPPER}_STATIC needs to be defined for static linking.")
+else()
+    set(BUILD_SHARED_LIBS ON)
+endif()
 
 #
 # CMake configuration:
@@ -41,17 +51,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-
-# Set configuration types
-if(OPTION_LIMIT_CONFIGS)
-    set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Limited Configs" FORCE)
-endif()
-set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build, options are: ${CMAKE_CONFIGURATION_TYPES}")
-# Reorder CMAKE_CONFIGURATION_TYPES list so that the chosen CMAKE_BUILD_TYPE is the first element.
-if (NOT "${CMAKE_BUILD_TYPE}" STREQUAL "")
-    list(REMOVE_ITEM CMAKE_CONFIGURATION_TYPES "${CMAKE_BUILD_TYPE}")
-    list(INSERT CMAKE_CONFIGURATION_TYPES 0 "${CMAKE_BUILD_TYPE}")
-endif()
 
 # Generate folders for IDE targets (e.g., VisualStudio solutions)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
@@ -73,62 +72,80 @@ if(CMAKE_SIZEOF_VOID_P EQUAL 8)
 endif()
 
 # Setup platform specifics (compile flags, etc., ...)
+
+# This policy was introduced in 3.0.0 and does not allow for COMPILER_DEFINITIONS_<Config>,
+# anymore, but instead requires generator expressions like $<CONFIG:Debug> ... 
+# For now the current compile-flag, -definitions, and linker-flags setup shall remain as is.
+if(POLICY CMP0043)
+    cmake_policy(SET CMP0043 OLD)
+endif()
+
 if(MSVC)
     include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformWindowsMSVC.cmake)
 elseif(WIN32 AND CMAKE_COMPILER_IS_GNUCXX)
     include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformWindowsGCC.cmake)
 elseif(APPLE)
     include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformMacOS.cmake)
-elseif(UNIX AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformLinuxClang.cmake)
 elseif(UNIX)
     include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/PlatformLinuxGCC.cmake)
 else()
     message(WARNING "Unsupported platform/compiler combination")
 endif()
 
-#
+
 # Deployment/installation setup
-#
+
 set(project ${META_PROJECT_NAME})
 if(WIN32)
-    set(INSTALL_ROOT ".")                      # C:\Programme\<project>
-    set(INSTALL_DATA "bin")                    # C:\Programme\<project>
-    set(INSTALL_BIN "bin")                    # C:\Programme\<project>
-    set(INSTALL_SHARED ".")                      # C:\Programme\<project>
-    set(INSTALL_LIB "lib")                    # C:\Programme\<project>\lib
-    set(INSTALL_INCLUDE "include")                # C:\Programme\<project>\include
-    set(INSTALL_DOC "doc")                    # C:\Programme\<project>\doc
-    set(INSTALL_SHORTCUTS ".")                      # Not available under Windows
+    set(INSTALL_ROOT ".")                       # C:\Programme\<project>
+    set(INSTALL_DATA "bin")                     # C:\Programme\<project>
+    set(INSTALL_BIN "bin")                      # C:\Programme\<project>
+    set(INSTALL_SHARED ".")                     # C:\Programme\<project>
+    set(INSTALL_LIB "lib")                      # C:\Programme\<project>\lib
+    set(INSTALL_INCLUDE "include")              # C:\Programme\<project>\include
+    set(INSTALL_DOC "doc")                      # C:\Programme\<project>\doc
+    set(INSTALL_SHORTCUTS ".")                  # Not available under Windows
     set(INSTALL_ICONS ".")                      # Not available under Windows
-    set(INSTALL_INIT ".")                      # Not available under Windows
+    set(INSTALL_INIT ".")                       # Not available under Windows
 
 else()
-    set(INSTALL_ROOT "share/${project}")       # /usr/[local]/share/<project>
-    set(INSTALL_DATA "share/${project}")       # /usr/[local]/share/<project>
-    set(INSTALL_BIN "bin")                    # /usr/[local]/bin
-    set(INSTALL_SHARED "lib")                    # /usr/[local]/lib
-    set(INSTALL_LIB "lib")                    # /usr/[local]/lib
-    set(INSTALL_INCLUDE "include")                # /usr/[local]/include
-    set(INSTALL_DOC "share/doc/${project}")   # /usr/[local]/share/doc/<project>
-    set(INSTALL_SHORTCUTS "share/applications")     # /usr/[local]/share/applications
+    set(INSTALL_ROOT "share/${project}")        # /usr/[local]/share/<project>
+    set(INSTALL_DATA "share/${project}")        # /usr/[local]/share/<project>
+    set(INSTALL_BIN "bin")                      # /usr/[local]/bin
+    set(INSTALL_SHARED "lib")                   # /usr/[local]/lib
+    set(INSTALL_LIB "lib")                      # /usr/[local]/lib
+    set(INSTALL_INCLUDE "include")              # /usr/[local]/include
+    set(INSTALL_DOC "share/doc/${project}")     # /usr/[local]/share/doc/<project>
+    set(INSTALL_SHORTCUTS "share/applications") # /usr/[local]/share/applications
     set(INSTALL_ICONS "share/pixmaps")          # /usr/[local]/share/pixmaps
-    set(INSTALL_INIT "/etc/init")              # /etc/init (upstart init scripts)
+    set(INSTALL_INIT "/etc/init")               # /etc/init (upstart init scripts)
 
     # Adjust target paths for portable installs
     if(OPTION_PORTABLE_INSTALL)
         # Put binaries in root directory and keep data directory name
-        set(INSTALL_ROOT ".")           # /<INSTALL_PREFIX>
-        set(INSTALL_DATA ".")           # /<INSTALL_PREFIX>
-        set(INSTALL_BIN ".")           # /<INSTALL_PREFIX>
+        set(INSTALL_ROOT ".")                   # /<INSTALL_PREFIX>
+        set(INSTALL_DATA ".")                   # /<INSTALL_PREFIX>
+        set(INSTALL_BIN ".")                    # /<INSTALL_PREFIX>
+
         # We have to change the RPATH of binaries to achieve a usable local install.
         # [TODO] For binaries, "$ORIGIN/lib" is right, so that libraries are found in ./lib.
-        #        However, I have not yet tested what happens when libraries use other libraries.
-        #        In that case, they might need the rpath $ORIGIN instead ...
-        set(CMAKE_SKIP_BUILD_RPATH FALSE)         # Use automatic rpath for build
-        set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)         # Use specific rpath for INSTALL
-        set(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)         # NO automatic rpath for INSTALL
-        set(CMAKE_INSTALL_RPATH "$ORIGIN/lib") # Libraries are relative to binary
+        # However, I have not yet tested what happens when libraries use other libraries.
+        # In that case, they might need the rpath $ORIGIN instead ...
+        set(CMAKE_SKIP_BUILD_RPATH FALSE)            # Use automatic rpath for build
+        set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)    # Use specific rpath for INSTALL
+        set(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE) # NO automatic rpath for INSTALL
+
+        # Libraries are relative to binary
+        if (APPLE)
+            set(CMAKE_INSTALL_RPATH "@executable_path/${INSTALL_LIB}")
+        else()
+            set(CMAKE_INSTALL_RPATH "$ORIGIN/${INSTALL_LIB}")       
+        endif()
+    else()
+        if (APPLE)
+            set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${INSTALL_LIB}") # Add rpath of project libraries
+            set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)                       # Add rpaths of depending libraries
+        endif()
     endif()
 endif()
 

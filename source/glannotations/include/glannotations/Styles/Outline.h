@@ -3,7 +3,7 @@
 
 #include <glm/glm.hpp>
 
-#include <glannotations/Styling.h>
+#include <glannotations/Styles/Styling.h>
 #include <glannotations/glannotations_api.h>
 
 namespace glannotations {

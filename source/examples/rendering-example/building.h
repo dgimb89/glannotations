@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glannotations/DrawingPrimitiveBase.h>
+#include <glannotations/Renderer/DrawingPrimitiveBase.h>
 
 class Building : public glannotations::DrawingPrimitiveBase {
 public:

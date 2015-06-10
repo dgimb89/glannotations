@@ -24,17 +24,19 @@
 #include <common/events.h>
 
 #include <glannotations/AnnotationGroup.h>
-#include <glannotations/RendererFactory.h>
+#include <glannotations/Renderer/RendererFactory.h>
 #include <glannotations/FontAnnotation.h>
 #include <glannotations/SVGAnnotation.h>
 #include <glannotations/PNGAnnotation.h>
-#include <glannotations/ViewportState.h>
-#include <glannotations/InternalState.h>
-#include <glannotations/BoxReference.h>
-#include <glannotations/LabelReference.h>
-#include <glannotations/FlagReference.h>
-#include <glannotations/RectReference.h>
-#include <glannotations/Styles.h>
+#include <glannotations/States/ViewportState.h>
+#include <glannotations/States/QuadState.h>
+#include <glannotations/States/SplineState.h>
+#include <glannotations/Externals/BoxReference.h>
+#include <glannotations/Externals/LabelReference.h>
+#include <glannotations/Externals/FlagReference.h>
+#include <glannotations/Externals/RectReference.h>
+#include <glannotations/Styles/Styles.h>
+#include <glannotations/Utility/BSpline.h>
 
 #include "building.h"
 
@@ -77,7 +79,7 @@ public:
 		gl::glEnable(gl::GL_BLEND);
 		gl::glBlendFunc(gl::GL_SRC_ALPHA, gl::GL_ONE_MINUS_SRC_ALPHA);
 
-        m_camera->setZNear(0.1);
+        m_camera->setZNear(0.1f);
 		m_camera->setZFar(1024.f);
 		m_camera->setCenter(vec3(0.f, 0.f, 5.f));
 		m_camera->setEye(vec3(-17.f, 12.f, -15.0f));
@@ -100,7 +102,7 @@ public:
 		m_building14 = new Building(2);
 
 		float color;
-		srand(time(NULL));
+		srand(static_cast<unsigned int>(time(NULL)));
 		color = ((rand() * 0.4f) / RAND_MAX) + 0.6f;
 		m_building->setPosition(glm::vec3(-1.f, -4.f, 1.f), glm::vec3(1.f, -3.f, -1.f));
 		m_building1->setPosition(glm::vec3(-1.f, -4.f, 5.f), glm::vec3(1.f, 4.f, 2.f));
@@ -123,7 +125,7 @@ public:
 
 
 		glm::vec4 buildingColor = glm::vec4(0.25f, 0.2f, 0.25f, 1.f);
-		srand(time(NULL));
+		srand(static_cast<unsigned int>(time(NULL)));
 		glm::vec4 temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
 		m_building->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
 		auto flagColor = buildingColor + temp;
@@ -142,43 +144,85 @@ public:
 		m_building13->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
 		m_building14->setColor(buildingColor + temp);
 
-		auto boxAnnotation = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(10.01f, -4.f, 1.f), glm::vec3(10.01f, -4.f, -1.f), glm::vec3(10.01f, -2.5f, -1.f)), "Box", "calibri.ttf", dfFactory);
+		auto boxAnnotation = new glannotations::FontAnnotation(new glannotations::QuadState(glm::vec3(10.01f, -4.f, 1.f), glm::vec3(10.01f, -4.f, -1.f), glm::vec3(10.01f, -2.5f, -1.f)), "Box", "calibri.ttf", dfFactory);
 		m_annotations.addAnnotation(boxAnnotation);
 		boxAnnotation->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 		boxAnnotation->getState()->setMaximumHeight(1.5f);
 		boxAnnotation->getState()->setStyling(new glannotations::Styles::Outline(0.2f, glm::vec3(0.f, 0.f, 0.f)));
 		boxAnnotation->getState()->asInternalState().setExternalReference(new glannotations::BoxReference(glm::vec2(0.f, 0.f), glm::vec2(0.f, 2.75f), glm::vec3(-5.f, 0.f, 0.f), false));
 
-		auto flagAnnotation = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(-1.f, -4.f, 5.01f), glm::vec3(1.f, -4.f, 5.01f), glm::vec3(1.f, 4.f, 5.01f)), "Flag", "calibri.ttf", dfFactory);
+		auto flagAnnotation = new glannotations::FontAnnotation(new glannotations::QuadState(glm::vec3(-1.f, 2.f, 5.01f), glm::vec3(1.f, 2.f, 5.01f), glm::vec3(1.f, 4.f, 5.01f)), "Flag", "calibri.ttf", dfFactory);
 		auto flagRef = new glannotations::FlagReference(1.0f, glm::vec3(0.f, 0.f, -3.f), false);
 		flagRef->setColor(flagColor);
 		flagAnnotation->getState()->asInternalState().setExternalReference(flagRef);
 		flagAnnotation->getState()->setMaximumHeight(1.5f);
+		flagAnnotation->getState()->setKeepSourceAspectRatio(true);
+		flagAnnotation->getState()->setVerticalAnchor(glannotations::Anchor::MIDDLE);
 		flagAnnotation->setColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
 		m_annotations.addAnnotation(flagAnnotation);
 
-		auto labelAnnotation = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(-4.75f, 3.f, 12.f), glm::vec3(-1.25f, 3.f, 12.f), glm::vec3(-1.25f, 5.f, 12.f)), "Label", "calibri.ttf", dfFactory);
+		auto labelAnnotation = new glannotations::FontAnnotation(new glannotations::QuadState(glm::vec3(-4.75f, 3.f, 12.f), glm::vec3(-1.25f, 3.f, 12.f), glm::vec3(-1.25f, 5.f, 12.f)), "Label", "calibri.ttf", dfFactory);
 		labelAnnotation->getState()->asInternalState().setExternalReference(new glannotations::LabelReference(glm::vec3(0.f, -3.f, 10.f)));
 		labelAnnotation->getState()->setMaximumHeight(1.5f);
+		labelAnnotation->getState()->setKeepSourceAspectRatio(true);
+		labelAnnotation->getState()->setVerticalAnchor(glannotations::Anchor::BOTTOM);
+		labelAnnotation->getState()->setHorizontalAnchor(glannotations::Anchor::RIGHT);
 		m_annotations.addAnnotation(labelAnnotation);
 
-		auto internalAnnotation = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(2.f, -3.f, -1.01f), glm::vec3(2.f, 5.f, -1.01f), glm::vec3(4.f, 5.f, -1.01f)), "Internal", "calibri.ttf", dfFactory);
+		//todo:anne hello world!
+		std::vector<glm::vec3> ctrlPoints;
+		int x = 4;
+		int y = 6;
+		int h = 2;
+		ctrlPoints.push_back(glm::vec3(x, y, 0));
+		ctrlPoints.push_back(glm::vec3(x, 0, 0));
+		ctrlPoints.push_back(glm::vec3(x, y / 2, 0));
+		ctrlPoints.push_back(glm::vec3(0, 0, 0));
+
+		std::vector<float> knotValues = { 0.f, 0.f, 0.f, 1.f, 2.f, 3.f, 3.f, 3.f };
+
+		std::vector<glm::vec3> ctrlPoints2;
+		ctrlPoints2.push_back(glm::vec3(x - h, y, 0));
+		ctrlPoints2.push_back(glm::vec3(x - h, 0 + h, 0));
+		ctrlPoints2.push_back(glm::vec3(x - h, y / 2 + h, 0));
+		ctrlPoints2.push_back(glm::vec3(0-h, 0, 0));
+
+		//glannotations::BSpline splineBase = glannotations::BSpline(ctrlPoints, 3);
+		auto splineAnnotation = new glannotations::FontAnnotation(
+			new glannotations::SplineState(
+				glm::vec3(-8, 4, 4)
+				, ctrlPoints, knotValues
+				, ctrlPoints2, knotValues
+				, glannotations::GlyphOrientationOnSpline::CUSTOM_SECOND_SPLINE
+			), "Spline State", "calibri.ttf", dfFactory);
+		//splineAnnotation->getState()->asSplineState().setExternalReference(new glannotations::LabelReference(glm::vec3(0.f, -3.f, 10.f)));
+		splineAnnotation->getState()->setMaximumHeight(10.5f);
+		splineAnnotation->getState()->setKeepSourceAspectRatio(true);
+		//splineAnnotation->getState()->setVerticalAnchor(glannotations::Anchor::BOTTOM);
+		//splineAnnotation->getState()->setHorizontalAnchor(glannotations::Anchor::LEFT);
+		m_annotations.addAnnotation(splineAnnotation);
+
+		auto internalAnnotation = new glannotations::FontAnnotation(new glannotations::QuadState(glm::vec3(2.f, -3.f, -1.01f), glm::vec3(2.f, 5.f, -1.01f), glm::vec3(4.f, 5.f, -1.01f)), "Quad State", "calibri.ttf", dfFactory);
 		internalAnnotation->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 		internalAnnotation->getState()->setKeepSourceAspectRatio(true);
 		internalAnnotation->getState()->setMaximumHeight(1.5f);
-		internalAnnotation->getState()->setVerticalAnchor(glannotations::Anchor::BOTTOM);
 		internalAnnotation->getState()->setStyling(new glannotations::Styles::Outline(0.1f, glm::vec3(0.f, 0.f, 0.f)));
 		m_annotations.addAnnotation(internalAnnotation);
 
-		auto topAnnotation = new glannotations::FontAnnotation(new glannotations::InternalState(glm::vec3(-1.f, -2.98f, -1.f), glm::vec3(-1.f, -2.98f, 1.f), glm::vec3(1.f, -2.98f, 1.f)), "Top", "calibri.ttf", dfFactory);
-		topAnnotation->getState()->setMaximumHeight(1.5f);
+		auto topAnnotation = new glannotations::FontAnnotation(new glannotations::QuadState(glm::vec3(-1.f, -2.98f, -1.f), glm::vec3(-1.f, -2.98f, 1.f), glm::vec3(1.f, -2.98f, 1.f)), "Rect", "calibri.ttf", dfFactory);
+		topAnnotation->getState()->setMaximumHeight(1.f);
+		topAnnotation->getState()->setKeepSourceAspectRatio(true);
+		topAnnotation->getState()->setVerticalAnchor(glannotations::Anchor::BOTTOM);
+		topAnnotation->getState()->asInternalState().setExternalReference(new glannotations::RectReference);
 		topAnnotation->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
-		topAnnotation->getState()->asInternalState().setExternalReference(new glannotations::RectReference());
 		m_annotations.addAnnotation(topAnnotation);
 
-		m_annotations.addAnnotation(new glannotations::PNGAnnotation(new glannotations::InternalState(glm::vec3(-2.f, -4.f, 2.f), glm::vec3(-2.f, -4.f, 7.f), glm::vec3(-2.f, 1.0f, 7.f)), "hpi.png", dfFactory));
-
-		m_annotations.addAnnotation(new glannotations::FontAnnotation(new glannotations::ViewportState(glm::vec2(0.4f, -1.f), glm::vec2(0.9f, -0.7f)), "Viewport", "calibri.ttf", dfFactory));
+		m_annotations.addAnnotation(new glannotations::PNGAnnotation(new glannotations::QuadState(glm::vec3(-2.f, -4.f, 2.f), glm::vec3(-2.f, -4.f, 7.f), glm::vec3(-2.f, 1.0f, 7.f)), "hpi.png", dfFactory));
+		auto viewportAnnotation = new glannotations::FontAnnotation(new glannotations::ViewportState(glm::vec2(0.4f, -1.f), glm::vec2(1.f, -0.8f), glm::vec2(1.f, 0.f)), "Viewport State", "calibri.ttf", dfFactory);
+		viewportAnnotation->getState()->setKeepSourceAspectRatio(true);
+		viewportAnnotation->getState()->setHorizontalAnchor(glannotations::Anchor::RIGHT);
+		viewportAnnotation->getState()->setVerticalAnchor(glannotations::Anchor::BOTTOM);
+		m_annotations.addAnnotation(viewportAnnotation);
 		// m_hpilogo->addState(new glannotations::ViewportState(glm::vec2(-.25f, -.5f), glm::vec2(0.25f, 0.5f)));
 
         window.addTimer(0, 0, false);
@@ -224,7 +268,7 @@ public:
 		m_building13->draw();
 		m_building14->draw();
 
-		m_annotations.draw();
+		m_annotations.draw(500);
     }
 
     virtual void keyPressEvent(KeyEvent & event) override

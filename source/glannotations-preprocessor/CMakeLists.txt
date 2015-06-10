@@ -74,13 +74,11 @@ source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$"
 # Build library
 #
 
-if(OPTION_BUILD_STATIC)
-    add_library(${target} ${api_includes} ${sources})
-else()
-    add_library(${target} SHARED ${api_includes} ${sources})
-endif()
+add_library(${target} ${api_includes} ${sources})
 
 target_link_libraries(${target} ${libs})
+
+target_compile_options(${target} PRIVATE ${DEFAULT_COMPILE_FLAGS})
 
 set_target_properties(${target}
     PROPERTIES
@@ -88,17 +86,17 @@ set_target_properties(${target}
     FOLDER                      "${IDE_FOLDER}"
     COMPILE_DEFINITIONS_DEBUG   "${DEFAULT_COMPILE_DEFS_DEBUG}"
     COMPILE_DEFINITIONS_RELEASE "${DEFAULT_COMPILE_DEFS_RELEASE}"
-    COMPILE_FLAGS               "${DEFAULT_COMPILE_FLAGS}"
     LINK_FLAGS_DEBUG            "${DEFAULT_LINKER_FLAGS_DEBUG}"
     LINK_FLAGS_RELEASE          "${DEFAULT_LINKER_FLAGS_RELEASE}"
     DEBUG_POSTFIX               "d${DEBUG_POSTFIX}"
-    INCLUDE_PATH	            ${include_path})
+    INCLUDE_PATH                ${include_path})
 
 #
 # Deployment
 #
 
 # Library
+
 install(TARGETS ${target}
     RUNTIME DESTINATION ${INSTALL_BIN}
     LIBRARY DESTINATION ${INSTALL_SHARED}

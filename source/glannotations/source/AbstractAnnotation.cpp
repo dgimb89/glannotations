@@ -2,17 +2,13 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <glannotations/AbstractAnnotation.h>
-#include <glannotations/ViewportState.h>
-#include <glannotations/InternalState.h>
-#include <glannotations/PathState.h>
+#include <glannotations/States/ViewportState.h>
+#include <glannotations/States/QuadState.h>
+#include <glannotations/States/SplineState.h>
 #include <glannotations/Styles/ExternalColor.h>
 
 glannotations::AbstractAnnotation::AbstractAnnotation(const globjects::ref_ptr<glannotations::AbstractState>& state) {
 	setState(state);
-}
-
-void glannotations::AbstractAnnotation::prepare() {
-	m_renderer->prepare(this);
 }
 
 void glannotations::AbstractAnnotation::draw() {
@@ -39,13 +35,13 @@ void glannotations::AbstractAnnotation::resetInterpolation() {
 	m_renderState = nullptr;
 }
 
-void glannotations::AbstractAnnotation::interpolateState(const InternalState& mixState, float mix) {
+void glannotations::AbstractAnnotation::interpolateState(const QuadState& mixState, float mix) {
 	m_renderState = nullptr;
 	setupRenderState();
 	m_renderState = m_state->interpolateWith(mixState, mix);
 }
 
-void glannotations::AbstractAnnotation::interpolateState(const PathState& mixState, float mix) {
+void glannotations::AbstractAnnotation::interpolateState(const SplineState& mixState, float mix) {
 	m_renderState = nullptr;
 	setupRenderState();
 	m_renderState = m_state->interpolateWith(mixState, mix);
@@ -72,11 +68,21 @@ bool glannotations::AbstractAnnotation::isOnNearplane() const {
 		getRenderState()->asViewportState();
 		return true;
 	}
-	catch (std::bad_cast& e) {
+	catch (std::bad_cast&) {
 		return false;
 	}
 }
 
 glannotations::AbstractAnnotation::~AbstractAnnotation() {
 
+}
+
+void glannotations::AbstractAnnotation::prepareRenderer() {
+	if (isDirty()) {
+		m_renderer->prepare(this);
+	}
+}
+
+void glannotations::AbstractAnnotation::prepareDraw() {
+	getRenderState()->prepare();
 }
