@@ -29,38 +29,32 @@ set(DEFAULT_COMPILE_DEFS_RELEASE
     NDEBUG                    # Release build
 )
 
-if (OPTION_ERRORS_AS_EXCEPTION)
-    set(EXCEPTION_FLAG "-fexceptions")
-else()
-    set(EXCEPTION_FLAG "-fno-exceptions")
-endif()
-
 set(LINUX_COMPILE_FLAGS
-      
-      ${EXCEPTION_FLAG}
+
+      -fexceptions  # always use exceptions in glannotations
       -pthread      # -> use pthread library
     # -no-rtti      # -> disable c++ rtti
       -pipe         # -> use pipes
-      -Wall         # -> 
-      -Wextra       # -> 
+      -Wall         # ->
+      -Wextra       # ->
       -Werror       # ->
       -fPIC         # -> use position independent code
-      
-      -Wreturn-type 
-      -Wfloat-equal 
-      -Wshadow      # -> e.g. when a parameter is named like a member, too many warnings, disabled for now
-      -Wcast-align 
+
+      -Wreturn-type
+      -Wfloat-equal
+    # -Wshadow      # -> e.g. when a parameter is named like a member, too many warnings, disabled for now
+      -Wcast-align
       -Wconversion
 
     # -Werror=return-type -> missing returns in functions and methods are handled as errors which stops the compilation
-    
+
 )
 
 set(DEFAULT_COMPILE_FLAGS
     ${LINUX_COMPILE_FLAGS}
-    $<$<CONFIG:Debug>:   
+    $<$<CONFIG:Debug>:
     >
-    $<$<CONFIG:Release>: 
+    $<$<CONFIG:Release>:
     >
 )
 

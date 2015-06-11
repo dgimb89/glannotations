@@ -13,6 +13,7 @@ find_package(globjects REQUIRED)
 find_package(gloperate REQUIRED)
 find_package(libzeug REQUIRED)
 find_package(Libpng REQUIRED)
+find_package(OpenMP REQUIRED)
 
 #
 # Includes
@@ -53,6 +54,12 @@ if (OPTION_BUILD_STATIC)
     add_definitions("-DGLANNOTATIONS_STATIC")
 else()
     add_definitions("-DGLANNOTATIONS_EXPORTS")
+endif()
+
+if(OPENMP_FOUND)
+    add_definitions("-DUSE_OPENMP")
+    set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   ${OpenMP_C_FLAGS}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 endif()
 
 # force radians to avoid deprecated glm functionality
@@ -188,9 +195,9 @@ set(sources
 # Group source files
 set(header_group "Header Files (API)")
 set(source_group "Source Files")
-source_group_by_path(${include_path} "\\\\.h$|\\\\.hpp$" 
+source_group_by_path(${include_path} "\\\\.h$|\\\\.hpp$"
     ${header_group} ${api_includes})
-source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
+source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$"
     ${source_group} ${sources})
 
 #
