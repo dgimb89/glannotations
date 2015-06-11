@@ -34,12 +34,9 @@ namespace glannotations {
 		 */
 		void draw(long long preparationInMicroseconds);
 
-	protected:
-		inline size_t ringBufferPosition(size_t i);
-
 	private:
+		size_t m_startProcessingOffset = 0;
 		std::mutex m_mutex;
 		std::vector< globjects::ref_ptr<glannotations::AbstractAnnotation> > m_annotations;
-		size_t m_processIndex = 0;
 	};
 }

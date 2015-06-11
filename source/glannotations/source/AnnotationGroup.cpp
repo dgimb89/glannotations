@@ -1,8 +1,13 @@
 #define __STDC_LIMIT_MACROS
 
 #include <threadingzeug/parallelfor.h>
+#include <atomic>
 
 #include <glannotations/AnnotationGroup.h>
+
+inline size_t ringBufferPosition(const size_t& startOffset, const size_t& i, const size_t& nMax) {
+	return (startOffset + i) % nMax;
+}
 
 void glannotations::AnnotationGroup::addAnnotation(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) {
 	annotation->prepareRenderer();
@@ -22,23 +27,30 @@ void glannotations::AnnotationGroup::draw() const {
 	}
 }
 
-inline size_t glannotations::AnnotationGroup::ringBufferPosition(size_t i) {
-	return (m_processIndex + i) % m_annotations.size();
-}
-
 void glannotations::AnnotationGroup::draw(long long preparationInMicroseconds) {
-	size_t i = 0;
+	std::atomic<size_t> processIndex = 0;
+	size_t	nMax				= m_annotations.size(), 
+			startProccessing	= m_startProcessingOffset, 
+			iMax				= 0, 
+			i					= 0, 
+			localMax			= 0;
 	std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
 
-	#pragma omp parallel for reduction(max : i)
-	for (i = 0; i < m_annotations.size(); ++i) {
-		size_t index = ringBufferPosition(i);
-		m_annotations.at(index)->prepareDraw();
-		if (std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - t1).count() > preparationInMicroseconds) {
-			break;
+	#pragma omp parallel default(shared) private(i, localMax)
+	{
+		while (	std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - t1).count() < preparationInMicroseconds
+			&&	(i = processIndex++) < nMax) {
+			localMax = i;
+			m_annotations.at(ringBufferPosition(startProccessing, i, nMax))->prepareDraw();
+		}
+		#pragma omp critical
+		{
+			if (localMax > iMax) {
+				iMax = localMax;
+			}
 		}
 	}
-	m_processIndex = ringBufferPosition(i);
+	m_startProcessingOffset = ringBufferPosition(startProccessing, iMax, nMax);
 
 	for (const auto& annotation : m_annotations) {
 		annotation->draw();
