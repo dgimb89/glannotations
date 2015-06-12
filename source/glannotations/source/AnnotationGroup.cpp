@@ -38,6 +38,7 @@ void glannotations::AnnotationGroup::draw(long long preparationInMicroseconds) {
 
 	#pragma omp parallel default(shared) private(i, localMax)
 	{
+		localMax = 0;
 		while (	std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - t1).count() < preparationInMicroseconds
 			&&	(i = processIndex++) < nMax) {
 			localMax = i;
