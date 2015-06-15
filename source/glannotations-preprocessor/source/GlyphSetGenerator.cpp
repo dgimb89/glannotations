@@ -120,8 +120,8 @@ globjects::ref_ptr<glannotations::PNGImage> glannotations::preprocessor::GlyphSe
 	unsigned imageWidth = bitmapPtr->width + 2*marginLeft;// +marginRight;
 	globjects::ref_ptr<glannotations::PNGImage> result = new glannotations::PNGImage(imageWidth, imageHeight, 1, 8);
 
-	for (FT_Int w = 0; w < bitmapPtr->width; ++w) {
-		for (FT_Int h = 0; h < bitmapPtr->rows; ++h) {
+    for (FT_Int w = 0; w < static_cast<FT_Int>(bitmapPtr->width); ++w) {
+        for (FT_Int h = 0; h < static_cast<FT_Int>(bitmapPtr->rows); ++h) {
 			result->setImageValue(w + marginLeft, imageHeight - ((ascender - bearingY) + h) - 1, 0, 255 - bitmapPtr->buffer[h * bitmapPtr->width + w]);
 		}
 	}

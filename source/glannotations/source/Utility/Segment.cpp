@@ -3,8 +3,6 @@
 #include <glannotations/Utility/Plane.h>
 #include <algorithm>
 
-#define SMALL_NUM   0.00000001f // anything that avoids division overflow
-
 int glannotations::Utility::Segment::intersect(const glannotations::Utility::Triangle& T, glm::vec3& point) const {
 	// http://geomalgorithms.com/a06-_intersect-2.html
 	glm::vec3	u, v, n;              // triangle vectors
@@ -22,8 +20,8 @@ int glannotations::Utility::Segment::intersect(const glannotations::Utility::Tri
 	w0 = P0 - T.V0;
 	a = -glm::dot(n, w0);
 	b = glm::dot(n, dir);
-	if (fabs(b) < SMALL_NUM) {     // ray is  parallel to triangle plane
-		if (a == 0)                 // ray lies in triangle plane
+    if (std::abs(b) < std::numeric_limits<float>::epsilon()) {       // ray is  parallel to triangle plane
+        if (std::abs(a) < std::numeric_limits<float>::epsilon()) // ray lies in triangle plane
 			return -2;
 		else return 0;              // ray disjoint from plane
 	}

@@ -78,7 +78,7 @@ float glannotations::ViewportState::getScreenAspectRatio() const {
 
 void glannotations::ViewportState::setScreenAspectRatio(float val) {
 	// do not invalidate if aspect ratio is same as before in order to minimize positioning + sizing overhead
-	if (val == m_screenAspectRatio) return;
+    if (std::abs(m_screenAspectRatio - val) < std::numeric_limits<float>::epsilon()) return;
 	setDirty(true);
 	m_screenAspectRatio = val;
 }

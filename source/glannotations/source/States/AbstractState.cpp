@@ -79,7 +79,7 @@ float glannotations::AbstractState::getMaximumHeight() const {
 }
 
 bool glannotations::AbstractState::hasMaximumHeight() const {
-	return getMaximumHeight() != 0.f;
+    return getMaximumHeight() > 0.f;
 }
 
 void glannotations::AbstractState::setKeepSourceAspectRatio(bool keepAspectRatio) {

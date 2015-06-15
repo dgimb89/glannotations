@@ -1,7 +1,11 @@
+#pragma once
+
+#include <string>
+
 namespace glannotations {
 namespace ShaderSources {
 
-static const char*	passThroughVS = R"(
+static std::string passThroughVS = R"(
 	#version 330
 
 	layout (location = 0) in vec3 position;
@@ -11,12 +15,12 @@ static const char*	passThroughVS = R"(
 	}
 	)";
 
-static const char* matrixUniformBlock = R"(
+static std::string matrixUniformBlock = R"(
 	layout (std140) uniform GlobalMatrices {
 		mat4 viewMatrix;
 		mat4 projectionMatrix;
 	};
 	)";
 
-}; // Shader
-}; // glat
+} // Shader
+} // glat

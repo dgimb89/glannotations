@@ -318,7 +318,7 @@ void glannotations::QuadStrip::draw() {
 }
 
 glm::vec2 glannotations::QuadStrip::getExtends() const {
-	glm::vec2 texAdvance(0.f, m_textureRanges.front().second.y * getQuadstripRowCount());
+    glm::vec2 texAdvance(0.f, m_textureRanges.front().second.y * static_cast<float>(getQuadstripRowCount()));
 	for (auto textureCoords : m_textureRanges) {
 		texAdvance.x += textureCoords.second.x;
 	}
@@ -419,7 +419,7 @@ size_t glannotations::QuadStrip::getQuadstripRowCount() const {
 }
 
 float glannotations::QuadStrip::getQuadStripHeight() {
-	return getQuadstripRowCount() * getUniformQuadHeight();
+    return static_cast<float>(getQuadstripRowCount()) * getUniformQuadHeight();
 }
 
 float glannotations::QuadStrip::getQuadStripWidth() {

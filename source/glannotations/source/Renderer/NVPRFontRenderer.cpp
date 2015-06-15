@@ -62,7 +62,7 @@ void glannotations::NVPRFontRenderer::drawSetupState(glannotations::QuadState& s
 	cleanMatrixStacks();
 	}
 
-void glannotations::NVPRFontRenderer::drawSetupState(glannotations::SplineState& state) const {
+void glannotations::NVPRFontRenderer::drawSetupState(glannotations::SplineState& /*state*/) const {
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
@@ -96,7 +96,7 @@ gl::PathRenderingMaskNV operator|(gl::PathRenderingMaskNV a, gl::PathRenderingMa
 	return static_cast<gl::PathRenderingMaskNV>(static_cast<int>(a) | static_cast<int>(b));
 }
 
-void glannotations::NVPRFontRenderer::getTextStencelingDimensions(const char* text, const size_t& messageLen, gl::GLfloat* &xtranslate, gl::GLfloat& totalAdvance, gl::GLfloat& yMin, gl::GLfloat& yMax,
+void glannotations::NVPRFontRenderer::getTextStencelingDimensions(const char* /*text*/, const size_t& messageLen, gl::GLfloat* &xtranslate, gl::GLfloat& totalAdvance, gl::GLfloat& yMin, gl::GLfloat& yMax,
 	gl::GLfloat& underline_position, gl::GLfloat& underline_thickness) const {
 	float font_data[4];
 	gl::GLfloat horizontalAdvance[256];
@@ -134,7 +134,7 @@ void glannotations::NVPRFontRenderer::getTextStencelingDimensions(const char* te
 
 	/* Total advance is accumulated spacing plus horizontal advance of
 	the last glyph */
-	totalAdvance = xtranslate[2 * (messageLen - 1)] + horizontalAdvance[m_currentText[messageLen - 1]];
+    totalAdvance = xtranslate[2 * (messageLen - 1)] + horizontalAdvance[static_cast<int>(m_currentText[messageLen - 1])];
 }
 
 void glannotations::NVPRFontRenderer::stencilThenCoverText(const size_t& messageLen, const gl::GLfloat* xtranslate) const {

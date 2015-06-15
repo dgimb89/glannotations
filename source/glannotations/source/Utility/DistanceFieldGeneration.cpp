@@ -6,7 +6,7 @@ const double kernel[] = {	0.0, 	1.0, 					2.0,
 							1.0, 	std::sqrt(1 + 1), 		std::sqrt(4 + 1),
 							2.0,	std::sqrt(4 + 1),		std::sqrt(8) };
 
-#define SWAPIFLOWER(y,x,swapVal) if((x) >= 0 && (x) < original.getWidth() && (y) >= 0 && (y) < original.getHeight()) \
+#define SWAPIFLOWER(y,x,swapVal) if(static_cast<int>(x) >= 0 && (x) < original.getWidth() && static_cast<int>(y) >= 0 && (y) < original.getHeight()) \
 	distances[(y)*original.getWidth() + (x)] = (original.isColored(x, y) ? -1.0 : 1.0) * std::min(std::abs(distances[(y)*original.getWidth() + (x)]), std::abs(swapVal))
 
 bool glannotations::DistanceFieldGeneration::detail::selfColoredNeighborsNot(const glannotations::PNGImage& original, unsigned x, unsigned y) {
@@ -45,8 +45,8 @@ double cubicInterpolate(double p, double cur, double n1, double n2, double frac)
 globjects::ref_ptr<glannotations::PNGImage> glannotations::DistanceFieldGeneration::bicubicResize(const glannotations::PNGImage& inImage, size_t scaledWidth, size_t scaledHeight) {
 	globjects::ref_ptr<glannotations::PNGImage> scaledResult = new glannotations::PNGImage(scaledWidth, scaledHeight, inImage.getNumComponents());
 
-	const double tx = double(inImage.getWidth()) / scaledWidth;
-	const double ty = double(inImage.getHeight()) / scaledHeight;
+    const double tx = double(inImage.getWidth()) / static_cast<double>(scaledWidth);
+    const double ty = double(inImage.getHeight()) / static_cast<double>(scaledHeight);
 	const unsigned channels = inImage.getNumComponents();
 
 	for (unsigned y = 0; y < scaledHeight; ++y){
@@ -60,7 +60,7 @@ globjects::ref_ptr<glannotations::PNGImage> glannotations::DistanceFieldGenerati
 				double p2 = cubicInterpolate(inImage.getImageValue(lowestX + 2, lowestY, c), inImage.getImageValue(lowestX + 2, lowestY + 1, c), inImage.getImageValue(lowestX + 2, lowestY + 2, c), inImage.getImageValue(lowestX + 2, lowestY + 3, c), yFrac);
 				double p3 = cubicInterpolate(inImage.getImageValue(lowestX + 3, lowestY, c), inImage.getImageValue(lowestX + 3, lowestY + 1, c), inImage.getImageValue(lowestX + 3, lowestY + 2, c), inImage.getImageValue(lowestX + 3, lowestY + 3, c), yFrac);
 				double result = cubicInterpolate(p0, p1, p2, p3, (tx * x) - std::floor(tx * x));
-				scaledResult->setImageValue(x, y, c, static_cast<glannotations::PNGImage::colorVal_t>(std::round(result)));
+                scaledResult->setImageValue(x, y, static_cast<short unsigned int>(c), static_cast<glannotations::PNGImage::colorVal_t>(std::round(result)));
 			}
 		}
 	}

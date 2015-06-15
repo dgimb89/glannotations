@@ -12,7 +12,7 @@ namespace glannotations {
 	public:
 		DrawingPrimitiveBase();
 		virtual ~DrawingPrimitiveBase();
-		void setupShader(const char* vertShader, const char* geomShader, const char* fragShader);
+        void setupShader(const std::string & vertShader, const std::string & geomShader, const std::string & fragShader);
 
 		virtual void setColor(glm::vec4 color) override;
 		virtual void setBindingIndex(unsigned int bindingIndex) override;
@@ -20,7 +20,7 @@ namespace glannotations {
 	protected:
 		void initialize();
 
-		globjects::Shader* finalizeGeometryShader(const char* shader);
+        globjects::Shader* finalizeGeometryShader(const std::string & shader);
 
 		globjects::ref_ptr<globjects::Program> m_program;
 		globjects::ref_ptr<globjects::VertexArray> m_vao;

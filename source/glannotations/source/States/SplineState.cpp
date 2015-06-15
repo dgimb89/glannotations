@@ -80,7 +80,7 @@ void glannotations::SplineState::updateSplineTop() {
 
 	std::vector<glm::vec3> newTopCtrlPoints;
 
-	for (int i = 0; i < baseCtrlPointSize; i++){
+    for (unsigned int i = 0; i < baseCtrlPointSize; i++){
 		secantVec = m_splineBase->getControlPoints().at(i + 1) - m_splineBase->getControlPoints().at(i);
 
 		normal = glm::cross(v1, secantVec);
@@ -127,6 +127,9 @@ void glannotations::SplineState::updateSplineTop() {
 		m_splineTop->setKnotValues(m_splineBase->getKnotValues());
 		m_splineTop->calculateSplineDegree();
 		break;
+    default:
+        // TODO: handle CUSTOM_SECOND_SPLINE
+        break;
 	}
 }
 
@@ -171,7 +174,7 @@ void glannotations::SplineState::setExternalReference(const globjects::ref_ptr<g
 	m_externalReference->setupExternalReference(*this);
 }
 
-void glannotations::SplineState::updateExtends(glm::vec2 sourceExtends){
+void glannotations::SplineState::updateExtends(glm::vec2 /*sourceExtends*/){
 	throw std::logic_error("The method or operation is not implemented.");
 	//todo:anne
 	//don't know how to do that, we don't have extends in this form

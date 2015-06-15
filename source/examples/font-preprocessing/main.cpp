@@ -3,7 +3,7 @@
 
 /** This example generates various Distance Fields from PNG, SVG, TrueTypeFonts and saves them into files
 */
-int main(int argc, char* argv[]) {
+int main(int /*argc*/, char* /*argv*/[]) {
 
 	// Distance Transform 
 	{

@@ -16,7 +16,7 @@ namespace Utility {
 		-2 = are in same plane
 		-1 = triangle is degenerated
 		0 = disjoint (no intersection)
-		1 = intersect (saved in input "point")
+        1 = intersect (saved in input "point") */
 		/************************************************************************/
 		int intersect(const glannotations::Utility::Triangle& T, glm::vec3& point) const;
 		int orthographicProjection(const glm::vec3& point, glm::vec3& projectionPoint) const;

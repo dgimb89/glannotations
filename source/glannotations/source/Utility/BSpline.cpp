@@ -34,7 +34,7 @@ glannotations::BSpline::BSpline(std::vector<glm::vec2> ctrlPoints, unsigned shor
 	calculateArcLengths();
 }
 
-void glannotations::BSpline::project2DContropointsToPlane(std::vector<glm::vec2> ctrlPoints, glm::vec3 planeNormal, glm::vec3 firstControlPointOnTargetPlane, glm::vec3 lastControlPointOnTargetPlane){
+void glannotations::BSpline::project2DContropointsToPlane(std::vector<glm::vec2> ctrlPoints, glm::vec3 planeNormal, glm::vec3 firstControlPointOnTargetPlane, glm::vec3 /*lastControlPointOnTargetPlane*/){
 	//todo:anne needs testing!
 	setDirty(true);
 	
@@ -54,7 +54,7 @@ void glannotations::BSpline::project2DContropointsToPlane(std::vector<glm::vec2>
 	glm::vec3 translationVec = firstControlPointOnTargetPlane - glm::vec3(controlPoints2D.at(0), 0.f);
 
 	//todo:anne transform points based on given plane
-	for (int i = 0; i < controlPoints2D.size(); i++){
+    for (unsigned int i = 0; i < controlPoints2D.size(); i++){
 		glm::vec3 projectedPoint = glm::vec3(controlPoints2D.at(i), 0.f);
 
 		projectedPoint = glm::rotate(projectedPoint, rotationAngle, rotationAxis);
@@ -97,7 +97,7 @@ void glannotations::BSpline::calculateUniformKnotValues() {
 	assert(m_ctrlPoints.size() > 0);
 	size_t ctrlCount = m_ctrlPoints.size() - 1;
 	//float uniformDistance = ctrlCount;
-	float current = 0.f;
+    //float current = 0.f;
 	// internal knots - uniform distribution
 	for (unsigned n = 1; n < ctrlCount; ++n) {
 		m_knotValues.push_back(static_cast<float>(n));
@@ -133,8 +133,8 @@ void glannotations::BSpline::calculateArcLengths() {
 	m_arcLengths.clear();
 	m_arcLengths.push_back(0.0);
 
-	for (int i = 1; i < maxPoint; i++){
-		glm::vec3 p = retrieveCurvepointAt((float)i / maxPoint);
+    for (unsigned int i = 1; i < maxPoint; i++){
+        glm::vec3 p = retrieveCurvepointAt(static_cast<float>(i) / static_cast<float>(maxPoint));
 		sum += glm::distance(p, previousPoint);
 		previousPoint = p;
 		m_arcLengths.push_back(sum);
@@ -150,7 +150,7 @@ glm::vec3 glannotations::BSpline::retrieveCurvepointAt(float t) {
 	if ( t < 0.0f || t > 1.0f)
 		std::cout << "debug: warning! 0 <= t <= 1";
 
-	float tempT = t * (m_ctrlPoints.size() - 1);
+    float tempT = t * static_cast<float>(m_ctrlPoints.size() - 1);
 	int i = static_cast<int>(std::floor(tempT)) + m_degree - 1;
 	glm::vec3 point = deBoor(m_degree, m_degree, i, tempT, m_knotValues);
 
@@ -158,17 +158,17 @@ glm::vec3 glannotations::BSpline::retrieveCurvepointAt(float t) {
 };
 
 inline int binaryIndexOfLargestValueSmallerThanOrEqualTo(std::vector<float> container, float searchElement){
-	int minIndex = 0;
+    unsigned int minIndex = 0;
 	assert(container.size() > 0);
 	size_t maxIndex = container.size() - 1;
-	int currentIndex;
+    unsigned int currentIndex;
 	float currentElement;
 
 	while (minIndex <= maxIndex) {
-		currentIndex = static_cast<int>(std::floor((minIndex + maxIndex) / 2));
+        currentIndex = static_cast<unsigned int>(std::floor((minIndex + maxIndex) / 2));
 		currentElement = container.at(currentIndex);
 
-		if (currentElement == searchElement)
+        if (std::abs(currentElement - searchElement) < std::numeric_limits<float>::epsilon())
 			return currentIndex;
 		if (currentElement >= searchElement &&
 			currentIndex == 0)
@@ -199,7 +199,7 @@ glm::vec3 glannotations::BSpline::deBoor(int k, int degree, int i, float t, std:
 	else {
 		float alpha;
 		try {
-			if (i + degree + 1 - k >= knots.size() || (knots[i + degree + 1 - k] - knots[i]) == 0)
+            if (i + degree + 1 - k >= static_cast<int>(knots.size()) || std::abs(knots[i + degree + 1 - k] - knots[i]) < std::numeric_limits<float>::epsilon())
 				alpha = 1.0f;
 			else
 				alpha = (t - knots[i]) / (knots[i + degree + 1 - k] - knots[i]);
@@ -219,9 +219,9 @@ float glannotations::BSpline::getTForU(float u){
 	float targetArcLength = u * m_arcLengths.back();
 	int index = binaryIndexOfLargestValueSmallerThanOrEqualTo(m_arcLengths, targetArcLength);
 
-	if (m_arcLengths[index] == targetArcLength){
+    if (std::abs(m_arcLengths[index] - targetArcLength) < std::numeric_limits<float>::epsilon()){
 		// if exact match, return t based on exact index
-		t = static_cast<float>(index) / (m_arcLengths.size() - 1);
+        t = static_cast<float>(index) / static_cast<float>(m_arcLengths.size() - 1);
 	}
 	else{
 		// need to interpolate between two points
@@ -229,7 +229,7 @@ float glannotations::BSpline::getTForU(float u){
 		float lengthAfter = m_arcLengths[index + 1];
 		float segmentLength = lengthAfter - lengthBefore;
 		float segmentFraction = (targetArcLength - lengthBefore) / segmentLength;
-		t = (index + segmentFraction) / (m_arcLengths.size() - 1);
+        t = (static_cast<float>(index) + segmentFraction) / static_cast<float>(m_arcLengths.size() - 1);
 	}
 	if (t<0 || t>1)
 		std::cout << "t out of range: " << t;

@@ -15,11 +15,11 @@ bool glannotations::AbstractExternalReference::isPositioningOnly() const {
 	return m_positioningOnly;
 }
 
-void glannotations::AbstractExternalReference::setupExternalReference(const QuadState& state) {
+void glannotations::AbstractExternalReference::setupExternalReference(const QuadState& /*state*/) {
 	assertNotReused();
 }
 
-void glannotations::AbstractExternalReference::setupExternalReference(const SplineState& state) {
+void glannotations::AbstractExternalReference::setupExternalReference(const SplineState& /*state*/) {
 	assertNotReused();
 }
 

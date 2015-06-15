@@ -51,7 +51,7 @@ void glannotations::RendererFactory::useNVpr(bool useNVpr) {
 	m_useNVpr = useNVpr;
 }
 
-globjects::ref_ptr<glannotations::AbstractRenderer> glannotations::RendererFactory::createRenderer(const glannotations::FontAnnotation& annotation) const {
+globjects::ref_ptr<glannotations::AbstractRenderer> glannotations::RendererFactory::createRenderer(const glannotations::FontAnnotation& /*annotation*/) const {
 	if (autoInitializesMatricesBuffer()) {
 		glannotations::initializeMatricesUBO(m_globalMatricesBindingIndex);
 	}
@@ -66,7 +66,7 @@ globjects::ref_ptr<glannotations::AbstractRenderer> glannotations::RendererFacto
 	}
 }
 
-globjects::ref_ptr<glannotations::AbstractRenderer> glannotations::RendererFactory::createRenderer(const glannotations::SVGAnnotation& annotation) const {
+globjects::ref_ptr<glannotations::AbstractRenderer> glannotations::RendererFactory::createRenderer(const glannotations::SVGAnnotation& /*annotation*/) const {
 	if (autoInitializesMatricesBuffer()) {
 		glannotations::initializeMatricesUBO(m_globalMatricesBindingIndex);
 	}
@@ -83,7 +83,7 @@ globjects::ref_ptr<glannotations::AbstractRenderer> glannotations::RendererFacto
 	}
 }
 
-globjects::ref_ptr<glannotations::AbstractRenderer> glannotations::RendererFactory::createRenderer(const glannotations::PNGAnnotation& annotation) const {
+globjects::ref_ptr<glannotations::AbstractRenderer> glannotations::RendererFactory::createRenderer(const glannotations::PNGAnnotation& /*annotation*/) const {
 	if (autoInitializesMatricesBuffer()) {
 		glannotations::initializeMatricesUBO(m_globalMatricesBindingIndex);
 	}

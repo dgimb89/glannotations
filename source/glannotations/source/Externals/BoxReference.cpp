@@ -68,7 +68,7 @@ void glannotations::BoxReference::updatePositioning(QuadState& state) {
 	state.setExtends(intersection - widthSpan - heightSpan, intersection + widthSpan - heightSpan, intersection + widthSpan + heightSpan);
 }
 
-void glannotations::BoxReference::updatePositioning(SplineState& state) {
+void glannotations::BoxReference::updatePositioning(SplineState& /*state*/) {
 	throw std::logic_error("The method or operation is not implemented.");
 }
 

@@ -24,7 +24,7 @@ glannotations::GlyphSetConfig::GlyphSetConfig(std::string fontFileName) {
 		// deserialization begins here
 		const rapidjson::Value& fontObject = document[fontFileName.c_str()];
 
-		m_startGlyph = fontObject["startGlyph"].GetUint();
+        m_startGlyph = static_cast<short unsigned int>(fontObject["startGlyph"].GetUint());
 		m_whitespaceLength = static_cast<float>(fontObject["whitespaceLength"].GetDouble());
 		const rapidjson::Value& glyphConfigs = fontObject["glyphs"];
 		for (rapidjson::SizeType i = 0; i < glyphConfigs.Size(); ++i) {
@@ -140,7 +140,7 @@ void glannotations::GlyphSetConfig::setGlyphConfigs(const std::vector<glannotati
 }
 
 const glannotations::GlyphSetConfig::GlyphConfig& glannotations::GlyphSetConfig::getGlyphConfigForCharcode(unsigned short charCode) {
-	return getGlyphConfig(charCode - m_startGlyph);
+    return getGlyphConfig(static_cast<unsigned short int>(charCode - m_startGlyph));
 }
 
 std::string glannotations::GlyphSetConfig::getGlyphsetImageName() const {

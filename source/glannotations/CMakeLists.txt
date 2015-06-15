@@ -22,10 +22,10 @@ find_package(OpenMP REQUIRED)
 include_directories(
     ${LIBPNG_INCLUDE_DIR}
     ${GLM_INCLUDE_DIR}
-    ${GLBINDING_INCLUDES}
-    ${GLOBJECTS_INCLUDES}
-    ${GLOPERATE_INCLUDES}
-    ${LIBZEUG_INCLUDES}
+    ${GLBINDING_INCLUDE_DIRS}
+    ${GLOBJECTS_INCLUDE_DIRS}
+    ${GLOPERATE_INCLUDE_DIRS}
+    ${LIBZEUG_INCLUDE_DIRS}
 )
 
 include_directories(
@@ -72,7 +72,7 @@ add_definitions("-DGLM_FORCE_RADIANS")
 set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
-set(api_includes
+set(api_INCLUDE_DIRS
     ${include_path}/glannotations_api.h
     ${include_path}/AbstractAnnotation.h
     ${include_path}/AnnotationGroup.h
@@ -196,7 +196,7 @@ set(sources
 set(header_group "Header Files (API)")
 set(source_group "Source Files")
 source_group_by_path(${include_path} "\\\\.h$|\\\\.hpp$"
-    ${header_group} ${api_includes})
+    ${header_group} ${api_INCLUDE_DIRS})
 source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$"
     ${source_group} ${sources})
 
@@ -206,7 +206,7 @@ source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$"
 
 configure_file(${source_path}/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
-add_library(${target} ${api_includes} ${sources})
+add_library(${target} ${api_INCLUDE_DIRS} ${sources})
 
 target_link_libraries(${target} ${libs})
 

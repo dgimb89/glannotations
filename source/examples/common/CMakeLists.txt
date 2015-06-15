@@ -22,8 +22,8 @@ include_directories(
     ${OPENGL_INCLUDE_DIR}
     ${GLM_INCLUDE_DIR}
     ${GLFW_INCLUDE_DIR}
-    ${GLBINDING_INCLUDES}
-    ${GLOBJECTS_INCLUDES}
+    ${GLBINDING_INCLUDE_DIRS}
+    ${GLOBJECTS_INCLUDE_DIRS}
 )
 
 get_property(GENERATED_HEADER_PATH GLOBAL PROPERTY GENERATED_HEADER_PATH_PROPERTY)
@@ -53,7 +53,7 @@ set(libs
 set(include_path "${CMAKE_CURRENT_SOURCE_DIR}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}")
 
-set(api_includes
+set(api_INCLUDE_DIRS
     ${include_path}/AbstractCoordinateProvider.h
     ${include_path}/AxisAlignedBoundingBox.h
     ${include_path}/Camera.h
@@ -89,7 +89,7 @@ set(sources
 set(header_group "Header Files (API)")
 set(source_group "Source Files")
 source_group_by_path(${include_path} "\\\\.h$|\\\\.hpp$" 
-    ${header_group} ${api_includes})
+    ${header_group} ${api_INCLUDE_DIRS})
 source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
     ${source_group} ${sources})
 
@@ -97,7 +97,7 @@ source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$"
 # Build library
 #
 
-add_library(${target} STATIC ${api_includes} ${sources})
+add_library(${target} STATIC ${api_INCLUDE_DIRS} ${sources})
 target_link_libraries(${target} ${libs})
 target_compile_options(${target} PRIVATE ${DEFAULT_COMPILE_FLAGS})
 

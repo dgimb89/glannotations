@@ -357,7 +357,7 @@ void glannotations::BendedQuadStrip::updateQuadPositions() {
 
 	glm::vec3 currentPoint = m_startPoint;
 
-	for (int i = 0; i < m_textureRanges.size(); i++) {
+    for (unsigned int i = 0; i < m_textureRanges.size(); i++) {
 		//just put the full text on the spline
 		vertexVector.push_back(currentPoint);
 
@@ -399,7 +399,7 @@ void glannotations::BendedQuadStrip::updateQuadPositions() {
 	m_vao->enable(4);
 }
 
-bool glannotations::BendedQuadStrip::setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur) {
+bool glannotations::BendedQuadStrip::setPosition(glm::vec3 ll, glm::vec3 /*lr*/, glm::vec3 /*ur*/) {
 	m_startPoint = ll;
 	updateQuadPositions();
 	// finalize geom shader for internal rendering

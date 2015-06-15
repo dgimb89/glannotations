@@ -124,7 +124,8 @@ protected:
 		char buffer[10];
 		char *p = buffer;
 		do {
-			*p++ = (u % 10) + '0';
+            *p = static_cast<char>(u % 10 + '0');
+            p++;
 			u /= 10;
 		} while (u > 0);
 
@@ -148,7 +149,7 @@ protected:
 		do {
 			*p++ = char(u64 % 10) + '0';
 			u64 /= 10;
-		} while (u64 > 0);
+        } while (u64 > 0);
 
 		do {
 			--p;

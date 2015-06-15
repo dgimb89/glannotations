@@ -28,7 +28,7 @@ void glannotations::AnnotationGroup::draw() const {
 }
 
 void glannotations::AnnotationGroup::draw(long long preparationInMicroseconds) {
-	std::atomic<size_t> processIndex = 0;
+    std::atomic<size_t> processIndex(0);
 	size_t	nMax				= m_annotations.size(), 
 			startProccessing	= m_startProcessingOffset, 
 			iMax				= 0, 

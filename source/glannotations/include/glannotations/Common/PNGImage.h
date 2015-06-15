@@ -40,7 +40,7 @@ namespace glannotations {
 		void setImageValue(size_t x, size_t y, unsigned short numComponent, colorVal_t value);
 
 		// clamps for access out of image range
-		colorVal_t getImageValue(signed long x, signed long y, unsigned short numComponent) const;
+        colorVal_t getImageValue(signed long x, signed long y, unsigned numComponent) const;
 		bool isColored(size_t x, size_t y) const;
 		const globjects::ref_ptr<image_t> getImage() const;
 

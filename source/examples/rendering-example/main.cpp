@@ -101,9 +101,9 @@ public:
 		m_building13 = new Building(2);
 		m_building14 = new Building(2);
 
-		float color;
-		srand(static_cast<unsigned int>(time(NULL)));
-		color = ((rand() * 0.4f) / RAND_MAX) + 0.6f;
+        //float color;
+        //srand(static_cast<unsigned int>(time(NULL)));
+        //color = ((rand() * 0.4f) / RAND_MAX) + 0.6f;
 		m_building->setPosition(glm::vec3(-1.f, -4.f, 1.f), glm::vec3(1.f, -3.f, -1.f));
 		m_building1->setPosition(glm::vec3(-1.f, -4.f, 5.f), glm::vec3(1.f, 4.f, 2.f));
 		m_building2->setPosition(glm::vec3(-1.f, -4.f, 8.f), glm::vec3(1.f, 0.f, 6.f));

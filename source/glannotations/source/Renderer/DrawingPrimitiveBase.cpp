@@ -19,7 +19,7 @@ glannotations::DrawingPrimitiveBase::~DrawingPrimitiveBase() {
 	m_program->release();
 }
 
-void glannotations::DrawingPrimitiveBase::setupShader(const char* vertShader, const char* geomShader, const char* fragShader) {
+void glannotations::DrawingPrimitiveBase::setupShader(const std::string & vertShader, const std::string & geomShader, const std::string & fragShader) {
 	m_program = new globjects::Program;
 	m_program->attach(	globjects::Shader::fromString(gl::GL_VERTEX_SHADER, vertShader), 
 						finalizeGeometryShader(geomShader),
@@ -35,8 +35,8 @@ void glannotations::DrawingPrimitiveBase::setBindingIndex(unsigned int bindingIn
 	}
 }
 
-globjects::Shader* glannotations::DrawingPrimitiveBase::finalizeGeometryShader(const char* shader) {
-	globjects::StringTemplate* shaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(shader, strlen(shader)));
+globjects::Shader* glannotations::DrawingPrimitiveBase::finalizeGeometryShader(const std::string & shader) {
+    globjects::StringTemplate* shaderSource = new globjects::StringTemplate(new globjects::StaticStringSource(shader));
 	shaderSource->replace("### MATRIX_BLOCK ###", glannotations::ShaderSources::matrixUniformBlock);
 	return new globjects::Shader(gl::GL_GEOMETRY_SHADER, shaderSource);
 }

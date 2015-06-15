@@ -66,11 +66,11 @@ void glannotations::FlagReference::updatePositioning(QuadState& state) {
 	state.setExtends(m_newLL, m_newLR, m_newUR);
 }
 
-void glannotations::FlagReference::updatePositioning(SplineState& state) {
+void glannotations::FlagReference::updatePositioning(SplineState& /*state*/) {
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
-glannotations::FlagReference::FlagReference(float widthOffset, glm::vec3 depthSpan, bool onlyPositioning /* = true */)
+glannotations::FlagReference::FlagReference(float /*widthOffset*/, glm::vec3 depthSpan, bool onlyPositioning /* = true */)
 	: glannotations::AbstractExternalReference(onlyPositioning) {
 	m_depthSpan = depthSpan;
 }

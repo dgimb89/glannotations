@@ -10,8 +10,8 @@ void glannotations::LabelReference::updatePositioning(QuadState& state) {
 	state.setExtends(m_newLL, m_newLR, m_newLR + upVector);
 }
 
-void glannotations::LabelReference::updatePositioning(SplineState& state) {
-	//throw std::logic_error("The method or operation is not implemented.");
+void glannotations::LabelReference::updatePositioning(SplineState& /*state*/) {
+    throw std::logic_error("The method or operation is not implemented.");
 	//todo:anne what do I have to do here?
 }
 

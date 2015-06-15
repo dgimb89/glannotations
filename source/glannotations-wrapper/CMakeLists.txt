@@ -40,10 +40,10 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/source/glannotations/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${GLM_INCLUDE_DIR}
-    ${GLBINDING_INCLUDES}
-    ${GLOBJECTS_INCLUDES}
-    ${GLOPERATE_INCLUDES}
-    ${LIBZEUG_INCLUDES}
+    ${GLBINDING_INCLUDE_DIRS}
+    ${GLOBJECTS_INCLUDE_DIRS}
+    ${GLOPERATE_INCLUDE_DIRS}
+    ${LIBZEUG_INCLUDE_DIRS}
     ${OPENSCENEGRAPH_INCLUDE_DIRS}
 )
 
@@ -67,7 +67,7 @@ add_definitions("-DGLM_FORCE_RADIANS")
 set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/glannotations")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
-set(api_includes
+set(api_INCLUDE_DIRS
     ${include_path}/wrapper/glannotations-wrapper_api.h
 	${include_path}/wrapper/OSGAnnotationDrawable.h
 )
@@ -80,7 +80,7 @@ set(sources
 set(header_group "Header Files (API)")
 set(source_group "Source Files")
 source_group_by_path(${include_path} "\\\\.h$|\\\\.hpp$" 
-    ${header_group} ${api_includes})
+    ${header_group} ${api_INCLUDE_DIRS})
 source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
     ${source_group} ${sources})
 
@@ -89,9 +89,9 @@ source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$"
 #
 
 if(OPTION_BUILD_STATIC)
-    add_library(${target} ${api_includes} ${sources})
+    add_library(${target} ${api_INCLUDE_DIRS} ${sources})
 else()
-    add_library(${target} SHARED ${api_includes} ${sources})
+    add_library(${target} SHARED ${api_INCLUDE_DIRS} ${sources})
 endif()
 
 target_link_libraries(${target} ${libs})

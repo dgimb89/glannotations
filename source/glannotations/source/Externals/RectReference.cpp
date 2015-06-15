@@ -25,7 +25,7 @@ void glannotations::RectReference::setupExternalReference(const QuadState& state
 	m_halfAnnotHeight = glm::distance(state.getUR(), state.getLR()) / 2.f;
 }
 
-void glannotations::RectReference::setupExternalReference(const SplineState& state) {
+void glannotations::RectReference::setupExternalReference(const SplineState& /*state*/) {
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
@@ -50,6 +50,6 @@ void glannotations::RectReference::updatePositioning(QuadState& state) {
 	state.setExtends(m_center - widthSpan - heightSpan, m_center + widthSpan - heightSpan, m_center + widthSpan + heightSpan);
 }
 
-void glannotations::RectReference::updatePositioning(SplineState& state) {
+void glannotations::RectReference::updatePositioning(SplineState& /*state*/) {
 	throw std::logic_error("The method or operation is not implemented.");
 }

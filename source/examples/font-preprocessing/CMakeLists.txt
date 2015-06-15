@@ -22,9 +22,9 @@ include_directories(
     ${OPENGL_INCLUDE_DIR}
     ${GLM_INCLUDE_DIR}
     ${GLFW_INCLUDE_DIR}
-    ${GLOBJECTS_INCLUDES}
-    ${GLOPERATE_INCLUDES}
-    ${LIBZEUG_INCLUDES}
+    ${GLOBJECTS_INCLUDE_DIRS}
+    ${GLOPERATE_INCLUDE_DIRS}
+    ${LIBZEUG_INCLUDE_DIRS}
 )
 
 include_directories(

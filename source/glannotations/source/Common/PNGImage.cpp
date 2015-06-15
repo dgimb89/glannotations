@@ -17,11 +17,11 @@ glannotations::PNGImage::image_t::~image_t() {
 }
 // ----------------------
 
-glannotations::PNGImage::PNGImage(size_t width, size_t height, unsigned short numComponents /* = 4 */, unsigned short bitdepth /* = 8 */) {
+glannotations::PNGImage::PNGImage(size_t width, size_t height, unsigned short numComponents /* = 4 */, unsigned short /*bitdepth*/ /* = 8 */) {
 	m_width = width;
 	m_height = height;
 	m_channels = numComponents;
-	m_bitdepth = 8;
+    m_bitdepth = 8; // TODO: use bitdepth parameter
 	createImage();
 }
 
@@ -101,7 +101,7 @@ bool glannotations::PNGImage::loadImage(std::string pngFileName) {
 	// if the image has a transperancy set - convert it to a full Alpha channel
 	if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS)) {
 		png_set_tRNS_to_alpha(png_ptr);
-		m_channels += 1;
+        m_channels = static_cast<short unsigned int>(m_channels + 1); // += doesn't work on GCC 4.9.2
 	}
 
 	// we don't support 16 bit precision yet
@@ -117,9 +117,9 @@ bool glannotations::PNGImage::loadImage(std::string pngFileName) {
 		png_read_rows(png_ptr, (png_bytepp)&row_pointer, NULL, 1);
 		for (unsigned x = 0; x < this->m_width; x++) {
 			// set all components
-			for (unsigned numComponent = 0; numComponent < m_channels; ++numComponent) {
+            for (short unsigned int numComponent = 0; numComponent < m_channels; ++numComponent) {
 				// we do yet only support 8 bit precision; change this when other values are supported
-				setImageValue(x, m_height - y - 1, numComponent, static_cast<colorVal_t>(row_pointer[x*m_channels + numComponent]));
+                setImageValue(x, m_height - y - 1, numComponent, static_cast<colorVal_t>(row_pointer[x*m_channels + numComponent]));
 			}
 		}
 	}
@@ -194,11 +194,11 @@ void glannotations::PNGImage::setImageValue(size_t x, size_t y, unsigned short n
 	imageValue(x, y, numComponent) = value;
 }
 
-glannotations::PNGImage::colorVal_t glannotations::PNGImage::getImageValue(signed long x, signed long y, unsigned short numComponent) const {
+glannotations::PNGImage::colorVal_t glannotations::PNGImage::getImageValue(signed long x, signed long y, unsigned numComponent) const {
 	// clamp x,y access to image ranges
 	x = std::max(0l, std::min(static_cast<signed long>(getWidth() - 1), x));
 	y = std::max(0l, std::min(static_cast<signed long>(getHeight() - 1), y));
-	return imageValue(x, y, numComponent);
+    return imageValue(x, y, static_cast<short unsigned int>(numComponent));
 }
 
 glannotations::PNGImage::colorVal_t& glannotations::PNGImage::imageValue(size_t x, size_t y, unsigned short numComponent) const {
@@ -238,7 +238,7 @@ void glannotations::PNGImage::scaleToHeight(size_t scaledHeight) {
 }
 
 void glannotations::PNGImage::scale(double scaleFactor) {
-	replaceImageWith(glannotations::DistanceFieldGeneration::bicubicResize(*this, static_cast<size_t>(std::ceil(getWidth() * scaleFactor)), static_cast<size_t>(std::ceil(getHeight() * scaleFactor))));
+    replaceImageWith(glannotations::DistanceFieldGeneration::bicubicResize(*this, static_cast<size_t>(std::ceil(static_cast<double>(getWidth()) * scaleFactor)), static_cast<size_t>(std::ceil(static_cast<double>(getHeight()) * scaleFactor))));
 }
 
 unsigned short glannotations::PNGImage::getComponentBitdepth() const {
