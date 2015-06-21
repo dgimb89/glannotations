@@ -26,7 +26,7 @@ void glannotations::NVPRSvgRenderer::initializeSVG(const char* pathString) {
 	gl::glPathParameteriNV(m_pathBase, gl::GL_PATH_JOIN_STYLE_NV, (gl::GLint)gl::GL_ROUND_NV);
 }
 
-void glannotations::NVPRSvgRenderer::drawSetupState(glannotations::ViewportState& state) const {
+void glannotations::NVPRSvgRenderer::drawSetupState(const globjects::ref_ptr<glannotations::AbstractAnnotation>& /*annotation*/, glannotations::ViewportState& state) const {
 	gl::glDisable(gl::GL_DEPTH_TEST);
 
 	setupOrthoProjection(state.getLL(), state.getUR(), m_width, m_height);
@@ -40,7 +40,7 @@ void glannotations::NVPRSvgRenderer::drawSetupState(glannotations::ViewportState
 	gl::glPopAttrib();
 }
 
-void glannotations::NVPRSvgRenderer::drawSetupState(glannotations::QuadState& state) const {
+void glannotations::NVPRSvgRenderer::drawSetupState(const globjects::ref_ptr<glannotations::AbstractAnnotation>& /*annotation*/, glannotations::QuadState& state) const {
 	setupProjection(glannotations::getProjection(getMatricesBindingIndex()));
 	setupModelView(glannotations::getView(getMatricesBindingIndex()), state, m_width, m_height);
 
@@ -49,6 +49,10 @@ void glannotations::NVPRSvgRenderer::drawSetupState(glannotations::QuadState& st
 
 	// cleanup
 	cleanMatrixStacks();
+}
+
+void glannotations::NVPRSvgRenderer::drawSetupState(const globjects::ref_ptr<glannotations::AbstractAnnotation>& /*annotation*/, glannotations::SplineState& /*state*/) const {
+	throw std::logic_error("The method or operation is not implemented.");
 }
 
 void glannotations::NVPRSvgRenderer::drawPath() const {
@@ -63,10 +67,6 @@ void glannotations::NVPRSvgRenderer::drawPath() const {
 		gl::glColor3f(0.2f, 0.2f, 0.2f); // yellow
 		gl::glCoverStrokePathNV(m_pathBase, gl::GL_CONVEX_HULL_NV);
 	}
-}
-
-void glannotations::NVPRSvgRenderer::drawSetupState(glannotations::SplineState& /*state*/) const {
-	throw std::logic_error("The method or operation is not implemented.");
 }
 
 glannotations::NVPRSvgRenderer::NVPRSvgRenderer(gl::GLuint globalMatricesBindingIndex) : NVPRRenderer(globalMatricesBindingIndex) {

@@ -16,7 +16,7 @@ void glannotations::NVPRRenderer::draw(const globjects::ref_ptr<glannotations::A
 	gl::glStencilFunc(gl::GL_NOTEQUAL, 0, 0x1F);
 	gl::glStencilOp(gl::GL_KEEP, gl::GL_KEEP, gl::GL_ZERO);
 	// double dispatch to draw specific state
-	annotation->getRenderState()->draw(*this);
+	annotation->getRenderState()->draw(annotation, *this);
 
 	// disable stencil test when finished
 	gl::glDisable(gl::GL_STENCIL_TEST);

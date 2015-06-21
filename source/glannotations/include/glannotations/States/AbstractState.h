@@ -101,7 +101,7 @@ namespace glannotations {
 		/*!
 		 *	\brief		prepares rendering (e.g. positioning update, interpolation update etc.)
 		 */
-		virtual void draw(const AbstractRenderer& renderer) = 0;
+		virtual void draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation, const AbstractRenderer& renderer) = 0;
 		AbstractState();
 
 		template <typename T>

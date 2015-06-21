@@ -24,8 +24,8 @@ const glm::vec2& glannotations::ViewportState::getUR() const {
 	return m_ur;
 }
 
-void glannotations::ViewportState::draw(const AbstractRenderer& renderer) {
-	renderer.drawSetupState(*this);
+void glannotations::ViewportState::draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation, const AbstractRenderer& renderer) {
+	renderer.drawSetupState(annotation, *this);
 }
 
 bool glannotations::ViewportState::isValid() const {

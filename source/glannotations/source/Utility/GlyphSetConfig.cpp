@@ -120,11 +120,11 @@ void glannotations::GlyphSetConfig::setNormalizedGlyphConfigs(const std::vector<
 	m_glyphConfigs = glyphConfigs;
 }
 
-const std::vector<glannotations::GlyphSetConfig::GlyphConfig>& glannotations::GlyphSetConfig::getGlyphConfigs() {
+const std::vector<glannotations::GlyphSetConfig::GlyphConfig>& glannotations::GlyphSetConfig::getGlyphConfigs() const {
 	return m_glyphConfigs;
 }
 
-const glannotations::GlyphSetConfig::GlyphConfig& glannotations::GlyphSetConfig::getGlyphConfig(unsigned short numGlyph) {
+const glannotations::GlyphSetConfig::GlyphConfig& glannotations::GlyphSetConfig::getGlyphConfig(unsigned short numGlyph) const {
 	return m_glyphConfigs.at(numGlyph);
 }
 
@@ -139,7 +139,7 @@ void glannotations::GlyphSetConfig::setGlyphConfigs(const std::vector<glannotati
 	}
 }
 
-const glannotations::GlyphSetConfig::GlyphConfig& glannotations::GlyphSetConfig::getGlyphConfigForCharcode(unsigned short charCode) {
+const glannotations::GlyphSetConfig::GlyphConfig& glannotations::GlyphSetConfig::getGlyphConfigForCharcode(unsigned short charCode) const {
     return getGlyphConfig(static_cast<unsigned short int>(charCode - m_startGlyph));
 }
 

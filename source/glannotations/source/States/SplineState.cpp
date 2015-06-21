@@ -133,10 +133,10 @@ void glannotations::SplineState::updateSplineTop() {
 	}
 }
 
-void glannotations::SplineState::draw(const AbstractRenderer& renderer) {
+void glannotations::SplineState::draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation, const AbstractRenderer& renderer) {
 	drawExternalReference(renderer, *this);
 	//todo:anne maybe do something here?
-	renderer.drawSetupState(*this);
+	renderer.drawSetupState(annotation, *this);
 }
 
 const glm::vec3& glannotations::SplineState::getLL() const {

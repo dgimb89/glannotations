@@ -10,7 +10,6 @@
 #include <glannotations/Common/TextureManager.h>
 #include <glannotations/Renderer/QuadStrip.h>
 #include <glannotations/Renderer/BendedQuadStrip.h> //todo:anne optimize includes?
-#include <glannotations/Utility/GlyphSetConfig.h>
 
 void glannotations::DistanceFieldFontRenderer::draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) {
 	if (annotation->isDirty()) {
@@ -18,70 +17,89 @@ void glannotations::DistanceFieldFontRenderer::draw(const globjects::ref_ptr<gla
 	}
 	gl::glEnable(gl::GL_BLEND);
 	gl::glBlendFunc(gl::GL_SRC_ALPHA, gl::GL_ONE_MINUS_SRC_ALPHA);
-	annotation->getRenderState()->draw(*this);
+	annotation->getRenderState()->draw(annotation, *this);
 	gl::glDisable(gl::GL_BLEND);
 }
 
 glannotations::DistanceFieldFontRenderer::DistanceFieldFontRenderer(gl::GLuint matricesBindingIndex) : AbstractPrimitiveRenderer(matricesBindingIndex) {
 }
 
-void glannotations::DistanceFieldFontRenderer::setupGlyphQuadstrip(glannotations::FontAnnotation* annotation) {
-	glannotations::GlyphSetConfig glyphConfig(annotation->getFontName());
-	// TODO: just save the text and font name here and defer primitive creation until we know the state
-	// take a look at @AbstractPrimitiveRenderer::drawSetupState --> create primitive when state is dirty
-	try {
-		annotation->getRenderState()->asSplineState();
-		auto bendedQuadStrip = new BendedQuadStrip(
-			glannotations::TextureManager::getInstance().getTexture(glyphConfig.getGlyphsetImageName()),
-			m_globalMatricesBindingIndex,
-			true
-			);
-
-		//get full text length
-		float textLength = 0.f;
-		for (unsigned i = 0; i < annotation->getText().length(); ++i) {
-			textLength += glyphConfig.getGlyphConfigForCharcode(annotation->getText().at(i))._advance.x;
-		}
-
-		float currentT = 0.f;
-		float currentNextT = 0.f;
-		for (unsigned i = 0; i < annotation->getText().length(); ++i) {
-
-			currentNextT += glyphConfig.getGlyphConfigForCharcode(annotation->getText().at(i))._advance.x / textLength;
-			glm::vec3 secantVec = (annotation->getRenderState()->asSplineState()).retrieveSecantVectorAt(currentT, currentNextT);
-			glm::vec3 orthoVec = (annotation->getRenderState()->asSplineState()).retrieveConnectingVectorAt(currentT);
-
-			bendedQuadStrip->addQuad(
-				glyphConfig.getGlyphConfigForCharcode(annotation->getText().at(i))._ll,
-				glyphConfig.getGlyphConfigForCharcode(annotation->getText().at(i))._advance,
-				secantVec,
-				orthoVec
-				);
-			currentT = currentNextT;
-		}
-
-		m_drawingPrimitive = bendedQuadStrip;
-	}
-	catch (...){ //Katastrophenschutz wegen bad_cast. todo:anne double dispatch oder irgendwas Sinnvolles
-		auto quadStrip = new QuadStrip(
-			glannotations::TextureManager::getInstance().getTexture(glyphConfig.getGlyphsetImageName()),
-			m_globalMatricesBindingIndex,
-			true
-			);
-		for (unsigned i = 0; i < annotation->getText().length(); ++i) {
-			quadStrip->addQuad(glyphConfig.getGlyphConfigForCharcode(annotation->getText().at(i))._ll,
-				glyphConfig.getGlyphConfigForCharcode(annotation->getText().at(i))._advance);
-		}
-		m_drawingPrimitive = quadStrip;
-	}
+void glannotations::DistanceFieldFontRenderer::prepare(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) {
+	FontAnnotation* currentAnnotation = dynamic_cast<FontAnnotation*>(annotation.get());
+	m_glyphConfig = new glannotations::GlyphSetConfig(currentAnnotation->getFontName());
+	m_texture = glannotations::TextureManager::getInstance().getTexture(m_glyphConfig->getGlyphsetImageName());
 }
 
-void glannotations::DistanceFieldFontRenderer::prepare(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) {
-	//todo:anne vorbereiten? BendendQuadStrip?
-	FontAnnotation* currentAnnotation = dynamic_cast<FontAnnotation*>(annotation.get());
-	setupGlyphQuadstrip(currentAnnotation);
-	m_drawingPrimitive->setColor(currentAnnotation->getColor());
+void glannotations::DistanceFieldFontRenderer::drawSetupState(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation, glannotations::ViewportState& state) const  {
+	if (annotation->isDirty()) {
+		prepareQuadStrip(dynamic_cast<FontAnnotation*>(annotation.get()));
+	}
+
+	AbstractPrimitiveRenderer::drawSetupState(annotation, state);
+}
+
+void glannotations::DistanceFieldFontRenderer::drawSetupState(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation, glannotations::QuadState& state) const  {
+	if (annotation->isDirty()) {
+		prepareQuadStrip(dynamic_cast<FontAnnotation*>(annotation.get()));
+	}
+
+	AbstractPrimitiveRenderer::drawSetupState(annotation, state);
+}
+
+void glannotations::DistanceFieldFontRenderer::drawSetupState(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation, glannotations::SplineState& state) const  {
+	if (annotation->isDirty()) {
+		prepareSpline(dynamic_cast<FontAnnotation*>(annotation.get()));
+	}
+
+	AbstractPrimitiveRenderer::drawSetupState(annotation, state);
+}
+
+void glannotations::DistanceFieldFontRenderer::setupStylings(FontAnnotation* annotation) const {
+	m_drawingPrimitive->setColor(annotation->getColor());
 	setupOutline(annotation->getRenderState()->getStyling("Outline"));
 	setupBumpMap(annotation->getRenderState()->getStyling("BumpMap"));
+}
+
+void glannotations::DistanceFieldFontRenderer::prepareQuadStrip(FontAnnotation* annotation) const {
+	auto quadStrip = new QuadStrip(m_texture, m_globalMatricesBindingIndex, true);
+
+	// create quads for each glyph
+	for (unsigned i = 0; i < annotation->getText().length(); ++i) {
+		quadStrip->addQuad(	m_glyphConfig->getGlyphConfigForCharcode(annotation->getText().at(i))._ll,
+							m_glyphConfig->getGlyphConfigForCharcode(annotation->getText().at(i))._advance);
+	}
+	m_drawingPrimitive = quadStrip;
+	setupStylings(annotation);
+	annotation->setDirty(false);
+}
+
+void glannotations::DistanceFieldFontRenderer::prepareSpline(FontAnnotation* annotation) const {
+	auto bendedQuadStrip = new BendedQuadStrip(m_texture, m_globalMatricesBindingIndex, true);
+
+	//get full text length
+	float textLength = 0.f;
+	for (unsigned i = 0; i < annotation->getText().length(); ++i) {
+		textLength += m_glyphConfig->getGlyphConfigForCharcode(annotation->getText().at(i))._advance.x;
+	}
+
+	float currentT = 0.f;
+	float currentNextT = 0.f;
+	for (unsigned i = 0; i < annotation->getText().length(); ++i) {
+
+		currentNextT += m_glyphConfig->getGlyphConfigForCharcode(annotation->getText().at(i))._advance.x / textLength;
+		glm::vec3 secantVec = (annotation->getRenderState()->asSplineState()).retrieveSecantVectorAt(currentT, currentNextT);
+		glm::vec3 orthoVec = (annotation->getRenderState()->asSplineState()).retrieveConnectingVectorAt(currentT);
+
+		bendedQuadStrip->addQuad(
+			m_glyphConfig->getGlyphConfigForCharcode(annotation->getText().at(i))._ll,
+			m_glyphConfig->getGlyphConfigForCharcode(annotation->getText().at(i))._advance,
+			secantVec,
+			orthoVec
+			);
+		currentT = currentNextT;
+	}
+
+	m_drawingPrimitive = bendedQuadStrip;
+	setupStylings(annotation);
 	annotation->setDirty(false);
 }

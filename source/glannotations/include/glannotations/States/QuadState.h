@@ -39,7 +39,7 @@ namespace glannotations {
 		virtual void prepare() override;
 
 	protected:
-		virtual void draw(const AbstractRenderer& renderer) override;
+		virtual void draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation, const AbstractRenderer& renderer) override;
 
 		virtual globjects::ref_ptr<AbstractState> interpolateWith(const QuadState& mixState, float mix) override;
 		virtual globjects::ref_ptr<AbstractState> interpolateWith(const SplineState& mixState, float mix) override;

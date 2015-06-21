@@ -19,7 +19,7 @@ void glannotations::NVPRFontRenderer::draw(const globjects::ref_ptr<glannotation
 	glannotations::NVPRRenderer::draw(annotation);
 }
 
-void glannotations::NVPRFontRenderer::drawSetupState(glannotations::ViewportState& state) const {
+void glannotations::NVPRFontRenderer::drawSetupState(const globjects::ref_ptr<glannotations::AbstractAnnotation>& /*annotation*/, glannotations::ViewportState& state) const {
 	gl::glDisable(gl::GL_DEPTH_TEST);
 	gl::GLfloat yMin, yMax;
 	size_t messageLen = strlen(m_currentText);
@@ -42,7 +42,7 @@ void glannotations::NVPRFontRenderer::drawSetupState(glannotations::ViewportStat
 	gl::glEnable(gl::GL_DEPTH_TEST);
 }
 
-void glannotations::NVPRFontRenderer::drawSetupState(glannotations::QuadState& state) const {
+void glannotations::NVPRFontRenderer::drawSetupState(const globjects::ref_ptr<glannotations::AbstractAnnotation>& /*annotation*/, glannotations::QuadState& state) const {
 	gl::GLfloat yMin, yMax;
 	size_t messageLen = strlen(m_currentText);
 	gl::GLfloat totalAdvance;
@@ -62,7 +62,7 @@ void glannotations::NVPRFontRenderer::drawSetupState(glannotations::QuadState& s
 	cleanMatrixStacks();
 	}
 
-void glannotations::NVPRFontRenderer::drawSetupState(glannotations::SplineState& /*state*/) const {
+void glannotations::NVPRFontRenderer::drawSetupState(const globjects::ref_ptr<glannotations::AbstractAnnotation>& /*annotation*/, glannotations::SplineState& /*state*/) const {
 	throw std::logic_error("The method or operation is not implemented.");
 }
 

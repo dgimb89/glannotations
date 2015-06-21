@@ -11,20 +11,20 @@
 #include <glannotations/States/SplineState.h>
 #include <glannotations/Common/globals.h>
 
-void glannotations::AbstractPrimitiveRenderer::setupOutline(const Styling* outline) {
+void glannotations::AbstractPrimitiveRenderer::setupOutline(const glannotations::Styling* outline) const {
 	if (outline == nullptr) return;
 	const Styles::Outline* outlineStyle = reinterpret_cast<const Styles::Outline*>(outline);
 	m_drawingPrimitive->setOutline(outlineStyle->getWidth(), outlineStyle->getColor());
 }
 
 
-void glannotations::AbstractPrimitiveRenderer::setupBumpMap(const Styling* bumpMap) {
+void glannotations::AbstractPrimitiveRenderer::setupBumpMap(const glannotations::Styling* bumpMap) const {
 	if (bumpMap == nullptr) return;
 	const Styles::BumpMap* bumpMapStyle = reinterpret_cast<const Styles::BumpMap*>(bumpMap);
 	m_drawingPrimitive->setBumpMap(bumpMapStyle->getIntensity());
 }
 
-void glannotations::AbstractPrimitiveRenderer::drawSetupState(ViewportState& state) const {
+void glannotations::AbstractPrimitiveRenderer::drawSetupState(const globjects::ref_ptr<glannotations::AbstractAnnotation>& /*annotation*/, ViewportState& state) const {
 	// in order to allow correct constrainting for screen space extends, the state needs to know the current screen aspect ratio
 	state.setScreenAspectRatio(glannotations::getAspectRatio(getMatricesBindingIndex()));
 	if (state.isDirty()) {
@@ -40,7 +40,7 @@ void glannotations::AbstractPrimitiveRenderer::drawSetupState(ViewportState& sta
 }
 
 
-void glannotations::AbstractPrimitiveRenderer::drawSetupState(QuadState& state) const {
+void glannotations::AbstractPrimitiveRenderer::drawSetupState(const globjects::ref_ptr<glannotations::AbstractAnnotation>& /*annotation*/, QuadState& state) const {
 	if (state.isDirty()) {
 		state.updateExtends(m_drawingPrimitive->getExtends());
 		m_drawingPrimitive->setPosition(state.getLL(), state.getLR(), state.getUR());
@@ -49,7 +49,7 @@ void glannotations::AbstractPrimitiveRenderer::drawSetupState(QuadState& state) 
 	m_drawingPrimitive->draw();
 }
 
-void glannotations::AbstractPrimitiveRenderer::drawSetupState(glannotations::SplineState& state) const {
+void glannotations::AbstractPrimitiveRenderer::drawSetupState(const globjects::ref_ptr<glannotations::AbstractAnnotation>& /*annotation*/, glannotations::SplineState& state) const {
 	if (state.isDirty()) {
 		//m_drawingPrimitive is BendedQuadStrip here!
 		m_drawingPrimitive->setPosition(state.getLL(), glm::vec3(), glm::vec3());

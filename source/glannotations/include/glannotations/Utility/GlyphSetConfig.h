@@ -29,9 +29,9 @@ namespace glannotations {
 
 		/// normalizes given configs by dividing every glyph coordinates by maxWidth resp. maxHeight
 		void setGlyphConfigs(const std::vector<glannotations::GlyphSetConfig::GlyphConfig>& glyphConfigs, float maxWidth, float maxHeight);
-		const std::vector<glannotations::GlyphSetConfig::GlyphConfig>& getGlyphConfigs();
-		const glannotations::GlyphSetConfig::GlyphConfig& getGlyphConfig(unsigned short numGlyph);
-		const glannotations::GlyphSetConfig::GlyphConfig& getGlyphConfigForCharcode(unsigned short charCode);
+		const std::vector<glannotations::GlyphSetConfig::GlyphConfig>& getGlyphConfigs() const;
+		const glannotations::GlyphSetConfig::GlyphConfig& getGlyphConfig(unsigned short numGlyph) const;
+		const glannotations::GlyphSetConfig::GlyphConfig& getGlyphConfigForCharcode(unsigned short charCode) const;
 
 	protected: 
 		std::string getFileContent();

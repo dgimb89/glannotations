@@ -10,9 +10,9 @@ namespace glannotations {
 		virtual void prepare(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation);
 		virtual void draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) override;
 	protected:
-		virtual void drawSetupState(glannotations::ViewportState& state) const override;
-		virtual void drawSetupState(glannotations::QuadState& state) const override;
-		virtual void drawSetupState(glannotations::SplineState& state) const override;
+		virtual void drawSetupState(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation, glannotations::ViewportState& state) const override;
+		virtual void drawSetupState(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation, glannotations::QuadState& state) const override;
+		virtual void drawSetupState(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation, glannotations::SplineState& state) const override;
 
 		void initializeSVG(const char* pathString);
 		void drawPath() const;

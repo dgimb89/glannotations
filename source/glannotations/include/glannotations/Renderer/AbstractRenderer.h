@@ -8,7 +8,7 @@ namespace glannotations {
 
 	// forward declaration 
 	class AbstractAnnotation;
-	class AbstractExternalState; class ViewportState;
+	class ViewportState;
 	class QuadState;
 	class SplineState;
 
@@ -25,9 +25,9 @@ namespace glannotations {
 
 	protected:
 		unsigned int m_globalMatricesBindingIndex;
-		virtual void drawSetupState(glannotations::ViewportState& state) const = 0;
-		virtual void drawSetupState(glannotations::QuadState& state) const = 0;
-		virtual void drawSetupState(glannotations::SplineState& state) const = 0;
+		virtual void drawSetupState(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation, glannotations::ViewportState& state) const = 0;
+		virtual void drawSetupState(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation, glannotations::QuadState& state) const = 0;
+		virtual void drawSetupState(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation, glannotations::SplineState& state) const = 0;
 	};
 
 }

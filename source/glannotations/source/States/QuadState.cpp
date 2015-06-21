@@ -29,9 +29,9 @@ const glm::vec3& glannotations::QuadState::getUR() const {
 	return m_ur;
 }
 
-void glannotations::QuadState::draw(const AbstractRenderer& renderer) {
+void glannotations::QuadState::draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation, const AbstractRenderer& renderer) {
 	drawExternalReference(renderer, *this);
-	renderer.drawSetupState(*this);
+	renderer.drawSetupState(annotation, *this);
 }
 
 bool glannotations::QuadState::isValid() const {
