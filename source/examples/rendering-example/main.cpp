@@ -148,8 +148,8 @@ public:
 		boxAnnotation->getState()->setStyling(new glannotations::Styles::Outline(0.2f, glm::vec3(0.f, 0.f, 0.f)));
 		boxAnnotation->getState()->asInternalState().setExternalReference(new glannotations::BoxReference(glm::vec2(0.f, 0.f), glm::vec2(0.f, 2.75f), glm::vec3(-5.f, 0.f, 0.f), false));
 
-		auto flagAnnotation = new glannotations::FontAnnotation(new glannotations::QuadState(glm::vec3(-1.f, 2.f, 5.01f), glm::vec3(1.f, 2.f, 5.01f), glm::vec3(1.f, 4.f, 5.01f)), "Flag", "calibri.ttf", dfFactory);
-		auto flagRef = new glannotations::FlagReference(1.0f, glm::vec3(0.f, 0.f, -3.f), false);
+		auto flagAnnotation = new glannotations::FontAnnotation(new glannotations::QuadState(glm::vec3(-1.f, 2.5f, 5.01f), glm::vec3(1.f, 2.5f, 5.01f), glm::vec3(1.f, 4.f, 5.01f)), "Flag", "calibri.ttf", dfFactory);
+		auto flagRef = new glannotations::FlagReference(2.5f, glm::vec3(0.f, 0.f, -3.f), false);
 		flagRef->setColor(flagColor);
 		flagAnnotation->getState()->asInternalState().setExternalReference(flagRef);
 		flagAnnotation->getState()->setMaximumHeight(1.5f);

@@ -55,7 +55,7 @@ void glannotations::FlagReference::updatePositioning(QuadState& state) {
 
 	glm::mat4 rotationMat = glm::rotate(glm::mat4(1), hOverflow * MAX_ROTATION_ANGLE, heightSpan);
 
-	widthSpan = glm::normalize(glm::vec3(rotationMat * glm::vec4(widthSpan, 1.f))) * glm::length(m_widthSpan);
+	widthSpan = glm::normalize(glm::vec3(rotationMat * glm::vec4(widthSpan, 1.f))) * m_width;
 	heightSpan = glm::vec3(rotationMat * glm::vec4(heightSpan, 1.f));
 
 	// bring annotation forward depending on the angular rotation to avoid occlusion
@@ -70,9 +70,10 @@ void glannotations::FlagReference::updatePositioning(SplineState& /*state*/) {
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
-glannotations::FlagReference::FlagReference(float /*widthOffset*/, glm::vec3 depthSpan, bool onlyPositioning /* = true */)
+glannotations::FlagReference::FlagReference(float width, glm::vec3 depthSpan, bool onlyPositioning /* = true */)
 	: glannotations::AbstractExternalReference(onlyPositioning) {
 	m_depthSpan = depthSpan;
+	m_width = width;
 }
 
 void glannotations::FlagReference::draw() {

@@ -10,7 +10,7 @@ namespace glannotations {
 
 	class GLANNOTATIONS_API FlagReference : public glannotations::AbstractExternalReference {
 	public:
-		FlagReference(float widthOffset, glm::vec3 depthSpan, bool onlyPositioning = true);
+		FlagReference(float width, glm::vec3 depthSpan, bool onlyPositioning = true);
 
 	protected:
 
@@ -28,6 +28,8 @@ namespace glannotations {
 
 		glm::vec3 m_widthSpan, m_heightSpan, m_depthSpan, m_frontLLF;
 		glm::vec3 m_newLL, m_newLR, m_newUR;
+
+		float m_width;
 
 	};
 }
