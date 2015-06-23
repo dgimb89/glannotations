@@ -31,3 +31,5 @@ CMakeLists.txt.user
 
 #OSX
 *.DS_store
+/run_cmake.bat
+/run_vis.bat

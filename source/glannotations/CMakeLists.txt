@@ -92,6 +92,13 @@ set(api_INCLUDE_DIRS
     ${include_path}/Externals/LabelReference.h
     ${include_path}/Externals/RectReference.h
 
+	${include_path}/Positioning/AnnotationData.h
+	${include_path}/Positioning/AnnotationDescription.h
+	${include_path}/Positioning/AnnotationPositioner.h
+	${include_path}/Positioning/AnnotationSpace.h
+	${include_path}/Positioning/ObjectAlignedBoundingBox.h
+	${include_path}/Positioning/SpaceObject.h
+	
     ${include_path}/Renderer/AbstractDrawingPrimitive.h
     ${include_path}/Renderer/AbstractPrimitiveRenderer.h
     ${include_path}/Renderer/AbstractRenderer.h
@@ -154,6 +161,13 @@ set(sources
     ${source_path}/Externals/LabelReference.cpp
     ${source_path}/Externals/RectReference.cpp
 
+	${source_path}/Positioning/AnnotationData.cpp
+	${source_path}/Positioning/AnnotationDescription.cpp
+	${source_path}/Positioning/AnnotationPositioner.cpp
+	${source_path}/Positioning/AnnotationSpace.cpp
+	${source_path}/Positioning/ObjectAlignedBoundingBox.cpp
+	${source_path}/Positioning/SpaceObject.cpp
+	
     ${source_path}/Renderer/AbstractPrimitiveRenderer.cpp
     ${source_path}/Renderer/AbstractRenderer.cpp
     ${source_path}/Renderer/AbstractTexturedPrimitive.cpp
