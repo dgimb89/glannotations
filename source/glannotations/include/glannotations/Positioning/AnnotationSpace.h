@@ -13,8 +13,8 @@ namespace glannotations {
 		void addSpaceObjects(std::initializer_list<globjects::ref_ptr<SpaceObject> > spaceObjects);
 		void clear();
 
-		const globjects::ref_ptr<SpaceObject> getSpaceObjectAtUID(size_t uid) const;
-		const std::unordered_map<size_t, globjects::ref_ptr<SpaceObject> > &getSpaceObjects() const;
+		const globjects::ref_ptr<glannotations::SpaceObject> getSpaceObjectAtUID(size_t uid) const;
+		const std::unordered_map<size_t, globjects::ref_ptr<glannotations::SpaceObject> > &getSpaceObjects() const;
 
 	private:
 		std::unordered_map<size_t,  globjects::ref_ptr<SpaceObject> > m_spaceObjects;

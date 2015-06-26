@@ -15,7 +15,7 @@ namespace glannotations {
 	public:
 		AnnotationPositioner(	const globjects::ref_ptr<AnnotationSpace> &annotationSpace, 
 								const std::initializer_list<globjects::ref_ptr<AnnotationDescription> > &descriptions);
-		std::vector<globjects::ref_ptr<AnnotationGroup> > generateAnnotationGroups() const;
+		std::vector<globjects::ref_ptr<glannotations::AnnotationGroup> > generateAnnotationGroups() const;
 
 	private:
 		globjects::ref_ptr<AnnotationSpace> m_annotationSpace;

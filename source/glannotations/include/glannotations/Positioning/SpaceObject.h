@@ -16,7 +16,7 @@ namespace glannotations {
 		
 		void setData(std::string key, globjects::ref_ptr<glannotations::AnnotationData> data);
 		void clearData();
-		const AnnotationDataMap &getData();
+		const SpaceObject::AnnotationDataMap &getData();
 
 		void setUID(size_t uid);
 		size_t getUID() const;
