@@ -21,9 +21,20 @@ namespace glannotations {
 		void setUID(size_t uid);
 		size_t getUID() const;
 
+		virtual bool isValid() const = 0;
 		virtual double getVolume() const = 0;
 		virtual double distanceToCamera(const gloperate::Camera& cam) const = 0;
 		virtual glm::vec3 getCentroid() const = 0;
+
+		template <typename T>
+		T min(T v1, T v2) const {
+			return v1 < v2 ? v1 : v2;
+		}
+
+		template <typename T>
+		T max(T v1, T v2) const {
+			return v1 > v2 ? v1 : v2;
+		}
 
 	private:
 		AnnotationDataMap m_data;
