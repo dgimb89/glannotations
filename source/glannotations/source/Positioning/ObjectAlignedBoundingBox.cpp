@@ -3,11 +3,6 @@
 #include <vector>
 
 glannotations::ObjectAlignedBoundingBox::ObjectAlignedBoundingBox(glm::vec3 lln, glm::vec3 llf, glm::vec3 lrn, glm::vec3 uln) {
-	/* todo: find good geometric rep. for bounding box
-	maybe find something that ensures that the box is valid,
-	e.g. lln_position, vec3 x, vec3 y, float z_height (here we still would have to check that x stands perpendicular to y
-	*/
-	
 	m_lln = lln;
 	m_llf = llf;
 	m_lrn = lrn;
@@ -15,6 +10,22 @@ glannotations::ObjectAlignedBoundingBox::ObjectAlignedBoundingBox(glm::vec3 lln,
 
 	//or any other kind of notice that this object is not a real Box
 	if(!isValid())
+		throw std::runtime_error("This Box is not a valid Box!");
+}
+
+glannotations::ObjectAlignedBoundingBox::ObjectAlignedBoundingBox(glm::vec3 positionLln, glm::vec3 width, glm::vec3 length, float height) {
+	m_lln = positionLln;
+	m_llf = m_lln + length;
+	m_lrn = m_lln + width;
+	
+	glm::vec3 up = glm::cross(width, length);
+	m_uln = m_lln + up;
+	//todo: how can me make sure that the up-vector has the right direction?
+	//glm::cross(length, width) results in -up.
+	//and we don't know which width-vec and length-vec the user will give us!
+	//may be check the up-result using camera's up-vec?
+
+	if (!isValid())
 		throw std::runtime_error("This Box is not a valid Box!");
 }
 
@@ -87,8 +98,8 @@ bool glannotations::ObjectAlignedBoundingBox::isValid() const  {
 	double b = glm::dot(m_llf - m_lln, m_uln - m_lln);
 	double c = glm::dot(m_lrn - m_lln, m_uln - m_lln);
 	
-	double t = 0.0000001; //todo: do we need that threshold?
-
+	double t = std::numeric_limits<double>::epsilon();
+	
 	if ((a < t && a > -t)
 		|| (b < t && b > -t)
 		|| (c < t && c > -t))

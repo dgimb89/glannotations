@@ -24,8 +24,8 @@ const std::unordered_map<size_t, globjects::ref_ptr<glannotations::SpaceObject> 
 }
 
 size_t glannotations::AnnotationSpace::retrieveUID(globjects::ref_ptr<SpaceObject> obj) const {
-	//todo: is that a good idea? UID will be unique, but maybe using an "uid++" approach would be better?
-	//and: not sure if "&obj" is right. I want to use the address of the objectpointer as an UID.
+	//not sure if "&obj" is right. I want to use the address of the objectpointer as an UID.
+	//todo: calculate hash with obj AND space
 	size_t uid = reinterpret_cast<size_t>(&obj);
 	return uid;
 }

@@ -1,11 +1,7 @@
 #include <glannotations/Positioning/SpaceObject.h>
 
 void glannotations::SpaceObject::setData(std::string key, globjects::ref_ptr<glannotations::AnnotationData> data) {
-	throw std::runtime_error("This function or method is not yet implemented!");
-	//because none of this works:
-	//m_data[key] = data;
-	//m_data.insert(key, data);
-	
+	m_data.insert(std::pair<std::string, globjects::ref_ptr<glannotations::AnnotationData> >(key, data));	
 	setDirty(true);
 }
 

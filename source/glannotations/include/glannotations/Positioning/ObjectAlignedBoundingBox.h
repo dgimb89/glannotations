@@ -11,6 +11,7 @@ namespace glannotations {
 	class GLANNOTATIONS_API ObjectAlignedBoundingBox : public SpaceObject {
 	public:
 		ObjectAlignedBoundingBox(glm::vec3 lowerLeftNear, glm::vec3 lowerLeftFar, glm::vec3 lowerRightNear, glm::vec3 upperLeftNear);
+		ObjectAlignedBoundingBox(glm::vec3 positionLln, glm::vec3 width, glm::vec3 length, float height);
 
 		virtual double getVolume() const override;
 		virtual double distanceToCamera(const gloperate::Camera& cam) const override;
