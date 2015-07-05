@@ -10,6 +10,7 @@
 #define GLYPHSET_BEGIN 32
 #define SCALEDOWN_HEIGHT 512
 #define GLYPH_GROUP_SIZE 16
+#define MARGIN_SIZE 0
 
 inline void handleError(const FT_Error& ftError) {
 	if (!ftError) return;
@@ -58,7 +59,7 @@ void glannotations::preprocessor::GlyphSetGenerator::generateGlyphset(std::strin
 		globjects::ref_ptr<glannotations::PNGImage> glyphImage = generateGlyphImage(&slot->bitmap, std::abs(slot->bitmap_left), convertFontToPixelSize(face->size->metrics.ascender), convertFontToPixelSize(face->size->metrics.descender), convertFontToPixelSize(slot->metrics.horiBearingY));
 		glyphImage->distanceTransform();
 		glyphImage->scaleToHeight(SCALEDOWN_HEIGHT);
-		rowWidth += glyphImage->getWidth();
+		rowWidth += glyphImage->getWidth() + MARGIN_SIZE;
 
 		if ((i + 1) % GLYPH_GROUP_SIZE == 0) {
 			if (rowWidth > maxRowWidth) maxRowWidth = rowWidth;
@@ -73,9 +74,9 @@ void glannotations::preprocessor::GlyphSetGenerator::generateGlyphset(std::strin
 	FT_Done_FreeType(library);
 
 	// create final glyphset image
-	size_t finalHeight = static_cast<size_t>(std::ceil(glyphImages.size() / static_cast<float>(GLYPH_GROUP_SIZE))* SCALEDOWN_HEIGHT);
+	size_t finalHeight = static_cast<size_t>(std::ceil(glyphImages.size() / static_cast<float>(GLYPH_GROUP_SIZE))* (SCALEDOWN_HEIGHT + MARGIN_SIZE));
 	globjects::ref_ptr<glannotations::PNGImage> finalImage = new glannotations::PNGImage(maxRowWidth, finalHeight, 1);
-	size_t width = 0, height = finalImage->getHeight() - SCALEDOWN_HEIGHT;
+	size_t width = 0, height = finalImage->getHeight() - (SCALEDOWN_HEIGHT + MARGIN_SIZE);
 	unsigned glyphIndex = 0;
 	std::vector<glannotations::GlyphSetConfig::GlyphConfig> glyphConfigs;
 	for (auto image : glyphImages) {
@@ -89,14 +90,14 @@ void glannotations::preprocessor::GlyphSetGenerator::generateGlyphset(std::strin
 			for (size_t h = 0; h < image->getHeight(); ++h) {
 				finalImage->setImageValue(width + w, height + h, 0, image->getImageValue(static_cast<long>(w), static_cast<long>(h), 0));
 			}
-		width += image->getWidth();
+		width += image->getWidth() + MARGIN_SIZE;
 		++glyphIndex;
 		if (glyphIndex % GLYPH_GROUP_SIZE == 0) {
 			width = 0;
-			height -= SCALEDOWN_HEIGHT;
+			height -= (SCALEDOWN_HEIGHT + MARGIN_SIZE);
 		}
 	}
-	finalImage->scaleToWidth(1024);
+	finalImage->scaleToWidth(4096);
 	finalImage->saveDistanceField(jsonConfig.getGlyphsetImageName());
 
 	jsonConfig.setStartGlyph(GLYPHSET_BEGIN);

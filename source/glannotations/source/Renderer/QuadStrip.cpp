@@ -225,13 +225,13 @@ static const char* dfFragShader = R"(
 
 		void main() {
 			float s = texture(source, v_uv).r;
-			if(s > 0.6)
+			if(s - outlineSize > 0.55)
 				discard;
 
 			vec4 fc = (style * vec4(outlineColor.rgb, 1.0)) + ((1 - style) * vec4(color.rgb, 0.0));
 			vec4 bc = color;
 
-			float threshold = 0.6 - outlineSize;
+			float threshold = 0.55 - outlineSize;
 
 			// subpixel variations
 

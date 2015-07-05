@@ -7,7 +7,7 @@ int main(int /*argc*/, char* /*argv*/[]) {
 
 	// Distance Transform 
 	{
-		glannotations::PNGImage pngExample("glat.png");
+		/*glannotations::PNGImage pngExample("glat.png");
 		assert(!pngExample.isDirty());
 
 		pngExample.distanceTransform();
@@ -23,12 +23,12 @@ int main(int /*argc*/, char* /*argv*/[]) {
 
 		glannotations::PNGImage pngDFExample("glat_df.png");
 		assert(!pngExample.isDirty());
-		assert(pngDFExample.getHeight() == 128);
+		assert(pngDFExample.getHeight() == 128);*/
 	}
 
 	// Glyphset Generation
 	{
-		glannotations::preprocessor::GlyphSetGenerator::generateGlyphset("calibri.ttf", 91, true);
+		glannotations::preprocessor::GlyphSetGenerator::generateGlyphset("segoeuil.ttf", 95, true);
 	}
 	
 }
