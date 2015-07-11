@@ -1,23 +1,17 @@
 #pragma once
 
-#include <vector>
-//#include <initializer_list>
-#include <glm/glm.hpp>
-
 #include <glannotations/Common/DirtyFlagObject.h>
 #include <glannotations/glannotations_api.h>
+
+#include <vector>
+#include <glm/glm.hpp>
 
 namespace glannotations {
 
     class GLANNOTATIONS_API BSpline : protected glannotations::DirtyFlagObject {
 	public:
-		//for 3D
 		BSpline(std::vector<glm::vec3> ctrlPoints, std::vector<float> knotValues);
 		BSpline(std::vector<glm::vec3> ctrlPoints, unsigned short degree);
-
-		//for 2D within a given plane
-		//BSpline(std::vector<glm::vec2> ctrlPoints, std::vector<float> knotValues, glm::vec3 planeNormal, glm::vec3 firstControlPointOnTargetPlane, glm::vec3 lastControlPointOnTargetPlane);
-		//BSpline(std::vector<glm::vec2> ctrlPoints, unsigned short degree, glm::vec3 planeNormal, glm::vec3 firstControlPointOnTargetPlane, glm::vec3 lastControlPointOnTargetPlane);
 
 		const std::vector<glm::vec3>& getControlPoints();
 		const std::vector<float>& getKnotValues();
@@ -41,12 +35,10 @@ namespace glannotations {
 
 		void setControlPoints(std::vector<glm::vec3> ctrlPoints);
 		void setKnotValues(std::vector<float> knotValues);
+		void calculateUniformKnotValues();
 		void calculateSplineDegree();
 
 	protected:
-		void calculateUniformKnotValues();
-		//void project2DContropointsToPlane(std::vector<glm::vec2> ctrlPoints, glm::vec3 planeNormal, glm::vec3 firstControlPointOnTargetPlane, glm::vec3 lastControlPointOnTargetPlane);
-
 		/**
 		* Calculates values to fill the arcLength-container, which contains the arcLength at certain points along the curve,
 		* used to approximate the overall arcLength and to position the glyphs evenly along the curve

@@ -6,8 +6,6 @@
 #include <glannotations/glannotations_api.h>
 
 namespace glannotations {
-	enum GlyphOrientationOnSpline{ IN_SAME_PLANE, ORTHOGONAL_TO_PLANE, CUSTOM_SECOND_SPLINE };
-
 	class GLANNOTATIONS_API SplineState : public glannotations::ReferenceableState {
 		friend class AbstractPrimitiveRenderer; //todo:anne is this necessary?
 	public:
@@ -20,31 +18,28 @@ namespace glannotations {
 		*/
 		SplineState(glm::vec3 position
 			, std::vector<glm::vec3> splineBaseControlPoints, std::vector<float> splineBaseKnotValues
-			, GlyphOrientationOnSpline splineOrientation = GlyphOrientationOnSpline::IN_SAME_PLANE
+			, glm::vec3 up
 		);
 		
 		SplineState(glm::vec3 position
-			, std::vector<glm::vec3> splineBaseControlPoints, unsigned int baseDegree = 3
-			, GlyphOrientationOnSpline splineOrientation = GlyphOrientationOnSpline::IN_SAME_PLANE
+			, std::vector<glm::vec3> splineBaseControlPoints, unsigned int baseDegree
+			, glm::vec3 up
 			);
 
 		SplineState(glm::vec3 position
 			, std::vector<glm::vec3> splineBaseControlPoints, std::vector<float> splineBaseKnotValues
 			, std::vector<glm::vec3> splineTopControlPoints, std::vector<float> splineTopKnotValues
-			, GlyphOrientationOnSpline splineOrientation = GlyphOrientationOnSpline::CUSTOM_SECOND_SPLINE
 		);
 
 		SplineState(glm::vec3 position
 			, std::vector<glm::vec3> splineBaseControlPoints, unsigned int baseDegree
 			, std::vector<glm::vec3> splineTopControlPoints, unsigned int topDegree
-			, GlyphOrientationOnSpline splineOrientation = GlyphOrientationOnSpline::CUSTOM_SECOND_SPLINE
 		);
 
 		
 		//either change using orientation parameter or using a new splineTop
 		void changeOrientation(std::shared_ptr<BSpline> splineTop);
-		void changeOrientation(GlyphOrientationOnSpline splineOrientation);
-		void updateSplineTop();
+		void changeOrientation(glm::vec3 newUp);
 
 		/*!
 		*	\brief	Calculates the connecting vector of two curvepoints specified by curve parameter t (0<t<1), using splineBase and splineTop
@@ -76,11 +71,11 @@ namespace glannotations {
 
 		virtual void updateExtends(glm::vec2 sourceExtends) override;
 
-
 	private:
+		void calculateSplineTop(glm::vec3 upVec);
+
 		std::shared_ptr<glannotations::BSpline> m_splineBase;
 		std::shared_ptr<glannotations::BSpline> m_splineTop;
-		GlyphOrientationOnSpline m_splineOrientation;
 		glm::vec3 m_ll;
 	};
 }

@@ -3,7 +3,7 @@
 #include <glm/gtx/vector_angle.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 
-#include <iostream> //debug todo:anne remove
+#include <iostream>
 
 glannotations::BSpline::BSpline(std::vector<glm::vec3> ctrlPoints, std::vector<float> knotValues) {
 	assert(ctrlPoints.size() > 0);
@@ -25,54 +25,6 @@ glannotations::BSpline::BSpline(std::vector<glm::vec3> ctrlPoints, unsigned shor
 	calculateArcLengths();
 }
 
-/*
-glannotations::BSpline::BSpline(std::vector<glm::vec2> ctrlPoints, std::vector<float> knotValues, glm::vec3 planeNormal, glm::vec3 firstControlPointOnTargetPlane, glm::vec3 lastControlPointOnTargetPlane){
-	project2DContropointsToPlane(ctrlPoints, planeNormal, firstControlPointOnTargetPlane, lastControlPointOnTargetPlane);
-
-	setKnotValues(knotValues);
-	calculateSplineDegree();
-	calculateArcLengths();
-}
-glannotations::BSpline::BSpline(std::vector<glm::vec2> ctrlPoints, unsigned short degree, glm::vec3 planeNormal, glm::vec3 firstControlPointOnTargetPlane, glm::vec3 lastControlPointOnTargetPlane){
-	project2DContropointsToPlane(ctrlPoints, planeNormal, firstControlPointOnTargetPlane, lastControlPointOnTargetPlane);
-
-	m_degree = degree;
-	calculateUniformKnotValues();
-	calculateArcLengths();
-}
-
-void glannotations::BSpline::project2DContropointsToPlane(std::vector<glm::vec2> ctrlPoints, glm::vec3 planeNormal, glm::vec3 firstControlPointOnTargetPlane, glm::vec3 lastControlPointOnTargetPlane){
-	//todo:anne needs testing!
-	setDirty(true);
-	
-	std::vector<glm::vec2> controlPoints2D = ctrlPoints;
-	std::vector<glm::vec3> controlPoints3D;
-	
-	planeNormal = glm::normalize(planeNormal);
-
-	//todo:anne maybe necessary?
-	//glm::vec3 up = lastControlPointOnTargetPlane - firstControlPointOnTargetPlane;
-	//float rotationAngleZAxis = glm::angle(glm::vec3(0, 1, 0), up);
-	//we could use "up" for extends of spline, or something like that
-	
-	float rotationAngle = glm::angle(glm::vec3(0, 0, 1), planeNormal);
-	glm::vec3 rotationAxis = glm::cross(glm::vec3(0, 0, 1), planeNormal);
-
-	glm::vec3 translationVec = firstControlPointOnTargetPlane - glm::vec3(controlPoints2D.at(0), 0.f);
-
-	//todo:anne transform points based on given plane
-    for (unsigned int i = 0; i < controlPoints2D.size(); i++){
-		glm::vec3 projectedPoint = glm::vec3(controlPoints2D.at(i), 0.f);
-
-		projectedPoint = glm::rotate(projectedPoint, rotationAngle, rotationAxis);
-		projectedPoint += translationVec;
-		
-		controlPoints3D.push_back(projectedPoint);
-	}
-
-	m_ctrlPoints = controlPoints3D;
-}
-*/
 const std::vector<glm::vec3>& glannotations::BSpline::getControlPoints() {
 	return m_ctrlPoints;
 }
@@ -86,11 +38,13 @@ unsigned short glannotations::BSpline::getSplineDegree() {
 }
 
 void glannotations::BSpline::setKnotValues(std::vector<float> knotValues) {
+	assert(knotValues.size() > 0);
 	setDirty(true);
 	m_knotValues = knotValues;
 }
 
 void glannotations::BSpline::setControlPoints(std::vector<glm::vec3> ctrlPoints) {
+	assert(ctrlPoints.size() > 0);
 	setDirty(true);
 	m_ctrlPoints = ctrlPoints;
 }

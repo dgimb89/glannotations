@@ -310,9 +310,11 @@ void glannotations::BendedQuadStrip::draw() {
 		gl::glActiveTexture(gl::GL_TEXTURE0);
 		m_texture->bind();
 	}
+	gl::glDisable(gl::GL_CULL_FACE);
 	m_program->use();
 	m_vao->drawArrays(gl::GL_POINTS, 0, static_cast<gl::GLsizei>(m_vertexCount));
 	m_program->release();
+	gl::glEnable(gl::GL_CULL_FACE);
 
 	if (m_texture) {
 		m_texture->unbind();

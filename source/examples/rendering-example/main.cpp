@@ -165,39 +165,36 @@ public:
 		labelAnnotation->getState()->setHorizontalAnchor(glannotations::Anchor::RIGHT);
 		m_annotations.addAnnotation(labelAnnotation);
 
-		//todo:anne hello world!
+		//spline
 		std::vector<glm::vec3> ctrlPoints;
-		int x = 4;
-		int y = 6;
-		int h = 2;
-		ctrlPoints.push_back(glm::vec3(x, y, 0));
-		ctrlPoints.push_back(glm::vec3(x, 0, 0));
-		ctrlPoints.push_back(glm::vec3(x, y / 2, 0));
-		ctrlPoints.push_back(glm::vec3(0, 0, 0));
+
+		ctrlPoints.push_back(glm::vec3(6, 0, 0));
+		ctrlPoints.push_back(glm::vec3(4, 2, 0));
+		ctrlPoints.push_back(glm::vec3(2, 0, 0));
+		ctrlPoints.push_back(glm::vec3(0, 2, 0));
 
 		std::vector<float> knotValues = { 0.f, 0.f, 0.f, 1.f, 2.f, 3.f, 3.f, 3.f };
 
 		std::vector<glm::vec3> ctrlPoints2;
-		ctrlPoints2.push_back(glm::vec3(x - h, y, 0));
-		ctrlPoints2.push_back(glm::vec3(x - h, 0 + h, 0));
-		ctrlPoints2.push_back(glm::vec3(x - h, y / 2 + h, 0));
-		ctrlPoints2.push_back(glm::vec3(0-h, 0, 0));
+		ctrlPoints2.push_back(glm::vec3(6, 2, -2));
+		ctrlPoints2.push_back(glm::vec3(4, 4, 0));
+		ctrlPoints2.push_back(glm::vec3(2, 2, 2));
+		ctrlPoints2.push_back(glm::vec3(0, 4, 0));
 
-		/*auto splineAnnotation = new glannotations::FontAnnotation(
+		auto splineAnnotation = new glannotations::FontAnnotation(
 			new glannotations::SplineState(
 				glm::vec3(-8, 4, 4)
 				, ctrlPoints, knotValues
 				, ctrlPoints2, knotValues
-				, glannotations::GlyphOrientationOnSpline::CUSTOM_SECOND_SPLINE
-			), "Spline State", "segoeuil.ttf", dfFactory);
-			*/
+			), "Spline State", "segoeuil.ttf", dfFactory
+		);
+		
 
-		auto splineAnnotation = new glannotations::FontAnnotation(
-			new glannotations::SplineState(
-			glm::vec3(-8, 4, 4)
-			, ctrlPoints, knotValues
-			, glannotations::GlyphOrientationOnSpline::ORTHOGONAL_TO_PLANE
-			), "Spline State", "segoeuil.ttf", dfFactory);
+		/*auto splineAnnotation = new glannotations::FontAnnotation(
+			new glannotations::SplineState( glm::vec3(-8, 4, 4), ctrlPoints, 3, glm::vec3(0, 2, 1))
+			, "Spline State", "segoeuil.ttf", dfFactory
+		);
+		*/
 
 		//splineAnnotation->getState()->asSplineState().setExternalReference(new glannotations::LabelReference(glm::vec3(0.f, -3.f, 10.f)));
 		splineAnnotation->getState()->setMaximumHeight(1.5f);
