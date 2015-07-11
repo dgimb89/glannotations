@@ -16,8 +16,8 @@ namespace glannotations {
 		BSpline(std::vector<glm::vec3> ctrlPoints, unsigned short degree);
 
 		//for 2D within a given plane
-		BSpline(std::vector<glm::vec2> ctrlPoints, std::vector<float> knotValues, glm::vec3 planeNormal, glm::vec3 firstControlPointOnTargetPlane, glm::vec3 lastControlPointOnTargetPlane);
-		BSpline(std::vector<glm::vec2> ctrlPoints, unsigned short degree, glm::vec3 planeNormal, glm::vec3 firstControlPointOnTargetPlane, glm::vec3 lastControlPointOnTargetPlane);
+		//BSpline(std::vector<glm::vec2> ctrlPoints, std::vector<float> knotValues, glm::vec3 planeNormal, glm::vec3 firstControlPointOnTargetPlane, glm::vec3 lastControlPointOnTargetPlane);
+		//BSpline(std::vector<glm::vec2> ctrlPoints, unsigned short degree, glm::vec3 planeNormal, glm::vec3 firstControlPointOnTargetPlane, glm::vec3 lastControlPointOnTargetPlane);
 
 		const std::vector<glm::vec3>& getControlPoints();
 		const std::vector<float>& getKnotValues();
@@ -45,7 +45,7 @@ namespace glannotations {
 
 	protected:
 		void calculateUniformKnotValues();
-		void project2DContropointsToPlane(std::vector<glm::vec2> ctrlPoints, glm::vec3 planeNormal, glm::vec3 firstControlPointOnTargetPlane, glm::vec3 lastControlPointOnTargetPlane);
+		//void project2DContropointsToPlane(std::vector<glm::vec2> ctrlPoints, glm::vec3 planeNormal, glm::vec3 firstControlPointOnTargetPlane, glm::vec3 lastControlPointOnTargetPlane);
 
 		/**
 		* Calculates values to fill the arcLength-container, which contains the arcLength at certain points along the curve,

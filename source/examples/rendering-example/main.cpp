@@ -36,7 +36,6 @@
 #include <glannotations/Externals/FlagReference.h>
 #include <glannotations/Externals/RectReference.h>
 #include <glannotations/Styles/Styles.h>
-#include <glannotations/Utility/BSpline.h>
 
 #include "building.h"
 
@@ -184,14 +183,22 @@ public:
 		ctrlPoints2.push_back(glm::vec3(x - h, y / 2 + h, 0));
 		ctrlPoints2.push_back(glm::vec3(0-h, 0, 0));
 
-		//glannotations::BSpline splineBase = glannotations::BSpline(ctrlPoints, 3);
-		auto splineAnnotation = new glannotations::FontAnnotation(
+		/*auto splineAnnotation = new glannotations::FontAnnotation(
 			new glannotations::SplineState(
 				glm::vec3(-8, 4, 4)
 				, ctrlPoints, knotValues
 				, ctrlPoints2, knotValues
 				, glannotations::GlyphOrientationOnSpline::CUSTOM_SECOND_SPLINE
 			), "Spline State", "segoeuil.ttf", dfFactory);
+			*/
+
+		auto splineAnnotation = new glannotations::FontAnnotation(
+			new glannotations::SplineState(
+			glm::vec3(-8, 4, 4)
+			, ctrlPoints, knotValues
+			, glannotations::GlyphOrientationOnSpline::ORTHOGONAL_TO_PLANE
+			), "Spline State", "segoeuil.ttf", dfFactory);
+
 		//splineAnnotation->getState()->asSplineState().setExternalReference(new glannotations::LabelReference(glm::vec3(0.f, -3.f, 10.f)));
 		splineAnnotation->getState()->setMaximumHeight(1.5f);
 		splineAnnotation->getState()->setKeepSourceAspectRatio(true);

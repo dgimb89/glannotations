@@ -6,6 +6,9 @@
 #include <iostream> //debug todo:anne remove
 
 glannotations::BSpline::BSpline(std::vector<glm::vec3> ctrlPoints, std::vector<float> knotValues) {
+	assert(ctrlPoints.size() > 0);
+	assert(knotValues.size() > 0);
+
 	setControlPoints(ctrlPoints);
 	setKnotValues(knotValues);
 	calculateSplineDegree();
@@ -13,12 +16,16 @@ glannotations::BSpline::BSpline(std::vector<glm::vec3> ctrlPoints, std::vector<f
 }
 
 glannotations::BSpline::BSpline(std::vector<glm::vec3> ctrlPoints, unsigned short degree) {
+	assert(ctrlPoints.size() > 0);
+	assert(degree > 0);
+
 	setControlPoints(ctrlPoints);
 	m_degree = degree;
 	calculateUniformKnotValues();
 	calculateArcLengths();
 }
 
+/*
 glannotations::BSpline::BSpline(std::vector<glm::vec2> ctrlPoints, std::vector<float> knotValues, glm::vec3 planeNormal, glm::vec3 firstControlPointOnTargetPlane, glm::vec3 lastControlPointOnTargetPlane){
 	project2DContropointsToPlane(ctrlPoints, planeNormal, firstControlPointOnTargetPlane, lastControlPointOnTargetPlane);
 
@@ -34,7 +41,7 @@ glannotations::BSpline::BSpline(std::vector<glm::vec2> ctrlPoints, unsigned shor
 	calculateArcLengths();
 }
 
-void glannotations::BSpline::project2DContropointsToPlane(std::vector<glm::vec2> ctrlPoints, glm::vec3 planeNormal, glm::vec3 firstControlPointOnTargetPlane, glm::vec3 /*lastControlPointOnTargetPlane*/){
+void glannotations::BSpline::project2DContropointsToPlane(std::vector<glm::vec2> ctrlPoints, glm::vec3 planeNormal, glm::vec3 firstControlPointOnTargetPlane, glm::vec3 lastControlPointOnTargetPlane){
 	//todo:anne needs testing!
 	setDirty(true);
 	
@@ -65,7 +72,7 @@ void glannotations::BSpline::project2DContropointsToPlane(std::vector<glm::vec2>
 
 	m_ctrlPoints = controlPoints3D;
 }
-
+*/
 const std::vector<glm::vec3>& glannotations::BSpline::getControlPoints() {
 	return m_ctrlPoints;
 }
@@ -91,20 +98,18 @@ void glannotations::BSpline::setControlPoints(std::vector<glm::vec3> ctrlPoints)
 void glannotations::BSpline::calculateUniformKnotValues() {
 	m_knotValues.clear();
 
-	// starting knot -- nonperiodic B-Spline
-	m_knotValues.insert(m_knotValues.end(), 0.f);
+	// starting knots; nonperiodic B-Spline
+	m_knotValues.insert(m_knotValues.end(), m_degree, 0.f);
 	// todo: this should be garantied
 	assert(m_ctrlPoints.size() > 0);
 	size_t ctrlCount = m_ctrlPoints.size() - 1;
-	//float uniformDistance = ctrlCount;
-    //float current = 0.f;
-	// internal knots - uniform distribution
+	
+	//internal knots - uniform distribution
 	for (unsigned n = 1; n < ctrlCount; ++n) {
 		m_knotValues.push_back(static_cast<float>(n));
-		//current += uniformDistance;
 	}
-	// ending knot
-	m_knotValues.insert(m_knotValues.end(), static_cast<float>(ctrlCount));
+	// ending knots
+	m_knotValues.insert(m_knotValues.end(), m_degree, static_cast<float>(ctrlCount));
 
 	setDirty(true);
 }

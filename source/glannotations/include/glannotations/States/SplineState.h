@@ -18,13 +18,28 @@ namespace glannotations {
 		*	\param	splineTop spline works as a roof for the glyphs
 		*	\param	splineOrientation useful to calculate some standard splineTops
 		*/
-		SplineState(glm::vec3 position, BSpline splineBase, GlyphOrientationOnSpline splineOrientation = GlyphOrientationOnSpline::IN_SAME_PLANE);
-		SplineState(glm::vec3 position, BSpline splineBase, BSpline splineTop);
-		SplineState(glm::vec3 position, BSpline splineBase, BSpline splineTop, GlyphOrientationOnSpline splineOrientation);
+		SplineState(glm::vec3 position
+			, std::vector<glm::vec3> splineBaseControlPoints, std::vector<float> splineBaseKnotValues
+			, GlyphOrientationOnSpline splineOrientation = GlyphOrientationOnSpline::IN_SAME_PLANE
+		);
+		
+		SplineState(glm::vec3 position
+			, std::vector<glm::vec3> splineBaseControlPoints, unsigned int baseDegree = 3
+			, GlyphOrientationOnSpline splineOrientation = GlyphOrientationOnSpline::IN_SAME_PLANE
+			);
+
 		SplineState(glm::vec3 position
 			, std::vector<glm::vec3> splineBaseControlPoints, std::vector<float> splineBaseKnotValues
 			, std::vector<glm::vec3> splineTopControlPoints, std::vector<float> splineTopKnotValues
-			, GlyphOrientationOnSpline splineOrientation);
+			, GlyphOrientationOnSpline splineOrientation = GlyphOrientationOnSpline::CUSTOM_SECOND_SPLINE
+		);
+
+		SplineState(glm::vec3 position
+			, std::vector<glm::vec3> splineBaseControlPoints, unsigned int baseDegree
+			, std::vector<glm::vec3> splineTopControlPoints, unsigned int topDegree
+			, GlyphOrientationOnSpline splineOrientation = GlyphOrientationOnSpline::CUSTOM_SECOND_SPLINE
+		);
+
 		
 		//either change using orientation parameter or using a new splineTop
 		void changeOrientation(std::shared_ptr<BSpline> splineTop);

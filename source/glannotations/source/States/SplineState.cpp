@@ -7,34 +7,45 @@
 
 #include <iostream> //debug todo:anne remove
 
-glannotations::SplineState::SplineState(glm::vec3 position, BSpline splineBase, GlyphOrientationOnSpline splineOrientation){
+glannotations::SplineState::SplineState(glm::vec3 position
+	, std::vector<glm::vec3> splineBaseControlPoints, std::vector<float> splineBaseKnotValues
+	, GlyphOrientationOnSpline splineOrientation /* = GlyphOrientationOnSpline::IN_SAME_PLANE*/){
 	m_ll = position;
-	m_splineBase = std::shared_ptr<BSpline>(new BSpline(splineBase.getControlPoints(), splineBase.getKnotValues()));
+	m_splineBase = std::shared_ptr<BSpline>(new BSpline(splineBaseControlPoints, splineBaseKnotValues));
 	m_splineOrientation = splineOrientation;
+	m_splineTop = std::shared_ptr<BSpline>(new BSpline(splineBaseControlPoints, splineBaseKnotValues));
 	updateSplineTop();
 }
 
-glannotations::SplineState::SplineState(glm::vec3 position, BSpline splineBase, BSpline splineTop){
+glannotations::SplineState::SplineState(glm::vec3 position
+	, std::vector<glm::vec3> splineBaseControlPoints, unsigned int baseDegree /* = 3*/
+	, GlyphOrientationOnSpline splineOrientation /* = GlyphOrientationOnSpline::IN_SAME_PLANE*/){
 	m_ll = position;
-	m_splineBase = std::shared_ptr<BSpline>(new BSpline(splineBase.getControlPoints(), splineBase.getKnotValues()));
-	m_splineTop = std::shared_ptr<BSpline>(new BSpline(splineTop.getControlPoints(), splineTop.getKnotValues()));
-	m_splineOrientation = GlyphOrientationOnSpline::CUSTOM_SECOND_SPLINE;
-}
-
-glannotations::SplineState::SplineState(glm::vec3 position, BSpline splineBase, BSpline splineTop, GlyphOrientationOnSpline splineOrientation){
-	m_ll = position;
-	m_splineBase = std::shared_ptr<BSpline>(new BSpline(splineBase.getControlPoints(), splineBase.getKnotValues()));
-	m_splineTop = std::shared_ptr<BSpline>(new BSpline(splineTop.getControlPoints(), splineTop.getKnotValues()));
+	m_splineBase = std::shared_ptr<BSpline>(new BSpline(splineBaseControlPoints, baseDegree));
 	m_splineOrientation = splineOrientation;
+	m_splineTop = std::shared_ptr<BSpline>(new BSpline(splineBaseControlPoints, baseDegree));
+	updateSplineTop();
 }
 
-glannotations::SplineState::SplineState(glm::vec3 position, std::vector<glm::vec3> splineBaseControlPoints, std::vector<float> splineBaseKnotValues
+glannotations::SplineState::SplineState(glm::vec3 position
+	, std::vector<glm::vec3> splineBaseControlPoints, std::vector<float> splineBaseKnotValues
 	, std::vector<glm::vec3> splineTopControlPoints, std::vector<float> splineTopKnotValues
-	, GlyphOrientationOnSpline splineOrientation)
+	, GlyphOrientationOnSpline splineOrientation /* = GlyphOrientationOnSpline::CUSTOM_SECOND_SPLINE*/)
 {
 	m_ll = position;
 	m_splineBase = std::shared_ptr<BSpline>(new BSpline(splineBaseControlPoints, splineBaseKnotValues));
 	m_splineTop = std::shared_ptr<BSpline>(new BSpline(splineTopControlPoints, splineTopKnotValues));
+	m_splineOrientation = splineOrientation;
+}
+
+glannotations::SplineState::SplineState(glm::vec3 position
+	, std::vector<glm::vec3> splineBaseControlPoints, unsigned int baseDegree
+	, std::vector<glm::vec3> splineTopControlPoints, unsigned int topDegree
+	, GlyphOrientationOnSpline splineOrientation /* = GlyphOrientationOnSpline::CUSTOM_SECOND_SPLINE*/)
+{
+	m_ll = position;
+	m_splineBase = std::shared_ptr<BSpline>(new BSpline(splineBaseControlPoints, baseDegree));
+	m_splineTop = std::shared_ptr<BSpline>(new BSpline(splineTopControlPoints, topDegree));
 	m_splineOrientation = splineOrientation;
 }
 
