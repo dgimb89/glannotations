@@ -71,25 +71,65 @@ void glannotations::BSpline2D::updateControlPoints3D() {
 	}
 
 	//rotation
-	float angleX = glm::angle(m_up, normal);
-	glm::vec3 axisX = glm::normalize(glm::cross(m_up, normal));
-	glm::rotate(transformation, angleX, axisX);
 
-	float angleY = glm::angle(m_direction, normal);
-	glm::vec3 axisY = glm::normalize(glm::cross(m_direction, normal));
-	glm::rotate(transformation, angleY, axisY);
+	//think again:
+	//get angle and axis to rotate m_up to y-axis
+	//get angle and axis to rotate m_direction to x-axis
+	/*
+	*	todo:anne done, but still doesn't work.
+	*	given m_direction=glm::vec3(0, 0, 1) and m_up=glm::vec3(0, -1, 0),
+	*	it transforms to m_up=glm::vec3(0, 0, 1) and m_direction=glm::vec3(0, -1, 0)!!!
+	*/
+	float pi = glm::pi<float>();
 
-	float angleZ = glm::angle(m_direction, m_up);
-	glm::vec3 axisZ = glm::normalize(glm::cross(m_direction, m_up));
-	glm::rotate(transformation, angleY, axisY);
+	glm::vec3 xAxis(1, 0, 0);
+	glm::vec3 yAxis(0, 1, 0);
+	glm::vec3 zAxis(0, 0, 1);
 
+	float angleDirection = glm::angle(m_direction, xAxis);
+	if (std::abs(angleDirection) >= std::numeric_limits<float>::epsilon()) {
+		//angle !== 0
+		if (std::abs(std::abs(angleDirection) - pi) >= std::numeric_limits<float>::epsilon()) {
+			//angle != pi
+			glm::vec3 axisDirection = glm::normalize(glm::cross(m_direction, xAxis));
+			transformation = glm::rotate(transformation, angleDirection, axisDirection);
+		}
+		else {
+			//angle == pi == 180° cross product would give zero vec
+			//any rotation axis orthogonal to xAxis should do
+			glm::vec3 axisDirection = yAxis;
+			transformation = glm::rotate(transformation, angleDirection, axisDirection);
+		}
+	}
+	
+	glm::vec4 transformedUp = glm::vec4(m_up.x, m_up.y, m_up.z, 1.0f);
+	transformedUp = transformation * transformedUp;
+	glm::vec3 transformedUp3D = glm::normalize(glm::vec3(transformedUp));
+	
+
+	float angleUp = glm::angle(transformedUp3D, yAxis);
+	if (std::abs(angleUp) >= std::numeric_limits<float>::epsilon()) {
+		//angle !== 0
+		if (std::abs(std::abs(angleUp) - pi) >= std::numeric_limits<float>::epsilon()) {
+			//angle != pi
+			glm::vec3 axisUp = glm::normalize(glm::cross(transformedUp3D, yAxis));
+			transformation = glm::rotate(transformation, angleUp, axisUp);
+		}
+		else {
+			//angle == pi == 180° cross product would give zero vec
+			//any rotation axis orthogonal to yAxis should do
+			glm::vec3 axisDirection = zAxis;
+			transformation = glm::rotate(transformation, angleDirection, axisDirection);
+		}
+	}
+	
 	//no translation, because SplineState will take care of positioning later
-	//todo: no scale?
+	//no scale, because m_up and m_direction are normalized, and we don't care about size
 
-	//transform all points, discard w
+	//transform all points with calculated transformationMatrix, discard w
 	for (int i = 0; i < transformedCtrlPoints.size(); i++) {
 		transformedCtrlPoints[i] = transformation * transformedCtrlPoints[i];
-		m_ctrlPoints[i] = glm::vec3(transformedCtrlPoints[i]);
+		m_ctrlPoints.push_back(glm::vec3(transformedCtrlPoints[i]));
 	}
 }
 

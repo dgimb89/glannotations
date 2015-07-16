@@ -103,7 +103,7 @@ void glannotations::BSpline::calculateArcLengths() {
 
 glm::vec3 glannotations::BSpline::retrieveCurvepointAt(float t) {
 	if ( t < 0.0f || t > 1.0f)
-		std::cerr << "debug: warning! 0 <= t <= 1";
+		std::cerr << "#Debug-warning: 0 <= t <= 1\n";
 
     float tempT = t * static_cast<float>(m_ctrlPoints.size() - 1);
 	int i = static_cast<int>(std::floor(tempT)) + m_degree - 1;
@@ -160,7 +160,7 @@ glm::vec3 glannotations::BSpline::deBoor(int k, int degree, int i, float t, std:
 				alpha = (t - knots[i]) / (knots[i + degree + 1 - k] - knots[i]);
 		} catch (...) { //this catch doesn't work, what kind of sorcery is this?
 			alpha = 1.0f;
-			std::cerr << "debug: alpha problem";
+			std::cerr << "#Debug-warning: alpha problem\n";
 		}
 
 		return (deBoor(k - 1, degree, i - 1, t, knots) * (1.0f - alpha) + (deBoor(k - 1, degree, i, t, knots) * (alpha)));
@@ -169,7 +169,7 @@ glm::vec3 glannotations::BSpline::deBoor(int k, int degree, int i, float t, std:
 
 float glannotations::BSpline::getTForU(float u) const {
 	if (u < 0 || u>1)
-		std::cerr << "u out of range: " << u;
+		std::cerr << "#Debug-warning: u out of range: " << u << "\n";
 	float t;
 	float targetArcLength = u * m_arcLengths.back();
 	int index = binaryIndexOfLargestValueSmallerThanOrEqualTo(m_arcLengths, targetArcLength);
@@ -187,7 +187,7 @@ float glannotations::BSpline::getTForU(float u) const {
         t = (static_cast<float>(index) + segmentFraction) / static_cast<float>(m_arcLengths.size() - 1);
 	}
 	if (t<0 || t>1)
-		std::cerr << "t out of range: " << t;
+		std::cerr << "#Debug-warning: t out of range: " << t << "\n";
 	return t;
 };
 

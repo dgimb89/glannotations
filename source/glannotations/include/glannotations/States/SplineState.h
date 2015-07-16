@@ -20,13 +20,13 @@ namespace glannotations {
 		*/
 		SplineState(glm::vec3 position
 			, std::vector<glm::vec3> splineBaseControlPoints, std::vector<float> splineBaseKnotValues
-			, glm::vec3 up
+			, glm::vec3 upToTopSpline
 		);
 		
 		SplineState(glm::vec3 position
 			, std::vector<glm::vec3> splineBaseControlPoints, unsigned int baseDegree
-			, glm::vec3 up
-			);
+			, glm::vec3 upToTopSpline
+		);
 
 		SplineState(glm::vec3 position
 			, std::vector<glm::vec3> splineBaseControlPoints, std::vector<float> splineBaseKnotValues
@@ -38,9 +38,37 @@ namespace glannotations {
 			, std::vector<glm::vec3> splineTopControlPoints, unsigned int topDegree
 		);
 
-		
+		//same same but different: for 2D Splines on a given plane (planeAxisX, planeAxisY)
+		//planeNormal would not be sufficient, we would not know the exact rotation of the plane in world space
+		SplineState(glm::vec3 position
+			, glm::vec3 planeAxisX, glm::vec3 planeAxisY
+			, std::vector<glm::vec2> splineBaseControlPoints
+			, std::vector<float> splineBaseKnotValues
+			, glm::vec2 upToTopSpline
+		);
+
+		SplineState(glm::vec3 position
+			, glm::vec3 planeAxisX, glm::vec3 planeAxisY
+			, std::vector<glm::vec2> splineBaseControlPoints
+			, unsigned int baseDegree
+			, glm::vec2 upToTopSpline
+		);
+
+		SplineState(glm::vec3 position
+			, glm::vec3 planeAxisX, glm::vec3 planeAxisY
+			, std::vector<glm::vec2> splineBaseControlPoints, std::vector<float> splineBaseKnotValues
+			, std::vector<glm::vec2> splineTopControlPoints, std::vector<float> splineTopKnotValues
+		);
+
+		SplineState(glm::vec3 position
+			, glm::vec3 planeAxisX, glm::vec3 planeAxisY
+			, std::vector<glm::vec2> splineBaseControlPoints, unsigned int baseDegree
+			, std::vector<glm::vec2> splineTopControlPoints, unsigned int topDegree
+		);
+
 		//either change using orientation parameter or using a new splineTop
 		void changeOrientation(std::shared_ptr<BSpline2D> splineTop);
+		void changeOrientation(glm::vec2 newUp);
 		void changeOrientation(std::shared_ptr<BSpline3D> splineTop);
 		void changeOrientation(glm::vec3 newUp);
 

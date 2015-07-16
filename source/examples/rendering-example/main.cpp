@@ -165,21 +165,27 @@ public:
 		labelAnnotation->getState()->setHorizontalAnchor(glannotations::Anchor::RIGHT);
 		m_annotations.addAnnotation(labelAnnotation);
 
-		//spline
-		std::vector<glm::vec3> ctrlPoints;
 
+		//spline 3D
+		std::vector<glm::vec3> ctrlPoints;
 		ctrlPoints.push_back(glm::vec3(6, 0, 0));
 		ctrlPoints.push_back(glm::vec3(4, 2, 0));
 		ctrlPoints.push_back(glm::vec3(2, 0, 0));
 		ctrlPoints.push_back(glm::vec3(0, 2, 0));
-
-		std::vector<float> knotValues = { 0.f, 0.f, 0.f, 1.f, 2.f, 3.f, 3.f, 3.f };
 
 		std::vector<glm::vec3> ctrlPoints2;
 		ctrlPoints2.push_back(glm::vec3(6, 2, -2));
 		ctrlPoints2.push_back(glm::vec3(4, 4, 0));
 		ctrlPoints2.push_back(glm::vec3(2, 2, 2));
 		ctrlPoints2.push_back(glm::vec3(0, 4, 0));
+
+		std::vector<float> knotValues = { 0.f, 0.f, 0.f, 1.f, 2.f, 3.f, 3.f, 3.f };
+
+		std::vector<glm::vec2> ctrlPoints2D;
+		ctrlPoints2D.push_back(glm::vec2(6, 0));
+		ctrlPoints2D.push_back(glm::vec2(4, 2));
+		ctrlPoints2D.push_back(glm::vec2(2, 0));
+		ctrlPoints2D.push_back(glm::vec2(0, 2));
 
 		/*
 		auto splineAnnotation = new glannotations::FontAnnotation(
@@ -191,11 +197,17 @@ public:
 		);
 		//*/
 
+		/*
 		auto splineAnnotation = new glannotations::FontAnnotation(
 			new glannotations::SplineState( glm::vec3(-8, 4, 4), ctrlPoints, 3, glm::vec3(0, 2, 1))
 			, "Spline State", "segoeuil.ttf", dfFactory
 		);
 		//*/
+
+		auto splineAnnotation = new glannotations::FontAnnotation(
+			new glannotations::SplineState(glm::vec3(-8, 4, 0), glm::vec3(0, 0, 1), glm::vec3(0, -1, 0), ctrlPoints2D, 3, glm::vec2(0, 2))
+			, "Spline State", "segoeuil.ttf", dfFactory
+		);
 
 		//splineAnnotation->getState()->asSplineState().setExternalReference(new glannotations::LabelReference(glm::vec3(0.f, -3.f, 10.f)));
 		splineAnnotation->getState()->setMaximumHeight(1.5f);
