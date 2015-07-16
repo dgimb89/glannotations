@@ -3,6 +3,7 @@
 #include <glannotations/Common/DirtyFlagObject.h>
 #include <glannotations/glannotations_api.h>
 
+#include <memory>
 #include <vector>
 #include <glm/glm.hpp>
 

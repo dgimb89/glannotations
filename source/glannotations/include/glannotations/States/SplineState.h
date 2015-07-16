@@ -75,12 +75,16 @@ namespace glannotations {
 		virtual void updateExtends(glm::vec2 sourceExtends) override;
 
 	private:
-		void calculateSplineTop(glm::vec3 upVec);
+
+		void initialize(glm::vec3 position, bool is3DSpline);
+		void calculateSplineTop(glm::vec3 upVecInWorldSpace);
+		void calculateSplineTop(glm::vec2 upVecInPlaneSpace);
 
 		std::shared_ptr<glannotations::BSpline> m_splineBase;
 		std::shared_ptr<glannotations::BSpline> m_splineTop;
 		glm::vec3 m_ll;
 
+		bool m_valid;
 		bool m_acceptsExternalReference;
 	};
 }

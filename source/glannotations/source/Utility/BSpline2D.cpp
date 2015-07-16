@@ -29,6 +29,10 @@ const std::vector<glm::vec2>& glannotations::BSpline2D::getControlPoints2D() con
 	return m_ctrlPoints2D;
 }
 
+const glm::vec3& glannotations::BSpline2D::getPlaneNormal() const {
+	return glm::cross(m_direction, m_up);
+}
+
 void glannotations::BSpline2D::setPlane(glm::vec3 planeAxisX, glm::vec3 planeAxisY) {
 	setDirty(true);
 
@@ -56,7 +60,7 @@ void glannotations::BSpline2D::updateControlPoints3D() {
 	m_ctrlPoints.clear();
 
 	//calculate ctrlpoints using plane
-	glm::vec3 normal = glm::cross(m_direction, m_up);
+	glm::vec3 normal = getPlaneNormal();
 
 	glm::mat4 transformation = glm::mat4();
 	std::vector<glm::vec4> transformedCtrlPoints;
@@ -89,12 +93,12 @@ void glannotations::BSpline2D::updateControlPoints3D() {
 	}
 }
 
-bool glannotations::BSpline2D::isInSamePlane(const BSpline2D compareSpline) const {
+bool glannotations::BSpline2D::isInSamePlane(std::shared_ptr<BSpline2D> compareSpline) const {
 	
-	if (glm::distance2(compareSpline.m_direction, m_direction) >= std::numeric_limits<float>::epsilon())
+	if (glm::distance2(compareSpline->m_direction, m_direction) >= std::numeric_limits<float>::epsilon())
 		return false;
 
-	if (glm::distance2(compareSpline.m_up, m_up) >= std::numeric_limits<float>::epsilon())
+	if (glm::distance2(compareSpline->m_up, m_up) >= std::numeric_limits<float>::epsilon())
 		return false;
 
 	return true;

@@ -181,6 +181,7 @@ public:
 		ctrlPoints2.push_back(glm::vec3(2, 2, 2));
 		ctrlPoints2.push_back(glm::vec3(0, 4, 0));
 
+		/*
 		auto splineAnnotation = new glannotations::FontAnnotation(
 			new glannotations::SplineState(
 				glm::vec3(-8, 4, 4)
@@ -188,13 +189,13 @@ public:
 				, ctrlPoints2, knotValues
 			), "Spline State", "segoeuil.ttf", dfFactory
 		);
-		
+		//*/
 
-		/*auto splineAnnotation = new glannotations::FontAnnotation(
+		auto splineAnnotation = new glannotations::FontAnnotation(
 			new glannotations::SplineState( glm::vec3(-8, 4, 4), ctrlPoints, 3, glm::vec3(0, 2, 1))
 			, "Spline State", "segoeuil.ttf", dfFactory
 		);
-		*/
+		//*/
 
 		//splineAnnotation->getState()->asSplineState().setExternalReference(new glannotations::LabelReference(glm::vec3(0.f, -3.f, 10.f)));
 		splineAnnotation->getState()->setMaximumHeight(1.5f);
