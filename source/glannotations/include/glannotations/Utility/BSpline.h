@@ -7,15 +7,18 @@
 #include <glm/glm.hpp>
 
 namespace glannotations {
+	//forward declaration
+	class BSpline2D;
+	class BSpline3D;
 
     class GLANNOTATIONS_API BSpline : protected glannotations::DirtyFlagObject {
 	public:
-		BSpline(std::vector<glm::vec3> ctrlPoints, std::vector<float> knotValues);
-		BSpline(std::vector<glm::vec3> ctrlPoints, unsigned short degree);
+		glannotations::BSpline2D& asBSpline2D();
+		glannotations::BSpline3D& asBSpline3D();
 
-		const std::vector<glm::vec3>& getControlPoints();
-		const std::vector<float>& getKnotValues();
-		unsigned short getSplineDegree();
+		const std::vector<glm::vec3>& getControlPoints() const;
+		const std::vector<float>& getKnotValues() const;
+		const unsigned short getSplineDegree() const;
 
 		/*!
 		*	\brief	Calculates a Curvepoint parametrized by t using de Boor's algorithm
@@ -33,12 +36,14 @@ namespace glannotations {
 		// we want to use the dirty information just internally
         //virtual bool isDirty() const = delete;
 
-		void setControlPoints(std::vector<glm::vec3> ctrlPoints);
 		void setKnotValues(std::vector<float> knotValues);
 		void calculateUniformKnotValues();
 		void calculateSplineDegree();
 
 	protected:
+		BSpline(std::vector<float> knotValues);
+		BSpline(unsigned short degree);
+
 		/**
 		* Calculates values to fill the arcLength-container, which contains the arcLength at certain points along the curve,
 		* used to approximate the overall arcLength and to position the glyphs evenly along the curve
@@ -59,14 +64,14 @@ namespace glannotations {
 		*	\brief	returns t curve (or arcLength-) parameterized value in range [0,1]
 		*	\param	u Parameterized value in range [0,1]
 		*/
-		float getTForU(float u);
+		float getTForU(float u) const;
 
 		template <typename T>
 		T clamp(T val, T min, T max) {
 			return val < min ? min : (val > max ? max : val);
 		}
 
-	private:
+	protected:
 		std::vector<glm::vec3> m_ctrlPoints;
 		std::vector<float> m_knotValues;
 		unsigned short m_degree;

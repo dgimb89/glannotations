@@ -327,11 +327,6 @@ glm::vec2 glannotations::BendedQuadStrip::getExtends() const {
 		texAdvance.x += textureCoords.second.x;
 	}
 	return texAdvance;
-	
-	return glm::vec2();
-	//todo: spline length?
-	//debug i use this, but i don't know why
-	//only used within my own class! I can do what I want!
 }
 
 void glannotations::BendedQuadStrip::updateQuadPositions() {
@@ -349,13 +344,14 @@ void glannotations::BendedQuadStrip::updateQuadPositions() {
 	std::vector<glm::vec3> vertexVector;
 	std::vector<glm::vec3> vertAdvanceW, vertAdvanceH;
 
-
-	glm::vec3 widthSpan = glm::vec3(); //todo:anne unused!
+	/*
+	glm::vec3 widthSpan = glm::vec3();
 	for (auto secantVec : m_quadRanges) {
 		// calculate full curve width for later usage
 		widthSpan += secantVec.first;
 	}
-	widthSpan /= getExtends().x; // normalize todo:anne is this right?
+	widthSpan /= getExtends().x;
+	*/
 
 	glm::vec3 currentPoint = m_startPoint;
 

@@ -3,11 +3,13 @@
 #include <glannotations/States/ReferenceableState.h>
 #include <glannotations/Externals/AbstractExternalReference.h>
 #include <glannotations/Utility/BSpline.h>
+#include <glannotations/Utility/BSpline2D.h>
+#include <glannotations/Utility/BSpline3D.h>
 #include <glannotations/glannotations_api.h>
 
 namespace glannotations {
 	class GLANNOTATIONS_API SplineState : public glannotations::ReferenceableState {
-		friend class AbstractPrimitiveRenderer; //todo:anne is this necessary?
+		friend class AbstractPrimitiveRenderer;
 	public:
 		/*!
 		*	\brief	Creates an Annotation State which can be positioned by a Quad in world space
@@ -38,7 +40,8 @@ namespace glannotations {
 
 		
 		//either change using orientation parameter or using a new splineTop
-		void changeOrientation(std::shared_ptr<BSpline> splineTop);
+		void changeOrientation(std::shared_ptr<BSpline2D> splineTop);
+		void changeOrientation(std::shared_ptr<BSpline3D> splineTop);
 		void changeOrientation(glm::vec3 newUp);
 
 		/*!
@@ -77,5 +80,7 @@ namespace glannotations {
 		std::shared_ptr<glannotations::BSpline> m_splineBase;
 		std::shared_ptr<glannotations::BSpline> m_splineTop;
 		glm::vec3 m_ll;
+
+		bool m_acceptsExternalReference;
 	};
 }

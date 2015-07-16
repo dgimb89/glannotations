@@ -1,39 +1,41 @@
 #include <glannotations/Utility/BSpline.h>
+#include <glannotations/Utility/BSpline2D.h>
+#include <glannotations/Utility/BSpline3D.h>
 
 #include <glm/gtx/vector_angle.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 
 #include <iostream>
 
-glannotations::BSpline::BSpline(std::vector<glm::vec3> ctrlPoints, std::vector<float> knotValues) {
-	assert(ctrlPoints.size() > 0);
+glannotations::BSpline::BSpline(std::vector<float> knotValues) {
 	assert(knotValues.size() > 0);
 
-	setControlPoints(ctrlPoints);
 	setKnotValues(knotValues);
-	calculateSplineDegree();
-	calculateArcLengths();
 }
 
-glannotations::BSpline::BSpline(std::vector<glm::vec3> ctrlPoints, unsigned short degree) {
-	assert(ctrlPoints.size() > 0);
+glannotations::BSpline::BSpline(unsigned short degree) {
 	assert(degree > 0);
 
-	setControlPoints(ctrlPoints);
 	m_degree = degree;
-	calculateUniformKnotValues();
-	calculateArcLengths();
 }
 
-const std::vector<glm::vec3>& glannotations::BSpline::getControlPoints() {
+glannotations::BSpline2D& glannotations::BSpline::asBSpline2D() {
+	return dynamic_cast<glannotations::BSpline2D&>(*this);
+}
+
+glannotations::BSpline3D& glannotations::BSpline::asBSpline3D() {
+	return dynamic_cast<glannotations::BSpline3D&>(*this);
+}
+
+const std::vector<glm::vec3>& glannotations::BSpline::getControlPoints() const {
 	return m_ctrlPoints;
 }
 
-const std::vector<float>& glannotations::BSpline::getKnotValues() {
+const std::vector<float>& glannotations::BSpline::getKnotValues() const {
 	return m_knotValues;
 }
 
-unsigned short glannotations::BSpline::getSplineDegree() {
+const unsigned short glannotations::BSpline::getSplineDegree() const {
 	return m_degree;
 }
 
@@ -41,12 +43,6 @@ void glannotations::BSpline::setKnotValues(std::vector<float> knotValues) {
 	assert(knotValues.size() > 0);
 	setDirty(true);
 	m_knotValues = knotValues;
-}
-
-void glannotations::BSpline::setControlPoints(std::vector<glm::vec3> ctrlPoints) {
-	assert(ctrlPoints.size() > 0);
-	setDirty(true);
-	m_ctrlPoints = ctrlPoints;
 }
 
 void glannotations::BSpline::calculateUniformKnotValues() {
@@ -107,7 +103,7 @@ void glannotations::BSpline::calculateArcLengths() {
 
 glm::vec3 glannotations::BSpline::retrieveCurvepointAt(float t) {
 	if ( t < 0.0f || t > 1.0f)
-		std::cout << "debug: warning! 0 <= t <= 1";
+		std::cerr << "debug: warning! 0 <= t <= 1";
 
     float tempT = t * static_cast<float>(m_ctrlPoints.size() - 1);
 	int i = static_cast<int>(std::floor(tempT)) + m_degree - 1;
@@ -164,16 +160,16 @@ glm::vec3 glannotations::BSpline::deBoor(int k, int degree, int i, float t, std:
 				alpha = (t - knots[i]) / (knots[i + degree + 1 - k] - knots[i]);
 		} catch (...) { //this catch doesn't work, what kind of sorcery is this?
 			alpha = 1.0f;
-			std::cout << "debug: alpha problem";
+			std::cerr << "debug: alpha problem";
 		}
 
 		return (deBoor(k - 1, degree, i - 1, t, knots) * (1.0f - alpha) + (deBoor(k - 1, degree, i, t, knots) * (alpha)));
 	}
 };
 
-float glannotations::BSpline::getTForU(float u){
+float glannotations::BSpline::getTForU(float u) const {
 	if (u < 0 || u>1)
-		std::cout << "u out of range: " << u;
+		std::cerr << "u out of range: " << u;
 	float t;
 	float targetArcLength = u * m_arcLengths.back();
 	int index = binaryIndexOfLargestValueSmallerThanOrEqualTo(m_arcLengths, targetArcLength);
@@ -191,7 +187,7 @@ float glannotations::BSpline::getTForU(float u){
         t = (static_cast<float>(index) + segmentFraction) / static_cast<float>(m_arcLengths.size() - 1);
 	}
 	if (t<0 || t>1)
-		std::cout << "t out of range: " << t;
+		std::cerr << "t out of range: " << t;
 	return t;
 };
 
