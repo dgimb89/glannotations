@@ -19,7 +19,7 @@ namespace glannotations {
 
 		const std::vector<glm::vec3>& getControlPoints() const;
 		const std::vector<float>& getKnotValues() const;
-		const unsigned short getSplineDegree() const;
+		unsigned short getSplineDegree() const;
 
 		/*!
 		*	\brief	Calculates a Curvepoint parametrized by t using de Boor's algorithm

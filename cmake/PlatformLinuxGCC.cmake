@@ -46,6 +46,8 @@ set(LINUX_COMPILE_FLAGS
       -Wcast-align
     # -Wconversion # disabled because of rapidjson
 
+      -Wno-unused-result
+
     # -Werror=return-type -> missing returns in functions and methods are handled as errors which stops the compilation
 
 )

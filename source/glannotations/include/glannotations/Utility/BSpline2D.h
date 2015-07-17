@@ -14,7 +14,7 @@ namespace glannotations {
 		BSpline2D(glm::vec3 planeAxisX, glm::vec3 planeAxisY, std::vector<glm::vec2> ctrlPoints, unsigned short degree);
 
 		const std::vector<glm::vec2>& getControlPoints2D() const;
-		const glm::vec3& getPlaneNormal() const;
+		glm::vec3 getPlaneNormal() const;
 
 		void setControlPoints(std::vector<glm::vec2> ctrlPoints);
 		void setPlane(glm::vec3 planeAxisX, glm::vec3 planeAxisY);
