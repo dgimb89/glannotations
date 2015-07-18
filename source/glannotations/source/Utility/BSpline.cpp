@@ -35,7 +35,7 @@ const std::vector<float>& glannotations::BSpline::getKnotValues() const {
 	return m_knotValues;
 }
 
-const unsigned short glannotations::BSpline::getSplineDegree() const {
+unsigned short glannotations::BSpline::getSplineDegree() const {
 	return m_degree;
 }
 

@@ -150,7 +150,7 @@ void glannotations::SplineState::calculateSplineTop(glm::vec3 upVecInWorldSpace)
 	if (!m_acceptsExternalReference) {
 
 		auto ctrlPoints = m_splineBase->getControlPoints();
-		for (int i = 0; i < ctrlPoints.size(); i++) {
+		for (size_t i = 0; i < ctrlPoints.size(); i++) {
 			ctrlPoints[i] += upVecInWorldSpace;
 		}
 		(m_splineTop->asBSpline3D()).setControlPoints(ctrlPoints);
@@ -171,7 +171,7 @@ void glannotations::SplineState::calculateSplineTop(glm::vec2 upVecInPlaneSpace)
 	//for BSpline2D only
 	if (m_acceptsExternalReference){
 		auto ctrlPoints = (m_splineBase->asBSpline2D()).getControlPoints2D();
-		for (int i = 0; i < ctrlPoints.size(); i++) {
+		for (size_t i = 0; i < ctrlPoints.size(); i++) {
 			ctrlPoints[i] += upVecInPlaneSpace;
 		}
 		(m_splineTop->asBSpline2D()).setControlPoints(ctrlPoints);
@@ -225,7 +225,7 @@ void glannotations::SplineState::setExternalReference(const globjects::ref_ptr<g
 	m_externalReference->setupExternalReference(*this);
 }
 
-void glannotations::SplineState::updateExtends(glm::vec2 sourceExtends){
+void glannotations::SplineState::updateExtends(glm::vec2 /*sourceExtends*/){
 	throw std::logic_error("The method or operation is not implemented.");
 	//todo:anne
 	//don't know how to do that, we don't have extends in this form

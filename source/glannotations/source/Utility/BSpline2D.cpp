@@ -30,7 +30,7 @@ const std::vector<glm::vec2>& glannotations::BSpline2D::getControlPoints2D() con
 	return m_ctrlPoints2D;
 }
 
-const glm::vec3& glannotations::BSpline2D::getPlaneNormal() const {
+glm::vec3 glannotations::BSpline2D::getPlaneNormal() const {
 	return glm::cross(m_direction, m_up);
 }
 
@@ -65,12 +65,12 @@ void glannotations::BSpline2D::updateControlPoints3D() {
 	m_ctrlPoints.clear();
 
 	//calculate ctrlpoints using plane
-	glm::vec3 normal = getPlaneNormal();
+	//glm::vec3 normal = getPlaneNormal();
 
 	glm::mat4 transformation = glm::mat4();
 	std::vector<glm::vec4> transformedCtrlPoints;
 
-	for (int i = 0; i < m_ctrlPoints2D.size(); i++) {
+	for (size_t i = 0; i < m_ctrlPoints2D.size(); i++) {
 		glm::vec4 transformedPoint = glm::vec4(m_ctrlPoints2D[i].x, m_ctrlPoints2D[i].y, 0, 1);
 		transformedCtrlPoints.push_back(transformedPoint);
 	}
@@ -121,7 +121,7 @@ void glannotations::BSpline2D::updateControlPoints3D() {
 	//no scale, because m_up and m_direction are normalized, and we don't care about size
 
 	//transform all points with calculated transformationMatrix, discard w
-	for (int i = 0; i < transformedCtrlPoints.size(); i++) {
+	for (size_t i = 0; i < transformedCtrlPoints.size(); i++) {
 		transformedCtrlPoints[i] = transformation * transformedCtrlPoints[i];
 		m_ctrlPoints.push_back(glm::vec3(transformedCtrlPoints[i]));
 	}
