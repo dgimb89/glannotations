@@ -52,51 +52,51 @@ glannotations::SplineState::SplineState(glm::vec3 position
 }
 
 glannotations::SplineState::SplineState(glm::vec3 position
-	, glm::vec3 planeAxisX, glm::vec3 planeAxisY
+	, glm::vec3 planeAxisDirection, glm::vec3 planeAxisUp
 	, std::vector<glm::vec2> splineBaseControlPoints, std::vector<float> splineBaseKnotValues
 	, glm::vec2 upToTopSpline)
 {
 	initialize(position, true);
 
-	m_splineBase = std::shared_ptr<BSpline>(new BSpline2D(planeAxisX, planeAxisY, splineBaseControlPoints, splineBaseKnotValues));
-	m_splineTop = std::shared_ptr<BSpline>(new BSpline2D(planeAxisX, planeAxisY, splineBaseControlPoints, splineBaseKnotValues));
+	m_splineBase = std::shared_ptr<BSpline>(new BSpline2D(planeAxisDirection, planeAxisUp, splineBaseControlPoints, splineBaseKnotValues));
+	m_splineTop = std::shared_ptr<BSpline>(new BSpline2D(planeAxisDirection, planeAxisUp, splineBaseControlPoints, splineBaseKnotValues));
 	
 	calculateSplineTop(upToTopSpline);
 }
 
 glannotations::SplineState::SplineState(glm::vec3 position
-	, glm::vec3 planeAxisX, glm::vec3 planeAxisY
+	, glm::vec3 planeAxisDirection, glm::vec3 planeAxisUp
 	, std::vector<glm::vec2> splineBaseControlPoints, unsigned int baseDegree
 	, glm::vec2 upToTopSpline)
 {
 	initialize(position, true);
 
-	m_splineBase = std::shared_ptr<BSpline>(new BSpline2D(planeAxisX, planeAxisY, splineBaseControlPoints, baseDegree));
-	m_splineTop = std::shared_ptr<BSpline>(new BSpline2D(planeAxisX, planeAxisY, splineBaseControlPoints, baseDegree));
+	m_splineBase = std::shared_ptr<BSpline>(new BSpline2D(planeAxisDirection, planeAxisUp, splineBaseControlPoints, baseDegree));
+	m_splineTop = std::shared_ptr<BSpline>(new BSpline2D(planeAxisDirection, planeAxisUp, splineBaseControlPoints, baseDegree));
 
 	calculateSplineTop(upToTopSpline);
 }
 
 glannotations::SplineState::SplineState(glm::vec3 position
-	, glm::vec3 planeAxisX, glm::vec3 planeAxisY
+	, glm::vec3 planeAxisDirection, glm::vec3 planeAxisUp
 	, std::vector<glm::vec2> splineBaseControlPoints, std::vector<float> splineBaseKnotValues
 	, std::vector<glm::vec2> splineTopControlPoints, std::vector<float> splineTopKnotValues)
 {
 	initialize(position, true);
 
-	m_splineBase = std::shared_ptr<BSpline>(new BSpline2D(planeAxisX, planeAxisY, splineBaseControlPoints, splineBaseKnotValues));
-	m_splineTop = std::shared_ptr<BSpline>(new BSpline2D(planeAxisX, planeAxisY, splineTopControlPoints, splineTopKnotValues));
+	m_splineBase = std::shared_ptr<BSpline>(new BSpline2D(planeAxisDirection, planeAxisUp, splineBaseControlPoints, splineBaseKnotValues));
+	m_splineTop = std::shared_ptr<BSpline>(new BSpline2D(planeAxisDirection, planeAxisUp, splineTopControlPoints, splineTopKnotValues));
 }
 
 glannotations::SplineState::SplineState(glm::vec3 position
-	, glm::vec3 planeAxisX, glm::vec3 planeAxisY
+	, glm::vec3 planeAxisDirection, glm::vec3 planeAxisUp
 	, std::vector<glm::vec2> splineBaseControlPoints, unsigned int baseDegree
 	, std::vector<glm::vec2> splineTopControlPoints, unsigned int topDegree)
 {
 	initialize(position, true);
 
-	m_splineBase = std::shared_ptr<BSpline>(new BSpline2D(planeAxisX, planeAxisY, splineBaseControlPoints, baseDegree));
-	m_splineTop = std::shared_ptr<BSpline>(new BSpline2D(planeAxisX, planeAxisY, splineTopControlPoints, topDegree));
+	m_splineBase = std::shared_ptr<BSpline>(new BSpline2D(planeAxisDirection, planeAxisUp, splineBaseControlPoints, baseDegree));
+	m_splineTop = std::shared_ptr<BSpline>(new BSpline2D(planeAxisDirection, planeAxisUp, splineTopControlPoints, topDegree));
 }
 
 void glannotations::SplineState::initialize(glm::vec3 position, bool is2DSpline) {
