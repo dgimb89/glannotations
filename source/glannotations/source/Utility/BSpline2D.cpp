@@ -76,18 +76,11 @@ void glannotations::BSpline2D::updateControlPoints3D() {
 	}
 
 	//rotation
-
-	//think again:
-	//get angle and axis to rotate m_up to y-axis
-	//get angle and axis to rotate m_direction to x-axis
-	/*
-	*	todo:anne done, but still doesn't work.
-	*/
 	float pi = glm::pi<float>();
 
+	//initially, BSpline2D is defined in x-y-plane
 	glm::vec3 xAxis(1, 0, 0);
 	glm::vec3 yAxis(0, 1, 0);
-	glm::vec3 zAxis(0, 0, 1);
 
 	glm::vec3 axisDirection = glm::normalize(glm::cross(xAxis, m_direction));
 	if (glm::any(glm::isnan(axisDirection))) {
@@ -119,58 +112,10 @@ void glannotations::BSpline2D::updateControlPoints3D() {
 		//angle !== 0
 		glm::vec3 axisUp;
 		axisUp = glm::normalize(transformedDirection3D);
-		/*
-		if (std::abs(std::abs(angleUp) - pi) >= std::numeric_limits<float>::epsilon()) {
-			//angle != pi
-			axisUp = glm::normalize(transformedDirection3D);
-		}
-		else {
-			//angle == pi == 180° cross product would give zero vec
-			//any rotation axis orthogonal to transformedDirection3D should do
-			//glm::vec3 zAxis(0, 0, 1);
-			float a = 1;
-			float b = 1;
-			float c = (0 - a*transformedDirection3D.x - b*transformedDirection3D.y) / transformedDirection3D.z;
-			if (!isfinite(c)) {
-				c = 1;
-				a = (0 - b*transformedDirection3D.y - c*transformedDirection3D.z) / transformedDirection3D.x;
-				if (!isfinite(a)) {
-					a = 1;
-					b = (0 - c*transformedDirection3D.z - a*transformedDirection3D.x) / transformedDirection3D.y;
-					if (!isfinite(b)) {
-						throw std::logic_error("The Hell happened here!?");
-					}
-				}
-			}
-			axisUp = glm::vec3(a, b, c);
-			axisUp = glm::normalize(axisUp);
-
-			float debug = glm::dot(transformedDirection3D, axisUp); // = 0;
-
-		}*/
 		transformation2 = glm::rotate(glm::mat4(), angleUp, axisUp);
 	}
 	
-	//Test debug next step
-	glm::vec4 transformedDirection2 = glm::vec4(transformedDirection3D.x, transformedDirection3D.y, transformedDirection3D.z, 1.0f);
-	transformedDirection2 = transformation2 * transformedDirection2;
-	glm::vec3 transformedDirection3D2 = glm::normalize(glm::vec3(transformedDirection2));
-
-	glm::vec4 transformedUp2 = glm::vec4(transformedUp3D.x, transformedUp3D.y, transformedUp3D.z, 1.0f);
-	transformedUp2 = transformation2 * transformedUp2;
-	glm::vec3 transformedUp3D2 = glm::normalize(glm::vec3(transformedUp2));
-
 	transformation = transformation2 * transformation;
-
-	//Test debug total
-	glm::vec4 transformedDirection2t = glm::vec4(xAxis.x, xAxis.y, xAxis.z, 1.0f);
-	transformedDirection2t = transformation * transformedDirection2t;
-	glm::vec3 transformedDirection3D2t = glm::normalize(glm::vec3(transformedDirection2t));
-
-	glm::vec4 transformedUp2t = glm::vec4(yAxis.x, yAxis.y, yAxis.z, 1.0f);
-	transformedUp2t = transformation * transformedUp2t;
-	glm::vec3 transformedUp3D2t = glm::normalize(glm::vec3(transformedUp2t));
-
 
 	//no translation, because SplineState will take care of positioning later
 	//no scale, because m_up and m_direction are normalized, and we don't care about size
