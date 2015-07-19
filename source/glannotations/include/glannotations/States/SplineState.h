@@ -85,11 +85,23 @@ namespace glannotations {
 		*/
 		glm::vec3 retrieveSecantVectorAt(float t, float nextT);
 
+		/*!
+		*	\brief		Resets the extends for this State
+		*	\param	ll	Lower left coordinate of given Quad
+		*	\param	lr	Lower right coordinate of given Quad
+		*	\param	ur	Upper right coordinate of given Quad
+		*/
+		void setExtends(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur);
+
 		const glm::vec3& getLL() const;
+		const glm::vec3& getLR() const;
+		const glm::vec3& getUR() const;
 		virtual bool isValid() const override;
+		bool acceptsExternalReference() const;
 		virtual void setExternalReference(const globjects::ref_ptr<glannotations::AbstractExternalReference>& reference) override;
 		virtual globjects::ref_ptr<glannotations::AbstractState> clone() const override;
 		virtual glannotations::BoundingBox getBoundingBox() override;
+		virtual glm::vec4 getBoundingRect();
 
 		virtual void prepare() override;
 
@@ -103,14 +115,16 @@ namespace glannotations {
 		virtual void updateExtends(glm::vec2 sourceExtends) override;
 
 	private:
-
-		void initialize(glm::vec3 position, bool is3DSpline);
+		void initialize2D(glm::vec3 position, glm::vec3 planeAxisDirection, glm::vec3 planeAxisUp);
+		void initialize3D(glm::vec3 position);
 		void calculateSplineTop(glm::vec3 upVecInWorldSpace);
 		void calculateSplineTop(glm::vec2 upVecInPlaneSpace);
 
 		std::shared_ptr<glannotations::BSpline> m_splineBase;
 		std::shared_ptr<glannotations::BSpline> m_splineTop;
 		glm::vec3 m_ll;
+		glm::vec3 m_lr;
+		glm::vec3 m_ur;
 
 		bool m_valid;
 		bool m_acceptsExternalReference;

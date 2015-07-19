@@ -78,6 +78,11 @@ void glannotations::BSpline::calculateArcLengths() {
 	//UPDATE: the longer the curve, the higher numberOfSubdivisions needed
 	//& the longer an icicle, the more curve points given
 	// => the more curve points, the higher numberOfSubdivisions!
+
+	if (m_knotValues.size() == 0) {
+		return;
+	}
+
 	size_t numberOfDivisions = 10 * m_ctrlPoints.size();
 	size_t maxPoint = numberOfDivisions + 1;
 
