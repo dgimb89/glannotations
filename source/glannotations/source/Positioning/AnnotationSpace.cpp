@@ -1,31 +1,32 @@
 #include <glannotations/Positioning/AnnotationSpace.h>
 
-glannotations::AnnotationSpace::AnnotationSpace(){
-	m_spaceObjects = std::unordered_map<size_t, globjects::ref_ptr<SpaceObject> >();
+glannotations::AnnotationSpace::AnnotationSpace() {
+	setDirty(true);
 }
 
 void glannotations::AnnotationSpace::addSpaceObjects(std::initializer_list<globjects::ref_ptr<SpaceObject> > spaceObjects) {
-	for (auto obj : spaceObjects) {
-		size_t id = retrieveUID(obj);
-		m_spaceObjects.at(id) = obj;
+	setDirty(true);
+	for (const auto &obj : spaceObjects) {
+		for (const auto &annClass : obj->getAnnotationClasses()) {
+			m_spaceObjects[annClass].push_back(obj);
+		}
 	}	
 }
 
 void glannotations::AnnotationSpace::clear() {
-	m_spaceObjects = std::unordered_map<size_t, globjects::ref_ptr<SpaceObject> >();
+	setDirty(true);
+	m_spaceObjects.clear();
 }
 
-const globjects::ref_ptr<glannotations::SpaceObject> glannotations::AnnotationSpace::getSpaceObjectAtUID(size_t uid) const {
-	return m_spaceObjects.at(uid);
+const glannotations::AnnotationSpace::AnnotationClass_t & glannotations::AnnotationSpace::getSpaceObjectsForClass(std::string annotationClass) {
+	return m_spaceObjects.at(annotationClass);
 }
 
-const std::unordered_map<size_t, globjects::ref_ptr<glannotations::SpaceObject> > & glannotations::AnnotationSpace::getSpaceObjects() const {
+const glannotations::AnnotationSpace::AnnotationSpace_t & glannotations::AnnotationSpace::getSpaceObjects() const {
 	return m_spaceObjects;
 }
 
-size_t glannotations::AnnotationSpace::retrieveUID(globjects::ref_ptr<SpaceObject> obj) const {
-	//not sure if "&obj" is right. I want to use the address of the objectpointer as an UID.
-	//todo: calculate hash with obj AND space
-	size_t uid = reinterpret_cast<size_t>(&obj);
-	return uid;
+const globjects::ref_ptr<glannotations::SpaceObject> glannotations::AnnotationSpace::getSpaceObjectWithUID(size_t uid) const {
+	// todo: implement
+	return nullptr;
 }

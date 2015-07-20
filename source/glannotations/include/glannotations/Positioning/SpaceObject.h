@@ -7,6 +7,8 @@
 #include <globjects/base/ref_ptr.h>
 #include <gloperate/painter/Camera.h>
 
+#include <initializer_list>
+#include <string>
 #include <unordered_map>
 
 namespace glannotations {
@@ -14,11 +16,22 @@ namespace glannotations {
 	public:
 		typedef std::unordered_map < std::string, globjects::ref_ptr<glannotations::AnnotationData> > AnnotationDataMap;
 		
+		/*!
+		 *	\brief		Sets all necessary data attributes for given SpaceObject
+		 */
 		void setData(std::string key, globjects::ref_ptr<glannotations::AnnotationData> data);
+		/*!
+		 *	\brief		Removes all data attributes from SpaceObject
+		 */
 		void clearData();
-		const SpaceObject::AnnotationDataMap &getData();
+		/*!
+		 *	\returns	Data attributes map
+		 */
+		const SpaceObject::AnnotationDataMap &getData() const;
 
-		void setUID(size_t uid);
+		void setAnnotationClasses(std::initializer_list<std::string> annotationClasses);
+		const std::vector<std::string>& getAnnotationClasses() const;
+
 		size_t getUID() const;
 
 		virtual bool isValid() const = 0;
@@ -26,18 +39,10 @@ namespace glannotations {
 		virtual double distanceToCamera(const gloperate::Camera& cam) const = 0;
 		virtual glm::vec3 getCentroid() const = 0;
 
-		template <typename T>
-		T min(T v1, T v2) const {
-			return v1 < v2 ? v1 : v2;
-		}
-
-		template <typename T>
-		T max(T v1, T v2) const {
-			return v1 > v2 ? v1 : v2;
-		}
-
 	private:
+		size_t generateUID() const;
+		std::vector<std::string> m_annotationClasses;
 		AnnotationDataMap m_data;
-		size_t m_uid;
+		mutable size_t m_uid = 0;
 	};
 }

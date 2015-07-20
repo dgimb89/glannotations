@@ -17,8 +17,9 @@ void glannotations::AnnotationGroup::addAnnotation(const globjects::ref_ptr<glan
 	m_mutex.unlock();
 }
 
-void glannotations::AnnotationGroup::draw() const {
+void glannotations::AnnotationGroup::draw() {
 	threadingzeug::parallel_for(0, static_cast<int>(m_annotations.size()), [this](int i) {
+		updateAnnotation(m_annotations.at(i));
 		m_annotations.at(i)->prepareDraw();
 	});
 
@@ -34,6 +35,10 @@ void glannotations::AnnotationGroup::draw(long long preparationInMicroseconds) {
 			iMax				= 0, 
 			i					= 0, 
 			localMax			= 0;
+
+	// early exit for empty annotation group
+	if (nMax == 0) return;
+
 	std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
 
 	#pragma omp parallel default(shared) private(i, localMax)
@@ -42,7 +47,9 @@ void glannotations::AnnotationGroup::draw(long long preparationInMicroseconds) {
 		while (	std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - t1).count() < preparationInMicroseconds
 			&&	(i = processIndex++) < nMax) {
 			localMax = i;
-			m_annotations.at(ringBufferPosition(startProccessing, i, nMax))->prepareDraw();
+			auto annotation = m_annotations.at(ringBufferPosition(startProccessing, i, nMax));
+			updateAnnotation(annotation);
+			annotation->prepareDraw();
 		}
 		#pragma omp critical
 		{
@@ -75,4 +82,14 @@ void glannotations::AnnotationGroup::prepareRenderer() const {
 	for (auto& annotation : m_annotations) {
 		annotation->prepareRenderer();
 	}
+}
+
+void glannotations::AnnotationGroup::setAnnotationPositioner(const std::shared_ptr<const glannotations::AnnotationPositioner>& positioner, const globjects::ref_ptr<const glannotations::AnnotationDescription>& description) {
+	m_positioner = positioner;
+	m_description = description;
+}
+
+inline void glannotations::AnnotationGroup::updateAnnotation(globjects::ref_ptr<glannotations::AbstractAnnotation> annotation) {
+	if(m_positioner)
+		m_positioner->updateAnnotation(m_description, annotation);
 }

@@ -6,6 +6,8 @@
 
 #include <globjects/base/ref_ptr.h>
 
+#include <string>
+#include <initializer_list>
 #include <utility>
 #include <tuple>
 #include <map>
@@ -15,13 +17,18 @@ namespace glannotations {
 	public:
 		typedef std::pair<globjects::ref_ptr<SpaceObject>, std::string> AnnotationMapping;
 
-		void addAnnotatedObjects(std::initializer_list< std::tuple<size_t, size_t, std::string> > annotatedObjects);
-		void addAnnotatedObject(size_t priority, size_t uid, std::string dataKey);
-		void clearAnnotatedObjects();
+		AnnotationDescription(/*config ,*/ std::string annotationClass);
+
+		std::string getAnnotationClassIdentifier();
+		void setAnnotationClassIdentifier(std::string annotationClass);
 
 		/// todo: constraint (scene + annotation) definition
 
+	protected:
+		void parseConifg(/*config*/);
+
 	private:
-		std::multimap<size_t,  AnnotationMapping> m_annotationMappings;
+		std::string m_classIdentifier;
+		/* config */
 	};
 }

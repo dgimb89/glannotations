@@ -10,7 +10,7 @@ namespace glannotations {
 	*/
 	class GLANNOTATIONS_API ObjectAlignedBoundingBox : public SpaceObject {
 	public:
-		ObjectAlignedBoundingBox(glm::vec3 lowerLeftNear, glm::vec3 lowerLeftFar, glm::vec3 lowerRightNear, glm::vec3 upperLeftNear);
+		ObjectAlignedBoundingBox(glm::vec3 llf, glm::vec3 llb, glm::vec3 lrf, glm::vec3 ulf);
 		ObjectAlignedBoundingBox(glm::vec3 positionLln, glm::vec3 width, glm::vec3 length, float height);
 
 		virtual double getVolume() const override;
@@ -20,15 +20,15 @@ namespace glannotations {
 		virtual bool isValid() const override;
 
 	private:
-		glm::vec3 urn() const;
-		glm::vec3 ulf() const;
-		glm::vec3 lrf() const;
 		glm::vec3 urf() const;
+		glm::vec3 ulb() const;
+		glm::vec3 lrb() const;
+		glm::vec3 urb() const;
 		
-		glm::vec3 m_lln; //lower left near
-		glm::vec3 m_llf; //lower left far
-		glm::vec3 m_lrn; //lower right near
-		glm::vec3 m_uln; //upper left near
+		glm::vec3 m_llf; //lower left front
+		glm::vec3 m_llb; //lower left back
+		glm::vec3 m_lrf; //lower right front
+		glm::vec3 m_ulf; //upper left front
 
 	};
 }

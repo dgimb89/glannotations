@@ -10,16 +10,30 @@
 namespace glannotations {
 	class GLANNOTATIONS_API AnnotationSpace : public DirtyFlagObject {
 	public:
+		typedef std::vector<globjects::ref_ptr<SpaceObject> > AnnotationClass_t;
+		typedef std::unordered_map<std::string,  AnnotationClass_t> AnnotationSpace_t;
+
 		AnnotationSpace();
 		void addSpaceObjects(std::initializer_list<globjects::ref_ptr<SpaceObject> > spaceObjects);
 		void clear();
 
-		const globjects::ref_ptr<glannotations::SpaceObject> getSpaceObjectAtUID(size_t uid) const;
-		const std::unordered_map<size_t, globjects::ref_ptr<glannotations::SpaceObject> > &getSpaceObjects() const;
+		/*!
+		 *	\returns	All SpaceObjects for given annotationClass-Identifier
+		 */
+		const AnnotationClass_t& getSpaceObjectsForClass(std::string annotationClass);
 
-		size_t retrieveUID(globjects::ref_ptr<SpaceObject> obj) const;
+		/*!
+		*	\returns	Returns whole annotation space
+		*/
+		const AnnotationSpace_t &getSpaceObjects() const;
+
+		/*!
+		 *	\brief		SpaceObjects are identified by automatically generated UID on creation. This can be used to access a SpaceObject directly.
+		 *	\returns	SpaceObject with given UID if exists, nullptr otherwise
+		 */
+		const globjects::ref_ptr<glannotations::SpaceObject> getSpaceObjectWithUID(size_t uid) const;
 
 	private:
-		std::unordered_map<size_t,  globjects::ref_ptr<SpaceObject> > m_spaceObjects;
+		AnnotationSpace_t m_spaceObjects;
 	};
 }

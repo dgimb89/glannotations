@@ -7,6 +7,7 @@ if(OPTION_BUILD_EXAMPLES)
 	include_directories("common")
 
 	add_subdirectory(rendering-example)
+	add_subdirectory(annotation-space)
 
 	if (OPTION_BUILD_GLANNOTATIONS_PREPROCESSOR)
 		add_subdirectory(font-preprocessing)

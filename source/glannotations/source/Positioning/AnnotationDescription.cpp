@@ -1,13 +1,20 @@
 #include <glannotations/Positioning/AnnotationDescription.h>
 
-void glannotations::AnnotationDescription::addAnnotatedObjects(std::initializer_list< std::tuple<size_t, size_t, std::string> > annotatedObjects) {
+std::string glannotations::AnnotationDescription::getAnnotationClassIdentifier() {
+	return m_classIdentifier;
+}
+
+void glannotations::AnnotationDescription::setAnnotationClassIdentifier(std::string annotationClass) {
+	setDirty(true);
+	m_classIdentifier = annotationClass;
+}
+
+glannotations::AnnotationDescription::AnnotationDescription(/*config ,*/ std::string annotationClass) {
+	setDirty(true);
+	setAnnotationClassIdentifier(annotationClass);
 
 }
 
-void glannotations::AnnotationDescription::addAnnotatedObject(size_t priority, size_t uid, std::string dataKey) {
-
-}
-
-void glannotations::AnnotationDescription::clearAnnotatedObjects() {
-
+void glannotations::AnnotationDescription::parseConifg(/*config*/) {
+	// todo: parse config
 }
