@@ -49,10 +49,11 @@ void glannotations::AbstractPrimitiveRenderer::drawSetupState(const globjects::r
 	m_drawingPrimitive->draw();
 }
 
-void glannotations::AbstractPrimitiveRenderer::drawSetupState(const globjects::ref_ptr<glannotations::AbstractAnnotation>& /*annotation*/, glannotations::SplineState& state) const {
+void glannotations::AbstractPrimitiveRenderer::drawSetupState(const globjects::ref_ptr<glannotations::AbstractAnnotation>& /*annotation*/, SplineState& state) const {
 	if (state.isDirty()) {
 		//m_drawingPrimitive is BendedQuadStrip here!
-		m_drawingPrimitive->setPosition(state.getLL(), glm::vec3(), glm::vec3());
+		state.updateExtends(glm::vec2()); //todo:anne
+		m_drawingPrimitive->setPosition(state.getLL(), state.getLR(), state.getUR());
 		state.setDirty(false);
 	}
 	m_drawingPrimitive->draw();

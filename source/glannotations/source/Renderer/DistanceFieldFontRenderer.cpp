@@ -9,7 +9,7 @@
 #include <glannotations/FontAnnotation.h>
 #include <glannotations/Common/TextureManager.h>
 #include <glannotations/Renderer/QuadStrip.h>
-#include <glannotations/Renderer/BendedQuadStrip.h> //todo:anne optimize includes?
+#include <glannotations/Renderer/BendedQuadStrip.h>
 
 void glannotations::DistanceFieldFontRenderer::draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) {
 	if (annotation->isDirty()) {

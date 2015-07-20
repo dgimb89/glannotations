@@ -133,6 +133,8 @@ set(api_INCLUDE_DIRS
 
     ${include_path}/Utility/BoundingBox.h
     ${include_path}/Utility/BSpline.h
+	${include_path}/Utility/BSpline2D.h
+	${include_path}/Utility/BSpline3D.h
     ${include_path}/Utility/DistanceFieldGeneration.h
     ${include_path}/Utility/GlyphSetConfig.h
 	${include_path}/Utility/Utility.h
@@ -198,6 +200,8 @@ set(sources
 
     ${source_path}/Utility/BoundingBox.cpp
     ${source_path}/Utility/BSpline.cpp
+	${source_path}/Utility/BSpline2D.cpp
+	${source_path}/Utility/BSpline3D.cpp
     ${source_path}/Utility/DistanceFieldGeneration.cpp
     ${source_path}/Utility/GlyphSetConfig.cpp
     ${source_path}/Utility/Utility.cpp
