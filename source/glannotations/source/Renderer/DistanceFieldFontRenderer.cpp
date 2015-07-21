@@ -49,6 +49,7 @@ void glannotations::DistanceFieldFontRenderer::drawSetupState(const globjects::r
 void glannotations::DistanceFieldFontRenderer::drawSetupState(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation, glannotations::SplineState& state) const  {
 	if (annotation->isDirty() || state.isSplineDirty()) {
 		prepareSpline(dynamic_cast<FontAnnotation*>(annotation.get()));
+		state.setSplineDirty(false);
 	}
 
 	AbstractPrimitiveRenderer::drawSetupState(annotation, state);
@@ -98,6 +99,8 @@ void glannotations::DistanceFieldFontRenderer::prepareSpline(FontAnnotation* ann
 			);
 		currentT = currentNextT;
 	}
+
+	bendedQuadStrip->setTransformationMatrix((annotation->getRenderState()->asSplineState()).getTransformationMatrix());
 
 	m_drawingPrimitive = bendedQuadStrip;
 	setupStylings(annotation);

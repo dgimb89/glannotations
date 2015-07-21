@@ -24,6 +24,8 @@ namespace glannotations {
 		virtual bool setPosition(glm::vec3 ll, glm::vec3 lr, glm::vec3 ur) override;
 		virtual bool setViewportPosition(glm::vec2 ll, glm::vec2 lr, glm::vec2 ur) override;
 
+		void setTransformationMatrix(glm::mat4 matrix);
+
 	protected:
 		void updateQuadPositions();
 
@@ -36,5 +38,7 @@ namespace glannotations {
 		globjects::ref_ptr<globjects::Buffer> m_advanceH;
 		globjects::ref_ptr<globjects::Buffer> m_advanceW; 
 		globjects::ref_ptr<globjects::Buffer> m_texAdvance;
+
+		glm::mat4 m_transformation;
 	};
 }

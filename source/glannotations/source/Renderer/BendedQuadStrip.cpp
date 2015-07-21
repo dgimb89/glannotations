@@ -286,6 +286,9 @@ glannotations::BendedQuadStrip::BendedQuadStrip(std::shared_ptr<globjects::Textu
 
 	// initial position
 	m_startPoint = glm::vec3(0.0f, 0.0f, 0.0f);
+
+	m_transformation = glm::mat4();
+
 	m_vertexCount = 0;
 	m_advanceH = new globjects::Buffer;
 	m_advanceW = new globjects::Buffer;
@@ -299,6 +302,10 @@ glannotations::BendedQuadStrip::BendedQuadStrip(std::shared_ptr<globjects::Textu
 void glannotations::BendedQuadStrip::addQuad(texVec2_t texture_ll, texVec2_t texture_advance, glm::vec3 secantVec, glm::vec3 orthoVec) {
 	m_textureRanges.push_back(std::make_pair(texture_ll, texture_advance));
 	m_quadRanges.push_back(std::make_pair(secantVec, orthoVec));
+}
+
+void glannotations::BendedQuadStrip::setTransformationMatrix(glm::mat4 matrix) {
+	m_transformation = matrix;
 }
 
 void glannotations::BendedQuadStrip::clearQuads() {
@@ -354,15 +361,27 @@ void glannotations::BendedQuadStrip::updateQuadPositions() {
 	*/
 
 	glm::vec3 currentPoint = m_startPoint;
+	glm::vec4 tcp; //transformedcurrentPoint;
+	glm::vec4 tsv; //transformedSecantVec;
+	glm::vec4 tov; //transformedOrthoVec;
 
     for (unsigned int i = 0; i < m_textureRanges.size(); i++) {
+		
 		//just put the full text on the spline
-		vertexVector.push_back(currentPoint);
 
-		vertAdvanceW.push_back(m_quadRanges.at(i).first); //secantVec
-		vertAdvanceH.push_back(m_quadRanges.at(i).second); //orthoVec, should adapt with getUniformQuadHeight()?
+		//current point
+		tcp = m_transformation * glm::vec4(currentPoint.x, currentPoint.y, currentPoint.z, 1.f);
+		vertexVector.push_back(glm::vec3(tcp.x, tcp.y, tcp.z));
 
-		currentPoint += m_quadRanges.at(i).first;
+		//secant vector
+		tsv = m_transformation * glm::vec4(m_quadRanges.at(i).first.x, m_quadRanges.at(i).first.y, m_quadRanges.at(i).first.z, 1.f);
+		vertAdvanceW.push_back(glm::vec3(tsv.x, tsv.y, tsv.z));
+
+		//orthogonal vector
+		tov = m_transformation * glm::vec4(m_quadRanges.at(i).second.x, m_quadRanges.at(i).second.y, m_quadRanges.at(i).second.z, 1.f);
+		vertAdvanceH.push_back(glm::vec3(tov.x, tov.y, tov.z));
+
+		currentPoint += (glm::vec3(tsv.x, tsv.y, tsv.z));
 	}
 
 	m_positions->setData(vertexVector, gl::GL_STATIC_DRAW);

@@ -100,12 +100,16 @@ namespace glannotations {
 		bool acceptsExternalReference() const;
 		virtual void setExternalReference(const globjects::ref_ptr<glannotations::AbstractExternalReference>& reference) override;
 		virtual globjects::ref_ptr<glannotations::AbstractState> clone() const override;
+
 		virtual glannotations::BoundingBox getBoundingBox() override;
-		virtual glm::vec4 getBoundingRect();
+		virtual glm::vec4 getBoundingRect() const;
+		
+		glm::mat4 getTransformationMatrix() const;
 
 		virtual void prepare() override;
 
-		bool isSplineDirty();
+		bool isSplineDirty() const;
+		void setSplineDirty(bool dirty);
 
 	protected:
 		virtual void draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation, const AbstractRenderer& renderer) override;
@@ -122,6 +126,8 @@ namespace glannotations {
 		void calculateSplineTop(glm::vec3 upVecInWorldSpace);
 		void calculateSplineTop(glm::vec2 upVecInPlaneSpace);
 
+		void calculateTransformationMatrix();
+
 		std::shared_ptr<glannotations::BSpline> m_splineBase;
 		std::shared_ptr<glannotations::BSpline> m_splineTop;
 		glm::vec3 m_ll;
@@ -130,5 +136,7 @@ namespace glannotations {
 
 		bool m_valid;
 		bool m_acceptsExternalReference;
+
+		glm::mat4 m_transformation;
 	};
 }
