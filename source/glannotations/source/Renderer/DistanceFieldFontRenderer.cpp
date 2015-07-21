@@ -47,7 +47,7 @@ void glannotations::DistanceFieldFontRenderer::drawSetupState(const globjects::r
 }
 
 void glannotations::DistanceFieldFontRenderer::drawSetupState(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation, glannotations::SplineState& state) const  {
-	if (annotation->isDirty()) {
+	if (annotation->isDirty() || state.isSplineDirty()) {
 		prepareSpline(dynamic_cast<FontAnnotation*>(annotation.get()));
 	}
 

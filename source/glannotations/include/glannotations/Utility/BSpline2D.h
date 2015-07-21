@@ -10,16 +10,15 @@ namespace glannotations {
 
     class GLANNOTATIONS_API BSpline2D : public glannotations::BSpline {
 	public:
-		BSpline2D(glm::vec3 planeAxisDirection, glm::vec3 planeAxisUp, std::vector<glm::vec2> ctrlPoints, std::vector<float> knotValues);
-		BSpline2D(glm::vec3 planeAxisDirection, glm::vec3 planeAxisUp, std::vector<glm::vec2> ctrlPoints, unsigned short degree);
+		BSpline2D(glm::vec3 planeAxisRight, glm::vec3 planeAxisUp, std::vector<glm::vec2> ctrlPoints, std::vector<float> knotValues);
+		BSpline2D(glm::vec3 planeAxisRight, glm::vec3 planeAxisUp, std::vector<glm::vec2> ctrlPoints, unsigned short degree);
 
-		const std::vector<glm::vec2>& getControlPoints2D() const;
 		glm::vec3 getPlaneNormal() const;
-		glm::vec3 getPlaneDirection() const;
+		glm::vec3 getPlaneRight() const;
 		glm::vec3 getPlaneUp() const;
 
 		void setControlPoints(std::vector<glm::vec2> ctrlPoints);
-		void setPlane(glm::vec3 planeAxisDirection, glm::vec3 planeAxisUp);
+		void setPlane(glm::vec3 planeAxisRight, glm::vec3 planeAxisUp);
 
 		bool isInSamePlane(std::shared_ptr<BSpline2D> compareSpline) const;
 		glm::vec4 getBoundingRect();
@@ -35,7 +34,7 @@ namespace glannotations {
 		void updateControlPoints3D();
 
 		//to specify the plane which contains the spline
-		glm::vec3 m_direction;				//normalized
+		glm::vec3 m_right;				//normalized
 		glm::vec3 m_up;						//normalized
 		float m_width;						//in 3D world space, used for scaling from 2D plane
 		float m_height;						//in 3D world space, used for scaling from 2D plane
@@ -43,6 +42,6 @@ namespace glannotations {
 		bool m_transformationDirty;
 		glm::mat4 m_transformation;
 		
-		std::vector<glm::vec2> m_ctrlPoints2D;
+		std::vector<glm::vec3> m_transformedCtrlPoints;
 	};
 }

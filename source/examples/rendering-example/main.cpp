@@ -203,7 +203,7 @@ public:
 		//*/
 
 		auto splineAnnotation = new glannotations::FontAnnotation(
-			new glannotations::SplineState(glm::vec3(-8, 4, 0), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0), ctrlPoints2D, 3, glm::vec2(0, 2))
+			new glannotations::SplineState(glm::vec3(-8, 4, 0), glm::vec3(0, 4, 0), glm::vec3(1, 0, 0), ctrlPoints2D, 3, glm::vec2(0, 2))
 			, "Spline State", "segoeuil.ttf", dfFactory
 		);
 

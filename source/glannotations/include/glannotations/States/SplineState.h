@@ -38,30 +38,30 @@ namespace glannotations {
 			, std::vector<glm::vec3> splineTopControlPoints, unsigned int topDegree
 		);
 
-		//same same but different: for 2D Splines on a given plane (planeAxisDirection, planeAxisUp)
+		//same same but different: for 2D Splines on a given plane (planeAxisRight, planeAxisUp)
 		//planeNormal would not be sufficient, we would not know the exact rotation of the plane in world space
 		SplineState(glm::vec3 position
-			, glm::vec3 planeAxisDirection, glm::vec3 planeAxisUp
+			, glm::vec3 planeAxisRight, glm::vec3 planeAxisUp
 			, std::vector<glm::vec2> splineBaseControlPoints
 			, std::vector<float> splineBaseKnotValues
 			, glm::vec2 upToTopSpline
 		);
 
 		SplineState(glm::vec3 position
-			, glm::vec3 planeAxisDirection, glm::vec3 planeAxisUp
+			, glm::vec3 planeAxisRight, glm::vec3 planeAxisUp
 			, std::vector<glm::vec2> splineBaseControlPoints
 			, unsigned int baseDegree
 			, glm::vec2 upToTopSpline
 		);
 
 		SplineState(glm::vec3 position
-			, glm::vec3 planeAxisDirection, glm::vec3 planeAxisUp
+			, glm::vec3 planeAxisRight, glm::vec3 planeAxisUp
 			, std::vector<glm::vec2> splineBaseControlPoints, std::vector<float> splineBaseKnotValues
 			, std::vector<glm::vec2> splineTopControlPoints, std::vector<float> splineTopKnotValues
 		);
 
 		SplineState(glm::vec3 position
-			, glm::vec3 planeAxisDirection, glm::vec3 planeAxisUp
+			, glm::vec3 planeAxisRight, glm::vec3 planeAxisUp
 			, std::vector<glm::vec2> splineBaseControlPoints, unsigned int baseDegree
 			, std::vector<glm::vec2> splineTopControlPoints, unsigned int topDegree
 		);
@@ -105,6 +105,8 @@ namespace glannotations {
 
 		virtual void prepare() override;
 
+		bool isSplineDirty();
+
 	protected:
 		virtual void draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation, const AbstractRenderer& renderer) override;
 
@@ -115,7 +117,7 @@ namespace glannotations {
 		virtual void updateExtends(glm::vec2 sourceExtends) override;
 
 	private:
-		void initialize2D(glm::vec3 position, glm::vec3 planeAxisDirection, glm::vec3 planeAxisUp);
+		void initialize2D(glm::vec3 position, glm::vec3 planeAxisRight, glm::vec3 planeAxisUp);
 		void initialize3D(glm::vec3 position);
 		void calculateSplineTop(glm::vec3 upVecInWorldSpace);
 		void calculateSplineTop(glm::vec2 upVecInPlaneSpace);
