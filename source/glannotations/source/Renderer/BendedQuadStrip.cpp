@@ -361,7 +361,6 @@ void glannotations::BendedQuadStrip::updateQuadPositions() {
 	*/
 
 	glm::vec3 currentPoint = m_startPoint;
-	glm::vec4 tcp; //transformedcurrentPoint;
 	glm::vec4 tsv; //transformedSecantVec;
 	glm::vec4 tov; //transformedOrthoVec;
 
@@ -369,9 +368,7 @@ void glannotations::BendedQuadStrip::updateQuadPositions() {
 		
 		//just put the full text on the spline
 
-		//current point
-		tcp = m_transformation * glm::vec4(currentPoint.x, currentPoint.y, currentPoint.z, 1.f);
-		vertexVector.push_back(glm::vec3(tcp.x, tcp.y, tcp.z));
+		vertexVector.push_back(currentPoint);
 
 		//secant vector
 		tsv = m_transformation * glm::vec4(m_quadRanges.at(i).first.x, m_quadRanges.at(i).first.y, m_quadRanges.at(i).first.z, 1.f);

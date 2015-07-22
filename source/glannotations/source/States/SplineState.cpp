@@ -297,18 +297,16 @@ void glannotations::SplineState::setExternalReference(const globjects::ref_ptr<g
 		m_externalReference->setupExternalReference(*this);
 	}
 	else {
-		std::cerr << "Cannot set ExternalReference for BSpline3D. No reference set.";
+		std::cerr << "#Warning: Cannot set ExternalReference for BSpline3D. No reference set.\n";
 	}
 }
 
 void glannotations::SplineState::updateExtends(glm::vec2 sourceExtends){
-	//todo:anne
 	if (m_acceptsExternalReference) {
 
 		cropExtends(m_ll, m_lr, m_ur, sourceExtends);
 
 		calculateTransformationMatrix();
-		setDirty(true);
 	}
 }
 
@@ -368,49 +366,14 @@ void glannotations::SplineState::calculateTransformationMatrix() {
 	float scaleY = height / (plane.w - plane.y);
 	scalingM = glm::scale(scalingM, glm::vec3(scaleX, scaleY, 1.f));
 
-	//rotation matrix
-	glm::mat4 rotationM = glm::mat4();
+	//rotation matrix to 
+	auto eye = glm::vec3(0, 0, 0);
+	auto center = glm::normalize(glm::cross(glm::normalize(up), glm::normalize(right)));
 
-	float pi = glm::pi<float>();
+	glm::mat4 rotation = glm::lookAt(eye, eye + center, up);
+	rotation = glm::inverse(rotation);
 
-	//initially, BSpline2D is defined in x-y-plane
-	glm::vec3 xAxis(1, 0, 0);
-	glm::vec3 yAxis(0, 1, 0);
-
-	glm::vec3 axisRight = glm::normalize(glm::cross(xAxis, right));
-	if (glm::any(glm::isnan(axisRight))) {
-		//means that right == xAxis (angle 0°) -> no rotation at all, rotation vector could be anything.
-		//or right == -xAxis (angle 180°) -> use any rotation vector orthogonal to xAxis.
-		axisRight = yAxis;
-	}
-	float angleRight = glm::orientedAngle(xAxis, right, axisRight);
-
-	if (std::abs(angleRight) >= std::numeric_limits<float>::epsilon()) {
-		//angle !== 0
-		rotationM = glm::rotate(rotationM, angleRight, axisRight);
-	}
-
-	glm::vec4 transformedRight = glm::vec4(xAxis.x, xAxis.y, xAxis.z, 1.0f);
-	transformedRight = rotationM * transformedRight;
-	glm::vec3 transformedRight3D = glm::normalize(glm::vec3(transformedRight));
-
-	glm::vec4 transformedUp = glm::vec4(yAxis.x, yAxis.y, yAxis.z, 1.0f);
-	transformedUp = rotationM * transformedUp;
-	glm::vec3 transformedUp3D = glm::normalize(glm::vec3(transformedUp));
-
-	glm::vec3 axisUp = glm::normalize(transformedRight3D);
-	float angleUp = glm::orientedAngle(transformedUp3D, up, axisUp);
-
-	glm::mat4 rotationM2 = glm::mat4();
-
-	if (std::abs(angleUp) >= std::numeric_limits<float>::epsilon()) {
-		//angle !== 0
-		glm::vec3 axisUp;
-		axisUp = glm::normalize(transformedRight3D);
-		rotationM2 = glm::rotate(glm::mat4(), angleUp, axisUp);
-	}
-
-	m_transformation = rotationM2 * rotationM * scalingM;
+	m_transformation = rotation * scalingM;
 }
 
 void glannotations::SplineState::setSplineDirty(bool dirty) {
