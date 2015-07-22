@@ -139,14 +139,14 @@ public:
 		m_building12->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
 		m_building13->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
 		m_building14->setColor(buildingColor + temp);
-		/*
+		
 		auto boxAnnotation = new glannotations::FontAnnotation(new glannotations::QuadState(glm::vec3(10.01f, -4.f, 1.f), glm::vec3(10.01f, -4.f, -1.f), glm::vec3(10.01f, -2.5f, -1.f)), "Box", "segoeuil.ttf", dfFactory);
 		m_annotations.addAnnotation(boxAnnotation);
 		boxAnnotation->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 		boxAnnotation->getState()->setMaximumHeight(1.5f);
 		boxAnnotation->getState()->setStyling(new glannotations::Styles::Outline(0.05f, glm::vec3(0.f, 0.f, 0.f)));
 		boxAnnotation->getState()->asInternalState().setExternalReference(new glannotations::BoxReference(glm::vec2(0.f, 0.f), glm::vec2(0.f, 2.75f), glm::vec3(-5.f, 0.f, 0.f), false));
-		*/
+		
 		
 		auto flagAnnotation = new glannotations::FontAnnotation(new glannotations::QuadState(glm::vec3(-1.f, 2.5f, 5.01f), glm::vec3(1.f, 2.5f, 5.01f), glm::vec3(1.f, 4.f, 5.01f)), "Flag", "segoeuil.ttf", dfFactory);
 		auto flagRef = new glannotations::FlagReference(2.5f, glm::vec3(0.f, 0.f, -3.f), false);
@@ -204,19 +204,18 @@ public:
 			, "Spline State", "segoeuil.ttf", dfFactory
 		);
 		//*/
-
+		
 		auto splineAnnotation = new glannotations::FontAnnotation(
-			new glannotations::SplineState(glm::vec3(10.01f, -4.f, 1.f), glm::vec3(0, 0, -2.f), glm::vec3(0, 1.5f, 0), ctrlPoints2D, 3, glm::vec2(0, 2))
+			new glannotations::SplineState(glm::vec3(-1.f, -2.98f, -1.f), glm::vec3(0, 0, 2.f), glm::vec3(2, 0, 0), ctrlPoints2D, 3, glm::vec2(0, 2))
 			, "Spline State", "segoeuil.ttf", dfFactory
 		);
 		//*/
 
-		splineAnnotation->getState()->asSplineState().setExternalReference(new glannotations::BoxReference(glm::vec2(0.f, 0.f), glm::vec2(0.f, 2.75f), glm::vec3(-5.f, 0.f, 0.f), false));
-		splineAnnotation->getState()->setMaximumHeight(1.5f);
-		//splineAnnotation->getState()->setKeepSourceAspectRatio(true);
-		splineAnnotation->getState()->setStyling(new glannotations::Styles::Outline(0.05f, glm::vec3(0.f, 0.f, 0.f)));
 		splineAnnotation->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
-		//splineAnnotation->getState()->setVerticalAnchor(glannotations::Anchor::BOTTOM);
+		splineAnnotation->getState()->asSplineState().setExternalReference(new glannotations::RectReference);
+		splineAnnotation->getState()->setMaximumHeight(1.f);
+		splineAnnotation->getState()->setKeepSourceAspectRatio(true);
+		splineAnnotation->getState()->setVerticalAnchor(glannotations::Anchor::BOTTOM);
 		//splineAnnotation->getState()->setHorizontalAnchor(glannotations::Anchor::LEFT);
 		m_annotations.addAnnotation(splineAnnotation);
 
@@ -227,13 +226,14 @@ public:
 		internalAnnotation->getState()->setStyling(new glannotations::Styles::Outline(0.05f, glm::vec3(0.f, 0.f, 0.f)));
 		m_annotations.addAnnotation(internalAnnotation);
 
+		/*
 		auto topAnnotation = new glannotations::FontAnnotation(new glannotations::QuadState(glm::vec3(-1.f, -2.98f, -1.f), glm::vec3(-1.f, -2.98f, 1.f), glm::vec3(1.f, -2.98f, 1.f)), "Rect", "segoeuil.ttf", dfFactory);
 		topAnnotation->getState()->setMaximumHeight(1.f);
 		topAnnotation->getState()->setKeepSourceAspectRatio(true);
 		topAnnotation->getState()->setVerticalAnchor(glannotations::Anchor::BOTTOM);
 		topAnnotation->getState()->asInternalState().setExternalReference(new glannotations::RectReference);
 		topAnnotation->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
-		m_annotations.addAnnotation(topAnnotation);
+		m_annotations.addAnnotation(topAnnotation);*/
 
 		m_annotations.addAnnotation(new glannotations::PNGAnnotation(new glannotations::QuadState(glm::vec3(-2.f, -4.f, 2.f), glm::vec3(-2.f, -4.f, 7.f), glm::vec3(-2.f, 1.0f, 7.f)), "hpi.png", dfFactory));
 		auto viewportAnnotation = new glannotations::FontAnnotation(new glannotations::ViewportState(glm::vec2(0.4f, -1.f), glm::vec2(1.f, -0.8f), glm::vec2(1.f, 0.f)), "Viewport State", "segoeuil.ttf", dfFactory);

@@ -69,7 +69,6 @@ void glannotations::BoxReference::updatePositioning(QuadState& state) {
 }
 
 void glannotations::BoxReference::updatePositioning(SplineState& state) {
-	//todo:anne
 	Utility::Segment camToBoxCenter(glannotations::getEye(getBindingIndex()), m_frontLLF + (m_widthSpan + m_heightSpan + m_depthSpan) / 2.f);
 	glm::vec3 intersection, widthSpan, heightSpan;
 	float vOverflow, hOverflow;
@@ -158,7 +157,6 @@ void glannotations::BoxReference::setupExternalReference(const QuadState& state)
 }
 
 void glannotations::BoxReference::setupExternalReference(const SplineState& state) {
-	//todo:anne
 	AbstractExternalReference::setupExternalReference(state);
 	m_frontLLF = state.getLL() - (m_widthSpan.x * glm::normalize(state.getLR() - state.getLL())) - (m_heightSpan.x * glm::normalize(state.getUR() - state.getLR()));
 
