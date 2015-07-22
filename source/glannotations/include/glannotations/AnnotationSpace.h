@@ -5,6 +5,7 @@
 #include <glannotations/Positioning/SpaceObject.h>
 
 #include <globjects/base/ref_ptr.h>
+
 #include <unordered_map>
 
 namespace glannotations {

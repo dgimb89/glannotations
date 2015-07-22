@@ -1,17 +1,17 @@
 #pragma once
 
-#include <vector>
-#include <mutex>
-#include <memory>
+#include <glannotations/glannotations_api.h>
+#include <glannotations/AbstractAnnotation.h>
+#include <glannotations/AnnotationPositioner.h>
+#include <glannotations/Positioning/AnnotationDescription.h>
 
 #include <glm/glm.hpp>
 #include <globjects/base/Referenced.h>
 #include <globjects/base/ref_ptr.h>
 
-#include <glannotations/glannotations_api.h>
-#include <glannotations/Positioning/AnnotationPositioner.h>
-#include <glannotations/Positioning/AnnotationDescription.h>
-#include <glannotations/AbstractAnnotation.h>
+#include <vector>
+#include <mutex>
+#include <memory>
 
 namespace glannotations {
 

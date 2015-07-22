@@ -1,20 +1,22 @@
 #include <glannotations/Positioning/AnnotationDescription.h>
 
-std::string glannotations::AnnotationDescription::getAnnotationClassIdentifier() {
+glannotations::AnnotationDescription::AnnotationDescription(std::string annotationClass, const globjects::ref_ptr<AnnotationClassConfig>& config) {
+	setAnnotationClassIdentifier(annotationClass);
+	setAnnotationClassConfig(config);
+}
+
+const std::string& glannotations::AnnotationDescription::getAnnotationClassIdentifier() const {
 	return m_classIdentifier;
 }
 
 void glannotations::AnnotationDescription::setAnnotationClassIdentifier(std::string annotationClass) {
-	setDirty(true);
 	m_classIdentifier = annotationClass;
 }
 
-glannotations::AnnotationDescription::AnnotationDescription(/*config ,*/ std::string annotationClass) {
-	setDirty(true);
-	setAnnotationClassIdentifier(annotationClass);
-
+const globjects::ref_ptr<glannotations::AnnotationClassConfig> glannotations::AnnotationDescription::getAnnotationClassConfig() const {
+	return m_config;
 }
 
-void glannotations::AnnotationDescription::parseConifg(/*config*/) {
-	// todo: parse config
+void glannotations::AnnotationDescription::setAnnotationClassConfig(const globjects::ref_ptr<AnnotationClassConfig>& config) {
+	m_config = config;
 }

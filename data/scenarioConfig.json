@@ -1,0 +1,59 @@
+{
+    "revision_information": {
+        "type": "font",
+        "content": "revision",
+        "priority": 90,
+        "lineHeight": 2.5,
+        "techniques": [
+            {
+                "technique": "rect",
+                "lineHeight": 1.5,
+                "style": {
+                    "outline": {
+                        "width": 0.5,
+                        "color": [1.0, 0.0, 0.0]
+                    }
+                },
+                "criteria": {
+                    "maxDistance": 30,
+                    "occlusionThreshold": 0.1
+                }
+            },
+            {
+                "technique": "box",
+                "content": "logo_img",
+                "type": "png",
+                "criteria": {
+                    "maxDistance": 100,
+                    "occlusionThreshold": 0.25
+                }
+            },
+            {
+                "technique": "label"
+            }
+        ]
+    },
+    "brands": {
+        "type": "png",
+        "content": "logo_img",
+        "priority": 70,
+        "style": {
+            "outline": {
+                "width": 0.5,
+                "color": [1.0, 0.0, 0.0]
+            }
+        },
+        "techniques": [
+            {
+                "technique": "flag",
+                "params": {
+                    "flagHeight": 2.5
+                },
+                "criteria": {
+                    "maxDistance": 30,
+                    "occlusionThreshold": 0.3
+                }
+            }
+        ]
+    }
+}

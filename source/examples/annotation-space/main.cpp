@@ -23,7 +23,8 @@
 #include <common/events.h>
 
 #include <glannotations/Positioning/ObjectAlignedBoundingBox.h>
-#include <glannotations/Positioning/AnnotationSpace.h>
+#include <glannotations/AnnotationSpace.h>
+#include <glannotations/AnnotationPositioner.h>
 
 
 using namespace gl;
@@ -52,9 +53,15 @@ public:
     virtual void initialize(Window & window) override
     {
 		WindowEventHandler::initialize(window);
+		glClearColor(1.f, 1.f, 1.f, 0.f);
+
+		m_annotationSpace = new glannotations::AnnotationSpace;
 		auto spaceObject = new glannotations::ObjectAlignedBoundingBox(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, -1.f), glm::vec3(1.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f));
-		spaceObject->setAnnotationClasses({"test", "rect"});
-		m_annotationSpace.addSpaceObjects({ spaceObject });
+		spaceObject->setAnnotationClasses({"revision_information", "brands"});
+		m_annotationSpace->addSpaceObjects({ spaceObject });
+
+		auto annotationPositioner = std::make_shared<glannotations::AnnotationPositioner>(m_annotationSpace);
+		m_annotationGroups = annotationPositioner->generateAnnotationGroups("scenarioConfig.json");
 
         window.addTimer(0, 0, false);
         cameraChanged();
@@ -69,7 +76,10 @@ public:
     }
 
     void cameraChanged()
-    {
+	{
+		glannotations::setView(m_camera->view(), 2);
+		glannotations::setProjection(m_camera->projection(), 2);
+		glannotations::setAspectRatio(m_camera->aspectRatio(), 2);
     }
 
     virtual void paintEvent(PaintEvent & event) override
@@ -77,6 +87,10 @@ public:
         WindowEventHandler::paintEvent(event);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+		for (auto group : m_annotationGroups) {
+			group->draw(500);
+		}
     }
 
     virtual void keyPressEvent(KeyEvent & event) override
@@ -182,7 +196,8 @@ public:
     }
 
 protected:
-	glannotations::AnnotationSpace m_annotationSpace;
+	std::vector<globjects::ref_ptr<glannotations::AnnotationGroup> > m_annotationGroups;
+	globjects::ref_ptr<glannotations::AnnotationSpace> m_annotationSpace;
     Camera* m_camera;
     WorldInHandNavigation m_nav;
     ivec2 m_lastMousePos;

@@ -3,7 +3,7 @@
 #include <glannotations/glannotations_api.h>
 #include <glannotations/AbstractAnnotation.h>
 #include <glannotations/AnnotationGroup.h>
-#include <glannotations/Positioning/AnnotationSpace.h>
+#include <glannotations/AnnotationSpace.h>
 #include <glannotations/Positioning/AnnotationDescription.h>
 
 #include <globjects/base/ref_ptr.h>
@@ -22,7 +22,6 @@ namespace glannotations {
 		std::vector<globjects::ref_ptr<glannotations::AnnotationGroup> > generateAnnotationGroups(std::string configPath) const;
 
 	protected:
-		~AnnotationPositioner();
 		void updateAnnotation(const globjects::ref_ptr<const AnnotationDescription>& description, const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) const;
 
 	private:

@@ -1,4 +1,4 @@
-#include <glannotations/Positioning/AnnotationSpace.h>
+#include <glannotations/AnnotationSpace.h>
 
 glannotations::AnnotationSpace::AnnotationSpace() {
 	setDirty(true);

@@ -76,6 +76,8 @@ set(api_INCLUDE_DIRS
     ${include_path}/glannotations_api.h
     ${include_path}/AbstractAnnotation.h
     ${include_path}/AnnotationGroup.h
+    ${include_path}/AnnotationPositioner.h
+    ${include_path}/AnnotationSpace.h
     ${include_path}/FontAnnotation.h
     ${include_path}/PNGAnnotation.h
     ${include_path}/SVGAnnotation.h
@@ -94,9 +96,8 @@ set(api_INCLUDE_DIRS
 
 	${include_path}/Positioning/AnnotationData.h
 	${include_path}/Positioning/AnnotationDescription.h
-	${include_path}/Positioning/AnnotationPositioner.h
-	${include_path}/Positioning/AnnotationSpace.h
 	${include_path}/Positioning/ObjectAlignedBoundingBox.h
+    ${include_path}/Positioning/ConfigBuilder.h
 	${include_path}/Positioning/SpaceObject.h
 	
     ${include_path}/Renderer/AbstractDrawingPrimitive.h
@@ -146,6 +147,8 @@ set(api_INCLUDE_DIRS
 set(sources
     ${source_path}/AbstractAnnotation.cpp
     ${source_path}/AnnotationGroup.cpp
+    ${source_path}/AnnotationPositioner.cpp
+    ${source_path}/AnnotationSpace.cpp
     ${source_path}/FontAnnotation.cpp
     ${source_path}/PNGAnnotation.cpp
     ${source_path}/ShaderSources.hpp
@@ -165,9 +168,8 @@ set(sources
 
 	${source_path}/Positioning/AnnotationData.cpp
 	${source_path}/Positioning/AnnotationDescription.cpp
-	${source_path}/Positioning/AnnotationPositioner.cpp
-	${source_path}/Positioning/AnnotationSpace.cpp
 	${source_path}/Positioning/ObjectAlignedBoundingBox.cpp
+    ${source_path}/Positioning/ConfigBuilder.cpp
 	${source_path}/Positioning/SpaceObject.cpp
 	
     ${source_path}/Renderer/AbstractPrimitiveRenderer.cpp

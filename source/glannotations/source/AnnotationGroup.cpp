@@ -1,9 +1,9 @@
 #define __STDC_LIMIT_MACROS
 
+#include <glannotations/AnnotationGroup.h>
+
 #include <threadingzeug/parallelfor.h>
 #include <atomic>
-
-#include <glannotations/AnnotationGroup.h>
 
 inline size_t ringBufferPosition(const size_t& startOffset, const size_t& i, const size_t& nMax) {
 	return (startOffset + i) % nMax;
