@@ -205,18 +205,17 @@ public:
 		);
 		//*/
 		
+
 		auto splineAnnotation = new glannotations::FontAnnotation(
-			new glannotations::SplineState(glm::vec3(-1.f, -2.98f, -1.f), glm::vec3(0, 0, 2.f), glm::vec3(2, 0, 0), ctrlPoints2D, 3, glm::vec2(0, 2))
-			, "Spline State", "segoeuil.ttf", dfFactory
-		);
+			new glannotations::SplineState(glm::vec3(-8, 10, 4), glm::vec3(6, 0, 0), glm::vec3(0, 2, 0), ctrlPoints2D, 3, glm::vec2(0, 2))
+			, "Spline with reference", "segoeuil.ttf", dfFactory
+			);
 		//*/
 
-		splineAnnotation->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
-		splineAnnotation->getState()->asSplineState().setExternalReference(new glannotations::RectReference);
-		splineAnnotation->getState()->setMaximumHeight(1.f);
+		splineAnnotation->getState()->asSplineState().setExternalReference(new glannotations::LabelReference(glm::vec3(0.f, -3.f, 10.f)));
 		splineAnnotation->getState()->setKeepSourceAspectRatio(true);
 		splineAnnotation->getState()->setVerticalAnchor(glannotations::Anchor::BOTTOM);
-		//splineAnnotation->getState()->setHorizontalAnchor(glannotations::Anchor::LEFT);
+		splineAnnotation->getState()->setHorizontalAnchor(glannotations::Anchor::LEFT);
 		m_annotations.addAnnotation(splineAnnotation);
 
 		auto internalAnnotation = new glannotations::FontAnnotation(new glannotations::QuadState(glm::vec3(2.f, -3.f, -1.01f), glm::vec3(2.f, 5.f, -1.01f), glm::vec3(4.f, 5.f, -1.01f)), "Quad State", "segoeuil.ttf", dfFactory);
