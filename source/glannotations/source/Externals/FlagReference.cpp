@@ -67,8 +67,6 @@ void glannotations::FlagReference::updatePositioning(QuadState& state) {
 }
 
 void glannotations::FlagReference::updatePositioning(SplineState& state) {
-	//throw std::logic_error("The method or operation is not implemented.");
-	//todo:anne see if this works
 	glm::vec3 center = m_frontLLF + (m_widthSpan + m_heightSpan + m_depthSpan) / 2.f;
 	Utility::Segment camToBoxCenter(glannotations::getEye(getBindingIndex()), center);
 	glm::vec3 intersection, widthSpan, heightSpan;
@@ -154,9 +152,6 @@ void glannotations::FlagReference::setupExternalReference(const SplineState& sta
 		flag->setPosition(m_frontLLF, m_frontLLF + m_widthSpan, m_frontLLF + m_widthSpan + m_heightSpan);
 		m_externalPrimitive = flag;
 	}
-
-	//throw std::logic_error("The method or operation is not implemented.");
-	//todo:anne
 }
 
 bool glannotations::FlagReference::intersectionSegmentQuad(const glannotations::Utility::Segment& ray, const glm::vec3& a, const glm::vec3& b, const glm::vec3& c, const glm::vec3& d, float& hOverflow) {
