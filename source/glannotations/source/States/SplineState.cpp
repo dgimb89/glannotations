@@ -64,6 +64,8 @@ glannotations::SplineState::SplineState(glm::vec3 position
 	m_splineTop = std::shared_ptr<BSpline>(new BSpline2D(splineBaseControlPoints, splineBaseKnotValues));
 	
 	calculateSplineTop(upToTopSpline);
+
+	calculateTransformationMatrix();
 }
 
 glannotations::SplineState::SplineState(glm::vec3 position
@@ -77,6 +79,8 @@ glannotations::SplineState::SplineState(glm::vec3 position
 	m_splineTop = std::shared_ptr<BSpline>(new BSpline2D(splineBaseControlPoints, baseDegree));
 
 	calculateSplineTop(upToTopSpline);
+
+	calculateTransformationMatrix();
 }
 
 glannotations::SplineState::SplineState(glm::vec3 position
@@ -88,6 +92,8 @@ glannotations::SplineState::SplineState(glm::vec3 position
 
 	m_splineBase = std::shared_ptr<BSpline>(new BSpline2D(splineBaseControlPoints, splineBaseKnotValues));
 	m_splineTop = std::shared_ptr<BSpline>(new BSpline2D(splineTopControlPoints, splineTopKnotValues));
+
+	calculateTransformationMatrix();
 }
 
 glannotations::SplineState::SplineState(glm::vec3 position
@@ -99,6 +105,8 @@ glannotations::SplineState::SplineState(glm::vec3 position
 
 	m_splineBase = std::shared_ptr<BSpline>(new BSpline2D(splineBaseControlPoints, baseDegree));
 	m_splineTop = std::shared_ptr<BSpline>(new BSpline2D(splineTopControlPoints, topDegree));
+
+	calculateTransformationMatrix();
 }
 
 void glannotations::SplineState::initialize2D(glm::vec3 position, glm::vec3 planeAxisRight, glm::vec3 planeAxisUp) {
