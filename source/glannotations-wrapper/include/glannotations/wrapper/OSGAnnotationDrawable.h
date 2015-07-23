@@ -12,7 +12,7 @@ namespace wrapper {
 		DrawableAnnotation(const DrawableAnnotation& teapot, const osg::CopyOp& copyop = osg::CopyOp::SHALLOW_COPY);
 		META_Object(GLAT_OSG_Wrapper, DrawableAnnotation)
 		virtual void drawImplementation(osg::RenderInfo&) const override;
-		virtual osg::BoundingBox computeBound() const override;
+        virtual osg::BoundingBox computeBoundingBox() const override;
 
 		void setAnnotation(globjects::ref_ptr<glannotations::AbstractAnnotation> annotation);
 		const globjects::ref_ptr<glannotations::AbstractAnnotation>& getAnnotation() const;

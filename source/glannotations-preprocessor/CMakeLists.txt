@@ -7,6 +7,7 @@ message(STATUS "Lib ${target}")
 #
 
 find_package(Freetype REQUIRED)
+find_package(glbinding REQUIRED)
 find_package(globjects REQUIRED)
 find_package(GLM REQUIRED)
 
@@ -16,6 +17,7 @@ find_package(GLM REQUIRED)
 
 include_directories(
     ${FREETYPE_INCLUDE_DIR}
+    ${GLBINDING_INCLUDE_DIRS}
     ${GLOBJECTS_INCLUDE_DIRS}
     ${GLM_INCLUDE_DIR}
 )
@@ -33,6 +35,7 @@ include_directories(
 set(libs
     glannotations
     ${FREETYPE_LIBRARIES}
+    ${GLBINDING_LIBRARIES}
     ${GLOBJECTS_LIBRARIES}
 )
 
@@ -41,7 +44,7 @@ set(libs
 #
 
 if (OPTION_BUILD_STATIC)
-    add_definitions("-DGLANNOTATIONS_PREPROCESSOR_STATIC")
+    add_definitions("-DGLANNOTATIONS_STATIC")
 else()
     add_definitions("-DGLANNOTATIONS_PREPROCESSOR_EXPORTS")
 endif()
@@ -53,7 +56,7 @@ endif()
 set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
-set(api_INCLUDE_DIRS
+set(includes
     ${include_path}/glannotations-preprocessor_api.h
     ${include_path}/GlyphSetGenerator.h
 )
@@ -66,7 +69,7 @@ set(sources
 set(header_group "Header Files (API)")
 set(source_group "Source Files")
 source_group_by_path(${include_path} "\\\\.h$|\\\\.hpp$" 
-    ${header_group} ${api_INCLUDE_DIRS})
+    ${header_group} ${includes})
 source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
     ${source_group} ${sources})
 
@@ -74,7 +77,7 @@ source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$"
 # Build library
 #
 
-add_library(${target} ${api_INCLUDE_DIRS} ${sources})
+add_library(${target} ${includes} ${sources})
 
 target_link_libraries(${target} ${libs})
 

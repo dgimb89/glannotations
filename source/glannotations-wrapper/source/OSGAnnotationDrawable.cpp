@@ -1,4 +1,4 @@
-#include <glannotations/BoundingBox.h>
+#include <glannotations/Utility/BoundingBox.h>
 #include <osg/BoundingBox>
 
 #include <glannotations/wrapper/OSGAnnotationDrawable.h>
@@ -17,7 +17,7 @@ void glannotations::wrapper::DrawableAnnotation::drawImplementation(osg::RenderI
 	}
 }
 
-osg::BoundingBox glannotations::wrapper::DrawableAnnotation::computeBound() const {
+osg::BoundingBox glannotations::wrapper::DrawableAnnotation::computeBoundingBox() const {
 	glannotations::BoundingBox bb = m_annotation->getRenderState()->getBoundingBox();
 	return osg::BoundingBox(bb.getLLF().x, bb.getLLF().y, bb.getLLF().z, bb.getURB().x, bb.getURB().y, bb.getURB().z);
 }

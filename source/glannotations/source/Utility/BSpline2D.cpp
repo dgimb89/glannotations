@@ -32,7 +32,7 @@ void glannotations::BSpline2D::setControlPoints(std::vector<glm::vec2> ctrlPoint
 
 	m_ctrlPoints.clear();
 
-	for (int i = 0; i < ctrlPoints.size(); i++) {
+    for (size_t i = 0; i < ctrlPoints.size(); i++) {
 		m_ctrlPoints.push_back(glm::vec3(ctrlPoints[i].x, ctrlPoints[i].y, 0.f));
 	}
 	
@@ -48,7 +48,7 @@ glm::vec4 glannotations::BSpline2D::getBoundingRect() {
 	float minX = std::numeric_limits<float>::max();
 	float minY = std::numeric_limits<float>::max();
 	
-	for (auto ctrlPoint : m_ctrlPoints) {
+    for (const auto & ctrlPoint : m_ctrlPoints) {
 		maxX = std::fmaxf(maxX, ctrlPoint.x);
 		maxY = std::fmaxf(maxY, ctrlPoint.y);
 

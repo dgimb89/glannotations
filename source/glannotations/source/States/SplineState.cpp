@@ -147,7 +147,7 @@ bool glannotations::SplineState::acceptsExternalReference() const {
 inline std::vector<glm::vec2> discardZ(const std::vector<glm::vec3> points) {
 	std::vector<glm::vec2> points2D;
 
-	for (int i = 0; i < points.size(); i++) {
+    for (size_t i = 0; i < points.size(); i++) {
 		points2D.push_back(glm::vec2(points[i].x, points[i].y));
 	}
 
