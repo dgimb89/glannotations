@@ -1,11 +1,10 @@
 #include <globjects/base/ref_ptr.h>
 #include <osg/Drawable>
 
-#include <glannotations/wrapper/glannotations-wrapper_api.h>
+#include <glannotations-wrapper/glannotations-wrapper_api.h>
 #include <glannotations/AbstractAnnotation.h>
 
-namespace glannotations {
-namespace wrapper {
+namespace glannotations_wrapper {
 	class GLANNOTATIONS_WRAPPER_API DrawableAnnotation : public osg::Drawable {
 	public:
 		DrawableAnnotation();
@@ -21,5 +20,4 @@ namespace wrapper {
 		globjects::ref_ptr<glannotations::AbstractAnnotation> m_annotation;
 		virtual ~DrawableAnnotation() {}
 	};
-}
-}
+} // namespace glannotations_wrapper

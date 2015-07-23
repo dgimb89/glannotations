@@ -64,12 +64,12 @@ add_definitions("-DGLM_FORCE_RADIANS")
 # Sources
 #
 
-set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/glannotations")
+set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(includes
-    ${include_path}/wrapper/glannotations-wrapper_api.h
-	${include_path}/wrapper/OSGAnnotationDrawable.h
+    ${include_path}/glannotations-wrapper_api.h
+    ${include_path}/OSGAnnotationDrawable.h
 )
 
 set(sources
@@ -117,4 +117,4 @@ install(TARGETS ${target}
 )
 
 # Header files
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/glannotations DESTINATION ${INSTALL_INCLUDE})
+install(DIRECTORY ${include_path} DESTINATION ${INSTALL_INCLUDE})

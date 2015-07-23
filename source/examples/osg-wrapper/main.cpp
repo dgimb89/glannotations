@@ -1,4 +1,4 @@
-#include <glannotations/wrapper/OSGAnnotationDrawable.h>
+#include <glannotations-wrapper/OSGAnnotationDrawable.h>
 #include <glannotations/FontAnnotation.h>
 #include <glannotations/States/ViewportState.h>
 #include <glannotations/States/QuadState.h>
@@ -31,7 +31,7 @@ osg::Geode* createAnnotations() {
 	dfFactory.useNVpr(false);
 
 	// setup annotation
-	glannotations::wrapper::DrawableAnnotation* annotationDrawable = new glannotations::wrapper::DrawableAnnotation;
+	glannotations_wrapper::DrawableAnnotation* annotationDrawable = new glannotations_wrapper::DrawableAnnotation;
     auto viewportAnnotation = new glannotations::FontAnnotation(new glannotations::QuadState(glm::vec3(0.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f), glm::vec3(1.f, 1.f, 0.f)), "osgWrapper", "calibri.ttf", dfFactory);
 	viewportAnnotation->setColor(glm::vec4(0.75, 0.75, 0.75, 1.0));
 	annotationDrawable->setAnnotation(viewportAnnotation);
