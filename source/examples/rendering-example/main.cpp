@@ -205,7 +205,6 @@ public:
 		);
 		//*/
 		
-
 		auto splineAnnotation = new glannotations::FontAnnotation(
 			new glannotations::SplineState(glm::vec3(-8, 10, 4), glm::vec3(6, 0, 0), glm::vec3(0, 2, 0), ctrlPoints2D, 3, glm::vec2(0, 2))
 			, "Spline with reference", "segoeuil.ttf", dfFactory
@@ -225,14 +224,13 @@ public:
 		internalAnnotation->getState()->setStyling(new glannotations::Styles::Outline(0.05f, glm::vec3(0.f, 0.f, 0.f)));
 		m_annotations.addAnnotation(internalAnnotation);
 
-		/*
 		auto topAnnotation = new glannotations::FontAnnotation(new glannotations::QuadState(glm::vec3(-1.f, -2.98f, -1.f), glm::vec3(-1.f, -2.98f, 1.f), glm::vec3(1.f, -2.98f, 1.f)), "Rect", "segoeuil.ttf", dfFactory);
 		topAnnotation->getState()->setMaximumHeight(1.f);
 		topAnnotation->getState()->setKeepSourceAspectRatio(true);
 		topAnnotation->getState()->setVerticalAnchor(glannotations::Anchor::BOTTOM);
 		topAnnotation->getState()->asInternalState().setExternalReference(new glannotations::RectReference);
 		topAnnotation->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
-		m_annotations.addAnnotation(topAnnotation);*/
+		m_annotations.addAnnotation(topAnnotation);
 
 		m_annotations.addAnnotation(new glannotations::PNGAnnotation(new glannotations::QuadState(glm::vec3(-2.f, -4.f, 2.f), glm::vec3(-2.f, -4.f, 7.f), glm::vec3(-2.f, 1.0f, 7.f)), "hpi.png", dfFactory));
 		auto viewportAnnotation = new glannotations::FontAnnotation(new glannotations::ViewportState(glm::vec2(0.4f, -1.f), glm::vec2(1.f, -0.8f), glm::vec2(1.f, 0.f)), "Viewport State", "segoeuil.ttf", dfFactory);
