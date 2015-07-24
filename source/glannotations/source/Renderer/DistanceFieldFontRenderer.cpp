@@ -88,6 +88,9 @@ void glannotations::DistanceFieldFontRenderer::prepareSpline(FontAnnotation* ann
 	for (unsigned i = 0; i < annotation->getText().length(); ++i) {
 
 		currentNextT += m_glyphConfig->getGlyphConfigForCharcode(annotation->getText().at(i))._advance.x / textLength;
+
+		currentT = glm::clamp(currentT, 0.f, 1.f);
+		currentNextT = glm::clamp(currentNextT, 0.f, 1.f);
 		glm::vec3 secantVec = (annotation->getRenderState()->asSplineState()).retrieveSecantVectorAt(currentT, currentNextT);
 		glm::vec3 orthoVec = (annotation->getRenderState()->asSplineState()).retrieveConnectingVectorAt(currentT);
 

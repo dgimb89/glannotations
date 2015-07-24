@@ -139,7 +139,7 @@ inline int binaryIndexOfLargestValueSmallerThanOrEqualTo(std::vector<float> cont
 			(container.at(currentIndex - 1) < searchElement))
 			return currentIndex - 1;
 		if (currentElement <= searchElement &&
-			(currentIndex >= container.size() || container.at(currentIndex + 1) > searchElement))
+			(currentIndex >= container.size() - 1 || container.at(currentIndex + 1) > searchElement))
 			return currentIndex;
 
 		if (currentElement < searchElement)
