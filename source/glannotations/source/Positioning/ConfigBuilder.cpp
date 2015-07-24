@@ -49,6 +49,19 @@ void processStyles(std::vector < globjects::ref_ptr<glannotations::Styling> >& s
 	}
 }
 
+std::string genericValueToString(const rapidjson::Value& val) {
+	if (val.IsString()) {
+		return val.GetString();
+	}
+	if (val.IsDouble()) {
+		return std::to_string(val.GetDouble());
+	}
+	if (val.IsInt()) {
+		return std::to_string(val.GetInt());
+	}
+	throw std::runtime_error("Invalid Param type");
+}
+
 glannotations::ConfigBuilder::ConfigBuilder(std::string configPath) {
 	Document document;
 	document.Parse<0>(getFileContents(configPath).c_str());
@@ -72,7 +85,7 @@ glannotations::ConfigBuilder::ConfigBuilder(std::string configPath) {
 			// criteria
 			if (itr->value["techniques"][i].HasMember("params"))
 				for (Value::ConstMemberIterator criteriaItr = itr->value["techniques"][i]["params"].MemberBegin(); criteriaItr != itr->value["techniques"][i]["params"].MemberEnd(); ++criteriaItr)
-					technique.additionalParams.push_back(std::make_pair(criteriaItr->name.GetString(), criteriaItr->value.GetString()));
+					technique.additionalParams.push_back(std::make_pair(criteriaItr->name.GetString(), genericValueToString(criteriaItr->value)));
 
 			config->techniques.push_back(technique);
 		}

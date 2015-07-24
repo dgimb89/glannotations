@@ -47,6 +47,7 @@
             {
                 "technique": "flag",
                 "params": {
+                    "flagPosition": "RIGHT",
                     "flagHeight": 2.5
                 },
                 "criteria": {
