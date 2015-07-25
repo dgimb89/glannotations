@@ -30,3 +30,7 @@ const globjects::ref_ptr<glannotations::SpaceObject> glannotations::AnnotationSp
 	// todo: implement
 	return nullptr;
 }
+
+bool glannotations::AnnotationSpace::classHasSpaceObjects(std::string annotationClass) {
+	return m_spaceObjects.count(annotationClass) == 1;
+}

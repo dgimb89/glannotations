@@ -77,7 +77,8 @@ glannotations::FlagReference::FlagReference(float width, glm::vec3 depthSpan, bo
 }
 
 void glannotations::FlagReference::draw() {
-	reinterpret_cast<glannotations::Rect*>(m_externalPrimitive.get())->setPosition(m_newLL, m_newLR, m_newUR);
+	if(!isPositioningOnly())
+		reinterpret_cast<glannotations::Rect*>(m_externalPrimitive.get())->setPosition(m_newLL, m_newLR, m_newUR);
 	gl::glDepthMask(gl::GL_FALSE);
 	AbstractExternalReference::draw();
 	gl::glDepthMask(gl::GL_TRUE);

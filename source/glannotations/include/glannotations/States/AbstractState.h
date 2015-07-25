@@ -52,7 +52,7 @@ namespace glannotations {
 		// maximum height of 0.f means there is no limit -- use full state space
 		bool hasMaximumHeight() const;
 
-		glannotations::QuadState& asInternalState();
+		glannotations::QuadState& asQuadState();
 		glannotations::SplineState& asSplineState();
 		glannotations::ViewportState& asViewportState();
 

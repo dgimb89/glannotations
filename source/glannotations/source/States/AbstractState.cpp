@@ -38,7 +38,7 @@ const glannotations::StylingList& glannotations::AbstractState::getStylings() co
 	return m_stylings;
 }
 
-glannotations::QuadState& glannotations::AbstractState::asInternalState() {
+glannotations::QuadState& glannotations::AbstractState::asQuadState() {
 	return dynamic_cast<glannotations::QuadState&>(*this);
 }
 

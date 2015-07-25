@@ -53,18 +53,33 @@ public:
     virtual void initialize(Window & window) override
     {
 		WindowEventHandler::initialize(window);
+		glannotations::initializeMatricesUBO();
+
 		glClearColor(1.f, 1.f, 1.f, 0.f);
+		gl::glEnable(gl::GL_CULL_FACE);
+		gl::glEnable(gl::GL_DEPTH_TEST);
+		gl::glEnable(gl::GL_BLEND);
+		gl::glBlendFunc(gl::GL_SRC_ALPHA, gl::GL_ONE_MINUS_SRC_ALPHA);
+
+		m_camera->setZNear(0.1f);
+		m_camera->setZFar(1024.f);
+		m_camera->setCenter(vec3(0.f, 0.f, 0.f));
+		m_camera->setEye(vec3(-17.f, 12.f, -15.0f));
+		m_camera->setUp(vec3(0, 1, 0));
+		cameraChanged();
 
 		m_annotationSpace = new glannotations::AnnotationSpace;
+		auto data = new glannotations::AnnotationData;
+		data->set("revision", "42");
 		auto spaceObject = new glannotations::ObjectAlignedBoundingBox(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, -1.f), glm::vec3(1.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f));
-		spaceObject->setAnnotationClasses({"revision_information", "brands"});
+		spaceObject->setAnnotationClasses({"revision_information"});
+		spaceObject->setData(data);
 		m_annotationSpace->addSpaceObjects({ spaceObject });
 
 		auto annotationPositioner = std::make_shared<glannotations::AnnotationPositioner>(m_annotationSpace);
 		m_annotationGroups = annotationPositioner->generateAnnotationGroups("scenarioConfig.json");
 
         window.addTimer(0, 0, false);
-        cameraChanged();
     }
 
     virtual void framebufferResizeEvent(ResizeEvent & event) override
@@ -77,9 +92,9 @@ public:
 
     void cameraChanged()
 	{
-		glannotations::setView(m_camera->view(), 2);
-		glannotations::setProjection(m_camera->projection(), 2);
-		glannotations::setAspectRatio(m_camera->aspectRatio(), 2);
+		glannotations::setView(m_camera->view());
+		glannotations::setProjection(m_camera->projection());
+		glannotations::setAspectRatio(m_camera->aspectRatio());
     }
 
     virtual void paintEvent(PaintEvent & event) override

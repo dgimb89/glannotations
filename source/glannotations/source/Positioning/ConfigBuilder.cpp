@@ -25,12 +25,31 @@ std::string getFileContents(std::string configPath) {
 	return buffer.str();
 }
 
+std::string genericValueToString(const rapidjson::Value& val) {
+	if (val.IsString()) {
+		return val.GetString();
+	}
+	if (val.IsDouble()) {
+		return std::to_string(val.GetDouble());
+	}
+	if (val.IsInt()) {
+		return std::to_string(val.GetInt());
+	}
+	if (val.IsBool()) {
+		return val.GetBool() ? "true" : "false";
+	}
+	throw glannotations::InvalidConfigError("Invalid Param type");
+}
+
 template<typename T>
 void processStandardElements(T& ele, const rapidjson::Value& object) {
-	if (object.HasMember("type")) ele.type = object["type"].GetString();
-	if (object.HasMember("content")) ele.contentDataKey = object["content"].GetString();
-	if (object.HasMember("priority")) ele.priority = object["priority"].GetUint();
-	if (object.HasMember("lineHeight")) ele.lineHeight = static_cast<float>(object["lineHeight"].GetDouble());
+	for (Value::ConstMemberIterator itr = object.MemberBegin(); itr != object.MemberEnd(); ++itr) {
+		std::string key(itr->name.GetString());
+		if (key == "style" || key == "techniques" || key == "criteria") {
+			continue;
+		}
+		ele.attr[key] = genericValueToString(itr->value);
+	}
 
 	if (object.HasMember("style")) {
 		// stylings
@@ -44,22 +63,9 @@ void processStyles(std::vector < globjects::ref_ptr<glannotations::Styling> >& s
 			glm::vec3 color(styleItr->value["color"][0u].GetDouble(), styleItr->value["color"][1u].GetDouble(), styleItr->value["color"][2u].GetDouble());
 			stylings.push_back(new glannotations::Styles::Outline(static_cast<float>(styleItr->value["width"].GetDouble()), color));
 		} else {
-			throw std::runtime_error("Invalid Styling in Config");
+			throw glannotations::InvalidConfigError("Invalid Styling in Config");
 		}
 	}
-}
-
-std::string genericValueToString(const rapidjson::Value& val) {
-	if (val.IsString()) {
-		return val.GetString();
-	}
-	if (val.IsDouble()) {
-		return std::to_string(val.GetDouble());
-	}
-	if (val.IsInt()) {
-		return std::to_string(val.GetInt());
-	}
-	throw std::runtime_error("Invalid Param type");
 }
 
 glannotations::ConfigBuilder::ConfigBuilder(std::string configPath) {
@@ -72,20 +78,12 @@ glannotations::ConfigBuilder::ConfigBuilder(std::string configPath) {
 
 		for (SizeType i = 0; i < itr->value["techniques"].Size(); ++i) {
 			AnnotationTechniqueConfig technique;
-
-			technique.technique = itr->value["techniques"][i]["technique"].GetString();
 			processStandardElements(technique, itr->value["techniques"][i]);
 
 			// optional additional technique parameter
 			if (itr->value["techniques"][i].HasMember("criteria"))
 				for (Value::ConstMemberIterator criteriaItr = itr->value["techniques"][i]["criteria"].MemberBegin(); criteriaItr != itr->value["techniques"][i]["criteria"].MemberEnd(); ++criteriaItr)
 					technique.critera.push_back(std::make_pair(criteriaItr->name.GetString(), static_cast<float>(criteriaItr->value.GetDouble())));
-
-
-			// criteria
-			if (itr->value["techniques"][i].HasMember("params"))
-				for (Value::ConstMemberIterator criteriaItr = itr->value["techniques"][i]["params"].MemberBegin(); criteriaItr != itr->value["techniques"][i]["params"].MemberEnd(); ++criteriaItr)
-					technique.additionalParams.push_back(std::make_pair(criteriaItr->name.GetString(), genericValueToString(criteriaItr->value)));
 
 			config->techniques.push_back(technique);
 		}
@@ -105,3 +103,30 @@ bool glannotations::ConfigBuilder::hasAnnotationClassConfig(std::string name) co
 const std::unordered_map<std::string, globjects::ref_ptr<glannotations::AnnotationClassConfig> >& glannotations::ConfigBuilder::getAnnotationClassConfigs() const {
 	return m_classConfigs;
 }
+
+std::string glannotations::AnnotationClassConfig::getAttributeForTechnique(std::string attrKey, unsigned techniqueIndex) const {
+	if (techniques.at(techniqueIndex).hasAttribute(attrKey)) {
+		return techniques.at(techniqueIndex).getAttribute(attrKey);
+	}
+	return getAttribute(attrKey);
+}
+
+bool glannotations::AnnotationClassConfig::hasAttributeForTechnique(std::string attrKey, unsigned techniqueIndex) const {
+	if (techniques.at(techniqueIndex).hasAttribute(attrKey)) {
+		return true;
+	}
+	return hasAttribute(attrKey);
+}
+
+std::string glannotations::CommonConfigData::getAttribute(std::string attrKey) const {
+	if (hasAttribute(attrKey)) {
+		return attr.at(attrKey);
+	}
+	throw glannotations::InvalidConfigError((std::string("Requested data attribute missing: ") + attrKey).c_str());
+}
+
+bool glannotations::CommonConfigData::hasAttribute(std::string attrKey) const {
+	return attr.count(attrKey) == 1;
+}
+
+glannotations::InvalidConfigError::InvalidConfigError(const char* m) : std::runtime_error(m) { }

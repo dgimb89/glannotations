@@ -84,7 +84,7 @@ void glannotations::AnnotationGroup::prepareRenderer() const {
 	}
 }
 
-void glannotations::AnnotationGroup::setAnnotationPositioner(const std::shared_ptr<const glannotations::AnnotationPositioner>& positioner, const globjects::ref_ptr<const glannotations::AnnotationDescription>& description) {
+void glannotations::AnnotationGroup::setAnnotationPositioner(const std::shared_ptr<const glannotations::AnnotationPositioner>& positioner, const globjects::ref_ptr<glannotations::AnnotationDescription>& description) {
 	m_positioner = positioner;
 	m_description = description;
 }

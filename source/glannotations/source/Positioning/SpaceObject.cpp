@@ -1,15 +1,8 @@
 #include <glannotations/Positioning/SpaceObject.h>
 
-void glannotations::SpaceObject::setData(std::string key, globjects::ref_ptr<glannotations::AnnotationData> data) {
-	m_data.insert(std::pair<std::string, globjects::ref_ptr<glannotations::AnnotationData> >(key, data));	
+void glannotations::SpaceObject::setData(const globjects::ref_ptr<glannotations::AnnotationData>& data) {
 	setDirty(true);
-}
-
-void glannotations::SpaceObject::clearData() {
-	if (m_data.size() != 0){
-		m_data.clear();
-		setDirty(true);
-	}	
+	m_data = data;
 }
 
 size_t glannotations::SpaceObject::getUID() const {
@@ -18,10 +11,6 @@ size_t glannotations::SpaceObject::getUID() const {
 		m_uid = generateUID();
 	}
 	return m_uid;
-}
-
-const glannotations::SpaceObject::AnnotationDataMap & glannotations::SpaceObject::getData() const {
-	return m_data;
 }
 
 void glannotations::SpaceObject::setAnnotationClasses(std::initializer_list<std::string> annotationClasses) {
@@ -36,4 +25,12 @@ size_t glannotations::SpaceObject::generateUID() const {
 
 const std::vector<std::string>& glannotations::SpaceObject::getAnnotationClasses() const {
 	return m_annotationClasses;
+}
+
+globjects::ref_ptr<glannotations::AnnotationData> glannotations::SpaceObject::getData() const {
+	return m_data;
+}
+
+const std::string& glannotations::SpaceObject::getData(std::string dataKey) {
+	return m_data->get(dataKey);
 }

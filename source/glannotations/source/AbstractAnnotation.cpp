@@ -86,3 +86,19 @@ void glannotations::AbstractAnnotation::prepareRenderer() {
 void glannotations::AbstractAnnotation::prepareDraw() {
 	getRenderState()->prepare();
 }
+
+globjects::ref_ptr<glannotations::SpaceObject> glannotations::AbstractAnnotation::getRespectiveSpaceObject() const {
+	return m_respectiveSpaceObject;
+}
+
+void glannotations::AbstractAnnotation::setRespectiveSpaceObject(const globjects::ref_ptr<glannotations::SpaceObject>& spaceObject) {
+	m_respectiveSpaceObject = spaceObject;
+}
+
+void glannotations::AbstractAnnotation::setCurrentFallback(unsigned val) {
+	m_currentFallback = val;
+}
+
+unsigned glannotations::AbstractAnnotation::getCurrentFallback() const {
+	return m_currentFallback;
+}

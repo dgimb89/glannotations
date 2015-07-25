@@ -10,6 +10,7 @@
 #include <glannotations/Renderer/AbstractRenderer.h>
 #include <glannotations/Renderer/RendererFactory.h>
 #include <glannotations/States/AbstractState.h>
+#include <glannotations/Positioning/SpaceObject.h>
 
 namespace glannotations {
 	// forward declaration
@@ -19,6 +20,7 @@ namespace glannotations {
 
 	class GLANNOTATIONS_API AbstractAnnotation : public glannotations::DirtyFlagObject {
 	friend class AnnotationGroup;
+	friend class AnnotationPositioner;
 	public:
 		void prepareRenderer();
 		void prepareDraw();
@@ -38,12 +40,20 @@ namespace glannotations {
 		void resetInterpolation();
 
 	protected:
-		virtual ~AbstractAnnotation();
-		const globjects::ref_ptr<glannotations::AbstractRenderer>& getRenderer();
 		AbstractAnnotation(const globjects::ref_ptr<glannotations::AbstractState>& state);
+		virtual ~AbstractAnnotation();
+
+		const globjects::ref_ptr<glannotations::AbstractRenderer>& getRenderer();
+		globjects::ref_ptr<glannotations::SpaceObject> getRespectiveSpaceObject() const;
+		void setRespectiveSpaceObject(const globjects::ref_ptr<glannotations::SpaceObject>& spaceObject);
+		unsigned getCurrentFallback() const;
+		void setCurrentFallback(unsigned val);
+
 		globjects::ref_ptr<glannotations::AbstractRenderer> m_renderer;
 
 	private:
+		unsigned m_currentFallback = 0;
+		globjects::ref_ptr<glannotations::SpaceObject> m_respectiveSpaceObject = nullptr;
 		globjects::ref_ptr<glannotations::AbstractState> m_state;
 		mutable globjects::ref_ptr<glannotations::AbstractState> m_renderState;
 	};

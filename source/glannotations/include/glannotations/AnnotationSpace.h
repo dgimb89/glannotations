@@ -18,6 +18,7 @@ namespace glannotations {
 		void addSpaceObjects(std::initializer_list<globjects::ref_ptr<SpaceObject> > spaceObjects);
 		void clear();
 
+		bool classHasSpaceObjects(std::string annotationClass);
 		/*!
 		 *	\returns	All SpaceObjects for given annotationClass-Identifier
 		 */

@@ -22,7 +22,8 @@ namespace glannotations {
 		std::vector<globjects::ref_ptr<glannotations::AnnotationGroup> > generateAnnotationGroups(std::string configPath) const;
 
 	protected:
-		void updateAnnotation(const globjects::ref_ptr<const AnnotationDescription>& description, const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) const;
+		void updateAnnotation(const globjects::ref_ptr<AnnotationDescription>& description, const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) const;
+		globjects::ref_ptr<glannotations::AbstractAnnotation> createAnnotationFor(const globjects::ref_ptr<glannotations::SpaceObject>& object, globjects::ref_ptr<AnnotationDescription>, unsigned technique) const;
 
 	private:
 		globjects::ref_ptr<AnnotationSpace> m_annotationSpace;

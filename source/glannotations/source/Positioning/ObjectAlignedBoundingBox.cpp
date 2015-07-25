@@ -78,10 +78,7 @@ double glannotations::ObjectAlignedBoundingBox::distanceToCamera(const gloperate
 }
 
 glm::vec3 glannotations::ObjectAlignedBoundingBox::getCentroid() const  {
-	
-	glm::vec3 diagonal = lrb() - m_ulf;
-
-	return diagonal * (diagonal.length() / 2.f);
+	return (m_llf + urb()) / 2.f;
 }
 
 bool glannotations::ObjectAlignedBoundingBox::isValid() const  {
@@ -106,4 +103,8 @@ bool glannotations::ObjectAlignedBoundingBox::isValid() const  {
 		return false;
 
 	return true;
+}
+
+std::array<glm::vec3, 4> glannotations::ObjectAlignedBoundingBox::getBoundingBox() {
+	return std::array<glm::vec3, 4> {{ m_llf, m_lrf, m_ulf, m_llb }};
 }

@@ -40,13 +40,13 @@ namespace glannotations {
 		void draw(long long preparationInMicroseconds);
 
 	protected:
-		void setAnnotationPositioner(const std::shared_ptr<const glannotations::AnnotationPositioner>& positioner, const globjects::ref_ptr<const glannotations::AnnotationDescription>& description);
+		void setAnnotationPositioner(const std::shared_ptr<const glannotations::AnnotationPositioner>& positioner, const globjects::ref_ptr<glannotations::AnnotationDescription>& description);
 		void updateAnnotation(globjects::ref_ptr<glannotations::AbstractAnnotation> annotation);
 
 	private:
 		// we use shared ptr, as ref_ptr has no shared_from_this mechanism yet
 		std::shared_ptr<const glannotations::AnnotationPositioner> m_positioner = nullptr;
-		globjects::ref_ptr<const glannotations::AnnotationDescription> m_description = nullptr;
+		globjects::ref_ptr<glannotations::AnnotationDescription> m_description = nullptr;
 
 		size_t m_startProcessingOffset = 0;
 		std::mutex m_mutex;

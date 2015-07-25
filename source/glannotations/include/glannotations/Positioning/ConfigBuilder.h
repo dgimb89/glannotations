@@ -10,22 +10,28 @@
 
 namespace glannotations {
 
+	class InvalidConfigError : public std::runtime_error {
+	public:
+		InvalidConfigError(const char* m);
+	};
+
 	struct GLANNOTATIONS_API CommonConfigData {
-		std::string technique = "";
-		std::string type = "";
-		std::string contentDataKey = "";
-		float lineHeight = 0.f;
-		unsigned short priority = 0;
+		std::unordered_map<std::string, std::string> attr;
 		std::vector<globjects::ref_ptr<glannotations::Styling> > stylings;
+
+		std::string getAttribute(std::string attrKey) const;
+		bool hasAttribute(std::string attrKey) const;
 	};
 
 	struct GLANNOTATIONS_API AnnotationTechniqueConfig : public CommonConfigData {
 		std::vector< std::pair<std::string, float> > critera;
-		std::vector< std::pair<std::string, std::string > > additionalParams;
 	};
 
 	struct GLANNOTATIONS_API AnnotationClassConfig : public globjects::Referenced, public CommonConfigData {
-		std::vector<AnnotationTechniqueConfig> techniques;
+		bool hasAttributeForTechnique(std::string attrKey, unsigned techniqueIndex) const;
+		std::string getAttributeForTechnique(std::string attrKey, unsigned techniqueIndex) const;
+
+		std::vector<const AnnotationTechniqueConfig> techniques;
 	};
 
 	class GLANNOTATIONS_API ConfigBuilder {

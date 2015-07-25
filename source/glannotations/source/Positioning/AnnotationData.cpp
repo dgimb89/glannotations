@@ -1,14 +1,15 @@
 #include <glannotations/Positioning/AnnotationData.h>
 
-glannotations::AnnotationData::AnnotationData(std::string value) {
-	setValue(value);
-}
-
-void glannotations::AnnotationData::setValue(std::string value) {
+void glannotations::AnnotationData::clear() {
 	setDirty(true);
-	m_value = value;
+	m_dataMap.clear();
 }
 
-const std::string & glannotations::AnnotationData::getValue() const {
-	return m_value;
+void glannotations::AnnotationData::set(std::string key, std::string value) {
+	setDirty(true);
+	m_dataMap[key] = value;
+}
+
+const std::string & glannotations::AnnotationData::get(std::string key) const {
+	return m_dataMap.at(key);
 }
