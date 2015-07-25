@@ -7,13 +7,13 @@
 
 #include <iostream>
 
-glannotations::BSpline::BSpline(std::vector<float> knotValues) {
+glannotations::BSpline::BSpline(std::vector<float> knotValues) : m_degree(0) {
 	assert(knotValues.size() > 0);
 
 	setKnotValues(knotValues);
 }
 
-glannotations::BSpline::BSpline(unsigned short degree) {
+glannotations::BSpline::BSpline(unsigned short degree) : m_knotValues(0) {
 	assert(degree > 0);
 
 	m_degree = degree;
@@ -79,7 +79,7 @@ void glannotations::BSpline::calculateArcLengths() {
 	//& the longer an icicle, the more curve points given
 	// => the more curve points, the higher numberOfSubdivisions!
 
-	if (m_knotValues.size() == 0) {
+	if (!isDirty() || m_knotValues.size() == 0 || m_degree == 0) {
 		return;
 	}
 
@@ -104,6 +104,8 @@ void glannotations::BSpline::calculateArcLengths() {
 	sum += glm::distance(p, previousPoint);
 	previousPoint = p;
 	m_arcLengths.push_back(sum);
+
+	setDirty(false); //todo: not sure if this is correct
 };
 
 glm::vec3 glannotations::BSpline::retrieveCurvepointAt(float t) {
@@ -137,7 +139,7 @@ inline int binaryIndexOfLargestValueSmallerThanOrEqualTo(std::vector<float> cont
 			(container.at(currentIndex - 1) < searchElement))
 			return currentIndex - 1;
 		if (currentElement <= searchElement &&
-			(currentIndex >= container.size() || container.at(currentIndex + 1) > searchElement))
+			(currentIndex >= container.size() - 1 || container.at(currentIndex + 1) > searchElement))
 			return currentIndex;
 
 		if (currentElement < searchElement)

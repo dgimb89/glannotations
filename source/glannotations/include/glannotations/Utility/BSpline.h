@@ -12,7 +12,7 @@ namespace glannotations {
 	class BSpline2D;
 	class BSpline3D;
 
-    class GLANNOTATIONS_API BSpline : protected glannotations::DirtyFlagObject {
+    class GLANNOTATIONS_API BSpline : public glannotations::DirtyFlagObject {
 	public:
 		glannotations::BSpline2D& asBSpline2D();
 		glannotations::BSpline3D& asBSpline3D();
@@ -33,9 +33,6 @@ namespace glannotations {
 		*	\param	nextT Curve parameter for second curvepoint
 		*/
 		glm::vec3 retrieveSecantVectorAt(float t, float nextT);
-
-		// we want to use the dirty information just internally
-        //virtual bool isDirty() const = delete;
 
 		void setKnotValues(std::vector<float> knotValues);
 		void calculateUniformKnotValues();

@@ -52,7 +52,7 @@ include_directories(
 #
 
 if (OPTION_BUILD_STATIC)
-    add_definitions("-DGLANNOTATIONS_WRAPPER_STATIC")
+    add_definitions("-DGLANNOTATIONS_STATIC")
 else()
     add_definitions("-DGLANNOTATIONS_WRAPPER_EXPORTS")
 endif()
@@ -64,12 +64,12 @@ add_definitions("-DGLM_FORCE_RADIANS")
 # Sources
 #
 
-set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/glannotations")
+set(include_path "${CMAKE_CURRENT_SOURCE_DIR}/include/${target}")
 set(source_path "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
-set(api_INCLUDE_DIRS
-    ${include_path}/wrapper/glannotations-wrapper_api.h
-	${include_path}/wrapper/OSGAnnotationDrawable.h
+set(includes
+    ${include_path}/glannotations-wrapper_api.h
+    ${include_path}/OSGAnnotationDrawable.h
 )
 
 set(sources
@@ -80,7 +80,7 @@ set(sources
 set(header_group "Header Files (API)")
 set(source_group "Source Files")
 source_group_by_path(${include_path} "\\\\.h$|\\\\.hpp$" 
-    ${header_group} ${api_INCLUDE_DIRS})
+    ${header_group} ${includes})
 source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$" 
     ${source_group} ${sources})
 
@@ -88,13 +88,11 @@ source_group_by_path(${source_path} "\\\\.cpp$|\\\\.c$|\\\\.h$|\\\\.hpp$"
 # Build library
 #
 
-if(OPTION_BUILD_STATIC)
-    add_library(${target} ${api_INCLUDE_DIRS} ${sources})
-else()
-    add_library(${target} SHARED ${api_INCLUDE_DIRS} ${sources})
-endif()
+add_library(${target} ${includes} ${sources})
 
 target_link_libraries(${target} ${libs})
+
+target_compile_options(${target} PRIVATE ${DEFAULT_COMPILE_FLAGS})
 
 set_target_properties(${target}
     PROPERTIES
@@ -102,7 +100,6 @@ set_target_properties(${target}
     FOLDER                      "${IDE_FOLDER}"
     COMPILE_DEFINITIONS_DEBUG   "${DEFAULT_COMPILE_DEFS_DEBUG}"
     COMPILE_DEFINITIONS_RELEASE "${DEFAULT_COMPILE_DEFS_RELEASE}"
-    COMPILE_FLAGS               "${DEFAULT_COMPILE_FLAGS}"
     LINK_FLAGS_DEBUG            "${DEFAULT_LINKER_FLAGS_DEBUG}"
     LINK_FLAGS_RELEASE          "${DEFAULT_LINKER_FLAGS_RELEASE}"
     DEBUG_POSTFIX               "d${DEBUG_POSTFIX}"
@@ -120,4 +117,4 @@ install(TARGETS ${target}
 )
 
 # Header files
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/glannotations DESTINATION ${INSTALL_INCLUDE})
+install(DIRECTORY ${include_path} DESTINATION ${INSTALL_INCLUDE})

@@ -137,7 +137,7 @@ endmacro()
 
 find(glannotations                glannotations/glannotations_api.h                           ${LIB_PATHS})
 find(glannotations-preprocessor   glannotations-preprocessor/glannotations-preprocessor_api.h ${LIB_PATHS})
-find(glannotations-wrapper        glannotations-wrapper/glannotations-wrapper_api.h           ${LIB_PATHS})
+find(glannotations-wrapper        glannotations-wrapper/glannotations-wrapper_api.h                   ${LIB_PATHS})
 
 # DEBUG
 # message("GLANNOTATIONS_INCLUDE_DIRS  = ${GLANNOTATIONS_INCLUDE_DIRS}")

@@ -1,9 +1,5 @@
 #pragma once
 
-// NOTE: don't export stl stuff (e.g. containers):
-// http://www.unknownroad.com/rtfm/VisualStudio/warningC4251.html
-// don't do it: http://support.microsoft.com/kb/q168958/
-
 #ifdef _MSC_VER
 #   define GLANNOTATIONS_WRAPPER_API_EXPORT_DECLARATION __declspec(dllexport)
 #   define GLANNOTATIONS_WRAPPER_API_IMPORT_DECLARATION __declspec(dllimport)
@@ -11,11 +7,11 @@
 #	define GLANNOTATIONS_WRAPPER_API_EXPORT_DECLARATION __attribute__ ((visibility ("default")))
 #	define GLANNOTATIONS_WRAPPER_API_IMPORT_DECLARATION __attribute__ ((visibility ("default")))
 #else
-#   define GLANNOTATIONS_WRAPPER_API_EXPORT_DECLARATION
-#   define GLANNOTATIONS_WRAPPER_API_IMPORT_DECLARATION
+#   define GLANNOTATIONS_WRAPPER_API_EXPORT_DECLARATION __attribute__ ((visibility ("default")))
+#   define GLANNOTATIONS_WRAPPER_API_IMPORT_DECLARATION __attribute__ ((visibility ("default")))
 #endif
 
-#ifndef GLANNOTATIONS_WRAPPER_STATIC
+#ifndef GLANNOTATIONS_STATIC
 #ifdef GLANNOTATIONS_WRAPPER_EXPORTS
 #   define GLANNOTATIONS_WRAPPER_API GLANNOTATIONS_WRAPPER_API_EXPORT_DECLARATION
 #else

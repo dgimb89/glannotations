@@ -11,7 +11,6 @@ void glannotations::LabelReference::updatePositioning(QuadState& state) {
 }
 
 void glannotations::LabelReference::updatePositioning(SplineState& state) {
-	//todo:anne
 	if (state.acceptsExternalReference()) {
 		glm::vec3 upVector = glm::normalize(glannotations::getUp(getBindingIndex())) * m_height;
 		m_newLL = m_annotationCenter - (m_height + m_width) / 2.f;

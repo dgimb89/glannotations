@@ -33,3 +33,6 @@ CMakeLists.txt.user
 *.DS_store
 /run_cmake.bat
 /run_vis.bat
+
+# localconfig directory
+.localconfig

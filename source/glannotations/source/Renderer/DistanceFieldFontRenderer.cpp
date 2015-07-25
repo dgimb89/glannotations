@@ -47,8 +47,9 @@ void glannotations::DistanceFieldFontRenderer::drawSetupState(const globjects::r
 }
 
 void glannotations::DistanceFieldFontRenderer::drawSetupState(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation, glannotations::SplineState& state) const  {
-	if (annotation->isDirty()) {
+	if (annotation->isDirty() || state.isSplineDirty()) {
 		prepareSpline(dynamic_cast<FontAnnotation*>(annotation.get()));
+		state.setSplineDirty(false);
 	}
 
 	AbstractPrimitiveRenderer::drawSetupState(annotation, state);
@@ -87,6 +88,9 @@ void glannotations::DistanceFieldFontRenderer::prepareSpline(FontAnnotation* ann
 	for (unsigned i = 0; i < annotation->getText().length(); ++i) {
 
 		currentNextT += m_glyphConfig->getGlyphConfigForCharcode(annotation->getText().at(i))._advance.x / textLength;
+
+		currentT = glm::clamp(currentT, 0.f, 1.f);
+		currentNextT = glm::clamp(currentNextT, 0.f, 1.f);
 		glm::vec3 secantVec = (annotation->getRenderState()->asSplineState()).retrieveSecantVectorAt(currentT, currentNextT);
 		glm::vec3 orthoVec = (annotation->getRenderState()->asSplineState()).retrieveConnectingVectorAt(currentT);
 
@@ -98,6 +102,8 @@ void glannotations::DistanceFieldFontRenderer::prepareSpline(FontAnnotation* ann
 			);
 		currentT = currentNextT;
 	}
+
+	bendedQuadStrip->setTransformationMatrix((annotation->getRenderState()->asSplineState()).getTransformationMatrix());
 
 	m_drawingPrimitive = bendedQuadStrip;
 	setupStylings(annotation);

@@ -4,6 +4,7 @@
 #include <glannotations/States/StateInterpolation.h>
 
 #include <glm/gtx/rotate_vector.hpp>
+#include <glm/gtx/vector_angle.hpp>
 
 #include <iostream>
 #include <math.h>
@@ -53,59 +54,67 @@ glannotations::SplineState::SplineState(glm::vec3 position
 }
 
 glannotations::SplineState::SplineState(glm::vec3 position
-	, glm::vec3 planeAxisDirection, glm::vec3 planeAxisUp
+	, glm::vec3 planeAxisRight, glm::vec3 planeAxisUp
 	, std::vector<glm::vec2> splineBaseControlPoints, std::vector<float> splineBaseKnotValues
 	, glm::vec2 upToTopSpline)
 {
-	initialize2D(position, planeAxisDirection, planeAxisUp);
+	initialize2D(position, planeAxisRight, planeAxisUp);
 
-	m_splineBase = std::shared_ptr<BSpline>(new BSpline2D(planeAxisDirection, planeAxisUp, splineBaseControlPoints, splineBaseKnotValues));
-	m_splineTop = std::shared_ptr<BSpline>(new BSpline2D(planeAxisDirection, planeAxisUp, splineBaseControlPoints, splineBaseKnotValues));
+	m_splineBase = std::shared_ptr<BSpline>(new BSpline2D(splineBaseControlPoints, splineBaseKnotValues));
+	m_splineTop = std::shared_ptr<BSpline>(new BSpline2D(splineBaseControlPoints, splineBaseKnotValues));
 	
 	calculateSplineTop(upToTopSpline);
+
+	calculateTransformationMatrix();
 }
 
 glannotations::SplineState::SplineState(glm::vec3 position
-	, glm::vec3 planeAxisDirection, glm::vec3 planeAxisUp
+	, glm::vec3 planeAxisRight, glm::vec3 planeAxisUp
 	, std::vector<glm::vec2> splineBaseControlPoints, unsigned int baseDegree
 	, glm::vec2 upToTopSpline)
 {
-	initialize2D(position, planeAxisDirection, planeAxisUp);
+	initialize2D(position, planeAxisRight, planeAxisUp);
 
-	m_splineBase = std::shared_ptr<BSpline>(new BSpline2D(planeAxisDirection, planeAxisUp, splineBaseControlPoints, baseDegree));
-	m_splineTop = std::shared_ptr<BSpline>(new BSpline2D(planeAxisDirection, planeAxisUp, splineBaseControlPoints, baseDegree));
+	m_splineBase = std::shared_ptr<BSpline>(new BSpline2D(splineBaseControlPoints, baseDegree));
+	m_splineTop = std::shared_ptr<BSpline>(new BSpline2D(splineBaseControlPoints, baseDegree));
 
 	calculateSplineTop(upToTopSpline);
+
+	calculateTransformationMatrix();
 }
 
 glannotations::SplineState::SplineState(glm::vec3 position
-	, glm::vec3 planeAxisDirection, glm::vec3 planeAxisUp
+	, glm::vec3 planeAxisRight, glm::vec3 planeAxisUp
 	, std::vector<glm::vec2> splineBaseControlPoints, std::vector<float> splineBaseKnotValues
 	, std::vector<glm::vec2> splineTopControlPoints, std::vector<float> splineTopKnotValues)
 {
-	initialize2D(position, planeAxisDirection, planeAxisUp);
+	initialize2D(position, planeAxisRight, planeAxisUp);
 
-	m_splineBase = std::shared_ptr<BSpline>(new BSpline2D(planeAxisDirection, planeAxisUp, splineBaseControlPoints, splineBaseKnotValues));
-	m_splineTop = std::shared_ptr<BSpline>(new BSpline2D(planeAxisDirection, planeAxisUp, splineTopControlPoints, splineTopKnotValues));
+	m_splineBase = std::shared_ptr<BSpline>(new BSpline2D(splineBaseControlPoints, splineBaseKnotValues));
+	m_splineTop = std::shared_ptr<BSpline>(new BSpline2D(splineTopControlPoints, splineTopKnotValues));
+
+	calculateTransformationMatrix();
 }
 
 glannotations::SplineState::SplineState(glm::vec3 position
-	, glm::vec3 planeAxisDirection, glm::vec3 planeAxisUp
+	, glm::vec3 planeAxisRight, glm::vec3 planeAxisUp
 	, std::vector<glm::vec2> splineBaseControlPoints, unsigned int baseDegree
 	, std::vector<glm::vec2> splineTopControlPoints, unsigned int topDegree)
 {
-	initialize2D(position, planeAxisDirection, planeAxisUp);
+	initialize2D(position, planeAxisRight, planeAxisUp);
 
-	m_splineBase = std::shared_ptr<BSpline>(new BSpline2D(planeAxisDirection, planeAxisUp, splineBaseControlPoints, baseDegree));
-	m_splineTop = std::shared_ptr<BSpline>(new BSpline2D(planeAxisDirection, planeAxisUp, splineTopControlPoints, topDegree));
+	m_splineBase = std::shared_ptr<BSpline>(new BSpline2D(splineBaseControlPoints, baseDegree));
+	m_splineTop = std::shared_ptr<BSpline>(new BSpline2D(splineTopControlPoints, topDegree));
+
+	calculateTransformationMatrix();
 }
 
-void glannotations::SplineState::initialize2D(glm::vec3 position, glm::vec3 planeAxisDirection, glm::vec3 planeAxisUp) {
+void glannotations::SplineState::initialize2D(glm::vec3 position, glm::vec3 planeAxisRight, glm::vec3 planeAxisUp) {
 	m_valid = true; //may be set false by following functions in constructor
 	m_acceptsExternalReference = true;
 
 	m_ll = position;
-	m_lr = position + planeAxisDirection;
+	m_lr = position + planeAxisRight;
 	m_ur = m_lr + planeAxisUp;
 }
 
@@ -124,14 +133,6 @@ void glannotations::SplineState::setExtends(glm::vec3 ll, glm::vec3 lr, glm::vec
 		m_ll = ll;
 		m_lr = lr;
 		m_ur = ur;
-
-		if (m_acceptsExternalReference) {
-			glm::vec3 direction = m_lr - m_ll;
-			glm::vec3 up = m_ur - m_lr;
-
-			(m_splineBase->asBSpline2D()).setPlane(direction, up);
-			(m_splineTop->asBSpline2D()).setPlane(direction, up);
-		}
 	}
 }
 
@@ -141,6 +142,16 @@ bool glannotations::SplineState::isValid() const {
 
 bool glannotations::SplineState::acceptsExternalReference() const {
 	return m_acceptsExternalReference;
+}
+
+inline std::vector<glm::vec2> discardZ(const std::vector<glm::vec3> points) {
+	std::vector<glm::vec2> points2D;
+
+    for (size_t i = 0; i < points.size(); i++) {
+		points2D.push_back(glm::vec2(points[i].x, points[i].y));
+	}
+
+	return points2D;
 }
 
 void glannotations::SplineState::changeOrientation(glm::vec2 newUp) {
@@ -168,15 +179,13 @@ void glannotations::SplineState::changeOrientation(std::shared_ptr<BSpline2D> sp
 		return;
 	}
 
-	//old splineTop_plane == new splineTop_plane?
-	if ((m_splineTop->asBSpline2D()).isInSamePlane(splineTop)) {
+	std::vector<glm::vec3> ctrlPoints = splineTop->getControlPoints();
+	//discard z
+	std::vector<glm::vec2> ctrlPoints2D = discardZ(ctrlPoints);
 
-		(m_splineTop->asBSpline2D()).setControlPoints(splineTop->getControlPoints2D());
-		m_splineTop->setKnotValues(splineTop->getKnotValues());
-		m_splineTop->calculateSplineDegree();
-	}
-	else
-		std::cerr << "#Warning: Aborting changeOrientation due to incompatibility: new TopSpline is not in same plane as old TopSpline.\n";
+	(m_splineTop->asBSpline2D()).setControlPoints(ctrlPoints2D);
+	m_splineTop->setKnotValues(splineTop->getKnotValues());
+	m_splineTop->calculateSplineDegree();
 }
 
 void glannotations::SplineState::calculateSplineTop(glm::vec3 upVecInWorldSpace) {
@@ -203,12 +212,20 @@ void glannotations::SplineState::calculateSplineTop(glm::vec3 upVecInWorldSpace)
 
 void glannotations::SplineState::calculateSplineTop(glm::vec2 upVecInPlaneSpace) {
 	//for BSpline2D only
+
+	std::vector<glm::vec2> ctrlPoints2D;
+
 	if (m_acceptsExternalReference){
-		auto ctrlPoints = (m_splineBase->asBSpline2D()).getControlPoints2D();
+		auto ctrlPoints = (m_splineBase->asBSpline2D()).getControlPoints();
 		for (size_t i = 0; i < ctrlPoints.size(); i++) {
-			ctrlPoints[i] += upVecInPlaneSpace;
+			ctrlPoints2D.push_back(glm::vec2(
+				ctrlPoints[i].x + upVecInPlaneSpace.x,
+				ctrlPoints[i].y + upVecInPlaneSpace.y
+				)
+			);
 		}
-		(m_splineTop->asBSpline2D()).setControlPoints(ctrlPoints);
+
+		(m_splineTop->asBSpline2D()).setControlPoints(ctrlPoints2D);
 
 		m_splineTop->setKnotValues(m_splineBase->getKnotValues());
 	}
@@ -254,12 +271,18 @@ globjects::ref_ptr<glannotations::AbstractState> glannotations::SplineState::int
 globjects::ref_ptr<glannotations::AbstractState> glannotations::SplineState::clone() const{
 	globjects::ref_ptr<glannotations::AbstractState> clonedState;
 	if (m_acceptsExternalReference) {
+
+		auto ctrlPointsBase = discardZ((m_splineBase->asBSpline2D()).getControlPoints());
+		auto ctrlPointsTop = discardZ((m_splineTop->asBSpline2D()).getControlPoints());
+
 		clonedState = globjects::ref_ptr<glannotations::AbstractState>(
 			new SplineState(m_ll
-			, (m_splineBase->asBSpline2D()).getPlaneDirection()
-			, (m_splineBase->asBSpline2D()).getPlaneUp()
-			, (m_splineBase->asBSpline2D()).getControlPoints2D(), m_splineBase->getKnotValues()
-			, (m_splineTop->asBSpline2D()).getControlPoints2D(), m_splineTop->getKnotValues()
+			, m_lr - m_ll
+			, m_ur - m_lr
+			, ctrlPointsBase
+			, m_splineBase->getKnotValues()
+			, ctrlPointsTop
+			, m_splineTop->getKnotValues()
 			)
 		);
 	}
@@ -282,28 +305,22 @@ void glannotations::SplineState::setExternalReference(const globjects::ref_ptr<g
 		m_externalReference->setupExternalReference(*this);
 	}
 	else {
-		std::cerr << "Cannot set ExternalReference for BSpline3D. No reference set.";
+		std::cerr << "#Warning: Cannot set ExternalReference for BSpline3D. No reference set.\n";
 	}
 }
 
-void glannotations::SplineState::updateExtends(glm::vec2 /*sourceExtends*/){
-	//todo:anne
+void glannotations::SplineState::updateExtends(glm::vec2 sourceExtends){
 	if (m_acceptsExternalReference) {
 
-		glm::vec3 direction = (m_splineBase->asBSpline2D()).getPlaneDirection();
-		glm::vec3 up = (m_splineBase->asBSpline2D()).getPlaneUp();
-		float width = glm::length(m_lr - m_ll);
-		float height = glm::length(m_ur - m_lr);
+		cropExtends(m_ll, m_lr, m_ur, sourceExtends);
 
-		//cropExtends(m_ll, m_lr, m_ur, glm::vec2(width, height));
-
-		(m_splineBase->asBSpline2D()).setPlane(direction * width, up * height);
+		calculateTransformationMatrix();
 	}
-	
 }
 
 glannotations::BoundingBox glannotations::SplineState::getBoundingBox() {
 	//todo: maybe there is a more efficient way
+
 	glannotations::BoundingBox bb;
 
 	for (auto ctrlPoint : m_splineBase->getControlPoints())
@@ -318,7 +335,7 @@ glannotations::BoundingBox glannotations::SplineState::getBoundingBox() {
 	return bb;
 }
 
-glm::vec4 glannotations::SplineState::getBoundingRect() {
+glm::vec4 glannotations::SplineState::getBoundingRect() const {
 	//todo: maybe there is a more efficient way
 
 	if (!m_acceptsExternalReference) {
@@ -334,6 +351,46 @@ glm::vec4 glannotations::SplineState::getBoundingRect() {
 	float maxY = glm::max(brBase.w, brTop.w);
 	
 	return glm::vec4(minX, minY, maxX, maxY);
+}
+
+glm::mat4 glannotations::SplineState::getTransformationMatrix() const {
+	return m_transformation;
+}
+
+void glannotations::SplineState::calculateTransformationMatrix() {
+		
+	//no translation, because SplineState will take care of positioning later
+
+	//scaling matrix
+	glm::mat4 scalingM = glm::mat4();
+
+	glm::vec3 right = m_lr - m_ll;
+	glm::vec3 up = m_ur - m_lr;
+	float width = glm::length(right);
+	float height = glm::length(up);
+		
+	glm::vec4 plane = getBoundingRect();
+	float scaleX = width / (plane.z - plane.x);
+	float scaleY = height / (plane.w - plane.y);
+	scalingM = glm::scale(scalingM, glm::vec3(scaleX, scaleY, 1.f));
+
+	//rotation matrix to 
+	auto eye = glm::vec3(0, 0, 0);
+	auto center = glm::normalize(glm::cross(glm::normalize(up), glm::normalize(right)));
+
+	glm::mat4 rotation = glm::lookAt(eye, eye + center, up);
+	rotation = glm::inverse(rotation);
+
+	m_transformation = rotation * scalingM;
+}
+
+void glannotations::SplineState::setSplineDirty(bool dirty) {
+	m_splineBase->setDirty(dirty);
+	m_splineTop->setDirty(dirty);
+}
+
+bool glannotations::SplineState::isSplineDirty() const {
+	return (m_splineBase->isDirty() || m_splineTop->isDirty());
 }
 
 glm::vec3 glannotations::SplineState::retrieveConnectingVectorAt(float t) {

@@ -54,9 +54,9 @@ set(LINUX_COMPILE_FLAGS
 
 set(DEFAULT_COMPILE_FLAGS
     ${LINUX_COMPILE_FLAGS}
-    $<$<CONFIG:Debug>:
+    $<$<CONFIG:Debug>:   
     >
-    $<$<CONFIG:Release>:
+    $<$<CONFIG:Release>: 
     >
 )
 
