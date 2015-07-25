@@ -145,13 +145,13 @@ public:
 		boxAnnotation->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 		boxAnnotation->getState()->setMaximumHeight(1.5f);
 		boxAnnotation->getState()->setStyling(new glannotations::Styles::Outline(0.05f, glm::vec3(0.f, 0.f, 0.f)));
-		boxAnnotation->getState()->asInternalState().setExternalReference(new glannotations::BoxReference(glm::vec2(0.f, 0.f), glm::vec2(0.f, 2.75f), glm::vec3(-5.f, 0.f, 0.f), false));
+		boxAnnotation->getState()->asQuadState().setExternalReference(new glannotations::BoxReference(glm::vec2(0.f, 0.f), glm::vec2(0.f, 2.75f), glm::vec3(-5.f, 0.f, 0.f), false));
 		
 		
 		auto flagAnnotation = new glannotations::FontAnnotation(new glannotations::QuadState(glm::vec3(-1.f, 2.5f, 5.01f), glm::vec3(1.f, 2.5f, 5.01f), glm::vec3(1.f, 4.f, 5.01f)), "Flag", "segoeuil.ttf", dfFactory);
 		auto flagRef = new glannotations::FlagReference(2.5f, glm::vec3(0.f, 0.f, -3.f), false);
 		flagRef->setColor(flagColor);
-		flagAnnotation->getState()->asInternalState().setExternalReference(flagRef);
+		flagAnnotation->getState()->asQuadState().setExternalReference(flagRef);
 		flagAnnotation->getState()->setMaximumHeight(1.3f);
 		flagAnnotation->getState()->setKeepSourceAspectRatio(true);
 		flagAnnotation->getState()->setVerticalAnchor(glannotations::Anchor::TOP);
@@ -160,7 +160,7 @@ public:
 		
 
 		auto labelAnnotation = new glannotations::FontAnnotation(new glannotations::QuadState(glm::vec3(-4.75f, 3.f, 12.f), glm::vec3(-1.25f, 3.f, 12.f), glm::vec3(-1.25f, 5.f, 12.f)), "Label", "segoeuil.ttf", dfFactory);
-		labelAnnotation->getState()->asInternalState().setExternalReference(new glannotations::LabelReference(glm::vec3(0.f, -3.f, 10.f)));
+		labelAnnotation->getState()->asQuadState().setExternalReference(new glannotations::LabelReference(glm::vec3(0.f, -3.f, 10.f)));
 		labelAnnotation->getState()->setMaximumHeight(1.5f);
 		labelAnnotation->getState()->setKeepSourceAspectRatio(true);
 		labelAnnotation->getState()->setVerticalAnchor(glannotations::Anchor::BOTTOM);
@@ -228,7 +228,7 @@ public:
 		topAnnotation->getState()->setMaximumHeight(1.f);
 		topAnnotation->getState()->setKeepSourceAspectRatio(true);
 		topAnnotation->getState()->setVerticalAnchor(glannotations::Anchor::BOTTOM);
-		topAnnotation->getState()->asInternalState().setExternalReference(new glannotations::RectReference);
+		topAnnotation->getState()->asQuadState().setExternalReference(new glannotations::RectReference);
 		topAnnotation->setColor(glm::vec4(1.0, 1.0, 1.0, 1.0));
 		m_annotations.addAnnotation(topAnnotation);
 
