@@ -148,7 +148,7 @@ public:
 		boxAnnotation->getState()->asQuadState().setExternalReference(new glannotations::BoxReference(glm::vec2(0.f, 0.f), glm::vec2(0.f, 2.75f), glm::vec3(-5.f, 0.f, 0.f), false));
 		
 		
-		auto flagAnnotation = new glannotations::FontAnnotation(new glannotations::QuadState(glm::vec3(-1.f, 2.5f, 5.01f), glm::vec3(1.f, 2.5f, 5.01f), glm::vec3(1.f, 4.f, 5.01f)), "Flag", "segoeuil.ttf", dfFactory);
+		auto flagAnnotation = new glannotations::FontAnnotation(new glannotations::QuadState(glm::vec3(-1.f, 2.5f, 5.f), glm::vec3(1.f, 2.5f, 5.f), glm::vec3(1.f, 4.f, 5.f)), "Flag", "segoeuil.ttf", dfFactory);
 		auto flagRef = new glannotations::FlagReference(2.5f, glm::vec3(0.f, 0.f, -3.f), false);
 		flagRef->setColor(flagColor);
 		flagAnnotation->getState()->asQuadState().setExternalReference(flagRef);
@@ -160,7 +160,9 @@ public:
 		
 
 		auto labelAnnotation = new glannotations::FontAnnotation(new glannotations::QuadState(glm::vec3(-4.75f, 3.f, 12.f), glm::vec3(-1.25f, 3.f, 12.f), glm::vec3(-1.25f, 5.f, 12.f)), "Label", "segoeuil.ttf", dfFactory);
-		labelAnnotation->getState()->asQuadState().setExternalReference(new glannotations::LabelReference(glm::vec3(0.f, -3.f, 10.f)));
+		auto labelRef = new glannotations::LabelReference(glm::vec3(0.f, -3.f, 10.f));
+		labelRef->setColor(glm::vec4(0.f, 0.f, 0.f, 1.f));
+		labelAnnotation->getState()->asQuadState().setExternalReference(labelRef);
 		labelAnnotation->getState()->setMaximumHeight(1.5f);
 		labelAnnotation->getState()->setKeepSourceAspectRatio(true);
 		labelAnnotation->getState()->setVerticalAnchor(glannotations::Anchor::BOTTOM);
@@ -171,9 +173,9 @@ public:
 		//spline 3D
 		std::vector<glm::vec3> ctrlPoints;
 		ctrlPoints.push_back(glm::vec3(0, 0, 0));
-		ctrlPoints.push_back(glm::vec3(2, 2, 0));
-		ctrlPoints.push_back(glm::vec3(4, 0, 0));
-		ctrlPoints.push_back(glm::vec3(6, 2, 0));
+		ctrlPoints.push_back(glm::vec3(-1, 1, 0));
+		ctrlPoints.push_back(glm::vec3(-2, 0, 0));
+		ctrlPoints.push_back(glm::vec3(-3, 1, 0));
 
 		std::vector<glm::vec3> ctrlPoints2;
 		ctrlPoints2.push_back(glm::vec3(0, 2, -2));
@@ -183,10 +185,10 @@ public:
 				
 		//spline 2D
 		std::vector<glm::vec2> ctrlPoints2D;
-		ctrlPoints2D.push_back(glm::vec2(0, 0));
-		ctrlPoints2D.push_back(glm::vec2(2, 2));
-		ctrlPoints2D.push_back(glm::vec2(4, 0));
-		ctrlPoints2D.push_back(glm::vec2(6, 2));
+		ctrlPoints2D.push_back(glm::vec2(0, 1));
+		ctrlPoints2D.push_back(glm::vec2(1, -2));
+		ctrlPoints2D.push_back(glm::vec2(2, -2));
+		ctrlPoints2D.push_back(glm::vec2(3, 1));
 
 
 		std::vector<float> knotValues = { 0.f, 0.f, 0.f, 1.f, 2.f, 3.f, 3.f, 3.f };
@@ -198,20 +200,20 @@ public:
 		);
 		//*/
 
-		/*
+		
 		auto splineAnnotation = new glannotations::FontAnnotation(
-			new glannotations::SplineState( glm::vec3(-8, 4, 4), ctrlPoints, 3, glm::vec3(0, 2, 1))
+			new glannotations::SplineState( glm::vec3(-3, -4, 4), ctrlPoints, 3, glm::vec3(0, 1.25f, 0.5f))
 			, "Spline State", "segoeuil.ttf", dfFactory
 		);
 		//*/
 		
-		auto splineAnnotation = new glannotations::FontAnnotation(
-			new glannotations::SplineState(glm::vec3(-8, 10, 4), glm::vec3(6, 0, 0), glm::vec3(0, 2, 0), ctrlPoints2D, 3, glm::vec2(0, 2))
-			, "Spline with reference", "segoeuil.ttf", dfFactory
+		/*auto splineAnnotation = new glannotations::FontAnnotation(
+			new glannotations::SplineState(glm::vec3(1.f, -4.f, -3.5f), glm::vec3(-4, 0, 0), glm::vec3(2, 0, 2), ctrlPoints2D, 3, glm::vec2(0, 2))
+			, "Spline", "segoeuil.ttf", dfFactory
 			);
 		//*/
 
-		splineAnnotation->getState()->asSplineState().setExternalReference(new glannotations::LabelReference(glm::vec3(0.f, -3.f, 10.f)));
+		//splineAnnotation->getState()->asSplineState().setExternalReference(new glannotations::LabelReference(glm::vec3(0.f, -3.f, 10.f)));
 		splineAnnotation->getState()->setKeepSourceAspectRatio(true);
 		splineAnnotation->getState()->setVerticalAnchor(glannotations::Anchor::BOTTOM);
 		splineAnnotation->getState()->setHorizontalAnchor(glannotations::Anchor::LEFT);
@@ -233,7 +235,7 @@ public:
 		m_annotations.addAnnotation(topAnnotation);
 
 		m_annotations.addAnnotation(new glannotations::PNGAnnotation(new glannotations::QuadState(glm::vec3(-2.f, -4.f, 2.f), glm::vec3(-2.f, -4.f, 7.f), glm::vec3(-2.f, 1.0f, 7.f)), "hpi.png", dfFactory));
-		auto viewportAnnotation = new glannotations::FontAnnotation(new glannotations::ViewportState(glm::vec2(0.4f, -1.f), glm::vec2(1.f, -0.8f), glm::vec2(1.f, 0.f)), "Viewport State", "segoeuil.ttf", dfFactory);
+		auto viewportAnnotation = new glannotations::FontAnnotation(new glannotations::ViewportState(glm::vec2(0.4f, -1.f), glm::vec2(0.95f, -0.8f), glm::vec2(0.95f, 0.f)), "Viewport State", "segoeuil.ttf", dfFactory);
 		viewportAnnotation->getState()->setKeepSourceAspectRatio(true);
 		viewportAnnotation->getState()->setHorizontalAnchor(glannotations::Anchor::RIGHT);
 		viewportAnnotation->getState()->setVerticalAnchor(glannotations::Anchor::BOTTOM);
