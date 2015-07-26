@@ -12,6 +12,7 @@ namespace glannotations {
 
 		SplineQuads(std::shared_ptr<globjects::Texture> texture, gl::GLuint matricesBindingIndex, bool isDistanceField);
 
+		void setFirstPoint(glm::vec3 p);
 		void addQuad(texVec2_t texture_ll, texVec2_t texture_advance, glm::vec3 secantVec, glm::vec3 orthoVec);
 		void clearQuads();
 		virtual glm::vec2 getExtends() const override;
@@ -33,6 +34,7 @@ namespace glannotations {
 		std::vector<QuadRange_t> m_quadRanges;
 		//glm::vec3 m_ll, m_ur, m_lr;
 		glm::vec3 m_startPoint;
+		glm::vec3 m_firstPoint;
 
 		globjects::ref_ptr<globjects::Buffer> m_advanceH;
 		globjects::ref_ptr<globjects::Buffer> m_advanceW; 

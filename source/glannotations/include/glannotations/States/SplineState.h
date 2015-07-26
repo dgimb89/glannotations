@@ -73,6 +73,11 @@ namespace glannotations {
 		void changeOrientation(glm::vec3 newUp);
 
 		/*!
+		*	\brief	Returns first Controlpoint of BaseSpline if 2D, else (0,0,0) //todo: testing
+		*/
+		glm::vec3 glannotations::SplineState::retrieveStartingPoint();
+
+		/*!
 		*	\brief	Calculates the connecting vector of two curvepoints specified by curve parameter t (0<t<1), using splineBase and splineTop
 		*	\param	t Curve parameter for first curvepoint
 		*/

@@ -304,6 +304,10 @@ void glannotations::SplineQuads::addQuad(texVec2_t texture_ll, texVec2_t texture
 	m_quadRanges.push_back(std::make_pair(secantVec, orthoVec));
 }
 
+void glannotations::SplineQuads::setFirstPoint(glm::vec3 p) {
+	m_firstPoint = p;
+}
+
 void glannotations::SplineQuads::setTransformationMatrix(glm::mat4 matrix) {
 	m_transformation = matrix;
 }
@@ -360,7 +364,11 @@ void glannotations::SplineQuads::updateQuadPositions() {
 	widthSpan /= getExtends().x;
 	*/
 
-	glm::vec3 currentPoint = m_startPoint;
+	auto first4 = glm::vec4(m_firstPoint.x, m_firstPoint.y, m_firstPoint.z, 1.f);
+	first4 = m_transformation * first4;
+	auto first3 = glm::vec3(first4.x, first4.y, first4.z);
+
+	glm::vec3 currentPoint = m_startPoint + first3;
 	glm::vec4 tsv; //transformedSecantVec;
 	glm::vec4 tov; //transformedOrthoVec;
 

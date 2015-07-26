@@ -172,14 +172,26 @@ public:
 		ctrlPoints2.push_back(glm::vec3(2, 4, 0));
 		ctrlPoints2.push_back(glm::vec3(4, 2, 2));
 		ctrlPoints2.push_back(glm::vec3(6, 4, 0));
-				
+		
+
 		//spline 2D
 		std::vector<glm::vec2> ctrlPoints2D;
-		ctrlPoints2D.push_back(glm::vec2(0, 1));
-		ctrlPoints2D.push_back(glm::vec2(1, -2));
-		ctrlPoints2D.push_back(glm::vec2(2, -2));
-		ctrlPoints2D.push_back(glm::vec2(3, 1));
+		ctrlPoints2D.push_back(glm::vec2(0, 15));
+		ctrlPoints2D.push_back(glm::vec2(0, 8));
+		ctrlPoints2D.push_back(glm::vec2(0, 0));
+		ctrlPoints2D.push_back(glm::vec2(7, 0));
+		ctrlPoints2D.push_back(glm::vec2(15, 0));
+		ctrlPoints2D.push_back(glm::vec2(15, 8));
+		ctrlPoints2D.push_back(glm::vec2(15, 15));
 
+		std::vector<glm::vec2> ctrlPoints2D2;
+		ctrlPoints2D2.push_back(glm::vec2(1, 15));
+		ctrlPoints2D2.push_back(glm::vec2(1, 8));
+		ctrlPoints2D2.push_back(glm::vec2(1, 1));
+		ctrlPoints2D2.push_back(glm::vec2(7, 1));
+		ctrlPoints2D2.push_back(glm::vec2(14, 1));
+		ctrlPoints2D2.push_back(glm::vec2(14, 8));
+		ctrlPoints2D2.push_back(glm::vec2(14, 15));
 
 		std::vector<float> knotValues = { 0.f, 0.f, 0.f, 1.f, 2.f, 3.f, 3.f, 3.f };
 		/*
@@ -190,21 +202,22 @@ public:
 		);
 		//*/
 
-		
+		/*
 		auto splineAnnotation = new glannotations::FontAnnotation(
 			new glannotations::SplineState( glm::vec3(-3, -4, 4), ctrlPoints, 3, glm::vec3(0, 1.25f, 0.5f))
 			, "Spline State", "segoeuil.ttf", dfFactory
 		);
 		//*/
 		
-		/*auto splineAnnotation = new glannotations::FontAnnotation(
-			new glannotations::SplineState(glm::vec3(1.f, -4.f, -3.5f), glm::vec3(-4, 0, 0), glm::vec3(2, 0, 2), ctrlPoints2D, 3, glm::vec2(0, 2))
-			, "Spline", "segoeuil.ttf", dfFactory
+		auto splineAnnotation = new glannotations::FontAnnotation(
+			new glannotations::SplineState(glm::vec3(-5.f, -4.f, -5.f), glm::vec3(0, 0, 20), glm::vec3(20, 0, 0), ctrlPoints2D, 3, ctrlPoints2D2, 3)
+			, "   Final Presentation: Spline State with external Reference (Rect)   ", "segoeuil.ttf", dfFactory
 			);
 		//*/
 
 		//splineAnnotation->getState()->asSplineState().setExternalReference(new glannotations::LabelReference(glm::vec3(0.f, -3.f, 10.f)));
-		splineAnnotation->getState()->setKeepSourceAspectRatio(true);
+		splineAnnotation->getState()->asSplineState().setExternalReference(new glannotations::RectReference());
+		//splineAnnotation->getState()->setKeepSourceAspectRatio(true);
 		splineAnnotation->getState()->setVerticalAnchor(glannotations::Anchor::BOTTOM);
 		splineAnnotation->getState()->setHorizontalAnchor(glannotations::Anchor::LEFT);
 		m_annotations.addAnnotation(splineAnnotation);
