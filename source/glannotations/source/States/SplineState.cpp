@@ -393,6 +393,13 @@ bool glannotations::SplineState::isSplineDirty() const {
 	return (m_splineBase->isDirty() || m_splineTop->isDirty());
 }
 
+glm::vec3 glannotations::SplineState::retrieveStartingPoint() {
+	if (m_acceptsExternalReference)
+		return m_splineBase->retrieveCurvepointAt(0.f);
+
+	return glm::vec3(0, 0, 0);
+}
+
 glm::vec3 glannotations::SplineState::retrieveConnectingVectorAt(float t) {
 	//useful for positioning
 	//it might be not that orthogonal...

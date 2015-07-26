@@ -83,6 +83,9 @@ void glannotations::DistanceFieldFontRenderer::prepareSpline(FontAnnotation* ann
 		textLength += m_glyphConfig->getGlyphConfigForCharcode(annotation->getText().at(i))._advance.x;
 	}
 
+	auto firstPoint = (annotation->getRenderState()->asSplineState()).retrieveStartingPoint();
+	bendedQuadStrip->setFirstPoint(firstPoint);
+
 	float currentT = 0.f;
 	float currentNextT = 0.f;
 	for (unsigned i = 0; i < annotation->getText().length(); ++i) {
