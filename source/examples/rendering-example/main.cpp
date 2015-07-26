@@ -125,6 +125,7 @@ public:
 		glm::vec4 temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
 		m_building->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
 		auto flagColor = buildingColor + temp;
+		flagColor.a = 1.f;
 		m_building1->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
 		m_building2->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
 		m_building3->setColor(buildingColor + temp); temp = glm::vec4((rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, (rand()*0.2f) / RAND_MAX, 0.f);
@@ -146,17 +147,6 @@ public:
 		boxAnnotation->getState()->setMaximumHeight(1.5f);
 		boxAnnotation->getState()->setStyling(new glannotations::Styles::Outline(0.05f, glm::vec3(0.f, 0.f, 0.f)));
 		boxAnnotation->getState()->asQuadState().setExternalReference(new glannotations::BoxReference(glm::vec2(0.f, 0.f), glm::vec2(0.f, 2.75f), glm::vec3(-5.f, 0.f, 0.f), false));
-		
-		
-		auto flagAnnotation = new glannotations::FontAnnotation(new glannotations::QuadState(glm::vec3(-1.f, 2.5f, 5.f), glm::vec3(1.f, 2.5f, 5.f), glm::vec3(1.f, 4.f, 5.f)), "Flag", "segoeuil.ttf", dfFactory);
-		auto flagRef = new glannotations::FlagReference(2.5f, glm::vec3(0.f, 0.f, -3.f), false);
-		flagRef->setColor(flagColor);
-		flagAnnotation->getState()->asQuadState().setExternalReference(flagRef);
-		flagAnnotation->getState()->setMaximumHeight(1.3f);
-		flagAnnotation->getState()->setKeepSourceAspectRatio(true);
-		flagAnnotation->getState()->setVerticalAnchor(glannotations::Anchor::TOP);
-		flagAnnotation->setColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
-		m_annotations.addAnnotation(flagAnnotation);
 		
 
 		auto labelAnnotation = new glannotations::FontAnnotation(new glannotations::QuadState(glm::vec3(-4.75f, 3.f, 12.f), glm::vec3(-1.25f, 3.f, 12.f), glm::vec3(-1.25f, 5.f, 12.f)), "Label", "segoeuil.ttf", dfFactory);
@@ -241,6 +231,16 @@ public:
 		viewportAnnotation->getState()->setVerticalAnchor(glannotations::Anchor::BOTTOM);
 		m_annotations.addAnnotation(viewportAnnotation);
 		// m_hpilogo->addState(new glannotations::ViewportState(glm::vec2(-.25f, -.5f), glm::vec2(0.25f, 0.5f)));
+
+		auto flagAnnotation = new glannotations::FontAnnotation(new glannotations::QuadState(glm::vec3(-1.f, 2.5f, 5.f), glm::vec3(1.f, 2.5f, 5.f), glm::vec3(1.f, 4.f, 5.f)), "Flag", "segoeuil.ttf", dfFactory);
+		auto flagRef = new glannotations::FlagReference(2.5f, glm::vec3(0.f, 0.f, -3.f), false);
+		flagRef->setColor(flagColor);
+		flagAnnotation->getState()->asQuadState().setExternalReference(flagRef);
+		flagAnnotation->getState()->setMaximumHeight(1.3f);
+		flagAnnotation->getState()->setKeepSourceAspectRatio(true);
+		flagAnnotation->getState()->setVerticalAnchor(glannotations::Anchor::TOP);
+		flagAnnotation->setColor(glm::vec4(1.f, 1.f, 1.f, 1.f));
+		m_annotations.addAnnotation(flagAnnotation);
 
         window.addTimer(0, 0, false);
 
