@@ -17,6 +17,8 @@ namespace glannotations {
 		virtual void setColor(glm::vec4 color) override;
 		virtual void setBindingIndex(unsigned int bindingIndex) override;
 
+		void directDrawCall();
+
 	protected:
 		void initialize();
 
@@ -25,5 +27,7 @@ namespace glannotations {
 		globjects::ref_ptr<globjects::Program> m_program;
 		globjects::ref_ptr<globjects::VertexArray> m_vao;
 		globjects::ref_ptr<globjects::Buffer> m_positions;
+
+		size_t m_vertexCount = 0;
 	};
 }

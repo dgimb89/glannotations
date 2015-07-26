@@ -226,7 +226,7 @@ static const char* dfFragShader = R"(
 		void main() {
 			float s = texture(source, v_uv).r;
 			if(s - outlineSize > 0.55)
-				discard;
+				return;
 
 			vec4 fc = (style * vec4(outlineColor.rgb, 1.0)) + ((1 - style) * vec4(color.rgb, 0.0));
 			vec4 bc = color;
@@ -309,7 +309,7 @@ void glannotations::QuadStrip::draw() {
 		m_texture->bind();
 	}
 	m_program->use();
-	m_vao->drawArrays(gl::GL_POINTS, 0, static_cast<gl::GLsizei>(m_vertexCount));
+	directDrawCall();
 	m_program->release();
 
 	if (m_texture) {

@@ -76,3 +76,7 @@ void glannotations::DistanceFieldPNGRenderer::prepareSpline(PNGAnnotation* annot
 	setupStylings(annotation);
 	annotation->setDirty(false);
 }
+
+void glannotations::DistanceFieldPNGRenderer::directDrawCall() {
+	m_drawingPrimitive->directDrawCall();
+}

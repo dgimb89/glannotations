@@ -17,18 +17,14 @@ void glannotations::AnnotationGroup::addAnnotation(const globjects::ref_ptr<glan
 	m_mutex.unlock();
 }
 
-void glannotations::AnnotationGroup::draw() {
+void glannotations::AnnotationGroup::update() {
+	updateAnnotations();
 	threadingzeug::parallel_for(0, static_cast<int>(m_annotations.size()), [this](int i) {
-		updateAnnotation(m_annotations.at(i));
 		m_annotations.at(i)->prepareDraw();
 	});
-
-	for (const auto& annotation : m_annotations) {
-		annotation->draw();
-	}
 }
 
-void glannotations::AnnotationGroup::draw(long long preparationInMicroseconds) {
+void glannotations::AnnotationGroup::update(long long preparationInMicroseconds) {
     std::atomic<size_t> processIndex(0);
 	size_t	nMax				= m_annotations.size(), 
 			startProccessing	= m_startProcessingOffset, 
@@ -38,6 +34,7 @@ void glannotations::AnnotationGroup::draw(long long preparationInMicroseconds) {
 
 	// early exit for empty annotation group
 	if (nMax == 0) return;
+	updateAnnotations();
 
 	std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
 
@@ -48,7 +45,6 @@ void glannotations::AnnotationGroup::draw(long long preparationInMicroseconds) {
 			&&	(i = processIndex++) < nMax) {
 			localMax = i;
 			auto annotation = m_annotations.at(ringBufferPosition(startProccessing, i, nMax));
-			updateAnnotation(annotation);
 			annotation->prepareDraw();
 		}
 		#pragma omp critical
@@ -59,10 +55,6 @@ void glannotations::AnnotationGroup::draw(long long preparationInMicroseconds) {
 		}
 	}
 	m_startProcessingOffset = ringBufferPosition(startProccessing, iMax, nMax);
-
-	for (const auto& annotation : m_annotations) {
-		annotation->draw();
-	}	
 }
 
 void glannotations::AnnotationGroup::clear() {
@@ -89,7 +81,14 @@ void glannotations::AnnotationGroup::setAnnotationPositioner(const std::shared_p
 	m_description = description;
 }
 
-inline void glannotations::AnnotationGroup::updateAnnotation(globjects::ref_ptr<glannotations::AbstractAnnotation> annotation) {
+void glannotations::AnnotationGroup::updateAnnotations() {
 	if(m_positioner)
+		for (auto& annotation : m_annotations)
 		m_positioner->updateAnnotation(m_description, annotation);
+}
+
+void glannotations::AnnotationGroup::draw() {
+	for (const auto& annotation : m_annotations) {
+		annotation->draw();
+	}
 }

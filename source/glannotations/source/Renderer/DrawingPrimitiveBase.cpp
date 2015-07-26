@@ -45,3 +45,7 @@ void glannotations::DrawingPrimitiveBase::initialize() {
 	m_vao = new globjects::VertexArray();
 	m_positions = new globjects::Buffer();
 }
+
+void glannotations::DrawingPrimitiveBase::directDrawCall() {
+	m_vao->drawArrays(gl::GL_POINTS, 0, static_cast<gl::GLsizei>(m_vertexCount));
+}

@@ -113,3 +113,7 @@ void glannotations::AbstractAnnotation::enable() {
 void glannotations::AbstractAnnotation::disable() {
 	m_enabled = false;
 }
+
+void glannotations::AbstractAnnotation::directDrawCall() {
+	m_renderer->directDrawCall();
+}

@@ -20,3 +20,7 @@ const globjects::ref_ptr<glannotations::AnnotationClassConfig> glannotations::An
 void glannotations::AnnotationDescription::setAnnotationClassConfig(const globjects::ref_ptr<AnnotationClassConfig>& config) {
 	m_config = config;
 }
+
+size_t glannotations::AnnotationDescription::getNumTechniques() const {
+	return m_config->techniques.size();
+}

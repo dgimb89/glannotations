@@ -12,6 +12,8 @@
 #include <globjects/VertexArray.h>
 #include <globjects/Texture.h>
 
+#include <gloperate/primitives/ScreenAlignedQuad.h>
+
 #include <common/AxisAlignedBoundingBox.h>
 #include <common/Camera.h>
 #include <common/AbstractCoordinateProvider.h>
@@ -26,6 +28,7 @@
 #include <glannotations/AnnotationSpace.h>
 #include <glannotations/AnnotationPositioner.h>
 
+#include <iostream>
 
 using namespace gl;
 using namespace glm;
@@ -55,16 +58,26 @@ public:
 		WindowEventHandler::initialize(window);
 		glannotations::initializeMatricesUBO();
 
+		m_colorTexture = Texture::createDefault(GL_TEXTURE_2D);
+		m_depthTexture = Texture::createDefault(GL_TEXTURE_2D);
+
 		glClearColor(1.f, 1.f, 1.f, 0.f);
 		gl::glEnable(gl::GL_CULL_FACE);
 		gl::glEnable(gl::GL_DEPTH_TEST);
 		gl::glEnable(gl::GL_BLEND);
 		gl::glBlendFunc(gl::GL_SRC_ALPHA, gl::GL_ONE_MINUS_SRC_ALPHA);
 
+		m_fbo = new globjects::Framebuffer;
+		m_fbo->attachTexture(GL_COLOR_ATTACHMENT0, m_colorTexture);
+		m_fbo->attachTexture(GL_DEPTH_ATTACHMENT, m_depthTexture);
+		m_fbo->setDrawBuffers({ GL_COLOR_ATTACHMENT0 });
+
+		m_quad = new gloperate::ScreenAlignedQuad(m_colorTexture);
+
 		m_camera->setZNear(0.1f);
 		m_camera->setZFar(1024.f);
 		m_camera->setCenter(vec3(0.f, 0.f, 0.f));
-		m_camera->setEye(vec3(-17.f, 12.f, -15.0f));
+		m_camera->setEye(vec3(0.f, 0.f, -5.0f));
 		m_camera->setUp(vec3(0, 1, 0));
 		cameraChanged();
 
@@ -86,7 +99,8 @@ public:
     {
         glViewport(0, 0, event.width(), event.height());
         m_camera->setViewport(event.width(), event.height());
-
+		m_colorTexture->image2D(0, GL_RGBA8, event.width(), event.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+		m_depthTexture->image2D(0, GL_DEPTH_COMPONENT, event.width(), event.height(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
         cameraChanged();
     }
 
@@ -100,12 +114,28 @@ public:
     virtual void paintEvent(PaintEvent & event) override
     {
         WindowEventHandler::paintEvent(event);
-
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
+		m_fbo->bind();
 		for (auto group : m_annotationGroups) {
-			group->draw(500);
+			group->update(500);
 		}
+
+		// clear depth buffer after update to use it for positioning update
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		for (auto group : m_annotationGroups) {
+			group->draw();
+		}
+		m_fbo->unbind();
+
+		// screen aligned quad rendering the color buffer
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		m_colorTexture->bindActive(GL_TEXTURE0);
+		m_depthTexture->bindActive(GL_TEXTURE1);
+
+		m_quad->draw();
+
+		m_depthTexture->unbindActive(GL_TEXTURE1);
+		m_colorTexture->unbindActive(GL_TEXTURE0);
+
     }
 
     virtual void keyPressEvent(KeyEvent & event) override
@@ -114,9 +144,9 @@ public:
 
         switch (event.key())
         {
-        case GLFW_KEY_SPACE:
-			m_camera->setCenter(vec3(0.f, 0.f, 5.f));
-			m_camera->setEye(vec3(-17.f, 12.f, -15.0f));
+		case GLFW_KEY_SPACE:
+			m_camera->setCenter(vec3(0.f, 0.f, 0.f));
+			m_camera->setEye(vec3(0.f, 0.f, -5.0f));
 			m_camera->setUp(vec3(0, 1, 0));
             cameraChanged();
             break;
@@ -186,9 +216,11 @@ public:
     }
 
     virtual float depthAt(const ivec2 & windowCoordinates) const override
-    {
+	{
+		m_fbo->bind();
         float depth = AbstractCoordinateProvider::depthAt(*m_camera, GL_DEPTH_COMPONENT, windowCoordinates);
-
+		m_fbo->unbind();
+		std::cout << depth << std::endl;
         return depth;
     }
 
@@ -215,7 +247,13 @@ protected:
 	globjects::ref_ptr<glannotations::AnnotationSpace> m_annotationSpace;
     Camera* m_camera;
     WorldInHandNavigation m_nav;
-    ivec2 m_lastMousePos;
+	ivec2 m_lastMousePos;
+
+	globjects::ref_ptr<globjects::Framebuffer> m_fbo;
+	globjects::ref_ptr<globjects::Texture> m_depthTexture;
+	globjects::ref_ptr<globjects::Texture> m_colorTexture;
+
+	globjects::ref_ptr<gloperate::ScreenAlignedQuad> m_quad;
 
 	AxisAlignedBoundingBox m_aabb;
 };

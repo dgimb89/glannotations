@@ -8,7 +8,7 @@
         "lineHeight": 2.5,
         "techniques": [
             {
-                "technique": "top",
+                "technique": "box",
                 "lineHeight": 0.5,
                 "style": {
                     "outline": {
@@ -20,18 +20,13 @@
                     "maxDistance": 30,
                     "occlusionThreshold": 0.1
                 }
-            },
-            {
-                "technique": "box",
-                "content": "logo_img",
-                "type": "png",
-                "ignoreAspectRatio": true,
+            }, {
+                "technique": "top",
                 "criteria": {
                     "maxDistance": 100,
                     "occlusionThreshold": 0.25
                 }
-            },
-            {
+            }, {
                 "technique": "label"
             }
         ]

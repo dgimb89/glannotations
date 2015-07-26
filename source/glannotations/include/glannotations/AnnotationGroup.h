@@ -28,20 +28,24 @@ namespace glannotations {
 		 *	\brief		Initializes all the annotation renderer necessary for this AnnotationGroup. If not called explicitly, renderer will be setup on first draw call.
 		 */
 		void prepareRenderer() const;
+
 		/*!
-		 *	\brief		Prepares & draws all annotations of this AnnotationGroup.
-		 *	\returns	
+		 *	\brief		Draws all annotations from this group.
 		 */
 		void draw();
 		/*!
-		 *	\brief		Draws all the annotations, but will interrupt annotation preparation (e.g. positioning updates/interpolation) once the preparationLimit timeslot is exceeded.
+		 *	\brief		Updates all annotations of this AnnotationGroup.
+		 */
+		void update();
+		/*!
+		 *	\brief		Updates all the annotations, but will interrupt annotation preparation (e.g. positioning updates/interpolation) once the preparationLimit timeslot is exceeded.
 		 *				Annotations are prepared in round-robin fashion so processing of a annotation is guaranteed before a single other one is processed a second time.
 		 */
-		void draw(long long preparationInMicroseconds);
+		void update(long long preparationInMicroseconds);
 
 	protected:
 		void setAnnotationPositioner(const std::shared_ptr<const glannotations::AnnotationPositioner>& positioner, const globjects::ref_ptr<glannotations::AnnotationDescription>& description);
-		void updateAnnotation(globjects::ref_ptr<glannotations::AbstractAnnotation> annotation);
+		void updateAnnotations();
 
 	private:
 		// we use shared ptr, as ref_ptr has no shared_from_this mechanism yet

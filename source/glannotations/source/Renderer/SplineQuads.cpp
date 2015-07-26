@@ -319,7 +319,7 @@ void glannotations::SplineQuads::draw() {
 	}
 	gl::glDisable(gl::GL_CULL_FACE);
 	m_program->use();
-	m_vao->drawArrays(gl::GL_POINTS, 0, static_cast<gl::GLsizei>(m_vertexCount));
+	directDrawCall();
 	m_program->release();
 	gl::glEnable(gl::GL_CULL_FACE);
 

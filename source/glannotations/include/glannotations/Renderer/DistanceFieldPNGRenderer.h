@@ -12,6 +12,7 @@ namespace glannotations {
 		DistanceFieldPNGRenderer(gl::GLuint globalMatricesBindingIndex);
 		virtual void prepare(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation);
 		virtual void draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation);
+		virtual void directDrawCall();
 
 	protected:
 		void setupStylings(PNGAnnotation* annotation) const;
@@ -21,6 +22,7 @@ namespace glannotations {
 		virtual void drawSetupState(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation, glannotations::ViewportState& state) const override;
 		virtual void drawSetupState(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation, glannotations::QuadState& state) const override;
 		virtual void drawSetupState(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation, glannotations::SplineState& state) const override;
+
 
 	private:
 		std::shared_ptr<globjects::Texture> m_texture;

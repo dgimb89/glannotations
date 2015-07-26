@@ -12,6 +12,7 @@ namespace glannotations {
 		DistanceFieldFontRenderer(gl::GLuint matricesBindingIndex);
 		virtual void prepare(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation);
 		virtual void draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation);
+		virtual void directDrawCall();
 
 	protected:
 		void setupStylings(FontAnnotation* annotation) const;

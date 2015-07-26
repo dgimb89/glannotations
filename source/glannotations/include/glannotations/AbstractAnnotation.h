@@ -52,6 +52,7 @@ namespace glannotations {
 	protected:
 		AbstractAnnotation(const globjects::ref_ptr<glannotations::AbstractState>& state);
 		virtual ~AbstractAnnotation();
+		void directDrawCall();
 
 		const globjects::ref_ptr<glannotations::AbstractRenderer>& getRenderer();
 		globjects::ref_ptr<glannotations::SpaceObject> getRespectiveSpaceObject() const;

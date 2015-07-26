@@ -264,11 +264,11 @@ public:
 
     virtual void paintEvent(PaintEvent & event) override
     {
-        WindowEventHandler::paintEvent(event);
+		WindowEventHandler::paintEvent(event);
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+		m_annotations.update(500);
 
-		// draw calls
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 		m_building->draw();
 		m_building1->draw();
 		m_building2->draw();
@@ -284,8 +284,7 @@ public:
 		m_building12->draw();
 		m_building13->draw();
 		m_building14->draw();
-
-		m_annotations.draw(500);
+		m_annotations.draw();
     }
 
     virtual void keyPressEvent(KeyEvent & event) override
@@ -443,7 +442,7 @@ int main(int /*argc*/, char * /*argv*/[])
 
     if (!window.create(format, "glannotations - Rendering Example"))
         return 1;
-	window.context()->setSwapInterval(Context::SwapInterval::AdaptiveVerticalSyncronization);
+	window.context()->setSwapInterval(Context::SwapInterval::NoVerticalSyncronization);
     window.show();
 
     return MainLoop::run();

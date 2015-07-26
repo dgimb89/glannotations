@@ -7,6 +7,9 @@
 #include <glannotations/Positioning/AnnotationDescription.h>
 
 #include <globjects/base/ref_ptr.h>
+#include <globjects/TransformFeedback.h>
+#include <globjects/Program.h>
+#include <globjects/Buffer.h>
 
 #include <memory>
 #include <string>
@@ -22,10 +25,14 @@ namespace glannotations {
 		std::vector<globjects::ref_ptr<glannotations::AnnotationGroup> > generateAnnotationGroups(std::string configPath) const;
 
 	protected:
-		void updateAnnotation(const globjects::ref_ptr<AnnotationDescription>& description, const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) const;
+		void updateAnnotation(const globjects::ref_ptr<AnnotationDescription>& description, globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) const;
 		globjects::ref_ptr<glannotations::AbstractAnnotation> createAnnotationFor(const globjects::ref_ptr<glannotations::SpaceObject>& object, globjects::ref_ptr<AnnotationDescription>, unsigned technique) const;
+		size_t evaluateMetrics(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) const;
 
 	private:
 		globjects::ref_ptr<AnnotationSpace> m_annotationSpace;
+		globjects::ref_ptr<globjects::TransformFeedback> m_transformFeedback;
+		globjects::ref_ptr<globjects::Program> m_metricsProgram;
+		globjects::ref_ptr<globjects::Buffer> m_buffer;
 	};
 }

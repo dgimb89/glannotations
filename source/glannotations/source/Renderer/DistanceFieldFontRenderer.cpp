@@ -109,3 +109,7 @@ void glannotations::DistanceFieldFontRenderer::prepareSpline(FontAnnotation* ann
 	setupStylings(annotation);
 	annotation->setDirty(false);
 }
+
+void glannotations::DistanceFieldFontRenderer::directDrawCall() {
+	m_drawingPrimitive->directDrawCall();
+}

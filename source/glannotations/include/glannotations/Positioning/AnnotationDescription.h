@@ -29,6 +29,11 @@ namespace glannotations {
 		 */
 		const globjects::ref_ptr<glannotations::AnnotationClassConfig> getAnnotationClassConfig() const;
 
+		/*!
+		 *	\returns	Number of techniques to display given respective annotation class
+		 */
+		size_t getNumTechniques() const;
+
 
 		/// todo: constraint (scene + annotation) definition
 

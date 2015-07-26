@@ -11,8 +11,25 @@
 #include <glannotations/Externals/FlagReference.h>
 #include <glannotations/Externals/LabelReference.h>
 
+#include <glbinding/gl/functions.h>
+#include <glbinding/gl/enum.h>
+
+static const char* vertShader = R"()";
+static const char* geomShader = R"()";
+
 glannotations::AnnotationPositioner::AnnotationPositioner(const globjects::ref_ptr<AnnotationSpace> &annotationSpace) {
 	m_annotationSpace = annotationSpace;
+
+	m_metricsProgram = new globjects::Program();
+	m_metricsProgram->attach(	globjects::Shader::fromString(gl::GL_VERTEX_SHADER, vertShader),
+								globjects::Shader::fromString(gl::GL_GEOMETRY_SHADER, geomShader));
+
+	m_transformFeedback = new globjects::TransformFeedback();
+	m_transformFeedback->setVaryings(m_metricsProgram
+		, { { "metrics" } }, gl::GL_INTERLEAVED_ATTRIBS);
+
+	m_buffer = new globjects::Buffer;
+	m_buffer->setData(sizeof(gl::GLfloat) * 4, nullptr, gl::GL_STATIC_READ);
 }
 
 std::vector<globjects::ref_ptr<glannotations::AnnotationGroup> > glannotations::AnnotationPositioner::generateAnnotationGroups(std::string configPath) const {
@@ -93,11 +110,30 @@ globjects::ref_ptr<glannotations::AbstractAnnotation> glannotations::AnnotationP
 	annotation->setRespectiveSpaceObject(object);
 	annotation->setCurrentFallback(techniqueIndex);
 
+	object->setDirty(false);
+
 	return annotation;
 }
 
 
-void glannotations::AnnotationPositioner::updateAnnotation(const globjects::ref_ptr<AnnotationDescription>& description, const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) const {
-	// todo evaluate dynamic metrics
+void glannotations::AnnotationPositioner::updateAnnotation(const globjects::ref_ptr<AnnotationDescription>& description, globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) const {
+	if (annotation->isDirty()) return;
+	size_t techniqueIndex = evaluateMetrics(annotation);
+	if (techniqueIndex != annotation->getCurrentFallback() || annotation->getRespectiveSpaceObject()->isDirty()) {
+		annotation = createAnnotationFor(annotation->getRespectiveSpaceObject(), description, (annotation->getCurrentFallback() + 1) % description->getNumTechniques());
+	}
 	// -> via transform feedback with previous object id texture
+}
+
+size_t glannotations::AnnotationPositioner::evaluateMetrics(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) const {
+	m_transformFeedback->bind();
+	m_buffer->bindBase(gl::GL_TRANSFORM_FEEDBACK_BUFFER, 0);
+	gl::glEnable(gl::GL_RASTERIZER_DISCARD);
+	m_metricsProgram->use();
+	m_transformFeedback->begin(gl::GL_TRIANGLES);
+	annotation->directDrawCall();
+	m_transformFeedback->end();
+	gl::glDisable(gl::GL_RASTERIZER_DISCARD);
+	m_transformFeedback->unbind();
+	return 0;
 }
