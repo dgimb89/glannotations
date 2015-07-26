@@ -1,4 +1,4 @@
-#include <glannotations/Renderer/BendedQuadStrip.h>
+#include <glannotations/Renderer/SplineQuads.h>
 #include "../ShaderSources.hpp"
 
 #include <glbinding/gl/functions.h>
@@ -275,7 +275,7 @@ static const char* dfFragShader = R"(
 
 	)";
 
-glannotations::BendedQuadStrip::BendedQuadStrip(std::shared_ptr<globjects::Texture> texture, gl::GLuint matricesBindingIndex, bool isDistanceField) : glannotations::AbstractTexturedPrimitive(texture) {
+glannotations::SplineQuads::SplineQuads(std::shared_ptr<globjects::Texture> texture, gl::GLuint matricesBindingIndex, bool isDistanceField) : glannotations::AbstractTexturedPrimitive(texture) {
 	if (isDistanceField) {
 		setupShader(vertShader, geomShader, dfFragShader);
 	}
@@ -299,20 +299,20 @@ glannotations::BendedQuadStrip::BendedQuadStrip(std::shared_ptr<globjects::Textu
 	m_vao->enable(0);
 }
 
-void glannotations::BendedQuadStrip::addQuad(texVec2_t texture_ll, texVec2_t texture_advance, glm::vec3 secantVec, glm::vec3 orthoVec) {
+void glannotations::SplineQuads::addQuad(texVec2_t texture_ll, texVec2_t texture_advance, glm::vec3 secantVec, glm::vec3 orthoVec) {
 	m_textureRanges.push_back(std::make_pair(texture_ll, texture_advance));
 	m_quadRanges.push_back(std::make_pair(secantVec, orthoVec));
 }
 
-void glannotations::BendedQuadStrip::setTransformationMatrix(glm::mat4 matrix) {
+void glannotations::SplineQuads::setTransformationMatrix(glm::mat4 matrix) {
 	m_transformation = matrix;
 }
 
-void glannotations::BendedQuadStrip::clearQuads() {
+void glannotations::SplineQuads::clearQuads() {
 	m_textureRanges.clear();
 }
 
-void glannotations::BendedQuadStrip::draw() {
+void glannotations::SplineQuads::draw() {
 	if (m_texture) {
 		gl::glActiveTexture(gl::GL_TEXTURE0);
 		m_texture->bind();
@@ -328,7 +328,7 @@ void glannotations::BendedQuadStrip::draw() {
 	}
 }
 
-glm::vec2 glannotations::BendedQuadStrip::getExtends() const {
+glm::vec2 glannotations::SplineQuads::getExtends() const {
 	glm::vec2 texAdvance(0.f, m_textureRanges.front().second.y);
 	for (auto textureCoords : m_textureRanges) {
 		texAdvance.x += textureCoords.second.x;
@@ -336,7 +336,7 @@ glm::vec2 glannotations::BendedQuadStrip::getExtends() const {
 	return texAdvance;
 }
 
-void glannotations::BendedQuadStrip::updateQuadPositions() {
+void glannotations::SplineQuads::updateQuadPositions() {
 	// update texture VBO
 	//goal: set vertex position of quad, and its extends (secantVec, orthoVec)
 	std::vector<texVec2_t> textures, texAdvances;
@@ -413,7 +413,7 @@ void glannotations::BendedQuadStrip::updateQuadPositions() {
 	m_vao->enable(4);
 }
 
-bool glannotations::BendedQuadStrip::setPosition(glm::vec3 ll, glm::vec3 /*lr*/, glm::vec3 /*ur*/) {
+bool glannotations::SplineQuads::setPosition(glm::vec3 ll, glm::vec3 /*lr*/, glm::vec3 /*ur*/) {
 	m_startPoint = ll;
 	updateQuadPositions();
 	// finalize geom shader for internal rendering
@@ -421,18 +421,18 @@ bool glannotations::BendedQuadStrip::setPosition(glm::vec3 ll, glm::vec3 /*lr*/,
 	return true;
 }
 
-bool glannotations::BendedQuadStrip::setViewportPosition(glm::vec2 ll, glm::vec2 lr, glm::vec2 ur) {
+bool glannotations::SplineQuads::setViewportPosition(glm::vec2 ll, glm::vec2 lr, glm::vec2 ur) {
 	setPosition(glm::vec3(ll, 0.f), glm::vec3(lr, 0.f), glm::vec3(ur, 0.f));
 	// finalize geom shader for viewport rendering
 	m_program->setUniform("onNearplane", true);
 	return true;
 }
 
-float glannotations::BendedQuadStrip::getUniformQuadHeight() {
+float glannotations::SplineQuads::getUniformQuadHeight() {
 	return m_textureRanges.front().second.y; // returning random texture advance y
 }
 
-float glannotations::BendedQuadStrip::getQuadStripWidth() {
+float glannotations::SplineQuads::getQuadStripWidth() {
 	// TODO: adapt when multiple row support is added
 	float resultWidth = 0.f;
 	std::for_each(m_textureRanges.begin(), m_textureRanges.end(), [&](textureRange_t elem){ resultWidth += elem.second.x; });

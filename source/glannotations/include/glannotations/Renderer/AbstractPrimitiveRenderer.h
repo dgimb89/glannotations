@@ -4,7 +4,7 @@
 
 #include <glannotations/Renderer/AbstractTexturedPrimitive.h>
 #include <glannotations/Renderer/QuadStrip.h>
-#include <glannotations/Renderer/BendedQuadStrip.h>
+#include <glannotations/Renderer/SplineQuads.h>
 #include <glannotations/Renderer/AbstractRenderer.h>
 #include <glannotations/Styles/Styling.h>
 

@@ -4,13 +4,13 @@
 #include <glannotations/Renderer/AbstractTexturedPrimitive.h>
 
 namespace glannotations {
-	class BendedQuadStrip : public glannotations::AbstractTexturedPrimitive {
+	class SplineQuads : public glannotations::AbstractTexturedPrimitive {
 	public:
 		typedef glm::vec2 texVec2_t;
 		typedef std::pair<texVec2_t, texVec2_t> textureRange_t;
 		typedef std::pair<glm::vec3, glm::vec3> QuadRange_t;
 
-		BendedQuadStrip(std::shared_ptr<globjects::Texture> texture, gl::GLuint matricesBindingIndex, bool isDistanceField);
+		SplineQuads(std::shared_ptr<globjects::Texture> texture, gl::GLuint matricesBindingIndex, bool isDistanceField);
 
 		void addQuad(texVec2_t texture_ll, texVec2_t texture_advance, glm::vec3 secantVec, glm::vec3 orthoVec);
 		void clearQuads();

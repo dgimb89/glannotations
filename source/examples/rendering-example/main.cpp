@@ -443,7 +443,7 @@ int main(int /*argc*/, char * /*argv*/[])
 
     if (!window.create(format, "glannotations - Rendering Example"))
         return 1;
-	window.context()->setSwapInterval(Context::SwapInterval::NoVerticalSyncronization);
+	window.context()->setSwapInterval(Context::SwapInterval::AdaptiveVerticalSyncronization);
     window.show();
 
     return MainLoop::run();

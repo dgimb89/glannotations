@@ -104,7 +104,6 @@ set(api_INCLUDE_DIRS
     ${include_path}/Renderer/AbstractPrimitiveRenderer.h
     ${include_path}/Renderer/AbstractRenderer.h
     ${include_path}/Renderer/AbstractTexturedPrimitive.h
-    ${include_path}/Renderer/BendedQuadStrip.h
     ${include_path}/Renderer/Box.h
     ${include_path}/Renderer/DistanceFieldFontRenderer.h
     ${include_path}/Renderer/DistanceFieldPNGRenderer.h
@@ -116,6 +115,7 @@ set(api_INCLUDE_DIRS
     ${include_path}/Renderer/QuadStrip.h
     ${include_path}/Renderer/Rect.h
     ${include_path}/Renderer/RendererFactory.h
+    ${include_path}/Renderer/SplineQuads.h
 
     ${include_path}/States/AbstractState.h
     ${include_path}/States/AbstractState.hpp
@@ -175,7 +175,6 @@ set(sources
     ${source_path}/Renderer/AbstractPrimitiveRenderer.cpp
     ${source_path}/Renderer/AbstractRenderer.cpp
     ${source_path}/Renderer/AbstractTexturedPrimitive.cpp
-    ${source_path}/Renderer/BendedQuadStrip.cpp
     ${source_path}/Renderer/Box.cpp
     ${source_path}/Renderer/DistanceFieldFontRenderer.cpp
     ${source_path}/Renderer/DistanceFieldPNGRenderer.cpp
@@ -187,6 +186,7 @@ set(sources
     ${source_path}/Renderer/QuadStrip.cpp
     ${source_path}/Renderer/Rect.cpp
     ${source_path}/Renderer/RendererFactory.cpp
+    ${source_path}/Renderer/SplineQuads.cpp
 
     ${source_path}/States/AbstractState.cpp
     ${source_path}/States/QuadState.cpp

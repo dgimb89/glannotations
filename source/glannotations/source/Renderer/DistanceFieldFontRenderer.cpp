@@ -9,7 +9,7 @@
 #include <glannotations/FontAnnotation.h>
 #include <glannotations/Common/TextureManager.h>
 #include <glannotations/Renderer/QuadStrip.h>
-#include <glannotations/Renderer/BendedQuadStrip.h>
+#include <glannotations/Renderer/SplineQuads.h>
 
 void glannotations::DistanceFieldFontRenderer::draw(const globjects::ref_ptr<glannotations::AbstractAnnotation>& annotation) {
 	if (annotation->isDirty()) {
@@ -75,7 +75,7 @@ void glannotations::DistanceFieldFontRenderer::prepareQuadStrip(FontAnnotation* 
 }
 
 void glannotations::DistanceFieldFontRenderer::prepareSpline(FontAnnotation* annotation) const {
-	auto bendedQuadStrip = new BendedQuadStrip(m_texture, m_globalMatricesBindingIndex, true);
+	auto bendedQuadStrip = new SplineQuads(m_texture, m_globalMatricesBindingIndex, true);
 
 	//get full text length
 	float textLength = 0.f;

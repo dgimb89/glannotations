@@ -12,6 +12,7 @@ glannotations::AbstractAnnotation::AbstractAnnotation(const globjects::ref_ptr<g
 }
 
 void glannotations::AbstractAnnotation::draw() {
+	if (m_enabled == false) return;
 	m_renderer->draw(this);
 }
 
@@ -78,12 +79,14 @@ glannotations::AbstractAnnotation::~AbstractAnnotation() {
 }
 
 void glannotations::AbstractAnnotation::prepareRenderer() {
+	if (m_enabled == false) return;
 	if (isDirty()) {
 		m_renderer->prepare(this);
 	}
 }
 
 void glannotations::AbstractAnnotation::prepareDraw() {
+	if (m_enabled == false) return;
 	getRenderState()->prepare();
 }
 
@@ -101,4 +104,12 @@ void glannotations::AbstractAnnotation::setCurrentFallback(unsigned val) {
 
 unsigned glannotations::AbstractAnnotation::getCurrentFallback() const {
 	return m_currentFallback;
+}
+
+void glannotations::AbstractAnnotation::enable() {
+	m_enabled = true;
+}
+
+void glannotations::AbstractAnnotation::disable() {
+	m_enabled = false;
 }

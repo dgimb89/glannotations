@@ -68,7 +68,7 @@ void glannotations::DistanceFieldPNGRenderer::prepareQuadStrip(PNGAnnotation* an
 }
 
 void glannotations::DistanceFieldPNGRenderer::prepareSpline(PNGAnnotation* annotation) const {
-	auto bendedQuadStrip = new BendedQuadStrip(m_texture, m_globalMatricesBindingIndex, annotation->isDistanceField());
+	auto bendedQuadStrip = new SplineQuads(m_texture, m_globalMatricesBindingIndex, annotation->isDistanceField());
 	bendedQuadStrip->addQuad(glannotations::QuadStrip::texVec2_t(0.f, 0.f), glannotations::QuadStrip::texVec2_t(1.f, 1.f),
 		glm::vec3(1, 0, 0), glm::vec3(0, 1, 0)
 		);

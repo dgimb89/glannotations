@@ -55,7 +55,7 @@ void glannotations::AbstractPrimitiveRenderer::drawSetupState(const globjects::r
 		state.updateExtends(m_drawingPrimitive->getExtends());
 
 		//m_drawingPrimitive is BendedQuadStrip here!
-		dynamic_cast<glannotations::BendedQuadStrip&>(*m_drawingPrimitive).setTransformationMatrix(state.getTransformationMatrix());
+		dynamic_cast<glannotations::SplineQuads&>(*m_drawingPrimitive).setTransformationMatrix(state.getTransformationMatrix());
 		m_drawingPrimitive->setPosition(state.getLL(), state.getLR(), state.getUR());		
 		
 		state.setDirty(false);

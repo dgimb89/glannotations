@@ -25,6 +25,16 @@ namespace glannotations {
 		void prepareRenderer();
 		void prepareDraw();
 		void draw();
+
+		/*!
+		 *	\brief		Enables positioning updates & drawing whenever related methods are called
+		 */
+		void enable();
+		/*!
+		*	\brief		Prevents positioning updates & drawing of annotation; even related methods are called explicitly
+		*/
+		void disable();
+
 		void setState(const globjects::ref_ptr<glannotations::AbstractState>& state);
 		globjects::ref_ptr<glannotations::AbstractState> getState() const;
 		globjects::ref_ptr<glannotations::AbstractState> getRenderState() const;
@@ -52,9 +62,10 @@ namespace glannotations {
 		globjects::ref_ptr<glannotations::AbstractRenderer> m_renderer;
 
 	private:
+		bool m_enabled = true;
 		unsigned m_currentFallback = 0;
 		globjects::ref_ptr<glannotations::SpaceObject> m_respectiveSpaceObject = nullptr;
-		globjects::ref_ptr<glannotations::AbstractState> m_state;
-		mutable globjects::ref_ptr<glannotations::AbstractState> m_renderState;
+		globjects::ref_ptr<glannotations::AbstractState> m_state = nullptr;
+		mutable globjects::ref_ptr<glannotations::AbstractState> m_renderState = nullptr;
 	};
 }
