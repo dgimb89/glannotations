@@ -226,7 +226,7 @@ static const char* dfFragShader = R"(
 		void main() {
 			float s = texture(source, v_uv).r;
 			if(s - outlineSize > 0.55)
-				return;
+				discard;
 
 			vec4 fc = (style * vec4(outlineColor.rgb, 1.0)) + ((1 - style) * vec4(color.rgb, 0.0));
 			vec4 bc = color;
